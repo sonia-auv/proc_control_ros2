@@ -7,7 +7,7 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
 // C/C++ source code generated on : Wed Nov 27 16:37:06 2024
 //
@@ -26,53 +26,18 @@ extern "C"
 
 }
 
-#include <stddef.h>
-
 extern "C"
 {
-
-#include "rt_nonfinite.h"
-
-}
-
-#define NumBitsPerChar                 8U
-
-extern "C"
-{
-  //
-  // Initialize rtNaN needed by the generated code.
-  // NaN is initialized as non-signaling. Assumes IEEE.
-  //
+  // Return rtNaN needed by the generated code.
   real_T rtGetNaN(void)
   {
-    size_t bitsPerReal = sizeof(real_T) * (NumBitsPerChar);
-    real_T nan = 0.0;
-    if (bitsPerReal == 32U) {
-      nan = rtGetNaNF();
-    } else {
-      union {
-        LittleEndianIEEEDouble bitVal;
-        real_T fltVal;
-      } tmpVal;
-
-      tmpVal.bitVal.words.wordH = 0xFFF80000U;
-      tmpVal.bitVal.words.wordL = 0x00000000U;
-      nan = tmpVal.fltVal;
-    }
-
-    return nan;
+    return rtNaN;
   }
 
-  //
-  // Initialize rtNaNF needed by the generated code.
-  // NaN is initialized as non-signaling. Assumes IEEE.
-  //
+  // Return rtNaNF needed by the generated code.
   real32_T rtGetNaNF(void)
   {
-    IEEESingle nanF = { { 0.0F } };
-
-    nanF.wordL.wordLuint = 0xFFC00000U;
-    return nanF.wordL.wordLreal;
+    return rtNaNF;
   }
 }
 

@@ -4,7 +4,7 @@
   <name>proc_control</name>
   <version>1.0.0</version>
   <description>TODO</description>
-  <maintainer email="ros2user@test.com">ROS User</maintainer>
+  <maintainer email="ros2user@test.com">Team Sonia</maintainer>
   <license>BSD</license>
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
   <depend>geometry_msgs</depend>

@@ -4,7 +4,7 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
 // C/C++ source code generated on : Wed Nov 27 16:52:26 2024
 //
@@ -30,8 +30,10 @@ class proc_control;
 #include "proc_control_types.h"
 #include "rtwtypes.h"
 #include "slros_busmsg_conversion.h"
+#include "geometry_msgs/msg/point.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/vector3.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "sonia_common_ros2/msg/body_velocity_dvl.hpp"
@@ -43,6 +45,7 @@ class proc_control;
 #include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
+#include "std_msgs/msg/int16_multi_array.hpp"
 #include "std_msgs/msg/u_int8.hpp"
 #include "trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp"
 namespace ros2 {

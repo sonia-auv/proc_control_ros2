@@ -7,7 +7,7 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
 // C/C++ source code generated on : Wed Nov 27 16:37:06 2024
 //
@@ -28,6 +28,142 @@ struct SL_Bus_builtin_interfaces_Time
 {
   int32_T sec;
   uint32_T nanosec;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Default_
+#define DEFINED_TYPEDEF_FOR_Default_
+
+struct Default
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C10_
+#define DEFINED_TYPEDEF_FOR_C10_
+
+struct C10
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C11_
+#define DEFINED_TYPEDEF_FOR_C11_
+
+struct C11
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C19_
+#define DEFINED_TYPEDEF_FOR_C19_
+
+struct C19
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
+#define DEFINED_TYPEDEF_FOR_NoDvl_
+
+struct NoDvl
+{
+  real_T MV[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Gains_
+#define DEFINED_TYPEDEF_FOR_Gains_
+
+struct Gains
+{
+  Default predefined;
+  C10 c10;
+  C11 c11;
+  C19 c19;
+  NoDvl noDvl;
+  real_T p;
+  real_T m;
+  real_T tmax;
+  real_T tmin;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
+#define DEFINED_TYPEDEF_FOR_TargetReached_
+
+struct TargetReached
+{
+  real_T linearTol;
+  real_T angularTol;
+  real_T timeInTol;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
+#define DEFINED_TYPEDEF_FOR_mpcParams_
+
+struct mpcParams
+{
+  Gains gains;
+  TargetReached targetReached;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
+#define DEFINED_TYPEDEF_FOR_physicsConstants_
+
+struct physicsConstants
+{
+  real_T rho;
+  real_T g;
+  real_T mass;
+  real_T volume;
+  real_T sub_height;
+  real_T rg[3];
+  real_T rb[3];
+  real_T cdl[6];
+  real_T cdq[6];
+  real_T added_mass[6];
+  real_T I[9];
+  real_T depth_pose[3];
+  real_T hydro_pose[3];
+  real_T sonar_pose[3];
+  real_T dvl_rotation[3];
+  real_T thrusters[48];
+  real_T dvl_lost_override;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+
+// MsgType=std_msgs/Bool
+struct SL_Bus_std_msgs_Bool
+{
+  boolean_T data;
 };
 
 #endif
@@ -199,142 +335,6 @@ struct SL_Bus_sonia_common_ros2_MotorPwm
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_Default_
-#define DEFINED_TYPEDEF_FOR_Default_
-
-struct Default
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C10_
-#define DEFINED_TYPEDEF_FOR_C10_
-
-struct C10
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C11_
-#define DEFINED_TYPEDEF_FOR_C11_
-
-struct C11
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C19_
-#define DEFINED_TYPEDEF_FOR_C19_
-
-struct C19
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
-#define DEFINED_TYPEDEF_FOR_NoDvl_
-
-struct NoDvl
-{
-  real_T MV[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_Gains_
-#define DEFINED_TYPEDEF_FOR_Gains_
-
-struct Gains
-{
-  Default predefined;
-  C10 c10;
-  C11 c11;
-  C19 c19;
-  NoDvl noDvl;
-  real_T p;
-  real_T m;
-  real_T tmax;
-  real_T tmin;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
-#define DEFINED_TYPEDEF_FOR_TargetReached_
-
-struct TargetReached
-{
-  real_T linearTol;
-  real_T angularTol;
-  real_T timeInTol;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
-#define DEFINED_TYPEDEF_FOR_mpcParams_
-
-struct mpcParams
-{
-  Gains gains;
-  TargetReached targetReached;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
-#define DEFINED_TYPEDEF_FOR_physicsConstants_
-
-struct physicsConstants
-{
-  real_T rho;
-  real_T g;
-  real_T mass;
-  real_T volume;
-  real_T sub_height;
-  real_T rg[3];
-  real_T rb[3];
-  real_T cdl[6];
-  real_T cdq[6];
-  real_T added_mass[6];
-  real_T I[9];
-  real_T depth_pose[3];
-  real_T hydro_pose[3];
-  real_T sonar_pose[3];
-  real_T dvl_rotation[3];
-  real_T thrusters[48];
-  real_T dvl_lost_override;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-
-// MsgType=std_msgs/Bool
-struct SL_Bus_std_msgs_Bool
-{
-  boolean_T data;
-};
-
-#endif
-
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcGains_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcGains_
 
@@ -388,83 +388,6 @@ struct SL_Bus_sonia_common_ros2_MpcInfo
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
-
-// MsgType=sensor_msgs/Imu
-struct SL_Bus_sensor_msgs_Imu
-{
-  // MsgType=std_msgs/Header
-  SL_Bus_std_msgs_Header header;
-
-  // MsgType=geometry_msgs/Quaternion
-  SL_Bus_geometry_msgs_Quaternion orientation;
-  real_T orientation_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 angular_velocity;
-  real_T angular_velocity_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 linear_acceleration;
-  real_T linear_acceleration_covariance[9];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-
-// MsgType=sonia_common_ros2/BodyVelocityDVL
-struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
-{
-  // MsgType=std_msgs/Header
-  SL_Bus_std_msgs_Header header;
-  real_T x_vel_btm;
-  real_T y_vel_btm;
-  real_T z_vel_btm;
-  real_T e_vel_btm;
-  real_T velocity1;
-  real_T velocity2;
-  real_T velocity3;
-  real_T velocity4;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-
-// MsgType=std_msgs/Float32
-struct SL_Bus_std_msgs_Float32
-{
-  real32_T data;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
-
-// MsgType=std_msgs/UInt8
-struct SL_Bus_std_msgs_UInt8
-{
-  uint8_T data;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
-
-// MsgType=sonia_common_ros2/KillStatus
-struct SL_Bus_sonia_common_ros2_KillStatus
-{
-  boolean_T status;
-};
-
-#endif
-
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
 
@@ -494,6 +417,101 @@ struct SL_Bus_std_msgs_MultiArrayLayout
   // IsVarLen=1:VarLenCategory=length:VarLenElem=dim
   SL_Bus_ROSVariableLengthArrayInfo dim_SL_Info;
   uint32_T data_offset;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Int16MultiArray_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Int16MultiArray_
+
+// MsgType=std_msgs/Int16MultiArray
+struct SL_Bus_std_msgs_Int16MultiArray
+{
+  // MsgType=std_msgs/MultiArrayLayout
+  SL_Bus_std_msgs_MultiArrayLayout layout;
+
+  // IsVarLen=1:VarLenCategory=data:VarLenElem=data_SL_Info:TruncateAction=warn
+  int16_T data[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=data
+  SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+
+// MsgType=std_msgs/Float32
+struct SL_Bus_std_msgs_Float32
+{
+  real32_T data;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+
+// MsgType=sonia_common_ros2/BodyVelocityDVL
+struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+  real_T x_vel_btm;
+  real_T y_vel_btm;
+  real_T z_vel_btm;
+  real_T e_vel_btm;
+  real_T velocity1;
+  real_T velocity2;
+  real_T velocity3;
+  real_T velocity4;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
+
+// MsgType=sensor_msgs/Imu
+struct SL_Bus_sensor_msgs_Imu
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+
+  // MsgType=geometry_msgs/Quaternion
+  SL_Bus_geometry_msgs_Quaternion orientation;
+  real_T orientation_covariance[9];
+
+  // MsgType=geometry_msgs/Vector3
+  SL_Bus_geometry_msgs_Vector3 angular_velocity;
+  real_T angular_velocity_covariance[9];
+
+  // MsgType=geometry_msgs/Vector3
+  SL_Bus_geometry_msgs_Vector3 linear_acceleration;
+  real_T linear_acceleration_covariance[9];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+
+// MsgType=std_msgs/UInt8
+struct SL_Bus_std_msgs_UInt8
+{
+  uint8_T data;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+
+// MsgType=sonia_common_ros2/KillStatus
+struct SL_Bus_sonia_common_ros2_KillStatus
+{
+  boolean_T status;
 };
 
 #endif
@@ -593,13 +611,12 @@ struct SL_Bus_sonia_common_ros2_Pose
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_struct_B7QwSI4DQmIW0eGySRE8VE_
-#define DEFINED_TYPEDEF_FOR_struct_B7QwSI4DQmIW0eGySRE8VE_
+#ifndef DEFINED_TYPEDEF_FOR_struct_qfomatEQOl7mLQ02Mpt2VE_
+#define DEFINED_TYPEDEF_FOR_struct_qfomatEQOl7mLQ02Mpt2VE_
 
-struct struct_B7QwSI4DQmIW0eGySRE8VE
+struct struct_qfomatEQOl7mLQ02Mpt2VE
 {
   real_T T[48];
-  real_T pos[48];
   real_T tau;
   real_T b0;
   real_T a1;
@@ -607,10 +624,10 @@ struct struct_B7QwSI4DQmIW0eGySRE8VE
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_struct_Xl449lO1uDRqlUFijqjpYB_
-#define DEFINED_TYPEDEF_FOR_struct_Xl449lO1uDRqlUFijqjpYB_
+#ifndef DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
+#define DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
 
-struct struct_Xl449lO1uDRqlUFijqjpYB
+struct struct_PHAFHl5XyXX1OaeSBzWbKD
 {
   real_T mass;
   real_T volume;
@@ -619,7 +636,6 @@ struct struct_Xl449lO1uDRqlUFijqjpYB
   real_T dvlCenterDist;
   real_T height;
   real_T I[9];
-  real_T default_I[9];
   real_T RG[3];
   real_T RB[3];
   real_T CDL[6];
@@ -630,7 +646,7 @@ struct struct_Xl449lO1uDRqlUFijqjpYB
   real_T hydroPose[3];
   real_T sonarPose[3];
   real_T dvlRotation[3];
-  struct_B7QwSI4DQmIW0eGySRE8VE thruster;
+  struct_qfomatEQOl7mLQ02Mpt2VE thruster;
 };
 
 #endif
@@ -688,6 +704,55 @@ struct struct_dhOFexlPAOq1XLxIBHN1J
 
 #endif
 
+#ifndef DEFINED_TYPEDEF_FOR_struct_hZWlT12TcLzIbjyXO4CjGF_
+#define DEFINED_TYPEDEF_FOR_struct_hZWlT12TcLzIbjyXO4CjGF_
+
+struct struct_hZWlT12TcLzIbjyXO4CjGF
+{
+  real_T World_Position[3];
+  real_T Quaternion[4];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_struct_ORe84o0x5GBDisGKnu34DG_
+#define DEFINED_TYPEDEF_FOR_struct_ORe84o0x5GBDisGKnu34DG_
+
+struct struct_ORe84o0x5GBDisGKnu34DG
+{
+  real_T Body_Velocity[3];
+  real_T Linear_Acceleration[3];
+  real_T Angular_Rate[3];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_struct_rlScCGcQggJ5TYrxrqGJfF_
+#define DEFINED_TYPEDEF_FOR_struct_rlScCGcQggJ5TYrxrqGJfF_
+
+struct struct_rlScCGcQggJ5TYrxrqGJfF
+{
+  struct_hZWlT12TcLzIbjyXO4CjGF x;
+  struct_ORe84o0x5GBDisGKnu34DG v;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_struct_ovWlOQLLs0y1mSxaL5ZDmG_
+#define DEFINED_TYPEDEF_FOR_struct_ovWlOQLLs0y1mSxaL5ZDmG_
+
+struct struct_ovWlOQLLs0y1mSxaL5ZDmG
+{
+  real_T Pressure_Depth;
+  real_T Quaternion[4];
+  real_T DVL_Velocity[3];
+  real_T Angular_Rate[3];
+  real_T Linear_Acceleration[3];
+  real_T Hydro_Angles[3];
+};
+
+#endif
+
 #ifndef DEFINED_TYPEDEF_FOR_struct_eJsqWOClzwG18rBvtrhWOG_
 #define DEFINED_TYPEDEF_FOR_struct_eJsqWOClzwG18rBvtrhWOG_
 
@@ -718,7 +783,29 @@ struct struct_TOFpsJJYcOBczOpEd57stD
 
 #endif
 
-// Custom Type definition for MATLABSystem: '<S252>/SourceBlock'
+#ifndef struct_f_robotics_slcore_internal_bl_T
+#define struct_f_robotics_slcore_internal_bl_T
+
+struct f_robotics_slcore_internal_bl_T
+{
+  int32_T __dummy;
+};
+
+#endif                                // struct_f_robotics_slcore_internal_bl_T
+
+#ifndef struct_ros_slros2_internal_block_Cur_T
+#define struct_ros_slros2_internal_block_Cur_T
+
+struct ros_slros2_internal_block_Cur_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  boolean_T isSetupComplete;
+  f_robotics_slcore_internal_bl_T SampleTimeHandler;
+};
+
+#endif                                // struct_ros_slros2_internal_block_Cur_T
+
+// Custom Type definition for MATLABSystem: '<S321>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -744,27 +831,26 @@ struct ros_slros2_internal_block_Pub_T
 
 #endif                                // struct_ros_slros2_internal_block_Pub_T
 
-#ifndef struct_f_robotics_slcore_internal_bl_T
-#define struct_f_robotics_slcore_internal_bl_T
+#ifndef struct_fixed_system_DivideByConstant_T
+#define struct_fixed_system_DivideByConstant_T
 
-struct f_robotics_slcore_internal_bl_T
+struct fixed_system_DivideByConstant_T
 {
-  int32_T __dummy;
+  int32_T isInitialized;
 };
 
-#endif                                // struct_f_robotics_slcore_internal_bl_T
+#endif                                // struct_fixed_system_DivideByConstant_T
 
-#ifndef struct_ros_slros2_internal_block_Cur_T
-#define struct_ros_slros2_internal_block_Cur_T
+#ifndef struct_HydroModel_proc_control_T
+#define struct_HydroModel_proc_control_T
 
-struct ros_slros2_internal_block_Cur_T
+struct HydroModel_proc_control_T
 {
-  boolean_T matlabCodegenIsDeleted;
-  boolean_T isSetupComplete;
-  f_robotics_slcore_internal_bl_T SampleTimeHandler;
+  int32_T isInitialized;
+  SL_Bus_geometry_msgs_Vector3 pingerPosition;
 };
 
-#endif                                // struct_ros_slros2_internal_block_Cur_T
+#endif                                 // struct_HydroModel_proc_control_T
 
 #ifndef struct_ros_slros2_internal_block_Sub_T
 #define struct_ros_slros2_internal_block_Sub_T
@@ -779,20 +865,7 @@ struct ros_slros2_internal_block_Sub_T
 
 #endif                                // struct_ros_slros2_internal_block_Sub_T
 
-#ifndef struct_ros_slros2_internal_block_Get_T
-#define struct_ros_slros2_internal_block_Get_T
-
-struct ros_slros2_internal_block_Get_T
-{
-  boolean_T matlabCodegenIsDeleted;
-  int32_T isInitialized;
-  boolean_T isSetupComplete;
-  f_robotics_slcore_internal_bl_T SampleTimeHandler;
-};
-
-#endif                                // struct_ros_slros2_internal_block_Get_T
-
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 #define struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 
@@ -865,6 +938,18 @@ struct quaternion_proc_control_T
 };
 
 #endif                                 // struct_quaternion_proc_control_T
+
+#ifndef struct_AuvDifferentialEquation_proc__T
+#define struct_AuvDifferentialEquation_proc__T
+
+struct AuvDifferentialEquation_proc__T
+{
+  int32_T isInitialized;
+  boolean_T init;
+  real_T constValues[38];
+};
+
+#endif                                // struct_AuvDifferentialEquation_proc__T
 
 #ifndef struct_Vector2DoubleArray_proc_contr_T
 #define struct_Vector2DoubleArray_proc_contr_T
@@ -976,7 +1061,7 @@ struct OpenLoopController_proc_contr_T
 
 #endif                                // struct_OpenLoopController_proc_contr_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_somzaGboVhDG7PNQS6E98jD_proc__T
 #define struct_somzaGboVhDG7PNQS6E98jD_proc__T
 
@@ -1130,7 +1215,7 @@ struct robotics_slcore_internal_bl_p_T
 
 #endif                                // struct_robotics_slcore_internal_bl_p_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_KPwpEZDfdzkqudEdVwjGjF_proc_T
 #define struct_s_KPwpEZDfdzkqudEdVwjGjF_proc_T
 
@@ -1179,7 +1264,7 @@ struct s_KPwpEZDfdzkqudEdVwjGjF_proc_T
 
 #endif                                // struct_s_KPwpEZDfdzkqudEdVwjGjF_proc_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 #define struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 
@@ -1192,7 +1277,7 @@ struct s_z8miyzCNLMZx998HtZciUB_proc_T
 
 #endif                                // struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 #define struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
@@ -1240,7 +1325,7 @@ struct s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
 #endif                                // struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 #define struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
@@ -1262,7 +1347,7 @@ struct s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
 #endif                                // struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 #define struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 
@@ -1299,7 +1384,7 @@ struct s_962gqykB8vLiRVqsLdGQIG_proc_T
 
 #endif                                // struct_s_962gqykB8vLiRVqsLdGQIG_proc_T
 
-// Custom Type definition for MATLAB Function: '<S148>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
 #ifndef struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 #define struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 
@@ -1488,12 +1573,18 @@ struct s_57XcDYnePXWwzrminlHRzF_proc_T
 
 #endif                                // struct_s_57XcDYnePXWwzrminlHRzF_proc_T
 
-// Parameters (default storage)
-typedef struct P_proc_control_T_ P_proc_control_T;
+#ifndef struct_ros_slros2_internal_block_Get_T
+#define struct_ros_slros2_internal_block_Get_T
 
-// Forward declaration for rtModel
-typedef struct tag_RTM_proc_control_T RT_MODEL_proc_control_T;
+struct ros_slros2_internal_block_Get_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  f_robotics_slcore_internal_bl_T SampleTimeHandler;
+};
 
+#endif                                // struct_ros_slros2_internal_block_Get_T
 #endif                                 // proc_control_types_h_
 
 //

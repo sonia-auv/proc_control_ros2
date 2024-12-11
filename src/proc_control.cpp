@@ -7,7 +7,7 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
 // C/C++ source code generated on : Wed Nov 27 16:37:06 2024
 //
@@ -17,9 +17,9 @@
 // Validation result: Not run
 //
 #include "proc_control.h"
-#include "rtwtypes.h"
 #include "proc_control_types.h"
 #include "rmw/qos_profiles.h"
+#include "rtwtypes.h"
 #include "coder_array.h"
 #include <math.h>
 
@@ -33,7 +33,9 @@ extern "C"
 #include <string.h>
 #include <emmintrin.h>
 #include "proc_control_private.h"
+#include <string>
 #include <stddef.h>
+#include "cmath"
 #include "zero_crossing_types.h"
 #include "rt_defines.h"
 
@@ -53,6 +55,62 @@ uint32_T plook_u32d_binckpang(real_T u, const real_T bp[], uint32_T maxIndex,ato
   // Remove protection against out-of-range input in generated code: 'on'
 
   if (u < bp[maxIndex]) {
+    bpIndex = binsearch_u32d_prevIdx(u, bp, *prevIndex, maxIndex);
+    if ((bpIndex < maxIndex) && (bp[bpIndex + 1U] - u <= u - bp[bpIndex])) {
+      bpIndex++;
+    }
+  } else {
+    bpIndex = maxIndex;
+  }
+
+  *prevIndex = bpIndex;
+  return bpIndex;
+}
+
+uint32_T plook_u32u16_binckan(uint16_T u, const uint16_T bp[], uint32_T maxIndex)
+{
+  uint32_T bpIndex;
+
+  // Prelookup - Index only
+  // Index Search method: 'binary'
+  // Interpolation method: 'Use nearest'
+  // Extrapolation method: 'Clip'
+  // Use previous index: 'off'
+  // Use last breakpoint for index at or above upper limit: 'on'
+  // Remove protection against out-of-range input in generated code: 'off'
+
+  if (u <= bp[0U]) {
+    bpIndex = 0U;
+  } else if (u < bp[maxIndex]) {
+    bpIndex = binsearch_u32u16(u, bp, maxIndex >> 1U, maxIndex);
+    if ((bpIndex < maxIndex) && (static_cast<uint16_T>(static_cast<uint32_T>
+          (bp[bpIndex + 1U]) - u) <= static_cast<uint16_T>(static_cast<uint32_T>
+          (u) - bp[bpIndex]))) {
+      bpIndex++;
+    }
+  } else {
+    bpIndex = maxIndex;
+  }
+
+  return bpIndex;
+}
+
+uint32_T plook_u32d_binckpan(real_T u, const real_T bp[], uint32_T maxIndex,
+  uint32_T *prevIndex)
+{
+  uint32_T bpIndex;
+
+  // Prelookup - Index only
+  // Index Search method: 'binary'
+  // Interpolation method: 'Use nearest'
+  // Extrapolation method: 'Clip'
+  // Use previous index: 'on'
+  // Use last breakpoint for index at or above upper limit: 'on'
+  // Remove protection against out-of-range input in generated code: 'off'
+
+  if (u <= bp[0U]) {
+    bpIndex = 0U;
+  } else if (u < bp[maxIndex]) {
     bpIndex = binsearch_u32d_prevIdx(u, bp, *prevIndex, maxIndex);
     if ((bpIndex < maxIndex) && (bp[bpIndex + 1U] - u <= u - bp[bpIndex])) {
       bpIndex++;
@@ -93,6 +151,30 @@ uint32_T binsearch_u32d_prevIdx(real_T u, const real_T bp[], uint32_T startIndex
   return bpIndex;
 }
 
+uint32_T binsearch_u32u16(uint16_T u, const uint16_T bp[], uint32_T startIndex,
+  uint32_T maxIndex)
+{
+  uint32_T bpIdx;
+  uint32_T bpIndex;
+  uint32_T iRght;
+
+  // Binary Search
+  bpIdx = startIndex;
+  bpIndex = 0U;
+  iRght = maxIndex;
+  while (iRght - bpIndex > 1U) {
+    if (u < bp[bpIdx]) {
+      iRght = bpIdx;
+    } else {
+      bpIndex = bpIdx;
+    }
+
+    bpIdx = (iRght + bpIndex) >> 1U;
+  }
+
+  return bpIndex;
+}
+
 int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
 {
   return (((numerator < 0) != (denominator < 0)) && (numerator % denominator !=
@@ -104,7 +186,8 @@ int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
 //         The function is called at model base rate, hence the
 //         generated code self-manages all its subrates.
 //
-static void rate_scheduler(RT_MODEL_proc_control_T *const proc_control_M)
+static void rate_scheduler(proc_control::RT_MODEL_proc_control_T *const
+  proc_control_M)
 {
   // Compute which subrates run during the next base time step.  Subrates
   //  are an integer multiple of the base rate counter.  Therefore, the subtask
@@ -129,25 +212,40 @@ static void rate_scheduler(RT_MODEL_proc_control_T *const proc_control_M)
   if ((proc_control_M->Timing.TaskCounters.TID[4]) > 99) {// Sample time: [2.0s, 0.0s] 
     proc_control_M->Timing.TaskCounters.TID[4] = 0;
   }
+
+  (proc_control_M->Timing.TaskCounters.TID[5])++;
+  if ((proc_control_M->Timing.TaskCounters.TID[5]) > 249) {// Sample time: [5.0s, 0.0s] 
+    proc_control_M->Timing.TaskCounters.TID[5] = 0;
+  }
 }
 
-//
-// Output and update for atomic system:
-//    '<S2>/MATLAB Function'
-//    '<S2>/MATLAB Function1'
-//
-void proc_control::proc_control_MATLABFunction(const uint16_T rtu_data[8],
-  uint16_T *rty_m1, uint16_T *rty_m2, uint16_T *rty_m3, uint16_T *rty_m4,
-  uint16_T *rty_m5, uint16_T *rty_m6, uint16_T *rty_m7, uint16_T *rty_m8)
+// System initialize for atomic system:
+void proc_control::proc_control_CurrentTime_Init(DW_CurrentTime_proc_control_T
+  *localDW)
 {
-  *rty_m1 = rtu_data[0];
-  *rty_m2 = rtu_data[1];
-  *rty_m3 = rtu_data[2];
-  *rty_m4 = rtu_data[3];
-  *rty_m5 = rtu_data[4];
-  *rty_m6 = rtu_data[5];
-  *rty_m7 = rtu_data[6];
-  *rty_m8 = rtu_data[7];
+  // Start for MATLABSystem: '<S16>/Current Time'
+  localDW->obj.matlabCodegenIsDeleted = false;
+  localDW->objisempty = true;
+  localDW->obj.isSetupComplete = true;
+}
+
+// Output and update for atomic system:
+void proc_control::proc_control_CurrentTime(B_CurrentTime_proc_control_T *localB)
+{
+  // MATLABSystem: '<S16>/Current Time'
+  currentROS2TimeBus(&localB->CurrentTime);
+}
+
+// Termination for atomic system:
+void proc_control::proc_control_CurrentTime_Term(DW_CurrentTime_proc_control_T
+  *localDW)
+{
+  // Terminate for MATLABSystem: '<S16>/Current Time'
+  if (!localDW->obj.matlabCodegenIsDeleted) {
+    localDW->obj.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S16>/Current Time'
 }
 
 real_T proc_control::proc_control_xnrm2_pr(int32_T n, const real_T x[140],
@@ -155,11 +253,11 @@ real_T proc_control::proc_control_xnrm2_pr(int32_T n, const real_T x[140],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -184,7 +282,7 @@ real_T proc_control::proc_control_xnrm2_pr(int32_T n, const real_T x[140],
     }
   }
 
-  // End of Start for MATLABSystem: '<S222>/MATLAB System'
+  // End of Start for MATLABSystem: '<S291>/MATLAB System'
   return y;
 }
 
@@ -235,13 +333,13 @@ void proc_control::proc_control_qr(const real_T A[140], real_T Q[140], real_T R
     b_tau[i] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
-  memcpy(&Q[0], &A[0], 140U * sizeof(real_T));
+  // Start for MATLABSystem: '<S291>/MATLAB System'
+  std::memcpy(&Q[0], &A[0], 140U * sizeof(real_T));
   for (i = 0; i < 7; i++) {
     work[i] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   for (itau = 0; itau < 7; itau++) {
     ii = itau * 20 + itau;
     ix0 = ii + 2;
@@ -399,7 +497,7 @@ void proc_control::proc_control_qr(const real_T A[140], real_T Q[140], real_T R
 
   for (ii = 0; ii < 7; ii++) {
     for (itau = 0; itau <= ii; itau++) {
-      // Start for MATLABSystem: '<S222>/MATLAB System'
+      // Start for MATLABSystem: '<S291>/MATLAB System'
       R[itau + 7 * ii] = Q[20 * ii + itau];
     }
 
@@ -410,7 +508,7 @@ void proc_control::proc_control_qr(const real_T A[140], real_T Q[140], real_T R
     work[ii] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   for (itau = 6; itau >= 0; itau--) {
     ii = (itau * 20 + itau) + 20;
     if (itau + 1 < 7) {
@@ -513,11 +611,11 @@ void proc_control::proc_control_qr(const real_T A[140], real_T Q[140], real_T R
 
 void proc_control::proc_control_trisolve_p(const real_T A[49], real_T B[91])
 {
-  // Start for MATLABSystem: '<S222>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 13; b_j++) {
+  // Start for MATLABSystem: '<S291>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 13; b_j++) {
     int32_T jBcol;
     jBcol = 7 * b_j - 1;
-    for (int32_T b_k = 0; b_k < 7; b_k++) {
+    for (int32_T b_k{0}; b_k < 7; b_k++) {
       real_T B_0;
       int32_T B_tmp;
       int32_T k;
@@ -528,7 +626,7 @@ void proc_control::proc_control_trisolve_p(const real_T A[49], real_T B[91])
       B_0 = B[B_tmp];
       if (B_0 != 0.0) {
         B[B_tmp] = B_0 / A[(b_k + kAcol) + 1];
-        for (int32_T i = k + 1; i < 8; i++) {
+        for (int32_T i{k + 1}; i < 8; i++) {
           int32_T tmp;
           tmp = i + jBcol;
           B[tmp] -= A[i + kAcol] * B[B_tmp];
@@ -537,16 +635,16 @@ void proc_control::proc_control_trisolve_p(const real_T A[49], real_T B[91])
     }
   }
 
-  // End of Start for MATLABSystem: '<S222>/MATLAB System'
+  // End of Start for MATLABSystem: '<S291>/MATLAB System'
 }
 
 void proc_control::proc_control_trisolve_pr(const real_T A[49], real_T B[91])
 {
-  // Start for MATLABSystem: '<S222>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 13; b_j++) {
+  // Start for MATLABSystem: '<S291>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 13; b_j++) {
     int32_T jBcol;
     jBcol = 7 * b_j;
-    for (int32_T k = 6; k >= 0; k--) {
+    for (int32_T k{6}; k >= 0; k--) {
       real_T tmp;
       int32_T kAcol;
       int32_T tmp_0;
@@ -557,7 +655,7 @@ void proc_control::proc_control_trisolve_pr(const real_T A[49], real_T B[91])
         int32_T b;
         B[tmp_0] = tmp / A[k + kAcol];
         b = k - 1;
-        for (int32_T b_i = 0; b_i <= b; b_i++) {
+        for (int32_T b_i{0}; b_i <= b; b_i++) {
           int32_T tmp_1;
           tmp_1 = b_i + jBcol;
           B[tmp_1] -= A[b_i + kAcol] * B[tmp_0];
@@ -566,7 +664,7 @@ void proc_control::proc_control_trisolve_pr(const real_T A[49], real_T B[91])
     }
   }
 
-  // End of Start for MATLABSystem: '<S222>/MATLAB System'
+  // End of Start for MATLABSystem: '<S291>/MATLAB System'
 }
 
 real_T proc_control::proc_control_xnrm2_pr3(int32_T n, const real_T x[260],
@@ -574,11 +672,11 @@ real_T proc_control::proc_control_xnrm2_pr3(int32_T n, const real_T x[260],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -603,7 +701,7 @@ real_T proc_control::proc_control_xnrm2_pr3(int32_T n, const real_T x[260],
     }
   }
 
-  // End of Start for MATLABSystem: '<S222>/MATLAB System'
+  // End of Start for MATLABSystem: '<S291>/MATLAB System'
   return y;
 }
 
@@ -633,7 +731,7 @@ void proc_control::proc_control_qr_p(const real_T A[260], real_T Q[260], real_T
   memcpy(&Q[0], &A[0], 260U * sizeof(real_T));
   memset(&work[0], 0, 13U * sizeof(real_T));
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   for (itau = 0; itau < 13; itau++) {
     ii = itau * 20 + itau;
     ix0 = ii + 2;
@@ -792,7 +890,7 @@ void proc_control::proc_control_qr_p(const real_T A[260], real_T Q[260], real_T
 
   for (ii = 0; ii < 13; ii++) {
     for (itau = 0; itau <= ii; itau++) {
-      // Start for MATLABSystem: '<S222>/MATLAB System'
+      // Start for MATLABSystem: '<S291>/MATLAB System'
       R[itau + 13 * ii] = Q[20 * ii + itau];
     }
 
@@ -803,7 +901,7 @@ void proc_control::proc_control_qr_p(const real_T A[260], real_T Q[260], real_T
     work[ii] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S222>/MATLAB System'
+  // Start for MATLABSystem: '<S291>/MATLAB System'
   for (itau = 12; itau >= 0; itau--) {
     ii = (itau * 20 + itau) + 20;
     if (itau + 1 < 13) {
@@ -909,11 +1007,11 @@ real_T proc_control::proc_control_xnrm2_pr35(int32_T n, const real_T x[48],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S223>/MATLAB System'
+  // Start for MATLABSystem: '<S292>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -938,7 +1036,7 @@ real_T proc_control::proc_control_xnrm2_pr35(int32_T n, const real_T x[48],
     }
   }
 
-  // End of Start for MATLABSystem: '<S223>/MATLAB System'
+  // End of Start for MATLABSystem: '<S292>/MATLAB System'
   return y;
 }
 
@@ -972,7 +1070,7 @@ void proc_control::proc_control_qr_pr(const real_T A[48], real_T Q[48], real_T
   work[1] = 0.0;
   work[2] = 0.0;
 
-  // Start for MATLABSystem: '<S223>/MATLAB System'
+  // Start for MATLABSystem: '<S292>/MATLAB System'
   for (itau = 0; itau < 3; itau++) {
     ii = (itau << 4) + itau;
     ix0 = ii + 2;
@@ -1131,7 +1229,7 @@ void proc_control::proc_control_qr_pr(const real_T A[48], real_T Q[48], real_T
 
   for (ii = 0; ii < 3; ii++) {
     for (itau = 0; itau <= ii; itau++) {
-      // Start for MATLABSystem: '<S223>/MATLAB System'
+      // Start for MATLABSystem: '<S292>/MATLAB System'
       R[itau + 3 * ii] = Q[(ii << 4) + itau];
     }
 
@@ -1142,7 +1240,7 @@ void proc_control::proc_control_qr_pr(const real_T A[48], real_T Q[48], real_T
     work[ii] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S223>/MATLAB System'
+  // Start for MATLABSystem: '<S292>/MATLAB System'
   for (itau = 2; itau >= 0; itau--) {
     ii = ((itau << 4) + itau) + 16;
     if (itau + 1 < 3) {
@@ -1245,11 +1343,11 @@ void proc_control::proc_control_qr_pr(const real_T A[48], real_T Q[48], real_T
 
 void proc_control::proc_control_trisolve_pr3(const real_T A[9], real_T B[39])
 {
-  // Start for MATLABSystem: '<S223>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 13; b_j++) {
+  // Start for MATLABSystem: '<S292>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 13; b_j++) {
     int32_T jBcol;
     jBcol = 3 * b_j - 1;
-    for (int32_T b_k = 0; b_k < 3; b_k++) {
+    for (int32_T b_k{0}; b_k < 3; b_k++) {
       real_T B_0;
       int32_T B_tmp;
       int32_T k;
@@ -1260,7 +1358,7 @@ void proc_control::proc_control_trisolve_pr3(const real_T A[9], real_T B[39])
       B_0 = B[B_tmp];
       if (B_0 != 0.0) {
         B[B_tmp] = B_0 / A[(b_k + kAcol) + 1];
-        for (int32_T i = k + 1; i < 4; i++) {
+        for (int32_T i{k + 1}; i < 4; i++) {
           int32_T tmp;
           tmp = i + jBcol;
           B[tmp] -= A[i + kAcol] * B[B_tmp];
@@ -1269,16 +1367,16 @@ void proc_control::proc_control_trisolve_pr3(const real_T A[9], real_T B[39])
     }
   }
 
-  // End of Start for MATLABSystem: '<S223>/MATLAB System'
+  // End of Start for MATLABSystem: '<S292>/MATLAB System'
 }
 
 void proc_control::proc_control_trisolve_pr35(const real_T A[9], real_T B[39])
 {
-  // Start for MATLABSystem: '<S223>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 13; b_j++) {
+  // Start for MATLABSystem: '<S292>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 13; b_j++) {
     int32_T jBcol;
     jBcol = 3 * b_j;
-    for (int32_T k = 2; k >= 0; k--) {
+    for (int32_T k{2}; k >= 0; k--) {
       real_T tmp;
       int32_T kAcol;
       int32_T tmp_0;
@@ -1289,7 +1387,7 @@ void proc_control::proc_control_trisolve_pr35(const real_T A[9], real_T B[39])
         int32_T b;
         B[tmp_0] = tmp / A[k + kAcol];
         b = k - 1;
-        for (int32_T b_i = 0; b_i <= b; b_i++) {
+        for (int32_T b_i{0}; b_i <= b; b_i++) {
           int32_T tmp_1;
           tmp_1 = b_i + jBcol;
           B[tmp_1] -= A[b_i + kAcol] * B[tmp_0];
@@ -1298,7 +1396,7 @@ void proc_control::proc_control_trisolve_pr35(const real_T A[9], real_T B[39])
     }
   }
 
-  // End of Start for MATLABSystem: '<S223>/MATLAB System'
+  // End of Start for MATLABSystem: '<S292>/MATLAB System'
 }
 
 real_T proc_control::proc_control_xnrm2_pr351(int32_T n, const real_T x[208],
@@ -1306,11 +1404,11 @@ real_T proc_control::proc_control_xnrm2_pr351(int32_T n, const real_T x[208],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S223>/MATLAB System'
+  // Start for MATLABSystem: '<S292>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -1651,9 +1749,9 @@ real_T proc_control::proc_control_xnrm2_pr351e(int32_T n, const real_T x[14],
       int32_T kend;
       scale = 3.3121686421112381E-170;
       kend = ix0 + n;
-      for (int32_T k = ix0; k < kend; k++) {
+      for (int32_T k{ix0}; k < kend; k++) {
         real_T absxk;
-        absxk = fabs(x[k - 1]);
+        absxk = std::abs(x[k - 1]);
         if (absxk > scale) {
           real_T t;
           t = scale / absxk;
@@ -1666,11 +1764,11 @@ real_T proc_control::proc_control_xnrm2_pr351e(int32_T n, const real_T x[14],
         }
       }
 
-      y = scale * sqrt(y);
+      y = scale * std::sqrt(y);
     }
   }
 
-  // End of Start for MATLABSystem: '<S224>/MATLAB System'
+  // End of Start for MATLABSystem: '<S293>/MATLAB System'
   return y;
 }
 
@@ -1688,8 +1786,11 @@ void proc_control::EKFCorrectorAdditive_getMeasure(real_T Rs, const real_T x[13]
   int32_T aoffset;
   int32_T b_j;
   int32_T i;
+  int32_T i_0;
+  int32_T lastv;
+  int32_T tmp;
 
-  // Start for MATLABSystem: '<S224>/MATLAB System'
+  // Start for MATLABSystem: '<S293>/MATLAB System'
   // EKFNAVDEPTH Summary of this function goes here
   //    Detailed explanation goes here
   *Rsqrt = Rs;
@@ -1705,6 +1806,7 @@ void proc_control::EKFCorrectorAdditive_getMeasure(real_T Rs, const real_T x[13]
 
     // EKFNAVDEPTH Summary of this function goes here
     //    Detailed explanation goes here
+    lastv = 0;
     for (i = 0; i < 13; i++) {
       imvec[i] = x[i];
       beta1 = 0.0;
@@ -1810,8 +1912,8 @@ void proc_control::EKFCorrectorAdditive_getMeasure(real_T Rs, const real_T x[13]
 
 void proc_control::proc_control_trisolve_pr351(real_T A, real_T B[13])
 {
-  // Start for MATLABSystem: '<S224>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 13; b_j++) {
+  // Start for MATLABSystem: '<S293>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 13; b_j++) {
     real_T B_0;
     B_0 = B[b_j];
     if (B_0 != 0.0) {
@@ -1819,7 +1921,7 @@ void proc_control::proc_control_trisolve_pr351(real_T A, real_T B[13])
     }
   }
 
-  // End of Start for MATLABSystem: '<S224>/MATLAB System'
+  // End of Start for MATLABSystem: '<S293>/MATLAB System'
 }
 
 real_T proc_control::proc_control_xnrm2_pr351ew(int32_T n, const real_T x[182],
@@ -1827,11 +1929,11 @@ real_T proc_control::proc_control_xnrm2_pr351ew(int32_T n, const real_T x[182],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S224>/MATLAB System'
+  // Start for MATLABSystem: '<S293>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -1856,7 +1958,7 @@ real_T proc_control::proc_control_xnrm2_pr351ew(int32_T n, const real_T x[182],
     }
   }
 
-  // End of Start for MATLABSystem: '<S224>/MATLAB System'
+  // End of Start for MATLABSystem: '<S293>/MATLAB System'
   return y;
 }
 
@@ -1886,7 +1988,7 @@ void proc_control::proc_control_qr_pr35(const real_T A[182], real_T Q[182],
   memcpy(&Q[0], &A[0], 182U * sizeof(real_T));
   memset(&work[0], 0, 13U * sizeof(real_T));
 
-  // Start for MATLABSystem: '<S224>/MATLAB System'
+  // Start for MATLABSystem: '<S293>/MATLAB System'
   for (itau = 0; itau < 13; itau++) {
     ii = itau * 14 + itau;
     ix0 = ii + 2;
@@ -2045,7 +2147,7 @@ void proc_control::proc_control_qr_pr35(const real_T A[182], real_T Q[182],
 
   for (ii = 0; ii < 13; ii++) {
     for (itau = 0; itau <= ii; itau++) {
-      // Start for MATLABSystem: '<S224>/MATLAB System'
+      // Start for MATLABSystem: '<S293>/MATLAB System'
       R[itau + 13 * ii] = Q[14 * ii + itau];
     }
 
@@ -2056,7 +2158,7 @@ void proc_control::proc_control_qr_pr35(const real_T A[182], real_T Q[182],
     work[ii] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S224>/MATLAB System'
+  // Start for MATLABSystem: '<S293>/MATLAB System'
   for (itau = 12; itau >= 0; itau--) {
     ii = (itau * 14 + itau) + 14;
     if (itau + 1 < 13) {
@@ -2157,7 +2259,7 @@ void proc_control::proc_control_qr_pr35(const real_T A[182], real_T Q[182],
   }
 }
 
-void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
+void proc_control::proc_control_mldivide_pr35(const real_T A[36], real_T B[48])
 {
   real_T c_A[36];
   real_T smax;
@@ -2176,8 +2278,10 @@ void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
     b_ipiv[jj] = static_cast<int8_T>(jj + 1);
   }
 
-  for (int32_T b_j = 0; b_j < 5; b_j++) {
-    // Start for MATLABSystem: '<S226>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 5; b_j++) {
+    // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+    //   MATLABSystem: '<S295>/MATLAB System'
+
     c = b_j * 7 + 2;
     jj = b_j * 7;
     kAcol = 6 - b_j;
@@ -2245,15 +2349,21 @@ void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
     }
   }
 
-  for (int32_T b_j = 0; b_j < 8; b_j++) {
-    // Start for MATLABSystem: '<S226>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 8; b_j++) {
+    // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+    //   MATLABSystem: '<S295>/MATLAB System'
+
     jp1j = 6 * b_j - 1;
     for (c = 0; c < 6; c++) {
-      // Start for MATLABSystem: '<S226>/MATLAB System'
+      // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+      //   MATLABSystem: '<S295>/MATLAB System'
+
       kAcol = 6 * c - 1;
       jj = (c + jp1j) + 1;
       if (B[jj] != 0.0) {
-        // Start for MATLABSystem: '<S226>/MATLAB System'
+        // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+        //   MATLABSystem: '<S295>/MATLAB System'
+
         for (jA = c + 2; jA < 7; jA++) {
           ijA = jA + jp1j;
           B[ijA] -= c_A[jA + kAcol] * B[jj];
@@ -2262,8 +2372,10 @@ void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
     }
   }
 
-  for (int32_T b_j = 0; b_j < 8; b_j++) {
-    // Start for MATLABSystem: '<S226>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 8; b_j++) {
+    // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+    //   MATLABSystem: '<S295>/MATLAB System'
+
     jp1j = 6 * b_j;
     for (jA = 5; jA >= 0; jA--) {
       kAcol = 6 * jA;
@@ -2284,14 +2396,14 @@ void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
 real_T rt_powd_snf(real_T u0, real_T u1)
 {
   real_T y;
-  if (rtIsNaN(u0) || rtIsNaN(u1)) {
+  if (std::isnan(u0) || std::isnan(u1)) {
     y = (rtNaN);
   } else {
     real_T tmp;
     real_T tmp_0;
-    tmp = fabs(u0);
-    tmp_0 = fabs(u1);
-    if (rtIsInf(u1)) {
+    tmp = std::abs(u0);
+    tmp_0 = std::abs(u1);
+    if (std::isinf(u1)) {
       if (tmp == 1.0) {
         y = 1.0;
       } else if (tmp > 1.0) {
@@ -2316,11 +2428,11 @@ real_T rt_powd_snf(real_T u0, real_T u1)
     } else if (u1 == 2.0) {
       y = u0 * u0;
     } else if ((u1 == 0.5) && (u0 >= 0.0)) {
-      y = sqrt(u0);
-    } else if ((u0 < 0.0) && (u1 > floor(u1))) {
+      y = std::sqrt(u0);
+    } else if ((u0 < 0.0) && (u1 > std::floor(u1))) {
       y = (rtNaN);
     } else {
-      y = pow(u0, u1);
+      y = std::pow(u0, u1);
     }
   }
 
@@ -2336,7 +2448,9 @@ real_T proc_control::proc_control_erf(real_T x)
   real_T z;
   int32_T b_e;
 
-  // Start for MATLABSystem: '<S226>/MATLAB System'
+  // Start for MATLABSystem: '<S3>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S295>/MATLAB System'
+
   // ========================== COPYRIGHT NOTICE ============================
   //  The algorithms for calculating ERF(X) and ERFC(X) are derived
   //  from FDLIBM, which has the following notice:
@@ -2351,7 +2465,7 @@ real_T proc_control::proc_control_erf(real_T x)
   absx = fabs(x);
   if (rtIsNaN(x)) {
     y = (rtNaN);
-  } else if (rtIsInf(x)) {
+  } else if (std::isinf(x)) {
     if (x < 0.0) {
       y = -1.0;
     } else {
@@ -2439,7 +2553,7 @@ real_T proc_control::proc_control_erf(real_T x)
     }
   }
 
-  // End of Start for MATLABSystem: '<S226>/MATLAB System'
+  // End of Start for MATLABSystem: '<S3>/MATLAB System'
   return y;
 }
 
@@ -4199,7 +4313,7 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   _mm_storeu_pd(&proc_control_B.ct_o[170], _mm_mul_pd(_mm_set_pd(ct[8], ct[6]),
     _mm_set1_pd(proc_control_B.t1166)));
   proc_control_B.ct_o[172] = ct[98];
-  memcpy(&proc_control_B.ct_o[173], &ct[100], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[173], &ct[100], 9U * sizeof(real_T));
   proc_control_B.ct_o[182] = -ct[573];
   proc_control_B.ct_o[183] = -ct[575];
   proc_control_B.ct_o[184] = -ct[580];
@@ -4378,9 +4492,9 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[352] = ct[141];
   proc_control_B.ct_o[353] = ct[142];
   proc_control_B.ct_o[354] = ct[143];
-  memcpy(&proc_control_B.ct_o[355], &ct[145], 123U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[355], &ct[145], 123U * sizeof(real_T));
   proc_control_B.ct_o[478] = ct[271];
-  memcpy(&proc_control_B.ct_o[479], &ct[275], 38U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[479], &ct[275], 38U * sizeof(real_T));
   proc_control_B.ct_o[517] = ct[313];
   proc_control_B.ct_o[518] = ct[315];
   proc_control_B.ct_o[519] = ct[316];
@@ -4411,7 +4525,7 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[544] = ct[354];
   proc_control_B.ct_o[545] = ct[355];
   proc_control_B.ct_o[546] = ct[356];
-  memcpy(&proc_control_B.ct_o[547], &ct[358], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[547], &ct[358], 10U * sizeof(real_T));
   proc_control_B.ct_o[557] = ct[368];
   proc_control_B.ct_o[558] = ct[370];
   proc_control_B.ct_o[559] = ct[371];
@@ -4442,11 +4556,11 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[584] = ct[402];
   proc_control_B.ct_o[585] = ct[8] * ct[203];
   proc_control_B.ct_o[586] = ct[403];
-  memcpy(&proc_control_B.ct_o[587], &ct[406], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[587], &ct[406], 9U * sizeof(real_T));
   proc_control_B.ct_o[596] = ct[415];
-  memcpy(&proc_control_B.ct_o[597], &ct[419], 11U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[597], &ct[419], 11U * sizeof(real_T));
   proc_control_B.ct_o[608] = ct[430];
-  memcpy(&proc_control_B.ct_o[609], &ct[433], sizeof(real_T) << 4U);
+  std::memcpy(&proc_control_B.ct_o[609], &ct[433], sizeof(real_T) << 4U);
   proc_control_B.ct_o[625] = ct[449];
   proc_control_B.ct_o[626] = ct[451];
   proc_control_B.ct_o[627] = ct[452];
@@ -4462,18 +4576,18 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[637] = ct[460];
   proc_control_B.ct_o[638] = ct[461];
   proc_control_B.ct_o[639] = ct[462];
-  memcpy(&proc_control_B.ct_o[640], &ct[464], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[640], &ct[464], 10U * sizeof(real_T));
   proc_control_B.ct_o[650] = ct[474];
   proc_control_B.ct_o[651] = ct[476];
   proc_control_B.ct_o[652] = ct[477];
-  memcpy(&proc_control_B.ct_o[653], &ct[479], 14U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[653], &ct[479], 14U * sizeof(real_T));
   proc_control_B.ct_o[667] = ct[21] * ct[202];
   proc_control_B.ct_o[668] = ct[493];
   proc_control_B.ct_o[669] = ct[494];
   proc_control_B.ct_o[670] = proc_control_B.dv45[1];
   memcpy(&proc_control_B.ct_o[671], &ct[495], 23U * sizeof(real_T));
   proc_control_B.ct_o[694] = ct[124] * ct[811];
-  memcpy(&proc_control_B.ct_o[695], &ct[518], 50U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[695], &ct[518], 50U * sizeof(real_T));
   proc_control_B.ct_o[745] = ct[568];
   proc_control_B.ct_o[746] = ct[570];
   proc_control_B.ct_o[747] = ct[571];
@@ -4533,7 +4647,7 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[800] = ct[612];
   proc_control_B.ct_o[801] = ct[613];
   proc_control_B.ct_o[802] = ct[22] * ct[303];
-  memcpy(&proc_control_B.ct_o[803], &ct[615], 12U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[803], &ct[615], 12U * sizeof(real_T));
   proc_control_B.ct_o[815] = ct[20] * ct[305];
   proc_control_B.ct_o[816] = ct[628];
   proc_control_B.ct_o[817] = ct[629];
@@ -4584,7 +4698,7 @@ void proc_control::proc_control_ft_2_pr(const real_T ct[812], real_T out1[13])
   proc_control_B.ct_o[872] = ct[669];
   proc_control_B.ct_o[873] = ct[672];
   proc_control_B.ct_o[874] = ct[673];
-  memcpy(&proc_control_B.ct_o[875], &ct[675], 19U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_o[875], &ct[675], 19U * sizeof(real_T));
   proc_control_B.ct_o[894] = ct[694];
   proc_control_B.ct_o[895] = ct[696];
   proc_control_B.ct_o[896] = ct[697];
@@ -4943,11 +5057,11 @@ void proc_control::proc_control_ft_1_pr(const real_T ct[445], real_T out1[13])
   proc_control_B.ct_n[141] = ct[79];
   proc_control_B.ct_n[142] = ct[81];
   proc_control_B.ct_n[143] = ct[83];
-  memcpy(&proc_control_B.ct_n[144], &ct[85], 12U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_n[144], &ct[85], 12U * sizeof(real_T));
   proc_control_B.ct_n[156] = ct[97];
-  memcpy(&proc_control_B.ct_n[157], &ct[99], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct_n[157], &ct[99], sizeof(real_T) << 3U);
   proc_control_B.ct_n[165] = ct[107];
-  memcpy(&proc_control_B.ct_n[166], &ct[109], 13U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_n[166], &ct[109], 13U * sizeof(real_T));
   proc_control_B.ct_n[179] = ct[122];
   memcpy(&proc_control_B.ct_n[180], &ct[125], sizeof(real_T) << 4U);
   tmp_n = _mm_set1_pd(ct[338]);
@@ -4985,7 +5099,7 @@ void proc_control::proc_control_ft_1_pr(const real_T ct[445], real_T out1[13])
   proc_control_B.ct_n[226] = ct[193];
   proc_control_B.ct_n[227] = ct[195];
   proc_control_B.ct_n[228] = ct[196];
-  memcpy(&proc_control_B.ct_n[229], &ct[198], 14U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_n[229], &ct[198], 14U * sizeof(real_T));
   proc_control_B.ct_n[243] = ct[212];
   proc_control_B.ct_n[244] = ct[214];
   proc_control_B.ct_n[245] = ct[215];
@@ -5168,7 +5282,7 @@ void proc_control::proc_control_ft_1_pr(const real_T ct[445], real_T out1[13])
   proc_control_B.ct_n[470] = ct[358];
   proc_control_B.ct_n[471] = ct[359];
   proc_control_B.ct_n[472] = ct[31] * ct[123];
-  memcpy(&proc_control_B.ct_n[473], &ct[360], 44U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_n[473], &ct[360], 44U * sizeof(real_T));
   proc_control_B.ct_n[517] = ct[404];
   proc_control_B.ct_n[518] = ct[406];
   proc_control_B.ct_n[519] = -ct[57];
@@ -5730,7 +5844,7 @@ void proc_control::proc_con_AUVQuatPerturbedSimFcn(const real_T in1[13], const
   proc_control_B.in4[8] = in2[3];
   proc_control_B.in4[9] = in2[4];
   proc_control_B.in4[10] = in2[5];
-  memcpy(&proc_control_B.in4[11], &in4[3], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.in4[11], &in4[3], sizeof(real_T) << 3U);
   proc_control_B.in4[19] = in4[11];
   proc_control_B.in4[20] = in4[33];
   proc_control_B.in4[21] = in4[34];
@@ -6278,7 +6392,7 @@ void proc_control::proc_control_EkfNavStatesEq(real_T x[13], const real_T
   __m128d tmp;
   __m128d tmp_0;
 
-  // Start for MATLABSystem: '<S226>/MATLAB System'
+  // Start for MATLABSystem: '<S295>/MATLAB System'
   //  Split u vector and constMec from inputs
   //  Crée la matrice thrusters
   proc_control_B.b_i_c = 0;
@@ -6516,7 +6630,7 @@ void proc_control::proc_control_EkfNavStatesEq(real_T x[13], const real_T
     _mm_storeu_pd(&x[5], tmp_0);
   }
 
-  // End of Start for MATLABSystem: '<S226>/MATLAB System'
+  // End of Start for MATLABSystem: '<S295>/MATLAB System'
 }
 
 real_T proc_control::proc_control_xnrm2_pr351ewp(int32_T n, const real_T x[338],
@@ -6524,11 +6638,11 @@ real_T proc_control::proc_control_xnrm2_pr351ewp(int32_T n, const real_T x[338],
 {
   real_T y;
 
-  // Start for MATLABSystem: '<S226>/MATLAB System'
+  // Start for MATLABSystem: '<S295>/MATLAB System'
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -6553,7 +6667,7 @@ real_T proc_control::proc_control_xnrm2_pr351ewp(int32_T n, const real_T x[338],
     }
   }
 
-  // End of Start for MATLABSystem: '<S226>/MATLAB System'
+  // End of Start for MATLABSystem: '<S295>/MATLAB System'
   return y;
 }
 
@@ -6583,7 +6697,7 @@ void proc_control::proc_control_qr_pr351(const real_T A[338], real_T Q[338],
   memcpy(&Q[0], &A[0], 338U * sizeof(real_T));
   memset(&work[0], 0, 13U * sizeof(real_T));
 
-  // Start for MATLABSystem: '<S226>/MATLAB System'
+  // Start for MATLABSystem: '<S295>/MATLAB System'
   for (itau = 0; itau < 13; itau++) {
     ii = itau * 26 + itau;
     ix0 = ii + 2;
@@ -6742,7 +6856,7 @@ void proc_control::proc_control_qr_pr351(const real_T A[338], real_T Q[338],
 
   for (ii = 0; ii < 13; ii++) {
     for (itau = 0; itau <= ii; itau++) {
-      // Start for MATLABSystem: '<S226>/MATLAB System'
+      // Start for MATLABSystem: '<S295>/MATLAB System'
       R[itau + 13 * ii] = Q[26 * ii + itau];
     }
 
@@ -6753,7 +6867,7 @@ void proc_control::proc_control_qr_pr351(const real_T A[338], real_T Q[338],
     work[ii] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S226>/MATLAB System'
+  // Start for MATLABSystem: '<S295>/MATLAB System'
   for (itau = 12; itau >= 0; itau--) {
     ii = (itau * 26 + itau) + 26;
     if (itau + 1 < 13) {
@@ -6857,32 +6971,32 @@ void proc_control::proc_control_qr_pr351(const real_T A[338], real_T Q[338],
 void proc_control::proc_contr_mpcManager_resetImpl(mpcManager_proc_control_T
   *b_this)
 {
-  static const int8_T tmp[13] = { 30, 30, 30, 45, 45, 45, 45, 0, 0, 0, 0, 0, 0 };
+  static const int8_T tmp[13]{ 30, 30, 30, 45, 45, 45, 45, 0, 0, 0, 0, 0, 0 };
 
-  static const real_T tmp_0[8] = { 0.4, 0.4, 0.4, 0.4, 0.5, 0.5, 0.5, 0.5 };
+  static const real_T tmp_0[8]{ 0.4, 0.4, 0.4, 0.4, 0.5, 0.5, 0.5, 0.5 };
 
   //         %% Fonction Reset
   //  Initialize discrete state
   b_this->init = 0.0;
 
-  // Start for MATLABSystem: '<S69>/MATLAB System'
-  memset(&b_this->currentFaultCount[0], 0, sizeof(real_T) << 3U);
-  for (int32_T i = 0; i < 8; i++) {
-    // Start for MATLABSystem: '<S69>/MATLAB System'
+  // Start for MATLABSystem: '<S138>/MATLAB System'
+  std::memset(&b_this->currentFaultCount[0], 0, sizeof(real_T) << 3U);
+  for (int32_T i{0}; i < 8; i++) {
+    // Start for MATLABSystem: '<S138>/MATLAB System'
     b_this->isThrusterFault[i] = false;
   }
 
-  // Start for MATLABSystem: '<S69>/MATLAB System'
-  memset(&b_this->gainsList[0], 0, 600U * sizeof(real_T));
+  // Start for MATLABSystem: '<S138>/MATLAB System'
+  std::memset(&b_this->gainsList[0], 0, 600U * sizeof(real_T));
 
   // initialiser les gains debug
-  for (int32_T i = 0; i < 13; i++) {
-    // Start for MATLABSystem: '<S69>/MATLAB System'
+  for (int32_T i{0}; i < 13; i++) {
+    // Start for MATLABSystem: '<S138>/MATLAB System'
     b_this->rosOV[i] = tmp[i];
   }
 
-  for (int32_T i = 0; i < 8; i++) {
-    // Start for MATLABSystem: '<S69>/MATLAB System'
+  for (int32_T i{0}; i < 8; i++) {
+    // Start for MATLABSystem: '<S138>/MATLAB System'
     b_this->rosMV[i] = 0.2;
     b_this->rosMVR[i] = tmp_0[i];
   }
@@ -6891,9 +7005,9 @@ void proc_control::proc_contr_mpcManager_resetImpl(mpcManager_proc_control_T
 real_T rt_atan2d_snf(real_T u0, real_T u1)
 {
   real_T y;
-  if (rtIsNaN(u0) || rtIsNaN(u1)) {
+  if (std::isnan(u0) || std::isnan(u1)) {
     y = (rtNaN);
-  } else if (rtIsInf(u0) && rtIsInf(u1)) {
+  } else if (std::isinf(u0) && std::isinf(u1)) {
     int32_T tmp;
     int32_T tmp_0;
     if (u0 > 0.0) {
@@ -6908,7 +7022,7 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
       tmp_0 = -1;
     }
 
-    y = atan2(static_cast<real_T>(tmp), static_cast<real_T>(tmp_0));
+    y = std::atan2(static_cast<real_T>(tmp), static_cast<real_T>(tmp_0));
   } else if (u1 == 0.0) {
     if (u0 > 0.0) {
       y = RT_PI / 2.0;
@@ -6918,7 +7032,7 @@ real_T rt_atan2d_snf(real_T u0, real_T u1)
       y = 0.0;
     }
   } else {
-    y = atan2(u0, u1);
+    y = std::atan2(u0, u1);
   }
 
   return y;
@@ -6930,9 +7044,9 @@ void proc_control::proc_control_expand_atan2(const real_T a_data[], const
 {
   int32_T csz_idx_0;
 
-  // Start for MATLABSystem: '<S69>/MATLAB System' incorporates:
-  //   MATLABSystem: '<S233>/MATLAB System'
-  //   MATLABSystem: '<S238>/MATLAB System'
+  // Start for MATLABSystem: '<S138>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S302>/MATLAB System'
+  //   MATLABSystem: '<S307>/MATLAB System'
 
   if (b_size[0] == 1) {
     csz_idx_0 = a_size[0];
@@ -6946,45 +7060,27 @@ void proc_control::proc_control_expand_atan2(const real_T a_data[], const
     c_data[0] = rt_atan2d_snf(a_data[0], b_data[0]);
   }
 
-  // End of Start for MATLABSystem: '<S69>/MATLAB System'
+  // End of Start for MATLABSystem: '<S138>/MATLAB System'
 }
 
-void proc_control::proc_control_binary_expand_op_1(real_T in1[3], const int32_T
+void proc_control::proc_control_binary_expand_op_2(real_T in1[3], const int32_T
   in2_size[1], const real_T in3_data[], const real_T in4_data[])
 {
   int32_T in2_idx_0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
   //
   in2_idx_0 = in2_size[0];
-  for (int32_T i = 0; i < in2_idx_0; i++) {
+  for (int32_T i{0}; i < in2_idx_0; i++) {
     in1[0] = in3_data[0] * in4_data[0];
   }
 
-  // End of If: '<S5>/If'
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
-}
-
-real_T rt_roundd_snf(real_T u)
-{
-  real_T y;
-  if (fabs(u) < 4.503599627370496E+15) {
-    if (u >= 0.5) {
-      y = floor(u + 0.5);
-    } else if (u > -0.5) {
-      y = u * 0.0;
-    } else {
-      y = ceil(u - 0.5);
-    }
-  } else {
-    y = u;
-  }
-
-  return y;
+  // End of If: '<S8>/If'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
 }
 
 void proc_control::pr_ProcPlannerManager_resetImpl
@@ -6997,27 +7093,27 @@ void proc_control::pr_ProcPlannerManager_resetImpl
 
   //  Chiffre NULL
   for (i = 0; i < 13; i++) {
-    // Start for MATLABSystem: '<S233>/MATLAB System'
+    // Start for MATLABSystem: '<S302>/MATLAB System'
     b_this->emptyArray[i] = b_this->dummy;
   }
 
   //  Vecteur pose NULL
   b_this->targetReachedCount = 0.0;
   for (i = 0; i < 7; i++) {
-    // Start for MATLABSystem: '<S233>/MATLAB System'
+    // Start for MATLABSystem: '<S302>/MATLAB System'
     b_this->initialPose[i] = 0.0;
   }
 
-  // Start for MATLABSystem: '<S233>/MATLAB System'
+  // Start for MATLABSystem: '<S302>/MATLAB System'
   //  Buffer trajectoire
   i = 0;
-  for (int32_T i_1 = 0; i_1 < 13; i_1++) {
-    for (int32_T i_0 = 0; i_0 < 6000; i_0++) {
-      // Start for MATLABSystem: '<S233>/MATLAB System'
+  for (int32_T i_1{0}; i_1 < 13; i_1++) {
+    for (int32_T i_0{0}; i_0 < 6000; i_0++) {
+      // Start for MATLABSystem: '<S302>/MATLAB System'
       b_this->poseBuffer[i_0 + i] = b_this->dummy;
     }
 
-    // Start for MATLABSystem: '<S233>/MATLAB System'
+    // Start for MATLABSystem: '<S302>/MATLAB System'
     i += 6000;
   }
 
@@ -7026,15 +7122,15 @@ void proc_control::pr_ProcPlannerManager_resetImpl
   b_this->init = false;
 }
 
-void proc_control::proc_control_binary_expand_op_8(real_T in1[3], const int32_T
+void proc_control::proc_control_binary_expand_op_9(real_T in1[3], const int32_T
   in2_data[], const int32_T in2_size[1], const real_T in3_data[], const real_T
   in4_data[])
 {
   int32_T in2_idx_0;
 
-  // Start for MATLABSystem: '<S233>/MATLAB System'
+  // Start for MATLABSystem: '<S302>/MATLAB System'
   in2_idx_0 = in2_size[0];
-  for (int32_T i = 0; i < in2_idx_0; i++) {
+  for (int32_T i{0}; i < in2_idx_0; i++) {
     in1[in2_data[0] + 2] = in3_data[0] * in4_data[0];
   }
 }
@@ -7047,8 +7143,8 @@ real_T proc_control::proc_control_norm_pr3(const real_T x[3])
   real_T y;
   scale = 3.3121686421112381E-170;
 
-  // Start for MATLABSystem: '<S233>/MATLAB System' incorporates:
-  //   MATLABSystem: '<S238>/MATLAB System1'
+  // Start for MATLABSystem: '<S302>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S307>/MATLAB System1'
 
   absxk = fabs(x[0]);
   if (absxk > 3.3121686421112381E-170) {
@@ -7059,8 +7155,8 @@ real_T proc_control::proc_control_norm_pr3(const real_T x[3])
     y = t * t;
   }
 
-  // Start for MATLABSystem: '<S233>/MATLAB System' incorporates:
-  //   MATLABSystem: '<S238>/MATLAB System1'
+  // Start for MATLABSystem: '<S302>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S307>/MATLAB System1'
 
   absxk = fabs(x[1]);
   if (absxk > scale) {
@@ -7072,8 +7168,8 @@ real_T proc_control::proc_control_norm_pr3(const real_T x[3])
     y += t * t;
   }
 
-  // Start for MATLABSystem: '<S233>/MATLAB System' incorporates:
-  //   MATLABSystem: '<S238>/MATLAB System1'
+  // Start for MATLABSystem: '<S302>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S307>/MATLAB System1'
 
   absxk = fabs(x[2]);
   if (absxk > scale) {
@@ -7133,9 +7229,9 @@ void proc_control::pro_ProcPlannerManager_stepImpl
   boolean_T mask1;
   boolean_T mask2;
 
-  // Start for MATLABSystem: '<S233>/MATLAB System' incorporates:
-  //   MATLABSystem: '<S238>/MATLAB System'
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // Start for MATLABSystem: '<S302>/MATLAB System' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
+  //   MATLABSystem: '<S307>/MATLAB System'
 
   //         %% ================================================================ 
   //  Main execute a chaque iteration.
@@ -7412,7 +7508,7 @@ void proc_control::pro_ProcPlannerManager_stepImpl
     }
   }
 
-  memset(&currentPose[0], 0, 130U * sizeof(real_T));
+  std::memset(&currentPose[0], 0, 130U * sizeof(real_T));
 
   // Start for MATLABSystem: '<S233>/MATLAB System'
   trueCount = static_cast<int32_T>(aSinInput);
@@ -7470,20 +7566,20 @@ void proc_control::pro_ProcPlannerManager_stepImpl
     // this.prediction+1
     i = 0;
     for (partialTrueCount = 0; partialTrueCount < 13; partialTrueCount++) {
-      // Start for MATLABSystem: '<S233>/MATLAB System'
-      memcpy(&proc_control_B.b_this_m[i], &b_this->poseBuffer[i + 1], 5999U *
-             sizeof(real_T));
+      // Start for MATLABSystem: '<S302>/MATLAB System'
+      std::memcpy(&proc_control_B.b_this_m[i], &b_this->poseBuffer[i + 1], 5999U
+                  * sizeof(real_T));
       proc_control_B.b_this_m[i + 5999] = b_this->emptyArray[partialTrueCount];
       i += 6000;
     }
 
-    // Start for MATLABSystem: '<S233>/MATLAB System'
-    memcpy(&b_this->poseBuffer[0], &proc_control_B.b_this_m[0], 78000U * sizeof
-           (real_T));
+    // Start for MATLABSystem: '<S302>/MATLAB System'
+    std::memcpy(&b_this->poseBuffer[0], &proc_control_B.b_this_m[0], 78000U *
+                sizeof(real_T));
     b_this->bufferCount--;
     b_this->done = false;
   } else {
-    // Start for MATLABSystem: '<S233>/MATLAB System'
+    // Start for MATLABSystem: '<S302>/MATLAB System'
     b_this->done = true;
   }
 
@@ -7494,7 +7590,7 @@ void proc_control::pro_ProcPlannerManager_stepImpl
   //  Fonction qui verifie le target reached
   *isReached = false;
 
-  // Start for MATLABSystem: '<S233>/MATLAB System'
+  // Start for MATLABSystem: '<S302>/MATLAB System'
   //  vérifier le traget reached si la trajectoire est terminé
   if (b_this->done) {
     //  prendre le target
@@ -7567,24 +7663,24 @@ void proc_control::pro_ProcPlannerManager_stepImpl
   }
 }
 
-void proc_control::proc_control_binary_expand_op(real_T in1[3], const int32_T
+void proc_control::proc_control_binary_expand_op_1(real_T in1[3], const int32_T
   in2_size[1], const real_T in3_data[], const real_T in4_data[])
 {
   int32_T in2_idx_0;
 
-  // Outputs for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' incorporates:
-  //   ActionPort: '<S238>/Action Port'
+  // Outputs for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' incorporates:
+  //   ActionPort: '<S307>/Action Port'
 
-  // SwitchCase: '<S7>/Switch Case' incorporates:
-  //   MATLABSystem: '<S238>/MATLAB System'
+  // SwitchCase: '<S10>/Switch Case' incorporates:
+  //   MATLABSystem: '<S307>/MATLAB System'
   //
   in2_idx_0 = in2_size[0];
-  for (int32_T i = 0; i < in2_idx_0; i++) {
+  for (int32_T i{0}; i < in2_idx_0; i++) {
     in1[2] = in3_data[0] * in4_data[0];
   }
 
-  // End of SwitchCase: '<S7>/Switch Case'
-  // End of Outputs for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+  // End of SwitchCase: '<S10>/Switch Case'
+  // End of Outputs for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
 }
 
 void proc_control::proc__quaternion_parenReference(real_T obj_a, real_T obj_b,
@@ -7599,58 +7695,58 @@ void proc_control::proc__quaternion_parenReference(real_T obj_a, real_T obj_b,
   trueCount = 0;
   trueCount_0 = 0;
   if (varargin_1) {
-    for (int32_T i = 0; i < 1; i++) {
+    for (int32_T i{0}; i < 1; i++) {
       trueCount++;
     }
   }
 
   trueCount_1 = 0;
   if (varargin_1) {
-    for (int32_T i = 0; i < 1; i++) {
+    for (int32_T i{0}; i < 1; i++) {
       trueCount_0++;
     }
   }
 
   trueCount_2 = 0;
   if (varargin_1) {
-    for (int32_T i = 0; i < 1; i++) {
+    for (int32_T i{0}; i < 1; i++) {
       trueCount_1++;
     }
 
-    for (int32_T i = 0; i < 1; i++) {
+    for (int32_T i{0}; i < 1; i++) {
       trueCount_2++;
     }
   }
 
-  // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // Start for MATLABSystem: '<S320>/Rotation Trajectory'
   o_a_size[0] = 1;
   o_a_size[1] = trueCount;
   if (trueCount - 1 >= 0) {
-    // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+    // Start for MATLABSystem: '<S320>/Rotation Trajectory'
     o_a_data[0] = obj_a;
   }
 
-  // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // Start for MATLABSystem: '<S320>/Rotation Trajectory'
   o_b_size[0] = 1;
   o_b_size[1] = trueCount_0;
   if (trueCount_0 - 1 >= 0) {
-    // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+    // Start for MATLABSystem: '<S320>/Rotation Trajectory'
     o_b_data[0] = obj_b;
   }
 
-  // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // Start for MATLABSystem: '<S320>/Rotation Trajectory'
   o_c_size[0] = 1;
   o_c_size[1] = trueCount_1;
   if (trueCount_1 - 1 >= 0) {
-    // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+    // Start for MATLABSystem: '<S320>/Rotation Trajectory'
     o_c_data[0] = obj_c;
   }
 
-  // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // Start for MATLABSystem: '<S320>/Rotation Trajectory'
   o_d_size[0] = 1;
   o_d_size[1] = trueCount_2;
   if (trueCount_2 - 1 >= 0) {
-    // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+    // Start for MATLABSystem: '<S320>/Rotation Trajectory'
     o_d_data[0] = obj_d;
   }
 }
@@ -7661,7 +7757,7 @@ void proc_control::proc_con_quaternion_parenAssign(quaternion_proc_control_T
 {
   real_T c_idx_0;
 
-  // Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // Start for MATLABSystem: '<S320>/Rotation Trajectory'
   c_idx_0 = obj->a;
   if (varargin_1) {
     c_idx_0 = rhs_a_data[0];
@@ -7687,7 +7783,7 @@ void proc_control::proc_con_quaternion_parenAssign(quaternion_proc_control_T
 
   obj->d = c_idx_0;
 
-  // End of Start for MATLABSystem: '<S251>/Rotation Trajectory'
+  // End of Start for MATLABSystem: '<S320>/Rotation Trajectory'
 }
 
 quaternion_proc_control_T proc_control::proc_contr_quaternionBase_slerp(real_T
@@ -7942,7 +8038,7 @@ quaternion_proc_control_T proc_control::proc_co_quaternionBase_slerp_pr(real_T
   return qo;
 }
 
-void proc_control::proc_contro_binary_expand_op_12(real_T in1_data[], int32_T
+void proc_control::proc_contro_binary_expand_op_13(real_T in1_data[], int32_T
   in1_size[2], real_T in2, int32_T in3)
 {
   real_T in1_data_0;
@@ -7977,7 +8073,7 @@ void proc_control::proc_contro_binary_expand_op_12(real_T in1_data[], int32_T
   }
 }
 
-void proc_control::proc_control_binary_expand_op_9(real_T *in1, const int32_T
+void proc_control::proc_contro_binary_expand_op_10(real_T *in1, const int32_T
   in2_size[2], real_T in3, const real_T in4_data[], const int32_T in4_size[2])
 {
   int32_T loop_ub;
@@ -8266,7 +8362,7 @@ void proc_control::pr_addFlatSegmentsToPPFormParts(const real_T oldbreaks[2],
     tmp += 3;
   }
 
-  // Start for MATLABSystem: '<S254>/Polynomial Trajectory'
+  // Start for MATLABSystem: '<S322>/Polynomial Trajectory'
   newBreaks[0] = oldbreaks[0] - 1.0;
   newBreaks[1] = oldbreaks[0];
   newBreaks[2] = oldbreaks[1];
@@ -8299,7 +8395,7 @@ void proc_control::PolyTrajSys_updateStoredPPForms
     b_i_0 += 9;
   }
 
-  memset(&obj->PPDDStruct.coefs[0], 0, 36U * sizeof(real_T));
+  std::memset(&obj->PPDDStruct.coefs[0], 0, 36U * sizeof(real_T));
   b_i_0 = 0;
   for (int32_T b_i = 0; b_i < 3; b_i++) {
     for (int32_T i = 0; i <= 6; i += 2) {
@@ -8326,9 +8422,9 @@ void proc_control::PolyTrajSys_updateStoredPPForms
   obj->PPStruct.breaks[1] = pp_breaks[1];
   obj->PPStruct.breaks[2] = pp_breaks[2];
   obj->PPStruct.breaks[3] = pp_breaks[3];
-  memcpy(&obj->PPStruct.coefs[0], &pp_coefs[0], 36U * sizeof(real_T));
+  std::memcpy(&obj->PPStruct.coefs[0], &pp_coefs[0], 36U * sizeof(real_T));
 
-  // Start for MATLABSystem: '<S254>/Polynomial Trajectory'
+  // Start for MATLABSystem: '<S322>/Polynomial Trajectory'
   obj->PPDStruct.breaks[0] = pp_breaks[0];
   obj->PPDDStruct.breaks[0] = pp_breaks[0];
   obj->PPDStruct.breaks[1] = pp_breaks[1];
@@ -8390,7 +8486,7 @@ void proc_control::proc_control_ppval(const real_T pp_breaks[4], const real_T
     v[0] = v_0;
   }
 
-  // End of Start for MATLABSystem: '<S254>/Polynomial Trajectory'
+  // End of Start for MATLABSystem: '<S322>/Polynomial Trajectory'
 }
 
 void proc_control::proc_TrajectoryManager_stepImpl
@@ -8453,7 +8549,7 @@ void proc_control::proc_TrajectoryManager_stepImpl
     b_this->init = 1.0;
   }
 
-  // Start for MATLABSystem: '<S238>/MATLAB System1'
+  // Start for MATLABSystem: '<S307>/MATLAB System1'
   // this.BufferReset(reset,mp);
   //  Fonction qui traites les nouveau poses.
   //  Insertion des nouveaux points.
@@ -8505,11 +8601,11 @@ void proc_control::proc_TrajectoryManager_stepImpl
     }
   }
 
-  memset(&currentPose[0], 0, 130U * sizeof(real_T));
+  std::memset(&currentPose[0], 0, 130U * sizeof(real_T));
   b_jcol_0 = 0;
   b_jcol = 0;
   for (b_itilerow = 0; b_itilerow < 13; b_itilerow++) {
-    // Start for MATLABSystem: '<S238>/MATLAB System1'
+    // Start for MATLABSystem: '<S307>/MATLAB System1'
     for (b_index_0 = 0; b_index_0 < b_index; b_index_0++) {
       currentPose[b_index_0 + b_jcol_0] = b_this->poseBuffer[b_index_0 + b_jcol];
     }
@@ -8521,7 +8617,7 @@ void proc_control::proc_TrajectoryManager_stepImpl
   if (isempty) {
     b_itilerow = 10 - b_index;
     for (b_jcol = 0; b_jcol <= b_itilerow; b_jcol++) {
-      // Start for MATLABSystem: '<S238>/MATLAB System1'
+      // Start for MATLABSystem: '<S307>/MATLAB System1'
       b_index_0 = b_index + b_jcol;
       for (b_jcol_0 = 0; b_jcol_0 < 13; b_jcol_0++) {
         a[b_jcol_0] = currentPose[(10 * b_jcol_0 + b_index) - 2];
@@ -8536,7 +8632,7 @@ void proc_control::proc_TrajectoryManager_stepImpl
   //  Ne pas supprimer le point si c'est le dernier.
   b_jcol_0 = 0;
   for (b_jcol = 0; b_jcol < 13; b_jcol++) {
-    // Start for MATLABSystem: '<S238>/MATLAB System1'
+    // Start for MATLABSystem: '<S307>/MATLAB System1'
     x[b_jcol] = !(b_this->poseBuffer[b_jcol_0 + 10] == b_this->emptyArray[b_jcol]);
     b_jcol_0 += 6001;
   }
@@ -8556,16 +8652,16 @@ void proc_control::proc_TrajectoryManager_stepImpl
   if (y) {
     b_jcol_0 = 0;
     for (b_jcol = 0; b_jcol < 13; b_jcol++) {
-      // Start for MATLABSystem: '<S238>/MATLAB System1'
-      memcpy(&proc_control_B.b_this[b_jcol_0], &b_this->poseBuffer[b_jcol_0 + 1],
-             6000U * sizeof(real_T));
+      // Start for MATLABSystem: '<S307>/MATLAB System1'
+      std::memcpy(&proc_control_B.b_this[b_jcol_0], &b_this->poseBuffer[b_jcol_0
+                  + 1], 6000U * sizeof(real_T));
       proc_control_B.b_this[b_jcol_0 + 6000] = b_this->emptyArray[b_jcol];
       b_jcol_0 += 6001;
     }
 
-    // Start for MATLABSystem: '<S238>/MATLAB System1'
-    memcpy(&b_this->poseBuffer[0], &proc_control_B.b_this[0], 78013U * sizeof
-           (real_T));
+    // Start for MATLABSystem: '<S307>/MATLAB System1'
+    std::memcpy(&b_this->poseBuffer[0], &proc_control_B.b_this[0], 78013U *
+                sizeof(real_T));
     b_this->bufferCount--;
   }
 
@@ -8586,7 +8682,12 @@ void proc_control::proc_TrajectoryManager_stepImpl
     y_0[b_jcol_0] = fabs(poses[b_jcol_0] - target[b_jcol_0]);
   }
 
-  // Start for MATLABSystem: '<S238>/MATLAB System1'
+  for (b_jcol_0 = 6; b_jcol_0 < 7; b_jcol_0++) {
+    // Start for MATLABSystem: '<S307>/MATLAB System1'
+    y_0[b_jcol_0] = std::abs(poses[b_jcol_0] - target[b_jcol_0]);
+  }
+
+  // Start for MATLABSystem: '<S307>/MATLAB System1'
   b_this->done = true;
   b_jcol = 0;
   exitg1 = false;
@@ -8601,7 +8702,7 @@ void proc_control::proc_TrajectoryManager_stepImpl
 
   *isReached = false;
 
-  // Start for MATLABSystem: '<S238>/MATLAB System1'
+  // Start for MATLABSystem: '<S307>/MATLAB System1'
   //  vérifier le traget reached si la trajectoire est terminé
   if (b_this->done) {
     //  check flip
@@ -8652,18 +8753,18 @@ void proc_control::proc_TrajectoryManager_stepImpl
 void proc_control::proc_contro_TrimPlant_resetImpl(TrimPlant_proc_control_T
   *b_this)
 {
-  static const real_T tmp[13] = { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0 };
+  static const real_T tmp[13]{ 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0 };
 
-  static const int8_T tmp_0[169] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  static const int8_T tmp_0[169]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   //  reset  fonction
   // ------------------------------------------------------------------------------ 
   //  Initialize / reset discrete-state properties
@@ -8675,19 +8776,19 @@ void proc_control::proc_contro_TrimPlant_resetImpl(TrimPlant_proc_control_T
   b_this->qkt[2] = 0.0;
   b_this->qkm[3] = 0.0;
   b_this->qkt[3] = 0.0;
-  memcpy(&b_this->xl[0], &tmp[0], 13U * sizeof(real_T));
-  memset(&b_this->constValues[0], 0, 38U * sizeof(real_T));
+  std::memcpy(&b_this->xl[0], &tmp[0], 13U * sizeof(real_T));
+  std::memset(&b_this->constValues[0], 0, 38U * sizeof(real_T));
   b_this->init = false;
 
   //  initialize matrix size
-  for (int32_T i = 0; i < 169; i++) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+  for (int32_T i{0}; i < 169; i++) {
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     b_this->C[i] = tmp_0[i];
   }
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  memset(&b_this->D[0], 0, 104U * sizeof(real_T));
-  memset(&b_this->Bc[0], 0, 104U * sizeof(real_T));
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  std::memset(&b_this->D[0], 0, 104U * sizeof(real_T));
+  std::memset(&b_this->Bc[0], 0, 104U * sizeof(real_T));
 }
 
 void proc_control::proc_control_eul2quat(const real_T eul[3], real_T q[4])
@@ -8701,7 +8802,7 @@ void proc_control::proc_control_eul2quat(const real_T eul[3], real_T q[4])
   real_T s_idx_1;
   real_T s_idx_2;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   s_idx_2 = eul[0] / 2.0;
   s_idx_0 = s_idx_2;
   c_idx_0 = s_idx_2;
@@ -8751,7 +8852,7 @@ void proc_control::proc_control_xgetrf_p(real_T A[36], int32_T ipiv[6], int32_T 
     int32_T jp1j;
     int32_T k;
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     c = b_j * 7 + 2;
     jj = b_j * 7;
     iy = 6 - b_j;
@@ -8798,7 +8899,7 @@ void proc_control::proc_control_xgetrf_p(real_T A[36], int32_T ipiv[6], int32_T 
       if (smax != 0.0) {
         int32_T d;
 
-        // Start for MATLABSystem: '<S71>/MATLAB System'
+        // Start for MATLABSystem: '<S140>/MATLAB System'
         iy = jp1j + 8;
         d = (jp1j - b_j) + 12;
         for (ipiv_tmp = iy; ipiv_tmp <= d; ipiv_tmp++) {
@@ -8807,7 +8908,7 @@ void proc_control::proc_control_xgetrf_p(real_T A[36], int32_T ipiv[6], int32_T 
         }
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jp1j += 6;
     }
   }
@@ -8817,7 +8918,7 @@ void proc_control::proc_control_xgetrf_p(real_T A[36], int32_T ipiv[6], int32_T 
   }
 }
 
-void proc_control::proc_control_mldivide_pr3(const real_T A[36], real_T B[48])
+void proc_control::proc_control_mldivide_pr351(const real_T A[36], real_T B[48])
 {
   real_T c_A[36];
   real_T temp;
@@ -8887,7 +8988,7 @@ void proc_control::proc_control_mldivide_pr3(const real_T A[36], real_T B[48])
 void proc_control::proc_control_quatmultiply(const real_T q[4], const real_T r[4],
   real_T qout[4])
 {
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   qout[0] = ((q[0] * r[0] - q[1] * r[1]) - q[2] * r[2]) - q[3] * r[3];
   _mm_storeu_pd(&qout[1], _mm_add_pd(_mm_add_pd(_mm_mul_pd(_mm_set1_pd(q[0]),
     _mm_loadu_pd(&r[1])), _mm_mul_pd(_mm_set1_pd(r[0]), _mm_loadu_pd(&q[1]))),
@@ -9836,7 +9937,7 @@ void proc_control::proc_control_ft_6(const real_T ct[2166], real_T Anq[169])
                 proc_control_B.t3247 - proc_control_B.t3198 *
                 proc_control_B.t3228 * proc_control_B.t3247) -
                proc_control_B.t3203 * proc_control_B.t3235 *
-               proc_control_B.t3247) + proc_control_B.Anq_tmp_g *
+               proc_control_B.t3247) + proc_control_B.Anq_tmp_p2 *
               proc_control_B.t3218 * proc_control_B.t3247 * 2.0) -
              proc_control_B.t3247_tmp_o * proc_control_B.t3243 *
              proc_control_B.t3247 * 4.0) + proc_control_B.Anq_tmp_p *
@@ -9886,7 +9987,7 @@ void proc_control::proc_control_ft_6(const real_T ct[2166], real_T Anq[169])
                 proc_control_B.t3247 - proc_control_B.t3202 *
                 proc_control_B.t3228 * proc_control_B.t3247) -
                proc_control_B.t3199 * proc_control_B.t3235 *
-               proc_control_B.t3247) + proc_control_B.Anq_tmp_g *
+               proc_control_B.t3247) + proc_control_B.Anq_tmp_p2 *
               proc_control_B.t3216 * proc_control_B.t3247 * 2.0) -
              proc_control_B.t3247_tmp * proc_control_B.t3243 *
              proc_control_B.t3247 * 4.0) - proc_control_B.Anq_tmp_p *
@@ -10312,7 +10413,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[3] = ct[3];
   proc_control_B.ct[4] = ct[4];
   proc_control_B.ct[5] = ct[5];
-  memcpy(&proc_control_B.ct[6], &ct[7], 15U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[6], &ct[7], 15U * sizeof(real_T));
   proc_control_B.ct[21] = ct[22];
   proc_control_B.ct[22] = ct[24];
   proc_control_B.ct[23] = ct[26];
@@ -10344,9 +10445,9 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[49] = ct[66];
   proc_control_B.ct[50] = ct[68];
   proc_control_B.ct[51] = ct[69];
-  memcpy(&proc_control_B.ct[52], &ct[72], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[52], &ct[72], 18U * sizeof(real_T));
   proc_control_B.ct[70] = ct[90];
-  memcpy(&proc_control_B.ct[71], &ct[92], 94U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[71], &ct[92], 94U * sizeof(real_T));
   proc_control_B.ct[165] = ct[186];
   proc_control_B.ct[166] = ct[189];
   proc_control_B.ct[167] = ct[191];
@@ -10407,7 +10508,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[222] = ct[294];
   proc_control_B.ct[223] = ct[295];
   proc_control_B.ct[224] = ct[296];
-  memcpy(&proc_control_B.ct[225], &ct[298], 15U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[225], &ct[298], 15U * sizeof(real_T));
   proc_control_B.ct[240] = ct[314];
   proc_control_B.ct[241] = ct[317];
   proc_control_B.ct[242] = ct[318];
@@ -10420,7 +10521,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[249] = ct[337];
   proc_control_B.ct[250] = ct[340];
   proc_control_B.ct[251] = ct[344];
-  memcpy(&proc_control_B.ct[252], &ct[347], 305U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[252], &ct[347], 305U * sizeof(real_T));
   proc_control_B.ct[557] = ct[652];
   proc_control_B.ct[558] = ct[654];
   proc_control_B.ct[559] = ct[655];
@@ -10443,7 +10544,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[576] = ct[680];
   proc_control_B.ct[577] = ct[683];
   proc_control_B.ct[578] = ct[684];
-  memcpy(&proc_control_B.ct[579], &ct[686], 30U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[579], &ct[686], 30U * sizeof(real_T));
   proc_control_B.ct[609] = ct[716];
   proc_control_B.ct[610] = ct[721];
   proc_control_B.ct[611] = ct[722];
@@ -10534,9 +10635,9 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[691] = ct[754];
   proc_control_B.ct[692] = ct[755];
   proc_control_B.ct[693] = ct[10] * ct[1916];
-  memcpy(&proc_control_B.ct[694], &ct[756], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[694], &ct[756], 18U * sizeof(real_T));
   proc_control_B.ct[712] = ct[11] * ct[1935];
-  memcpy(&proc_control_B.ct[713], &ct[774], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[713], &ct[774], 18U * sizeof(real_T));
   proc_control_B.ct[731] = ct[12] * ct[1953];
   proc_control_B.ct[732] = ct[792];
   proc_control_B.ct[733] = ct[10] * ct[27];
@@ -10625,7 +10726,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[826] = ct[826];
   proc_control_B.ct[827] = ct[829];
   proc_control_B.ct[828] = ct[830];
-  memcpy(&proc_control_B.ct[829], &ct[834], 25U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[829], &ct[834], 25U * sizeof(real_T));
   proc_control_B.ct[854] = -ct[1907];
   proc_control_B.ct[855] = -ct[1908];
   proc_control_B.ct[856] = -ct[1909];
@@ -10665,7 +10766,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[890] = ct[867];
   proc_control_B.ct[891] = -ct[70];
   proc_control_B.ct[892] = -ct[71];
-  memcpy(&proc_control_B.ct[893], &ct[868], 17U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[893], &ct[868], 17U * sizeof(real_T));
   proc_control_B.ct[910] = -ct[187];
   proc_control_B.ct[911] = -ct[188];
   proc_control_B.ct[912] = -ct[190];
@@ -10731,7 +10832,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[972] = -ct[294];
   proc_control_B.ct[973] = -ct[295];
   proc_control_B.ct[974] = -ct[297];
-  memcpy(&proc_control_B.ct[975], &ct[894], 104U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[975], &ct[894], 104U * sizeof(real_T));
   proc_control_B.ct[1079] = ct[10] * ct[653];
   proc_control_B.ct[1080] = ct[1000];
   proc_control_B.ct[1081] = ct[1002];
@@ -10841,7 +10942,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1183] = ct[1112];
   proc_control_B.ct[1184] = ct[1113];
   proc_control_B.ct[1185] = ct[11] * ct[752];
-  memcpy(&proc_control_B.ct[1186], &ct[1114], 19U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[1186], &ct[1114], 19U * sizeof(real_T));
   proc_control_B.ct[1205] = ct[12] * ct[753];
   memcpy(&proc_control_B.ct[1206], &ct[1133], 43U * sizeof(real_T));
   _mm_storeu_pd(&proc_control_B.ct[1249], _mm_mul_pd(_mm_set1_pd(ct[11]),
@@ -10881,7 +10982,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1281] = -ct[681];
   proc_control_B.ct[1282] = -ct[682];
   proc_control_B.ct[1283] = -ct[685];
-  memcpy(&proc_control_B.ct[1284], &ct[1181], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct[1284], &ct[1181], sizeof(real_T) << 3U);
   proc_control_B.ct[1292] = ct[29] * ct[80];
   proc_control_B.ct[1293] = ct[1189];
   proc_control_B.ct[1294] = ct[30] * ct[80];
@@ -10911,7 +11012,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1319] = ct[1205];
   proc_control_B.ct[1320] = ct[1206];
   proc_control_B.ct[1321] = ct[8] * ct[864];
-  memcpy(&proc_control_B.ct[1322], &ct[1207], 65U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[1322], &ct[1207], 65U * sizeof(real_T));
   proc_control_B.ct[1387] = -ct[800];
   proc_control_B.ct[1388] = -ct[801];
   proc_control_B.ct[1389] = -ct[802];
@@ -10975,7 +11076,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1452] = -ct[831];
   proc_control_B.ct[1453] = -ct[832];
   proc_control_B.ct[1454] = -ct[833];
-  memcpy(&proc_control_B.ct[1455], &ct[1301], 13U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[1455], &ct[1301], 13U * sizeof(real_T));
   proc_control_B.ct[1468] = ct[1542] * ct[1911];
   proc_control_B.ct[1469] = ct[1314];
   proc_control_B.ct[1470] = ct[1559] * ct[1911];
@@ -11084,7 +11185,7 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1621] = ct[1395];
   proc_control_B.ct[1622] = -ct[1110];
   proc_control_B.ct[1623] = -ct[1111];
-  memcpy(&proc_control_B.ct[1624], &ct[1396], 250U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[1624], &ct[1396], 250U * sizeof(real_T));
   proc_control_B.ct[1874] = ct[1646];
   proc_control_B.ct[1875] = ct[1648];
   proc_control_B.ct[1876] = ct[1649];
@@ -11102,16 +11203,16 @@ void proc_control::proc_control_ft_5(const real_T ct[1959], real_T Anq[169])
   proc_control_B.ct[1888] = ct[1666];
   proc_control_B.ct[1889] = ct[1667];
   proc_control_B.ct[1890] = ct[1668];
-  memcpy(&proc_control_B.ct[1891], &ct[1670], 237U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[1891], &ct[1670], 237U * sizeof(real_T));
   proc_control_B.ct[2128] = ct[1912];
   proc_control_B.ct[2129] = ct[1914];
   proc_control_B.ct[2130] = ct[1915];
   proc_control_B.ct[2131] = ct[1916];
-  memcpy(&proc_control_B.ct[2132], &ct[1918], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[2132], &ct[1918], 10U * sizeof(real_T));
   proc_control_B.ct[2142] = ct[1928];
   proc_control_B.ct[2143] = ct[1930];
   proc_control_B.ct[2144] = ct[1932];
-  memcpy(&proc_control_B.ct[2145], &ct[1934], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct[2145], &ct[1934], 9U * sizeof(real_T));
   proc_control_B.ct[2154] = ct[1943];
   proc_control_B.ct[2155] = ct[1945];
   proc_control_B.ct[2156] = ct[1946];
@@ -11150,9 +11251,9 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[3] = ct[11];
   proc_control_B.ct_l[4] = ct[12];
   proc_control_B.ct_l[5] = ct[13];
-  memcpy(&proc_control_B.ct_l[6], &ct[17], 25U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[6], &ct[17], 25U * sizeof(real_T));
   proc_control_B.ct_l[31] = ct[42];
-  memcpy(&proc_control_B.ct_l[32], &ct[44], 38U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[32], &ct[44], 38U * sizeof(real_T));
   proc_control_B.ct_l[70] = ct[82];
   proc_control_B.ct_l[71] = ct[84];
   proc_control_B.ct_l[72] = ct[85];
@@ -11278,7 +11379,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
     ct[1327])));
   proc_control_B.ct_l[310] = ct[237];
   proc_control_B.ct_l[311] = ct[20] * ct[1333];
-  memcpy(&proc_control_B.ct_l[312], &ct[238], 33U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[312], &ct[238], 33U * sizeof(real_T));
   proc_control_B.ct_l[345] = ct[271];
   proc_control_B.ct_l[346] = ct[273];
   proc_control_B.ct_l[347] = ct[274];
@@ -11296,12 +11397,12 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[359] = ct[284];
   proc_control_B.ct_l[360] = ct[285];
   proc_control_B.ct_l[361] = ct[286];
-  memcpy(&proc_control_B.ct_l[362], &ct[288], 24U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[362], &ct[288], 24U * sizeof(real_T));
   proc_control_B.ct_l[386] = ct[312];
   proc_control_B.ct_l[387] = ct[315];
   proc_control_B.ct_l[388] = ct[316];
   proc_control_B.ct_l[389] = ct[317];
-  memcpy(&proc_control_B.ct_l[390], &ct[319], 68U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[390], &ct[319], 68U * sizeof(real_T));
   proc_control_B.ct_l[458] = -ct[1153];
   proc_control_B.ct_l[459] = -ct[1154];
   proc_control_B.ct_l[460] = -ct[1158];
@@ -11340,7 +11441,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[493] = -ct[1214];
   proc_control_B.ct_l[494] = -ct[1215];
   proc_control_B.ct_l[495] = -ct[1217];
-  memcpy(&proc_control_B.ct_l[496], &ct[396], 41U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[496], &ct[396], 41U * sizeof(real_T));
   proc_control_B.ct_l[537] = -ct[1312];
   proc_control_B.ct_l[538] = -ct[1313];
   proc_control_B.ct_l[539] = -ct[1317];
@@ -11350,9 +11451,9 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[543] = -ct[1328];
   proc_control_B.ct_l[544] = -ct[1333];
   proc_control_B.ct_l[545] = -ct[1334];
-  memcpy(&proc_control_B.ct_l[546], &ct[437], 36U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[546], &ct[437], 36U * sizeof(real_T));
   proc_control_B.ct_l[582] = ct[473];
-  memcpy(&proc_control_B.ct_l[583], &ct[475], 72U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[583], &ct[475], 72U * sizeof(real_T));
   proc_control_B.ct_l[655] = ct[10] * ct[1594];
   proc_control_B.ct_l[656] = ct[547];
   proc_control_B.ct_l[657] = ct[548];
@@ -11433,7 +11534,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[759] = ct[628];
   proc_control_B.ct_l[760] = ct[629];
   proc_control_B.ct_l[761] = ct[630];
-  memcpy(&proc_control_B.ct_l[762], &ct[633], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[762], &ct[633], 9U * sizeof(real_T));
   proc_control_B.ct_l[771] = ct[645];
   proc_control_B.ct_l[772] = ct[647];
   proc_control_B.ct_l[773] = ct[649];
@@ -11461,7 +11562,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[795] = ct[682];
   proc_control_B.ct_l[796] = ct[690];
   proc_control_B.ct_l[797] = ct[691];
-  memcpy(&proc_control_B.ct_l[798], &ct[697], 40U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[798], &ct[697], 40U * sizeof(real_T));
   proc_control_B.ct_l[838] = ct[738];
   proc_control_B.ct_l[839] = ct[740];
   proc_control_B.ct_l[840] = ct[741];
@@ -11479,9 +11580,9 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[852] = ct[756];
   proc_control_B.ct_l[853] = ct[757];
   proc_control_B.ct_l[854] = ct[759];
-  memcpy(&proc_control_B.ct_l[855], &ct[761], 25U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[855], &ct[761], 25U * sizeof(real_T));
   proc_control_B.ct_l[880] = ct[786];
-  memcpy(&proc_control_B.ct_l[881], &ct[788], 99U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[881], &ct[788], 99U * sizeof(real_T));
   proc_control_B.ct_l[980] = -ct[314];
   proc_control_B.ct_l[981] = -ct[316];
   proc_control_B.ct_l[982] = -ct[317];
@@ -11913,12 +12014,12 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
     ct[272])));
   proc_control_B.ct_l[1439] = (((((ct[5] + ct[474]) + ct[1504]) + ct[1607]) +
     ct[43]) + ct[103]) + ct[313];
-  memcpy(&proc_control_B.ct_l[1440], &ct[1065], 87U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1440], &ct[1065], 87U * sizeof(real_T));
   proc_control_B.ct_l[1527] = ct[1152];
   proc_control_B.ct_l[1528] = ct[1155];
   proc_control_B.ct_l[1529] = ct[1156];
   proc_control_B.ct_l[1530] = ct[1157];
-  memcpy(&proc_control_B.ct_l[1531], &ct[1159], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1531], &ct[1159], 9U * sizeof(real_T));
   proc_control_B.ct_l[1540] = ct[1168];
   proc_control_B.ct_l[1541] = ct[1170];
   proc_control_B.ct_l[1542] = ct[1171];
@@ -11954,7 +12055,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[1572] = ct[1222];
   proc_control_B.ct_l[1573] = ct[1224];
   proc_control_B.ct_l[1574] = ct[1225];
-  memcpy(&proc_control_B.ct_l[1575], &ct[1227], 24U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1575], &ct[1227], 24U * sizeof(real_T));
   proc_control_B.ct_l[1599] = ct[1251];
   proc_control_B.ct_l[1600] = ct[1253];
   proc_control_B.ct_l[1601] = ct[1254];
@@ -11997,13 +12098,13 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[1638] = ct[1302];
   proc_control_B.ct_l[1639] = ct[1303];
   proc_control_B.ct_l[1640] = ct[1304];
-  memcpy(&proc_control_B.ct_l[1641], &ct[1306], sizeof(real_T) << 5U);
+  std::memcpy(&proc_control_B.ct_l[1641], &ct[1306], sizeof(real_T) << 5U);
   proc_control_B.ct_l[1673] = ct[1338];
-  memcpy(&proc_control_B.ct_l[1674], &ct[1340], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1674], &ct[1340], 10U * sizeof(real_T));
   proc_control_B.ct_l[1684] = ct[1350];
   proc_control_B.ct_l[1685] = ct[1352];
   proc_control_B.ct_l[1686] = ct[1353];
-  memcpy(&proc_control_B.ct_l[1687], &ct[1355], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct_l[1687], &ct[1355], sizeof(real_T) << 3U);
   proc_control_B.ct_l[1695] = ct[1363];
   proc_control_B.ct_l[1696] = ct[1365];
   proc_control_B.ct_l[1697] = ct[1366];
@@ -12012,7 +12113,7 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[1700] = ct[1369];
   proc_control_B.ct_l[1701] = ct[1370];
   proc_control_B.ct_l[1702] = ct[1373];
-  memcpy(&proc_control_B.ct_l[1703], &ct[1380], 109U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1703], &ct[1380], 109U * sizeof(real_T));
   proc_control_B.ct_l[1812] = ct[1489];
   proc_control_B.ct_l[1813] = ct[1491];
   proc_control_B.ct_l[1814] = ct[1492];
@@ -12033,18 +12134,18 @@ void proc_control::proc_control_ft_4(const real_T ct[1640], real_T Anq[169])
   proc_control_B.ct_l[1829] = ct[1509];
   proc_control_B.ct_l[1830] = ct[1510];
   proc_control_B.ct_l[1831] = ct[1511];
-  memcpy(&proc_control_B.ct_l[1832], &ct[1513], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1832], &ct[1513], 9U * sizeof(real_T));
   proc_control_B.ct_l[1841] = ct[1522];
-  memcpy(&proc_control_B.ct_l[1842], &ct[1524], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1842], &ct[1524], 9U * sizeof(real_T));
   proc_control_B.ct_l[1851] = ct[1533];
-  memcpy(&proc_control_B.ct_l[1852], &ct[1535], 69U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1852], &ct[1535], 69U * sizeof(real_T));
   proc_control_B.ct_l[1921] = ct[6] * ct[1502];
   proc_control_B.ct_l[1922] = ct[1604];
   proc_control_B.ct_l[1923] = ct[1605];
   proc_control_B.ct_l[1924] = ct[1606];
-  memcpy(&proc_control_B.ct_l[1925], &ct[1608], 13U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1925], &ct[1608], 13U * sizeof(real_T));
   proc_control_B.ct_l[1938] = ct[10] * ct[1503];
-  memcpy(&proc_control_B.ct_l[1939], &ct[1621], 15U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_l[1939], &ct[1621], 15U * sizeof(real_T));
   proc_control_B.ct_l[1954] = ct[14] * ct[1505];
   proc_control_B.ct_l[1955] = ct[1636];
   proc_control_B.ct_l[1956] = ct[1637];
@@ -12322,7 +12423,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[308] = ct[114];
   proc_control_B.ct_f[309] = ct[115];
   proc_control_B.ct_f[310] = ct[19] * ct[982];
-  memcpy(&proc_control_B.ct_f[311], &ct[116], 15U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[311], &ct[116], 15U * sizeof(real_T));
   proc_control_B.ct_f[326] = ct[20] * ct[983];
   proc_control_B.ct_f[327] = ct[131];
   proc_control_B.ct_f[328] = ct[133];
@@ -12338,7 +12439,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[338] = -ct[642];
   proc_control_B.ct_f[339] = -ct[643];
   proc_control_B.ct_f[340] = -ct[646];
-  memcpy(&proc_control_B.ct_f[341], &ct[138], 43U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[341], &ct[138], 43U * sizeof(real_T));
   proc_control_B.ct_f[384] = -ct[733];
   proc_control_B.ct_f[385] = -ct[734];
   proc_control_B.ct_f[386] = -ct[737];
@@ -12390,11 +12491,11 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[432] = -ct[901];
   proc_control_B.ct_f[433] = -ct[904];
   proc_control_B.ct_f[434] = -ct[905];
-  memcpy(&proc_control_B.ct_f[435], &ct[198], 31U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[435], &ct[198], 31U * sizeof(real_T));
   proc_control_B.ct_f[466] = -ct[985];
   proc_control_B.ct_f[467] = -ct[988];
   proc_control_B.ct_f[468] = -ct[989];
-  memcpy(&proc_control_B.ct_f[469], &ct[229], 29U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[469], &ct[229], 29U * sizeof(real_T));
   proc_control_B.ct_f[498] = ct[19] * ct[1165];
   proc_control_B.ct_f[499] = ct[258];
   proc_control_B.ct_f[500] = ct[259];
@@ -12647,7 +12748,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[884] = -ct[112];
   proc_control_B.ct_f[885] = -ct[113];
   proc_control_B.ct_f[886] = -ct[117];
-  memcpy(&proc_control_B.ct_f[887], &ct[459], 170U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[887], &ct[459], 170U * sizeof(real_T));
   proc_control_B.ct_f[1057] = ct[629];
   proc_control_B.ct_f[1058] = ct[631];
   proc_control_B.ct_f[1059] = ct[632];
@@ -12667,7 +12768,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[1073] = ct[653];
   proc_control_B.ct_f[1074] = ct[656];
   proc_control_B.ct_f[1075] = ct[657];
-  memcpy(&proc_control_B.ct_f[1076], &ct[659], 73U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1076], &ct[659], 73U * sizeof(real_T));
   proc_control_B.ct_f[1149] = ct[732];
   proc_control_B.ct_f[1150] = ct[735];
   proc_control_B.ct_f[1151] = ct[736];
@@ -12682,13 +12783,13 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[1160] = ct[747];
   proc_control_B.ct_f[1161] = ct[749];
   proc_control_B.ct_f[1162] = ct[750];
-  memcpy(&proc_control_B.ct_f[1163], &ct[753], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1163], &ct[753], 18U * sizeof(real_T));
   proc_control_B.ct_f[1181] = ct[771];
-  memcpy(&proc_control_B.ct_f[1182], &ct[773], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1182], &ct[773], 9U * sizeof(real_T));
   proc_control_B.ct_f[1191] = ct[782];
-  memcpy(&proc_control_B.ct_f[1192], &ct[784], 20U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1192], &ct[784], 20U * sizeof(real_T));
   proc_control_B.ct_f[1212] = ct[804];
-  memcpy(&proc_control_B.ct_f[1213], &ct[806], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1213], &ct[806], 9U * sizeof(real_T));
   proc_control_B.ct_f[1222] = ct[815];
   proc_control_B.ct_f[1223] = ct[817];
   proc_control_B.ct_f[1224] = ct[818];
@@ -12698,7 +12799,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[1228] = ct[822];
   proc_control_B.ct_f[1229] = ct[823];
   proc_control_B.ct_f[1230] = ct[824];
-  memcpy(&proc_control_B.ct_f[1231], &ct[827], 24U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1231], &ct[827], 24U * sizeof(real_T));
   proc_control_B.ct_f[1255] = ct[851];
   proc_control_B.ct_f[1256] = ct[853];
   proc_control_B.ct_f[1257] = ct[854];
@@ -12707,7 +12808,7 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[1260] = ct[857];
   proc_control_B.ct_f[1261] = ct[858];
   proc_control_B.ct_f[1262] = ct[859];
-  memcpy(&proc_control_B.ct_f[1263], &ct[861], 31U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1263], &ct[861], 31U * sizeof(real_T));
   proc_control_B.ct_f[1294] = ct[892];
   proc_control_B.ct_f[1295] = ct[894];
   proc_control_B.ct_f[1296] = ct[895];
@@ -12716,23 +12817,23 @@ void proc_control::proc_control_ft_3(const real_T ct[1260], real_T Anq[169])
   proc_control_B.ct_f[1299] = ct[898];
   proc_control_B.ct_f[1300] = ct[899];
   proc_control_B.ct_f[1301] = ct[900];
-  memcpy(&proc_control_B.ct_f[1302], &ct[902], 39U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1302], &ct[902], 39U * sizeof(real_T));
   proc_control_B.ct_f[1341] = ct[941];
-  memcpy(&proc_control_B.ct_f[1342], &ct[944], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1342], &ct[944], 18U * sizeof(real_T));
   proc_control_B.ct_f[1360] = ct[962];
   proc_control_B.ct_f[1361] = ct[964];
   proc_control_B.ct_f[1362] = ct[965];
-  memcpy(&proc_control_B.ct_f[1363], &ct[967], 17U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1363], &ct[967], 17U * sizeof(real_T));
   proc_control_B.ct_f[1380] = ct[984];
   proc_control_B.ct_f[1381] = ct[986];
   proc_control_B.ct_f[1382] = ct[987];
-  memcpy(&proc_control_B.ct_f[1383], &ct[990], 85U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1383], &ct[990], 85U * sizeof(real_T));
   proc_control_B.ct_f[1468] = ct[1075];
   proc_control_B.ct_f[1469] = ct[1078];
   proc_control_B.ct_f[1470] = ct[1079];
   proc_control_B.ct_f[1471] = ct[1089];
   proc_control_B.ct_f[1472] = ct[1091];
-  memcpy(&proc_control_B.ct_f[1473], &ct[1093], 167U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_f[1473], &ct[1093], 167U * sizeof(real_T));
   proc_control_ft_4(proc_control_B.ct_f, Anq);
 }
 
@@ -12848,7 +12949,7 @@ void proc_control::proc_control_ft_2(const real_T ct[805], real_T Anq[169])
   _mm_storeu_pd(&proc_control_B.ct_j[48], _mm_mul_pd(_mm_mul_pd(tmp_2, tmp_s),
     tmp_0));
   proc_control_B.ct_j[50] = ct[17] * ct[465] * ct[504];
-  memcpy(&proc_control_B.ct_j[51], &ct[35], 20U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[51], &ct[35], 20U * sizeof(real_T));
   proc_control_B.ct_j[71] = ct[55];
   proc_control_B.ct_j[72] = ct[62];
   proc_control_B.ct_j[73] = ct[63];
@@ -13317,9 +13418,9 @@ void proc_control::proc_control_ft_2(const real_T ct[805], real_T Anq[169])
   proc_control_B.ct_j[625] = proc_control_B.ct_tmp_c * ct[460] * ct[484] * ct[45];
   memcpy(&proc_control_B.ct_j[626], &ct[323], 33U * sizeof(real_T));
   proc_control_B.ct_j[659] = ct[356];
-  memcpy(&proc_control_B.ct_j[660], &ct[358], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[660], &ct[358], 9U * sizeof(real_T));
   proc_control_B.ct_j[669] = ct[367];
-  memcpy(&proc_control_B.ct_j[670], &ct[369], 12U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[670], &ct[369], 12U * sizeof(real_T));
   proc_control_B.ct_j[682] = ct[381];
   proc_control_B.ct_j[683] = ct[384];
   proc_control_B.ct_j[684] = ct[385];
@@ -13431,9 +13532,9 @@ void proc_control::proc_control_ft_2(const real_T ct[805], real_T Anq[169])
   _mm_storeu_pd(&proc_control_B.ct_j[846], _mm_mul_pd(tmp_1y, _mm_set1_pd(ct[355])));
   memcpy(&proc_control_B.ct_j[848], &ct[466], 18U * sizeof(real_T));
   proc_control_B.ct_j[866] = ct[18] * ct[356];
-  memcpy(&proc_control_B.ct_j[867], &ct[484], 20U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[867], &ct[484], 20U * sizeof(real_T));
   proc_control_B.ct_j[887] = ct[18] * ct[361];
-  memcpy(&proc_control_B.ct_j[888], &ct[504], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[888], &ct[504], 9U * sizeof(real_T));
   proc_control_B.ct_j[897] = ct[513];
   memcpy(&proc_control_B.ct_j[898], &ct[515], 14U * sizeof(real_T));
   _mm_storeu_pd(&proc_control_B.ct_j[912], _mm_mul_pd(_mm_mul_pd(_mm_mul_pd
@@ -13479,11 +13580,11 @@ void proc_control::proc_control_ft_2(const real_T ct[805], real_T Anq[169])
   proc_control_B.ct_j[1123] = ct[461] * ct[514];
   proc_control_B.ct_j[1124] = ct[711];
   proc_control_B.ct_j[1125] = ct[465] * ct[514];
-  memcpy(&proc_control_B.ct_j[1126], &ct[712], 38U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[1126], &ct[712], 38U * sizeof(real_T));
   proc_control_B.ct_j[1164] = ct[750];
-  memcpy(&proc_control_B.ct_j[1165], &ct[752], 31U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[1165], &ct[752], 31U * sizeof(real_T));
   proc_control_B.ct_j[1196] = ct[783];
-  memcpy(&proc_control_B.ct_j[1197], &ct[785], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_j[1197], &ct[785], 9U * sizeof(real_T));
   proc_control_B.ct_j[1206] = ct[794];
   proc_control_B.ct_j[1207] = ct[796];
   proc_control_B.ct_j[1208] = ct[797];
@@ -13934,17 +14035,17 @@ void proc_control::proc_control_ft_1(const real_T ct[433], real_T Anq[169])
   proc_control_B.ct_m[304] = ct[208];
   proc_control_B.ct_m[305] = ct[209];
   proc_control_B.ct_m[306] = ct[210];
-  memcpy(&proc_control_B.ct_m[307], &ct[212], 29U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[307], &ct[212], 29U * sizeof(real_T));
   proc_control_B.ct_m[336] = ct[241];
-  memcpy(&proc_control_B.ct_m[337], &ct[243], 31U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[337], &ct[243], 31U * sizeof(real_T));
   proc_control_B.ct_m[368] = ct[274];
-  memcpy(&proc_control_B.ct_m[369], &ct[276], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[369], &ct[276], 9U * sizeof(real_T));
   proc_control_B.ct_m[378] = ct[286];
-  memcpy(&proc_control_B.ct_m[379], &ct[288], 19U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[379], &ct[288], 19U * sizeof(real_T));
   proc_control_B.ct_m[398] = ct[307];
-  memcpy(&proc_control_B.ct_m[399], &ct[309], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[399], &ct[309], 9U * sizeof(real_T));
   proc_control_B.ct_m[408] = ct[318];
-  memcpy(&proc_control_B.ct_m[409], &ct[320], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_m[409], &ct[320], 9U * sizeof(real_T));
   proc_control_B.ct_m[418] = ct[329];
   proc_control_B.ct_m[419] = ct[331];
   proc_control_B.ct_m[420] = ct[332];
@@ -13959,7 +14060,7 @@ void proc_control::proc_control_ft_1(const real_T ct[433], real_T Anq[169])
   proc_control_B.ct_m[429] = ct[344];
   proc_control_B.ct_m[430] = ct[345];
   proc_control_B.ct_m[431] = ct[346];
-  memcpy(&proc_control_B.ct_m[432], &ct[348], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct_m[432], &ct[348], sizeof(real_T) << 3U);
   proc_control_B.ct_m[440] = ct[356];
   memcpy(&proc_control_B.ct_m[441], &ct[358], 30U * sizeof(real_T));
   tmp_q = _mm_mul_pd(_mm_set_pd(ct[6], ct[8]), _mm_set_pd(ct[13], ct[10]));
@@ -14528,7 +14629,7 @@ void proc_control::proc_cont_AUVQuatJacobianMatrix(const real_T in1[13], const
   proc_control_B.in3_p[3] = in3[21];
   proc_control_B.in3_p[4] = in3[22];
   proc_control_B.in3_p[5] = in3[23];
-  memcpy(&proc_control_B.in3_p[6], &in3[3], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.in3_p[6], &in3[3], sizeof(real_T) << 3U);
   proc_control_B.in3_p[14] = in3[11];
   proc_control_B.in3_p[15] = in3[33];
   proc_control_B.in3_p[16] = in3[34];
@@ -15153,11 +15254,11 @@ real_T proc_control::proc_control_norm_p(const real_T x[169])
   while ((!exitg1) && (b_j < 13)) {
     real_T s;
     s = 0.0;
-    for (int32_T b_i = 0; b_i < 13; b_i++) {
-      s += fabs(x[13 * b_j + b_i]);
+    for (int32_T b_i{0}; b_i < 13; b_i++) {
+      s += std::abs(x[13 * b_j + b_i]);
     }
 
-    if (rtIsNaN(s)) {
+    if (std::isnan(s)) {
       y = (rtNaN);
       exitg1 = true;
     } else {
@@ -15253,13 +15354,13 @@ void proc_control::proc_control_mpower(const real_T a[169], real_T b, real_T c
                 memcpy(&proc_control_B.cBuffer[0], &proc_control_B.aBuffer[0],
                        169U * sizeof(real_T));
               } else {
-                memcpy(&proc_control_B.cBuffer[0], &proc_control_B.a_c[0], 169U *
-                       sizeof(real_T));
+                std::memcpy(&proc_control_B.cBuffer[0], &proc_control_B.a_c[0],
+                            169U * sizeof(real_T));
               }
             } else if (proc_control_B.aBufferInUse) {
               memcpy(&c[0], &proc_control_B.aBuffer[0], 169U * sizeof(real_T));
             } else {
-              memcpy(&c[0], &proc_control_B.a_c[0], 169U * sizeof(real_T));
+              std::memcpy(&c[0], &proc_control_B.a_c[0], 169U * sizeof(real_T));
             }
           } else {
             if (proc_control_B.aBufferInUse) {
@@ -15487,7 +15588,7 @@ void proc_control::proc_control_mpower(const real_T a[169], real_T b, real_T c
               }
             }
 
-            memcpy(&c[0], &proc_control_B.cBuffer[0], 169U * sizeof(real_T));
+            std::memcpy(&c[0], &proc_control_B.cBuffer[0], 169U * sizeof(real_T));
           }
         }
 
@@ -15517,8 +15618,8 @@ void proc_control::proc_control_mpower(const real_T a[169], real_T b, real_T c
             }
           }
 
-          memcpy(&proc_control_B.a_c[0], &proc_control_B.cBuffer[0], 169U *
-                 sizeof(real_T));
+          std::memcpy(&proc_control_B.a_c[0], &proc_control_B.cBuffer[0], 169U *
+                      sizeof(real_T));
         }
       } while (exitg1 == 0);
     } else {
@@ -15529,7 +15630,7 @@ void proc_control::proc_control_mpower(const real_T a[169], real_T b, real_T c
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 real_T proc_control::proc_control_log2(real_T x)
@@ -15537,24 +15638,24 @@ real_T proc_control::proc_control_log2(real_T x)
   real_T f;
   int32_T eint;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   if (x == 0.0) {
     f = (rtMinusInf);
-  } else if ((!rtIsInf(x)) && (!rtIsNaN(x))) {
+  } else if ((!std::isinf(x)) && (!std::isnan(x))) {
     real_T t;
-    t = frexp(x, &eint);
+    t = std::frexp(x, &eint);
     if (t == 0.5) {
       f = static_cast<real_T>(eint) - 1.0;
     } else if ((eint == 1) && (t < 0.75)) {
-      f = log(2.0 * t) / 0.69314718055994529;
+      f = std::log(2.0 * t) / 0.69314718055994529;
     } else {
-      f = log(t) / 0.69314718055994529 + static_cast<real_T>(eint);
+      f = std::log(t) / 0.69314718055994529 + static_cast<real_T>(eint);
     }
   } else {
     f = x;
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
   return f;
 }
 
@@ -15576,14 +15677,14 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
   int32_T kAcol;
   int8_T b_ipiv[13];
   if (m == 3) {
-    memcpy(&F[0], &A2[0], 169U * sizeof(real_T));
+    std::memcpy(&F[0], &A2[0], 169U * sizeof(real_T));
     g_k_0 = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       F[g_k_0] += 60.0;
       g_k_0 += 14;
     }
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jj = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
@@ -15600,7 +15701,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         A6_0[g_k_0 + jj] = d;
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jj += 13;
     }
 
@@ -15638,7 +15739,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
       g_k_0 += 14;
     }
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jj = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
@@ -15655,7 +15756,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         A6_0[g_k_0 + jj] = d;
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jj += 13;
     }
 
@@ -15696,7 +15797,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
       g_k_0 += 14;
     }
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jj = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
@@ -15713,7 +15814,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         A6_0[g_k_0 + jj] = d;
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jj += 13;
     }
 
@@ -15736,7 +15837,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
 
     d = 1.729728E+7;
   } else if (m == 9) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jj = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
@@ -15753,7 +15854,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         V[g_k_0 + jj] = d;
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jj += 13;
     }
 
@@ -15779,7 +15880,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
       g_k_0 += 14;
     }
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jj = 0;
     for (g_k = 0; g_k < 13; g_k++) {
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
@@ -15796,7 +15897,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         A6_0[g_k_0 + jj] = d;
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jj += 13;
     }
 
@@ -15902,12 +16003,12 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
     }
 
     for (jj = 0; jj < 13; jj++) {
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       g_k = 0;
       for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
         d = 0.0;
 
-        // Start for MATLABSystem: '<S71>/MATLAB System'
+        // Start for MATLABSystem: '<S140>/MATLAB System'
         jA = 0;
         for (iy = 0; iy < 13; iy++) {
           // Start for MATLABSystem: '<S71>/MATLAB System'
@@ -15915,7 +16016,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
           jA += 13;
         }
 
-        // Start for MATLABSystem: '<S71>/MATLAB System'
+        // Start for MATLABSystem: '<S140>/MATLAB System'
         iy = g_k + jj;
         V[iy] = ((A6[iy] * 6.704425728E+11 + d) + A4[iy] * 1.29060195264E+14) +
           A2[iy] * 7.7717703038976E+15;
@@ -15953,7 +16054,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
   }
 
   for (g_k = 0; g_k < 12; g_k++) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     g_k_0 = g_k * 14 + 2;
     jj = g_k * 14;
     kAcol = 13 - g_k;
@@ -16005,7 +16106,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
         }
       }
 
-      // Start for MATLABSystem: '<S71>/MATLAB System'
+      // Start for MATLABSystem: '<S140>/MATLAB System'
       jA += 13;
     }
   }
@@ -16027,7 +16128,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
   }
 
   for (g_k = 0; g_k < 13; g_k++) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jBcol = 13 * g_k - 1;
     for (g_k_0 = 0; g_k_0 < 13; g_k_0++) {
       kAcol = 13 * g_k_0 - 1;
@@ -16044,7 +16145,7 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
   }
 
   for (g_k = 0; g_k < 13; g_k++) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     jBcol = 13 * g_k;
     for (jA = 12; jA >= 0; jA--) {
       kAcol = 13 * jA;
@@ -16071,8 +16172,8 @@ void proc_control::proc_control_padeApproximation(const real_T A[169], const
 void proc_control::proc_control_recomputeBlockDiag(const real_T A[169], real_T
   F[169], const int32_T blockFormat[12])
 {
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  for (int32_T b_j = 0; b_j < 12; b_j++) {
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  for (int32_T b_j{0}; b_j < 12; b_j++) {
     int32_T blockFormat_0;
     blockFormat_0 = blockFormat[b_j];
     if (blockFormat_0 != 0) {
@@ -16082,7 +16183,6 @@ void proc_control::proc_control_recomputeBlockDiag(const real_T A[169], real_T
         real_T delta;
         real_T expa;
         real_T sinchdelta;
-        real_T u1;
         int32_T A_tmp;
         blockFormat_0 = 13 * b_j + b_j;
         A_0 = A[blockFormat_0];
@@ -16091,20 +16191,16 @@ void proc_control::proc_control_recomputeBlockDiag(const real_T A[169], real_T
         A_1 = A[A_tmp + 1];
         expa = exp(A_1);
         sinchdelta = (A_1 + A_0) / 2.0;
-        u1 = fabs(A_0 - A_1) / 2.0;
-        if ((sinchdelta >= u1) || rtIsNaN(u1)) {
-          u1 = sinchdelta;
-        }
-
-        if (u1 < 709.782712893384) {
+        if (std::fmax(sinchdelta, std::abs(A_0 - A_1) / 2.0) < 709.782712893384)
+        {
           A_0 = (A_1 - A_0) / 2.0;
           if (A_0 == 0.0) {
             A_0 = 1.0;
           } else {
-            A_0 = sinh(A_0) / A_0;
+            A_0 = std::sinh(A_0) / A_0;
           }
 
-          sinchdelta = A[A_tmp] * exp(sinchdelta) * A_0;
+          sinchdelta = A[A_tmp] * std::exp(sinchdelta) * A_0;
         } else {
           sinchdelta = (expa - delta) * A[A_tmp] / (A_1 - A_0);
         }
@@ -16141,10 +16237,10 @@ void proc_control::proc_control_recomputeBlockDiag(const real_T A[169], real_T
   }
 
   if (blockFormat[11] == 0) {
-    F[168] = exp(A[168]);
+    F[168] = std::exp(A[168]);
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 real_T proc_control::proc_control_xnrm2_p(int32_T n, const real_T x[169],
@@ -16153,10 +16249,10 @@ real_T proc_control::proc_control_xnrm2_p(int32_T n, const real_T x[169],
   real_T y;
   y = 0.0;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -16181,7 +16277,7 @@ real_T proc_control::proc_control_xnrm2_p(int32_T n, const real_T x[169],
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
   return y;
 }
 
@@ -16205,7 +16301,7 @@ void proc_control::proc_control_xzsyhetrd(real_T A[169], real_T D[13], real_T E
   int32_T vectorUB;
   int32_T vectorUB_tmp;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   for (b_i = 0; b_i < 12; b_i++) {
     if (b_i + 3 <= 13) {
       scalarLB = b_i + 3;
@@ -16349,7 +16445,7 @@ void proc_control::proc_control_xzsyhetrd(real_T A[169], real_T D[13], real_T E
 
   D[12] = A[168];
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 void proc_control::proc_control_xzlascl(real_T cfrom, real_T cto, int32_T m,
@@ -16398,7 +16494,7 @@ void proc_control::proc_control_xzlascl(real_T cfrom, real_T cto, int32_T m,
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 void proc_control::proc_control_xzlascl_p(real_T cfrom, real_T cto, int32_T m,
@@ -16447,7 +16543,7 @@ void proc_control::proc_control_xzlascl_p(real_T cfrom, real_T cto, int32_T m,
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 void proc_control::proc_control_xzlartg(real_T f, real_T g, real_T *cs, real_T
@@ -16455,10 +16551,10 @@ void proc_control::proc_control_xzlartg(real_T f, real_T g, real_T *cs, real_T
 {
   real_T f1;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  f1 = fabs(f);
-  *r = fabs(g);
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  f1 = std::abs(f);
+  *r = std::abs(g);
   if (g == 0.0) {
     *cs = 1.0;
     *sn = 0.0;
@@ -16466,7 +16562,7 @@ void proc_control::proc_control_xzlartg(real_T f, real_T g, real_T *cs, real_T
   } else if (f == 0.0) {
     *cs = 0.0;
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     if (g >= 0.0) {
       *sn = 1.0;
     } else {
@@ -16474,11 +16570,11 @@ void proc_control::proc_control_xzlartg(real_T f, real_T g, real_T *cs, real_T
     }
   } else if ((f1 > 1.4916681462400413E-154) && (f1 < 4.7403759540545887E+153) &&
              (*r > 1.4916681462400413E-154) && (*r < 4.7403759540545887E+153)) {
-    // Start for MATLABSystem: '<S71>/MATLAB System'
-    *r = sqrt(f * f + g * g);
+    // Start for MATLABSystem: '<S140>/MATLAB System'
+    *r = std::sqrt(f * f + g * g);
     *cs = f1 / *r;
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     if (!(f >= 0.0)) {
       *r = -*r;
     }
@@ -16487,28 +16583,16 @@ void proc_control::proc_control_xzlartg(real_T f, real_T g, real_T *cs, real_T
   } else {
     real_T fs;
     real_T gs;
-    if ((f1 >= *r) || rtIsNaN(*r)) {
-      // Start for MATLABSystem: '<S71>/MATLAB System'
-      *r = f1;
-    }
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
-    if ((*r <= 2.2250738585072014E-308) || rtIsNaN(*r)) {
-      *r = 2.2250738585072014E-308;
-    }
-
-    if (*r >= 4.49423283715579E+307) {
-      f1 = 4.49423283715579E+307;
-    } else {
-      f1 = *r;
-    }
-
+    // Start for MATLABSystem: '<S140>/MATLAB System'
+    f1 = std::fmin(4.49423283715579E+307, std::fmax(2.2250738585072014E-308, std::
+      fmax(f1, *r)));
     fs = f / f1;
     gs = g / f1;
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
-    *r = sqrt(fs * fs + gs * gs);
-    *cs = fabs(fs) / *r;
+    // Start for MATLABSystem: '<S140>/MATLAB System'
+    *r = std::sqrt(fs * fs + gs * gs);
+    *cs = std::abs(fs) / *r;
     if (!(f >= 0.0)) {
       *r = -*r;
     }
@@ -16523,7 +16607,7 @@ void proc_control::proc_control_rotateRight_p(int32_T n, real_T z[169], int32_T
 {
   int32_T b;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   b = n - 2;
   for (int32_T b_j = 0; b_j <= b; b_j++) {
     real_T ctemp;
@@ -16548,7 +16632,7 @@ void proc_control::proc_control_rotateRight_p(int32_T n, real_T z[169], int32_T
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 void proc_control::proc_control_xdlaev2(real_T a, real_T b, real_T c, real_T
@@ -16666,7 +16750,7 @@ void proc_control::proc_control_rotateRight(int32_T n, real_T z[169], int32_T
     }
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
 int32_T proc_control::proc_control_xzsteqr(real_T d[13], real_T e[12], real_T z
@@ -16698,7 +16782,7 @@ int32_T proc_control::proc_control_xzsteqr(real_T d[13], real_T e[12], real_T z
   int32_T m;
   boolean_T exitg2;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
+  // Start for MATLABSystem: '<S140>/MATLAB System'
   info = 0;
   memset(&work[0], 0, 24U * sizeof(real_T));
   jtot = 0;
@@ -17039,8 +17123,8 @@ void proc_control::proc_control_xsyheev(const real_T A[169], int32_T *info,
   boolean_T iscale;
   boolean_T notdone;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  memcpy(&b_A[0], &A[0], 169U * sizeof(real_T));
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  std::memcpy(&b_A[0], &A[0], 169U * sizeof(real_T));
   *info = 0;
   anrm = 0.0;
   lastv = 1;
@@ -17409,7 +17493,7 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
           proc_control_B.i_ce += 13;
         }
 
-        memcpy(&F[0], &proc_control_B.A4[0], 169U * sizeof(real_T));
+        std::memcpy(&F[0], &proc_control_B.A4[0], 169U * sizeof(real_T));
       } else {
         proc_control_B.recomputeDiags = true;
         proc_control_B.j_d = 3;
@@ -17421,7 +17505,7 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
             proc_control_B.i_ce++;
           }
 
-          proc_control_B.j_d++;
+          proc_control_B.j_c++;
         }
 
         if (proc_control_B.recomputeDiags) {
@@ -17449,10 +17533,10 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
                   } else if (proc_control_B.d6_j < 0.0) {
                     proc_control_B.d6_j = -1.0;
                   } else {
-                    proc_control_B.d6_j = (proc_control_B.d6_j > 0.0);
+                    proc_control_B.d6_l = (proc_control_B.d6_l > 0.0);
                   }
 
-                  if (rtIsNaN(proc_control_B.exptj)) {
+                  if (std::isnan(proc_control_B.exptj)) {
                     proc_control_B.exptj = (rtNaN);
                   } else if (proc_control_B.exptj < 0.0) {
                     proc_control_B.exptj = -1.0;
@@ -17527,15 +17611,10 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
           }
         }
 
-        proc_control_B.d6_j = rt_powd_snf(proc_control_norm_p(proc_control_B.A6),
+        proc_control_B.d6_l = rt_powd_snf(proc_control_norm_p(proc_control_B.A6),
           0.16666666666666666);
-        proc_control_B.eta1 = rt_powd_snf(proc_control_norm_p(proc_control_B.A4),
-          0.25);
-        if ((!(proc_control_B.eta1 >= proc_control_B.d6_j)) && (!rtIsNaN
-             (proc_control_B.d6_j))) {
-          proc_control_B.eta1 = proc_control_B.d6_j;
-        }
-
+        proc_control_B.eta1 = std::fmax(rt_powd_snf(proc_control_norm_p
+          (proc_control_B.A4), 0.25), proc_control_B.d6_l);
         guard1 = false;
         guard2 = false;
         guard3 = false;
@@ -17769,7 +17848,7 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
               proc_control_B.exptj = 0.0;
             }
 
-            if (proc_control_B.d6_j == 0.5) {
+            if (proc_control_B.d6_l == 0.5) {
               proc_control_B.exptj--;
             }
           }
@@ -17837,21 +17916,21 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
             proc_control_B.blockFormat[proc_control_B.i_ce] = 0;
           }
 
-          proc_control_B.j_d = 0;
-          while (proc_control_B.j_d + 1 < 12) {
-            proc_control_B.d6_j = A[(13 * proc_control_B.j_d +
-              proc_control_B.j_d) + 1];
-            if (proc_control_B.d6_j != 0.0) {
-              proc_control_B.blockFormat[proc_control_B.j_d] = 2;
-              proc_control_B.blockFormat[proc_control_B.j_d + 1] = 0;
-              proc_control_B.j_d += 2;
-            } else if ((proc_control_B.d6_j == 0.0) && (A[((proc_control_B.j_d +
-              1) * 13 + proc_control_B.j_d) + 2] == 0.0)) {
-              proc_control_B.blockFormat[proc_control_B.j_d] = 1;
-              proc_control_B.j_d++;
+          proc_control_B.j_c = 0;
+          while (proc_control_B.j_c + 1 < 12) {
+            proc_control_B.d6_l = A[(13 * proc_control_B.j_c +
+              proc_control_B.j_c) + 1];
+            if (proc_control_B.d6_l != 0.0) {
+              proc_control_B.blockFormat[proc_control_B.j_c] = 2;
+              proc_control_B.blockFormat[proc_control_B.j_c + 1] = 0;
+              proc_control_B.j_c += 2;
+            } else if ((proc_control_B.d6_l == 0.0) && (A[((proc_control_B.j_c +
+              1) * 13 + proc_control_B.j_c) + 2] == 0.0)) {
+              proc_control_B.blockFormat[proc_control_B.j_c] = 1;
+              proc_control_B.j_c++;
             } else {
-              proc_control_B.blockFormat[proc_control_B.j_d] = 0;
-              proc_control_B.j_d++;
+              proc_control_B.blockFormat[proc_control_B.j_c] = 0;
+              proc_control_B.j_c++;
             }
           }
 
@@ -17915,7 +17994,7 @@ void proc_control::proc_control_expm(real_T A[169], real_T F[169])
   }
 }
 
-void proc_control::proc_control_mldivide_pr35(const real_T A[36], real_T B[36])
+void proc_control::proc_control_mldivide_pr351e(const real_T A[36], real_T B[36])
 {
   real_T c_A[36];
   real_T temp;
@@ -19630,9 +19709,9 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   _mm_storeu_pd(&proc_control_B.dv51[0], _mm_mul_pd(tmp, _mm_set_pd(ct[198], ct
     [193])));
   proc_control_B.t575 = ct[28] * ct[113];
-  memcpy(&proc_control_B.ct_i[0], &ct[0], 11U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[0], &ct[0], 11U * sizeof(real_T));
   proc_control_B.ct_i[11] = ct[11];
-  memcpy(&proc_control_B.ct_i[12], &ct[13], sizeof(real_T) << 4U);
+  std::memcpy(&proc_control_B.ct_i[12], &ct[13], sizeof(real_T) << 4U);
   proc_control_B.ct_i[28] = ct[29];
   proc_control_B.ct_i[29] = ct[31];
   proc_control_B.ct_i[30] = ct[32];
@@ -19968,11 +20047,11 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[359] = ct[138];
   proc_control_B.ct_i[360] = ct[139];
   proc_control_B.ct_i[361] = ct[140];
-  memcpy(&proc_control_B.ct_i[362], &ct[142], 37U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[362], &ct[142], 37U * sizeof(real_T));
   proc_control_B.ct_i[399] = ct[179];
-  memcpy(&proc_control_B.ct_i[400], &ct[181], 81U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[400], &ct[181], 81U * sizeof(real_T));
   proc_control_B.ct_i[481] = ct[262];
-  memcpy(&proc_control_B.ct_i[482], &ct[270], 38U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[482], &ct[270], 38U * sizeof(real_T));
   proc_control_B.ct_i[520] = ct[308];
   proc_control_B.ct_i[521] = ct[310];
   proc_control_B.ct_i[522] = ct[311];
@@ -20003,7 +20082,7 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[547] = ct[349];
   proc_control_B.ct_i[548] = ct[350];
   proc_control_B.ct_i[549] = ct[351];
-  memcpy(&proc_control_B.ct_i[550], &ct[353], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[550], &ct[353], 10U * sizeof(real_T));
   proc_control_B.ct_i[560] = ct[363];
   proc_control_B.ct_i[561] = ct[365];
   proc_control_B.ct_i[562] = ct[366];
@@ -20035,11 +20114,11 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[588] = ct[398];
   proc_control_B.ct_i[589] = ct[3] * ct[198];
   proc_control_B.ct_i[590] = ct[399];
-  memcpy(&proc_control_B.ct_i[591], &ct[402], 9U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[591], &ct[402], 9U * sizeof(real_T));
   proc_control_B.ct_i[600] = ct[411];
-  memcpy(&proc_control_B.ct_i[601], &ct[415], 10U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[601], &ct[415], 10U * sizeof(real_T));
   proc_control_B.ct_i[611] = ct[426];
-  memcpy(&proc_control_B.ct_i[612], &ct[428], sizeof(real_T) << 4U);
+  std::memcpy(&proc_control_B.ct_i[612], &ct[428], sizeof(real_T) << 4U);
   proc_control_B.ct_i[628] = ct[444];
   proc_control_B.ct_i[629] = ct[446];
   proc_control_B.ct_i[630] = ct[15] * ct[191];
@@ -20055,7 +20134,7 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[640] = ct[455];
   proc_control_B.ct_i[641] = ct[456];
   proc_control_B.ct_i[642] = ct[457];
-  memcpy(&proc_control_B.ct_i[643], &ct[459], 26U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[643], &ct[459], 26U * sizeof(real_T));
   proc_control_B.ct_i[669] = ct[16] * ct[197];
   proc_control_B.ct_i[670] = ct[485];
   proc_control_B.ct_i[671] = ct[486];
@@ -20122,7 +20201,7 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[803] = ct[606];
   proc_control_B.ct_i[804] = ct[607];
   proc_control_B.ct_i[805] = ct[17] * ct[298];
-  memcpy(&proc_control_B.ct_i[806], &ct[609], 12U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[806], &ct[609], 12U * sizeof(real_T));
   proc_control_B.ct_i[818] = ct[15] * ct[300];
   proc_control_B.ct_i[819] = ct[622];
   proc_control_B.ct_i[820] = ct[623];
@@ -20179,7 +20258,7 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[873] = ct[661];
   proc_control_B.ct_i[874] = ct[663];
   proc_control_B.ct_i[875] = ct[664];
-  memcpy(&proc_control_B.ct_i[876], &ct[667], 18U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_i[876], &ct[667], 18U * sizeof(real_T));
   proc_control_B.ct_i[894] = ct[685];
   proc_control_B.ct_i[895] = ct[687];
   proc_control_B.ct_i[896] = ct[688];
@@ -20231,7 +20310,7 @@ void proc_control::proc_control_ft_2_p(const real_T ct[804], real_T out1[13])
   proc_control_B.ct_i[942] = ct[774];
   proc_control_B.ct_i[943] = ct[776];
   proc_control_B.ct_i[944] = ct[778];
-  memcpy(&proc_control_B.ct_i[945], &ct[780], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct_i[945], &ct[780], sizeof(real_T) << 3U);
   proc_control_B.ct_i[953] = -ct[296];
   proc_control_B.ct_i[954] = -ct[300];
   proc_control_B.ct_i[955] = -ct[303];
@@ -20537,11 +20616,11 @@ void proc_control::proc_control_ft_1_p(const real_T ct[435], real_T out1[13])
   proc_control_B.ct_c[135] = ct[70];
   proc_control_B.ct_c[136] = ct[72];
   proc_control_B.ct_c[137] = ct[74];
-  memcpy(&proc_control_B.ct_c[138], &ct[76], 12U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_c[138], &ct[76], 12U * sizeof(real_T));
   proc_control_B.ct_c[150] = ct[88];
-  memcpy(&proc_control_B.ct_c[151], &ct[90], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.ct_c[151], &ct[90], sizeof(real_T) << 3U);
   proc_control_B.ct_c[159] = ct[98];
-  memcpy(&proc_control_B.ct_c[160], &ct[100], 13U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_c[160], &ct[100], 13U * sizeof(real_T));
   proc_control_B.ct_c[173] = ct[113];
   proc_control_B.ct_c[174] = ct[116];
   proc_control_B.ct_c[175] = ct[117];
@@ -20585,7 +20664,7 @@ void proc_control::proc_control_ft_1_p(const real_T ct[435], real_T out1[13])
   proc_control_B.ct_c[221] = ct[174];
   proc_control_B.ct_c[222] = ct[177];
   proc_control_B.ct_c[223] = ct[178];
-  memcpy(&proc_control_B.ct_c[224], &ct[180], sizeof(real_T) << 4U);
+  std::memcpy(&proc_control_B.ct_c[224], &ct[180], sizeof(real_T) << 4U);
   proc_control_B.ct_c[240] = ct[196];
   proc_control_B.ct_c[241] = ct[198];
   proc_control_B.ct_c[242] = ct[199];
@@ -20600,7 +20679,7 @@ void proc_control::proc_control_ft_1_p(const real_T ct[435], real_T out1[13])
   _mm_storeu_pd(&proc_control_B.ct_c[267], _mm_mul_pd(tmp_n, _mm_loadu_pd(&ct
     [417])));
   proc_control_B.ct_c[269] = ct[32] * ct[419];
-  memcpy(&proc_control_B.ct_c[270], &ct[227], 26U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_c[270], &ct[227], 26U * sizeof(real_T));
   proc_control_B.ct_c[296] = ct[6] * ct[258] * ct[330];
   proc_control_B.ct_c[297] = ct[253];
   tmp_n = _mm_set_pd(ct[333], ct[330]);
@@ -20764,7 +20843,7 @@ void proc_control::proc_control_ft_1_p(const real_T ct[435], real_T out1[13])
   proc_control_B.ct_c[469] = ct[343];
   proc_control_B.ct_c[470] = ct[345];
   proc_control_B.ct_c[471] = ct[346];
-  memcpy(&proc_control_B.ct_c[472], &ct[348], 43U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ct_c[472], &ct[348], 43U * sizeof(real_T));
   proc_control_B.ct_c[515] = -ct[52];
   proc_control_B.ct_c[516] = -ct[53];
   proc_control_B.ct_c[517] = -ct[56];
@@ -21314,7 +21393,7 @@ void proc_control::proc_control_AUVQuatSimFcn(const real_T in1[13], const real_T
   proc_control_B.in3[3] = in3[21];
   proc_control_B.in3[4] = in3[22];
   proc_control_B.in3[5] = in3[23];
-  memcpy(&proc_control_B.in3[6], &in3[3], sizeof(real_T) << 3U);
+  std::memcpy(&proc_control_B.in3[6], &in3[3], sizeof(real_T) << 3U);
   proc_control_B.in3[14] = in3[11];
   proc_control_B.in3[15] = in3[33];
   proc_control_B.in3[16] = in3[34];
@@ -21856,8 +21935,8 @@ real_T proc_control::proc_control_norm_pr(const real_T x[4])
   real_T y;
   scale = 3.3121686421112381E-170;
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  absxk = fabs(x[0]);
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  absxk = std::abs(x[0]);
   if (absxk > 3.3121686421112381E-170) {
     y = 1.0;
     scale = absxk;
@@ -21866,8 +21945,8 @@ real_T proc_control::proc_control_norm_pr(const real_T x[4])
     y = t * t;
   }
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  absxk = fabs(x[1]);
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  absxk = std::abs(x[1]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -21877,8 +21956,8 @@ real_T proc_control::proc_control_norm_pr(const real_T x[4])
     y += t * t;
   }
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  absxk = fabs(x[2]);
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  absxk = std::abs(x[2]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -21888,8 +21967,8 @@ real_T proc_control::proc_control_norm_pr(const real_T x[4])
     y += t * t;
   }
 
-  // Start for MATLABSystem: '<S71>/MATLAB System'
-  absxk = fabs(x[3]);
+  // Start for MATLABSystem: '<S140>/MATLAB System'
+  absxk = std::abs(x[3]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -21899,7 +21978,7 @@ real_T proc_control::proc_control_norm_pr(const real_T x[4])
     y += t * t;
   }
 
-  return scale * sqrt(y);
+  return scale * std::sqrt(y);
 }
 
 void proc_control::proc_control_TrimPlant_stepImpl(TrimPlant_proc_control_T
@@ -21924,7 +22003,7 @@ void proc_control::proc_control_TrimPlant_stepImpl(TrimPlant_proc_control_T
     b_this->constValues[0] = constMec_mass;
     b_this->constValues[1] = constMec_volume;
     b_this->constValues[2] = constMec_sub_height;
-    memcpy(&b_this->constValues[3], &constMec_I[0], 9U * sizeof(real_T));
+    std::memcpy(&b_this->constValues[3], &constMec_I[0], 9U * sizeof(real_T));
     b_this->constValues[12] = constMec_rg[0];
     b_this->constValues[15] = constMec_rb[0];
     b_this->constValues[13] = constMec_rg[1];
@@ -22182,8 +22261,8 @@ void proc_control::proc_control_TrimPlant_stepImpl(TrimPlant_proc_control_T
   // ------------------------------------------------------------------------------ 
   //  Lineariser le système
   proc_cont_AUVQuatJacobianMatrix(y, b_this->constValues, proc_control_B.Ac);
-  memcpy(&C[0], &b_this->C[0], 169U * sizeof(real_T));
-  memcpy(&D[0], &b_this->D[0], 104U * sizeof(real_T));
+  std::memcpy(&C[0], &b_this->C[0], 169U * sizeof(real_T));
+  std::memcpy(&D[0], &b_this->D[0], 104U * sizeof(real_T));
 
   //  Discrétiser le système.
   for (proc_control_B.b_i_g = 0; proc_control_B.b_i_g <= 166;
@@ -22335,26 +22414,26 @@ void proc_control::proc_control_TrimPlant_stepImpl(TrimPlant_proc_control_T
     DX[proc_control_B.b_i_g] -= proc_control_B.t15_c;
   }
 
-  // End of Start for MATLABSystem: '<S71>/MATLAB System'
+  // End of Start for MATLABSystem: '<S140>/MATLAB System'
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_kron(const int32_T b_A_size[1], real_T K_data[],
   int32_T K_size[2])
 {
   int32_T b;
   int32_T kidx;
-  static const int8_T b_B[64] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  static const int8_T b_B[64]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
   K_size[0] = b_A_size[0] << 3;
   K_size[1] = 8;
   kidx = -1;
   b = b_A_size[0];
-  for (int32_T j2 = 0; j2 < 8; j2++) {
-    for (int32_T i1 = 0; i1 < b; i1++) {
-      for (int32_T i2 = 0; i2 < 8; i2++) {
+  for (int32_T j2{0}; j2 < 8; j2++) {
+    for (int32_T i1{0}; i1 < b; i1++) {
+      for (int32_T i2{0}; i2 < 8; i2++) {
         K_data[(kidx + i2) + 1] = b_B[(j2 << 3) + i2];
       }
 
@@ -22363,7 +22442,7 @@ void proc_control::proc_control_kron(const int32_T b_A_size[1], real_T K_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes(const real_T b_A_data[], const int32_T
   b_A_size[2], const real_T b_B_data[], const int32_T b_B_size[2], real_T
   b_C_data[], int32_T b_C_size[2])
@@ -22377,9 +22456,9 @@ void proc_control::proc_control_mtimes(const real_T b_A_data[], const int32_T
     proc_control_B.coffset = (proc_control_B.mc + 1) * proc_control_B.j_n;
     proc_control_B.boffset = proc_control_B.j_n * b_B_size[0];
     if (proc_control_B.mc >= 0) {
-      memset(&b_C_data[proc_control_B.coffset], 0, static_cast<uint32_T>
-             (((proc_control_B.mc + proc_control_B.coffset) -
-               proc_control_B.coffset) + 1) * sizeof(real_T));
+      std::memset(&b_C_data[proc_control_B.coffset], 0, static_cast<uint32_T>
+                  (((proc_control_B.mc + proc_control_B.coffset) -
+                    proc_control_B.coffset) + 1) * sizeof(real_T));
     }
 
     proc_control_B.c_k = b_A_size[1];
@@ -22409,7 +22488,7 @@ void proc_control::proc_control_mtimes(const real_T b_A_data[], const int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mpc_constraintcoef(const real_T b_A[441], const
   real_T Bu[168], const real_T Bv[21], const real_T b_C[273], const real_T Dv[13],
   const real_T Jm_data[], const int32_T Jm_size[2], real_T SuJm_data[], int32_T
@@ -22724,7 +22803,7 @@ void proc_control::proc_control_mpc_constraintcoef(const real_T b_A[441], const
                       Jm_size, SuJm_data, SuJm_size);
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_Mrows_reshape(boolean_T isMrows_data[], real_T
   Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436], const
   real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p)
@@ -22732,22 +22811,22 @@ void proc_control::proc_control_Mrows_reshape(boolean_T isMrows_data[], real_T
   int32_T loop_ub_tmp;
   loop_ub_tmp = b_p * 13;
   if (loop_ub_tmp - 1 >= 0) {
-    memcpy(&isMrows_data[0], &isMrows0[0], static_cast<uint32_T>(loop_ub_tmp) *
-           sizeof(boolean_T));
+    std::memcpy(&isMrows_data[0], &isMrows0[0], static_cast<uint32_T>
+                (loop_ub_tmp) * sizeof(boolean_T));
   }
 
   if (loop_ub_tmp - 1 >= 0) {
-    memcpy(&Mlimfull_data[0], &Mlimfull0[0], static_cast<uint32_T>(loop_ub_tmp) *
-           sizeof(real_T));
+    std::memcpy(&Mlimfull_data[0], &Mlimfull0[0], static_cast<uint32_T>
+                (loop_ub_tmp) * sizeof(real_T));
   }
 
   if (loop_ub_tmp - 1 >= 0) {
-    memcpy(&Vfull_data[0], &Vfull0[0], static_cast<uint32_T>(loop_ub_tmp) *
-           sizeof(real_T));
+    std::memcpy(&Vfull_data[0], &Vfull0[0], static_cast<uint32_T>(loop_ub_tmp) *
+                sizeof(real_T));
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_Mrows_reshape_h(boolean_T isMrows_data[], real_T
   Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436], const
   real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p, int32_T ioff)
@@ -22763,7 +22842,7 @@ void proc_control::proc_control_Mrows_reshape_h(boolean_T isMrows_data[], real_T
   }
 
   loop_ub_tmp = b_p * 13 - 1;
-  for (int32_T i = 0; i <= loop_ub_tmp; i++) {
+  for (int32_T i{0}; i <= loop_ub_tmp; i++) {
     isMrows_data[j + i] = isMrows0[i + 130];
   }
 
@@ -22773,7 +22852,7 @@ void proc_control::proc_control_Mrows_reshape_h(boolean_T isMrows_data[], real_T
     j = ioff;
   }
 
-  for (int32_T i = 0; i <= loop_ub_tmp; i++) {
+  for (int32_T i{0}; i <= loop_ub_tmp; i++) {
     Mlimfull_data[j + i] = Mlimfull0[i + 130];
   }
 
@@ -22788,7 +22867,7 @@ void proc_control::proc_control_Mrows_reshape_h(boolean_T isMrows_data[], real_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_Mrows_reshape_hn(boolean_T isMrows_data[],
   real_T Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436],
   const real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p, int32_T
@@ -22832,7 +22911,7 @@ void proc_control::proc_control_Mrows_reshape_hn(boolean_T isMrows_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_Mrows_reshape_hny(boolean_T isMrows_data[],
   real_T Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436],
   const real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p, int32_T
@@ -22876,7 +22955,7 @@ void proc_control::proc_control_Mrows_reshape_hny(boolean_T isMrows_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[],
   real_T Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436],
   const real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p, int32_T
@@ -22955,8 +23034,8 @@ void proc_control::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[],
     int32_T fb;
     int32_T hb_tmp;
     int32_T isMrows_tmp;
-    memcpy(&Mlimfull_data[ioff], &Mlimfull0[420], sizeof(real_T) << 3U);
-    memcpy(&Vfull_data[ioff], &Vfull0[420], sizeof(real_T) << 3U);
+    std::memcpy(&Mlimfull_data[ioff], &Mlimfull0[420], sizeof(real_T) << 3U);
+    std::memcpy(&Vfull_data[ioff], &Vfull0[420], sizeof(real_T) << 3U);
     for (hb_tmp = 0; hb_tmp < 8; hb_tmp++) {
       isMrows_data[((hb_tmp + ioff) + 1) - 1] = isMrows0[hb_tmp + 420];
     }
@@ -23020,7 +23099,7 @@ void proc_control::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[],
   real_T Mlimfull_data[], real_T Vfull_data[], const boolean_T isMrows0[436],
   const real_T Mlimfull0[436], const real_T Vfull0[436], int32_T b_p, int32_T
@@ -23099,8 +23178,8 @@ void proc_control::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[],
     int32_T fb;
     int32_T hb_tmp;
     int32_T isMrows_tmp;
-    memcpy(&Mlimfull_data[ioff], &Mlimfull0[428], sizeof(real_T) << 3U);
-    memcpy(&Vfull_data[ioff], &Vfull0[428], sizeof(real_T) << 3U);
+    std::memcpy(&Mlimfull_data[ioff], &Mlimfull0[428], sizeof(real_T) << 3U);
+    std::memcpy(&Vfull_data[ioff], &Vfull0[428], sizeof(real_T) << 3U);
     for (hb_tmp = 0; hb_tmp < 8; hb_tmp++) {
       isMrows_data[((hb_tmp + ioff) + 1) - 1] = isMrows0[hb_tmp + 428];
     }
@@ -23164,7 +23243,7 @@ void proc_control::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 int32_T proc_control::proc_cont_combineVectorElements(const boolean_T x_data[],
   const int32_T x_size[1])
 {
@@ -23172,14 +23251,14 @@ int32_T proc_control::proc_cont_combineVectorElements(const boolean_T x_data[],
   int32_T y;
   vlen = x_size[0];
   y = x_data[0];
-  for (int32_T k = 2; k <= vlen; k++) {
+  for (int32_T k{2}; k <= vlen; k++) {
     y += x_data[k - 1];
   }
 
   return y;
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_tril(real_T x_data[], const int32_T x_size[2])
 {
   int32_T n;
@@ -23187,8 +23266,8 @@ void proc_control::proc_control_tril(real_T x_data[], const int32_T x_size[2])
   if (x_size[1] > 1) {
     int32_T iend;
     iend = 0;
-    for (int32_T j = 2; j <= n; j++) {
-      for (int32_T i = 0; i <= iend; i++) {
+    for (int32_T j{2}; j <= n; j++) {
+      for (int32_T i{0}; i <= iend; i++) {
         x_data[i + x_size[0] * (j - 1)] = 0.0;
       }
 
@@ -23199,19 +23278,19 @@ void proc_control::proc_control_tril(real_T x_data[], const int32_T x_size[2])
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_eye(real_T b_I[64])
 {
   int32_T k_0;
-  memset(&b_I[0], 0, sizeof(real_T) << 6U);
+  std::memset(&b_I[0], 0, sizeof(real_T) << 6U);
   k_0 = 0;
-  for (int32_T k = 0; k < 8; k++) {
+  for (int32_T k{0}; k < 8; k++) {
     b_I[k_0] = 1.0;
     k_0 += 9;
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_kron_b(const real_T b_A_data[], const int32_T
   b_A_size[2], const real_T b_B[64], real_T K_data[], int32_T K_size[2])
 {
@@ -23237,7 +23316,7 @@ void proc_control::proc_control_kron_b(const real_T b_A_data[], const int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_eye_f(int32_T varargin_1, real_T b_I_data[],
   int32_T b_I_size[2])
 {
@@ -23246,22 +23325,22 @@ void proc_control::proc_control_eye_f(int32_T varargin_1, real_T b_I_data[],
   b_I_size[1] = varargin_1;
   loop_ub = varargin_1 * varargin_1;
   if (loop_ub - 1 >= 0) {
-    memset(&b_I_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+    std::memset(&b_I_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
   }
 
   if (varargin_1 > 0) {
     loop_ub = static_cast<uint8_T>(varargin_1);
-    for (int32_T k = 0; k < loop_ub; k++) {
+    for (int32_T k{0}; k < loop_ub; k++) {
       b_I_data[k + varargin_1 * k] = 1.0;
     }
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_updateWeights(const real_T b_signal[13], real_T
   W[13])
 {
-  for (int32_T ct = 0; ct < 13; ct++) {
+  for (int32_T ct{0}; ct < 13; ct++) {
     real_T b_signal_0;
     b_signal_0 = b_signal[ct];
     if (b_signal_0 < 0.0) {
@@ -23272,11 +23351,11 @@ void proc_control::proc_control_updateWeights(const real_T b_signal[13], real_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_updateWeights_c(const real_T b_signal[8], real_T
   W[8])
 {
-  for (int32_T ct = 0; ct < 8; ct++) {
+  for (int32_T ct{0}; ct < 8; ct++) {
     real_T b_signal_0;
     b_signal_0 = b_signal[ct];
     if (b_signal_0 < 0.0) {
@@ -23287,7 +23366,7 @@ void proc_control::proc_control_updateWeights_c(const real_T b_signal[8], real_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_WtMult(const real_T W[8], const real_T M_data[],
   const int32_T M_size[2], real_T WM_data[], int32_T WM_size[2])
 {
@@ -23302,7 +23381,7 @@ void proc_control::proc_control_WtMult(const real_T W[8], const real_T M_data[],
   WM_size[1] = M_size[1];
   loop_ub = M_size[0] * M_size[1];
   if (loop_ub - 1 >= 0) {
-    memset(&WM_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+    std::memset(&WM_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
   }
 
   ixw = 1;
@@ -23331,7 +23410,7 @@ void proc_control::proc_control_WtMult(const real_T W[8], const real_T M_data[],
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_a(const real_T b_A_data[], const int32_T
   b_A_size[2], const real_T b_B_data[], const int32_T b_B_size[2], real_T
   b_C_data[], int32_T b_C_size[2])
@@ -23366,7 +23445,7 @@ void proc_control::proc_control_mtimes_a(const real_T b_A_data[], const int32_T
   }
 }
 
-void proc_control::proc_control_binary_expand_op_3(real_T in1_data[], int32_T
+void proc_control::proc_control_binary_expand_op_4(real_T in1_data[], int32_T
   in1_size[2], const real_T in2_data[], const int32_T in2_size[2], const real_T
   in3_data[], const int32_T in3_size[2], const real_T in4_data[], const int32_T
   in4_size[2], const real_T in5[8], const real_T in6_data[], const int32_T
@@ -23479,7 +23558,7 @@ void proc_control::proc_control_binary_expand_op_3(real_T in1_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_af(const real_T b_A_data[], const int32_T
   b_A_size[2], const real_T b_B_data[], const int32_T b_B_size[2], real_T
   b_C_data[], int32_T b_C_size[2])
@@ -23508,7 +23587,7 @@ void proc_control::proc_control_mtimes_af(const real_T b_A_data[], const int32_T
   }
 }
 
-void proc_control::proc_control_binary_expand_op_2(real_T in1_data[], int32_T
+void proc_control::proc_control_binary_expand_op_3(real_T in1_data[], int32_T
   in1_size[2], const real_T in2_data[], const int32_T in2_size[2], const real_T
   in3_data[], const int32_T in3_size[2], const real_T in4_data[], const int32_T
   in4_size[2], const real_T in5_data[], const int32_T in5_size[2])
@@ -23557,7 +23636,7 @@ void proc_control::proc_control_binary_expand_op_2(real_T in1_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_contr_mpc_calculatehessian(const real_T b_Wy[13], const
   real_T b_Wu[8], const real_T b_Wdu[8], const real_T SuJm_data[], const int32_T
   SuJm_size[2], const real_T I2Jm_data[], const int32_T I2Jm_size[2], const
@@ -23690,7 +23769,7 @@ void proc_control::proc_contr_mpc_calculatehessian(const real_T b_Wy[13], const
         + proc_control_B.tmp_data_c[i];
     }
   } else {
-    proc_control_binary_expand_op_3(b_H_data, b_H_size, SuJm_data, SuJm_size,
+    proc_control_binary_expand_op_4(b_H_data, b_H_size, SuJm_data, SuJm_size,
       Kr_data, Kr_size, Jm_data, Jm_size, b_Wdu, I2Jm_data, I2Jm_size, Kut_data,
       Kut_size);
   }
@@ -23719,7 +23798,7 @@ void proc_control::proc_contr_mpc_calculatehessian(const real_T b_Wy[13], const
       Ku1_data[i] = proc_control_B.tmp_data_ja[i] + proc_control_B.tmp_data_m3[i];
     }
   } else {
-    proc_control_binary_expand_op_2(Ku1_data, Ku1_size, Su1_data, Su1_size,
+    proc_control_binary_expand_op_3(Ku1_data, Ku1_size, Su1_data, Su1_size,
       Kr_data, Kr_size, I1_data, I1_size, Kut_data, Kut_size);
   }
 
@@ -23775,7 +23854,7 @@ void proc_control::proc_contr_mpc_calculatehessian(const real_T b_Wy[13], const
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 int32_T proc_control::proc_control_xpotrf(int32_T n, real_T b_A_data[], int32_T
   lda)
 {
@@ -23851,7 +23930,7 @@ int32_T proc_control::proc_control_xpotrf(int32_T n, real_T b_A_data[], int32_T
   return info;
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_diag(const real_T v_data[], const int32_T
   v_size[2], real_T d_data[], int32_T d_size[1])
 {
@@ -23871,13 +23950,13 @@ void proc_control::proc_control_diag(const real_T v_data[], const int32_T
     }
 
     d_size[0] = dlen;
-    for (int32_T k = 0; k < dlen; k++) {
+    for (int32_T k{0}; k < dlen; k++) {
       d_data[k] = v_data[v_size[0] * k + k];
     }
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 real_T proc_control::proc_control_minimum(const real_T x_data[], const int32_T
   x_size[1])
 {
@@ -23890,8 +23969,8 @@ real_T proc_control::proc_control_minimum(const real_T x_data[], const int32_T
     } else {
       ex = x_data[x_size[0] - 1];
       if (!(x_data[0] > ex)) {
-        if (rtIsNaN(x_data[0])) {
-          if (rtIsNaN(ex)) {
+        if (std::isnan(x_data[0])) {
+          if (std::isnan(ex)) {
             ex = x_data[0];
           }
         } else {
@@ -23902,7 +23981,7 @@ real_T proc_control::proc_control_minimum(const real_T x_data[], const int32_T
   } else {
     int32_T idx;
     int32_T k;
-    if (!rtIsNaN(x_data[0])) {
+    if (!std::isnan(x_data[0])) {
       idx = 1;
     } else {
       boolean_T exitg1;
@@ -23910,7 +23989,7 @@ real_T proc_control::proc_control_minimum(const real_T x_data[], const int32_T
       k = 2;
       exitg1 = false;
       while ((!exitg1) && (k <= last)) {
-        if (!rtIsNaN(x_data[k - 1])) {
+        if (!std::isnan(x_data[k - 1])) {
           idx = k;
           exitg1 = true;
         } else {
@@ -23936,7 +24015,7 @@ real_T proc_control::proc_control_minimum(const real_T x_data[], const int32_T
   return ex;
 }
 
-void proc_control::proc_control_binary_expand_op_4(real_T in1_data[], int32_T
+void proc_control::proc_control_binary_expand_op_5(real_T in1_data[], int32_T
   in1_size[2], real_T in2, const int8_T in3_data[], const int32_T in3_size[2])
 {
   int32_T aux_0_1;
@@ -24000,7 +24079,7 @@ void proc_control::proc_control_binary_expand_op_4(real_T in1_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mpc_checkhessian(real_T b_H_data[], int32_T
   b_H_size[2], real_T L_data[], int32_T L_size[2], real_T *BadH)
 {
@@ -24154,7 +24233,7 @@ void proc_control::proc_control_mpc_checkhessian(real_T b_H_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_eye_f3(int32_T varargin_1, real_T b_I_data[],
   int32_T b_I_size[2])
 {
@@ -24163,18 +24242,18 @@ void proc_control::proc_control_eye_f3(int32_T varargin_1, real_T b_I_data[],
   b_I_size[1] = varargin_1;
   loop_ub = varargin_1 * varargin_1;
   if (loop_ub - 1 >= 0) {
-    memset(&b_I_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+    std::memset(&b_I_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
   }
 
   if (varargin_1 > 0) {
     loop_ub = static_cast<uint8_T>(varargin_1);
-    for (int32_T k = 0; k < loop_ub; k++) {
+    for (int32_T k{0}; k < loop_ub; k++) {
       b_I_data[k + varargin_1 * k] = 1.0;
     }
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_trisolve(const real_T b_A_data[], const int32_T
   b_A_size[2], real_T b_B_data[], const int32_T b_B_size[2])
 {
@@ -24215,7 +24294,7 @@ void proc_control::proc_control_trisolve(const real_T b_A_data[], const int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_linsolve(const real_T b_A_data[], const int32_T
   b_A_size[2], const real_T b_B_data[], const int32_T b_B_size[2], real_T
   b_C_data[], int32_T b_C_size[2])
@@ -24249,18 +24328,18 @@ void proc_control::proc_control_linsolve(const real_T b_A_data[], const int32_T
   proc_control_trisolve(b_A_data, b_A_size, b_C_data, b_C_size);
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_afa(const coder::array<real_T, 2U> &b_A,
   const real_T b_B[21], coder::array<real_T, 1U> &b_C)
 {
   int32_T mc;
   mc = b_A.size(0) - 1;
   b_C.set_size(b_A.size(0));
-  for (int32_T i = 0; i <= mc; i++) {
+  for (int32_T i{0}; i <= mc; i++) {
     b_C[i] = 0.0;
   }
 
-  for (int32_T i = 0; i < 21; i++) {
+  for (int32_T i{0}; i < 21; i++) {
     int32_T aoffset;
     int32_T scalarLB;
     int32_T vectorUB;
@@ -24280,17 +24359,17 @@ void proc_control::proc_control_mtimes_afa(const coder::array<real_T, 2U> &b_A,
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_afai(const coder::array<real_T, 2U> &b_A,
   const real_T b_B[8], coder::array<real_T, 1U> &b_C)
 {
   int32_T b_m_tmp;
   b_m_tmp = b_A.size(0);
   b_C.set_size(b_A.size(0));
-  for (int32_T i = 0; i < b_m_tmp; i++) {
+  for (int32_T i{0}; i < b_m_tmp; i++) {
     real_T s;
     s = 0.0;
-    for (int32_T k = 0; k < 8; k++) {
+    for (int32_T k{0}; k < 8; k++) {
       s += b_A[k * b_A.size(0) + i] * b_B[k];
     }
 
@@ -24298,7 +24377,7 @@ void proc_control::proc_control_mtimes_afai(const coder::array<real_T, 2U> &b_A,
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_afai0(const coder::array<real_T, 2U> &b_A,
   const coder::array<real_T, 1U> &b_B, coder::array<real_T, 1U> &b_C)
 {
@@ -24311,7 +24390,7 @@ void proc_control::proc_control_mtimes_afai0(const coder::array<real_T, 2U> &b_A
   }
 
   i = b_A.size(1);
-  for (int32_T k = 0; k < i; k++) {
+  for (int32_T k{0}; k < i; k++) {
     int32_T aoffset;
     int32_T scalarLB;
     int32_T vectorUB;
@@ -24331,7 +24410,7 @@ void proc_control::proc_control_mtimes_afai0(const coder::array<real_T, 2U> &b_A
   }
 }
 
-void proc_control::proc_control_binary_expand_op_7(coder::array<real_T, 1U> &in1,
+void proc_control::proc_control_binary_expand_op_8(coder::array<real_T, 1U> &in1,
   const coder::array<real_T, 1U> &in2, const coder::array<real_T, 2U> &in3,
   const real_T in4[21], const coder::array<real_T, 2U> &in5, const real_T in6[8],
   const coder::array<real_T, 2U> &in7, const coder::array<real_T, 1U> &in8)
@@ -24386,7 +24465,7 @@ void proc_control::proc_control_binary_expand_op_7(coder::array<real_T, 1U> &in1
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 real_T proc_control::proc_control_norm(const real_T x_data[], const int32_T
   x_size[1])
 {
@@ -24396,13 +24475,13 @@ real_T proc_control::proc_control_norm(const real_T x_data[], const int32_T
   } else {
     y = 0.0;
     if (x_size[0] == 1) {
-      y = fabs(x_data[0]);
+      y = std::abs(x_data[0]);
     } else {
       real_T scale;
       int32_T b;
       scale = 3.3121686421112381E-170;
       b = x_size[0];
-      for (int32_T k = 0; k < b; k++) {
+      for (int32_T k{0}; k < b; k++) {
         real_T absxk;
         absxk = fabs(x_data[k]);
         if (absxk > scale) {
@@ -24424,7 +24503,7 @@ real_T proc_control::proc_control_norm(const real_T x_data[], const int32_T
   return y;
 }
 
-void proc_control::proc_control_binary_expand_op_5(real_T in1_data[], int32_T
+void proc_control::proc_control_binary_expand_op_6(real_T in1_data[], int32_T
   in1_size[2], const coder::array<real_T, 2U> &in2, int32_T in3, const real_T
   in4_data[], const int32_T in4_size[1])
 {
@@ -24452,7 +24531,7 @@ void proc_control::proc_control_binary_expand_op_5(real_T in1_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mtimes_afai05(const real_T b_A_data[], const
   int32_T b_A_size[2], const real_T b_B_data[], real_T b_C_data[], int32_T
   b_C_size[1])
@@ -24462,11 +24541,11 @@ void proc_control::proc_control_mtimes_afai05(const real_T b_A_data[], const
   b_0 = b_A_size[0];
   b_C_size[0] = b_A_size[0];
   if (b_0 - 1 >= 0) {
-    memset(&b_C_data[0], 0, static_cast<uint32_T>(b_0) * sizeof(real_T));
+    std::memset(&b_C_data[0], 0, static_cast<uint32_T>(b_0) * sizeof(real_T));
   }
 
   b = b_A_size[1];
-  for (int32_T i = 0; i < b; i++) {
+  for (int32_T i{0}; i < b; i++) {
     int32_T aoffset;
     int32_T scalarLB;
     int32_T vectorUB;
@@ -24486,7 +24565,7 @@ void proc_control::proc_control_mtimes_afai05(const real_T b_A_data[], const
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 real_T proc_control::proc_control_xnrm2(int32_T n, const real_T x_data[],
   int32_T ix0)
 {
@@ -24494,7 +24573,7 @@ real_T proc_control::proc_control_xnrm2(int32_T n, const real_T x_data[],
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x_data[ix0 - 1]);
+      y = std::abs(x_data[ix0 - 1]);
     } else {
       proc_control_B.scale_b = 3.3121686421112381E-170;
       proc_control_B.kend_g = (ix0 + n) - 1;
@@ -24518,7 +24597,7 @@ real_T proc_control::proc_control_xnrm2(int32_T n, const real_T x_data[],
   return y;
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_xgemv(int32_T b_m, int32_T n, const real_T
   b_A_data[], int32_T ia0, int32_T lda, const real_T x_data[], int32_T ix0,
   real_T y_data[])
@@ -24527,7 +24606,7 @@ void proc_control::proc_control_xgemv(int32_T b_m, int32_T n, const real_T
     int32_T b;
     int32_T iy;
     if (n - 1 >= 0) {
-      memset(&y_data[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
+      std::memset(&y_data[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
     }
 
     iy = 0;
@@ -24547,7 +24626,7 @@ void proc_control::proc_control_xgemv(int32_T b_m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_xgerc(int32_T b_m, int32_T n, real_T alpha1,
   int32_T ix0, const real_T y_data[], real_T b_A_data[], int32_T ia0, int32_T
   lda)
@@ -24572,7 +24651,7 @@ void proc_control::proc_control_xgerc(int32_T b_m, int32_T n, real_T alpha1,
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_xgeqrf(real_T b_A_data[], const int32_T
   b_A_size[2], real_T tau_data[], int32_T tau_size[1])
 {
@@ -24595,15 +24674,15 @@ void proc_control::proc_control_xgeqrf(real_T b_A_data[], const int32_T
 
   tau_size[0] = proc_control_B.minmana;
   if (proc_control_B.minmana - 1 >= 0) {
-    memset(&tau_data[0], 0, static_cast<uint32_T>(proc_control_B.minmana) *
-           sizeof(real_T));
+    std::memset(&tau_data[0], 0, static_cast<uint32_T>(proc_control_B.minmana) *
+                sizeof(real_T));
   }
 
   if ((b_A_size[0] != 0) && (b_A_size[1] != 0) && (proc_control_B.minmn >= 1)) {
     tau_size[0] = proc_control_B.minmana;
     if (proc_control_B.minmana - 1 >= 0) {
-      memset(&tau_data[0], 0, static_cast<uint32_T>(proc_control_B.minmana) *
-             sizeof(real_T));
+      std::memset(&tau_data[0], 0, static_cast<uint32_T>(proc_control_B.minmana)
+                  * sizeof(real_T));
     }
 
     if (proc_control_B.n_tmp - 1 >= 0) {
@@ -24631,7 +24710,7 @@ void proc_control::proc_control_xgeqrf(real_T b_A_data[], const int32_T
               proc_control_B.xnorm = -proc_control_B.xnorm;
             }
 
-            if (fabs(proc_control_B.xnorm) < 1.0020841800044864E-292) {
+            if (std::abs(proc_control_B.xnorm) < 1.0020841800044864E-292) {
               proc_control_B.minmana = 0;
               proc_control_B.coltop_l = proc_control_B.ii_d + proc_control_B.mmi;
               do {
@@ -24656,8 +24735,8 @@ void proc_control::proc_control_xgeqrf(real_T b_A_data[], const int32_T
 
                 proc_control_B.xnorm *= 9.9792015476736E+291;
                 proc_control_B.atmp *= 9.9792015476736E+291;
-              } while ((fabs(proc_control_B.xnorm) < 1.0020841800044864E-292) &&
-                       (proc_control_B.minmana < 20));
+              } while ((std::abs(proc_control_B.xnorm) < 1.0020841800044864E-292)
+                       && (proc_control_B.minmana < 20));
 
               proc_control_B.xnorm = rt_hypotd_snf(proc_control_B.atmp,
                 proc_control_xnrm2(proc_control_B.mmi - 1, b_A_data,
@@ -24784,7 +24863,7 @@ void proc_control::proc_control_xgeqrf(real_T b_A_data[], const int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_xorgqr(int32_T b_m, int32_T n, int32_T k, real_T
   b_A_data[], const int32_T b_A_size[2], int32_T lda, const real_T tau_data[])
 {
@@ -24893,7 +24972,7 @@ void proc_control::proc_control_xorgqr(int32_T b_m, int32_T n, int32_T k, real_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 real_T proc_control::proc_control_KWIKfactor(const coder::array<real_T, 2U>
   &b_Ac, const coder::array<int32_T, 1U> &iC, int32_T nA, const real_T
   Linv_data[], const int32_T Linv_size[2], real_T RLinv_data[], const int32_T
@@ -25039,8 +25118,8 @@ real_T proc_control::proc_control_KWIKfactor(const coder::array<real_T, 2U>
   do {
     exitg1 = 0;
     if (proc_control_B.b_m <= nA - 1) {
-      if (fabs(proc_control_B.R_data[proc_control_B.R_size_idx_0 *
-               proc_control_B.b_m + proc_control_B.b_m]) < 1.0E-12) {
+      if (std::abs(proc_control_B.R_data[proc_control_B.R_size_idx_0 *
+                   proc_control_B.b_m + proc_control_B.b_m]) < 1.0E-12) {
         Status = -2.0;
         exitg1 = 1;
       } else {
@@ -25154,7 +25233,7 @@ real_T proc_control::proc_control_KWIKfactor(const coder::array<real_T, 2U>
   return Status;
 }
 
-void proc_control::proc_control_binary_expand_op_6(real_T in1_data[], int32_T
+void proc_control::proc_control_binary_expand_op_7(real_T in1_data[], int32_T
   in1_size[1], real_T in2, const real_T in3_data[], const int32_T in3_size[1])
 {
   real_T in1_data_0[81];
@@ -25187,7 +25266,7 @@ void proc_control::proc_control_binary_expand_op_6(real_T in1_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
   int32_T b_degrees, const real_T Kx_data[], const real_T Kr_data[], const
   int32_T Kr_size[2], const coder::array<real_T, 1U> &rseq, const real_T
@@ -25207,7 +25286,7 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
   boolean_T guard1;
   f_size[0] = b_degrees;
   if (b_degrees - 1 >= 0) {
-    memset(&f_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof(real_T));
+    std::memset(&f_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof(real_T));
   }
 
   for (proc_control_B.nA_a = 0; proc_control_B.nA_a <= b_degrees - 2;
@@ -25271,7 +25350,8 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
   if (nCon == 0) {
     zopt_size[0] = b_degrees;
     if (b_degrees - 1 >= 0) {
-      memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof(real_T));
+      std::memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof
+                  (real_T));
     }
 
     proc_control_B.nA_a = static_cast<uint8_T>(b_degrees);
@@ -25289,8 +25369,8 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
     }
   } else {
     if (b_degrees - 1 >= 0) {
-      memset(&proc_control_B.r_data[0], 0, static_cast<uint32_T>(b_degrees) *
-             sizeof(real_T));
+      std::memset(&proc_control_B.r_data[0], 0, static_cast<uint32_T>(b_degrees)
+                  * sizeof(real_T));
     }
 
     proc_control_B.rMin_b = 0.0;
@@ -25312,7 +25392,8 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
     proc_control_B.nA_a = -1;
     zopt_size[0] = b_degrees;
     if (b_degrees - 1 >= 0) {
-      memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof(real_T));
+      std::memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof
+                  (real_T));
     }
 
     proc_control_B.kNext = static_cast<uint8_T>(b_degrees);
@@ -25364,7 +25445,7 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
                 zopt_data[proc_control_B.idx];
             }
           } else {
-            proc_control_binary_expand_op_5(proc_control_B.AcRow_data,
+            proc_control_binary_expand_op_6(proc_control_B.AcRow_data,
               proc_control_B.AcRow_size, b_Ac, proc_control_B.kDrop, zopt_data,
               zopt_size);
           }
@@ -25727,12 +25808,10 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
               proc_control_B.cTol.set_size(Bc.size(0));
               for (proc_control_B.kDrop = 0; proc_control_B.kDrop <
                    proc_control_B.kNext; proc_control_B.kDrop++) {
-                proc_control_B.cTol[proc_control_B.kDrop] = fabs
+                proc_control_B.cTol[proc_control_B.kDrop] = std::abs
                   (Bc[proc_control_B.kDrop]);
-                if (proc_control_B.cTol[proc_control_B.kDrop] >= 1.0) {
-                } else {
-                  proc_control_B.cTol[proc_control_B.kDrop] = 1.0;
-                }
+                proc_control_B.cTol[proc_control_B.kDrop] = std::fmax
+                  (proc_control_B.cTol[proc_control_B.kDrop], 1.0);
               }
 
               proc_control_B.cTolComputed_h = false;
@@ -25754,12 +25833,13 @@ void proc_control::proc_control_mpc_solveQP(const real_T xQP[21], int32_T nCon,
        0)) {
     zopt_size[0] = b_degrees;
     if (b_degrees - 1 >= 0) {
-      memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof(real_T));
+      std::memset(&zopt_data[0], 0, static_cast<uint32_T>(b_degrees) * sizeof
+                  (real_T));
     }
   }
 }
 
-// Function for MATLAB Function: '<S107>/VariableHorizonOptimizer'
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
 void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U>
   &rseq, const coder::array<real_T, 1U> &vseq, const real_T umin[8], const
   real_T umax[8], const real_T x[21], const real_T old_u[8], const real_T Mlim0
@@ -25791,7 +25871,7 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
     346, 347 };
 
   boolean_T exitg1;
-  memset(&useq[0], 0, 88U * sizeof(real_T));
+  std::memset(&useq[0], 0, 88U * sizeof(real_T));
   if (b_p > 10) {
     b_p = 10;
   }
@@ -25813,8 +25893,8 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
   proc_control_B.Jm_size[1] = proc_control_B.TotalFreeMoves;
   proc_control_B.loop_ub = proc_control_B.pny_d * proc_control_B.TotalFreeMoves;
   if (proc_control_B.loop_ub - 1 >= 0) {
-    memset(&proc_control_B.Jm_data[0], 0, static_cast<uint32_T>
-           (proc_control_B.loop_ub) * sizeof(real_T));
+    std::memset(&proc_control_B.Jm_data[0], 0, static_cast<uint32_T>
+                (proc_control_B.loop_ub) * sizeof(real_T));
   }
 
   proc_control_B.j = 0;
@@ -25858,18 +25938,18 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
 
   proc_control_B.isMrows_size[0] = proc_control_B.nmoves;
   if (proc_control_B.nmoves - 1 >= 0) {
-    memset(&proc_control_B.isMrows_data[0], 0, static_cast<uint32_T>
-           (proc_control_B.nmoves) * sizeof(boolean_T));
+    std::memset(&proc_control_B.isMrows_data[0], 0, static_cast<uint32_T>
+                (proc_control_B.nmoves) * sizeof(boolean_T));
   }
 
   if (proc_control_B.nmoves - 1 >= 0) {
-    memset(&proc_control_B.Mlimfull_data[0], 0, static_cast<uint32_T>
-           (proc_control_B.nmoves) * sizeof(real_T));
+    std::memset(&proc_control_B.Mlimfull_data[0], 0, static_cast<uint32_T>
+                (proc_control_B.nmoves) * sizeof(real_T));
   }
 
   if (proc_control_B.nmoves - 1 >= 0) {
-    memset(&proc_control_B.Vfull_data[0], 0, static_cast<uint32_T>
-           (proc_control_B.nmoves) * sizeof(real_T));
+    std::memset(&proc_control_B.Vfull_data[0], 0, static_cast<uint32_T>
+                (proc_control_B.nmoves) * sizeof(real_T));
   }
 
   proc_control_Mrows_reshape(proc_control_B.isMrows_data,
@@ -26014,8 +26094,8 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
   proc_control_eye(proc_control_B.y_tmp);
   proc_control_kron_b(proc_control_B.w_data, proc_control_B.w_size,
                       proc_control_B.y_tmp, proc_control_B.I2Jm_data,
-                      proc_control_B.tmp_size);
-  proc_control_mtimes(proc_control_B.I2Jm_data, proc_control_B.tmp_size,
+                      proc_control_B.tmp_size_f);
+  proc_control_mtimes(proc_control_B.I2Jm_data, proc_control_B.tmp_size_f,
                       proc_control_B.Jm_data, proc_control_B.Jm_size,
                       proc_control_B.y_data_c, proc_control_B.y_size);
   proc_control_B.w_size[0] = b_p;
@@ -26028,14 +26108,14 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
   proc_control_tril(proc_control_B.w_data, proc_control_B.w_size);
   proc_control_kron_b(proc_control_B.w_data, proc_control_B.w_size,
                       proc_control_B.y_tmp, proc_control_B.I2Jm_data,
-                      proc_control_B.tmp_size);
-  proc_control_mtimes(proc_control_B.I2Jm_data, proc_control_B.tmp_size,
+                      proc_control_B.tmp_size_f);
+  proc_control_mtimes(proc_control_B.I2Jm_data, proc_control_B.tmp_size_f,
                       proc_control_B.Jm_data, proc_control_B.Jm_size,
                       proc_control_B.varargin_2_data, proc_control_B.w_size);
   proc_control_B.loop_ub = proc_control_B.w_size[0] * proc_control_B.w_size[1];
   if (proc_control_B.loop_ub - 1 >= 0) {
-    memcpy(&proc_control_B.I2Jm_data[0], &proc_control_B.varargin_2_data[0],
-           static_cast<uint32_T>(proc_control_B.loop_ub) * sizeof(real_T));
+    std::memcpy(&proc_control_B.I2Jm_data[0], &proc_control_B.varargin_2_data[0],
+                static_cast<uint32_T>(proc_control_B.loop_ub) * sizeof(real_T));
   }
 
   proc_control_eye_f(proc_control_B.TotalFreeMoves, proc_control_B.I3_data,
@@ -26564,8 +26644,8 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
   proc_control_B.loop_ub = (proc_control_B.TotalFreeMoves + 1) *
     (proc_control_B.TotalFreeMoves + 1);
   if (proc_control_B.loop_ub - 1 >= 0) {
-    memset(&proc_control_B.b_H_data_g[0], 0, static_cast<uint32_T>
-           (proc_control_B.loop_ub) * sizeof(real_T));
+    std::memset(&proc_control_B.b_H_data_g[0], 0, static_cast<uint32_T>
+                (proc_control_B.loop_ub) * sizeof(real_T));
   }
 
   proc_control_B.b_H_data_g[proc_control_B.TotalFreeMoves +
@@ -26579,7 +26659,7 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
     proc_control_B.Jm_size, proc_control_B.I1_data, proc_control_B.I1_size,
     proc_control_B.Su1_data_o, proc_control_B.Su1_size, proc_control_B.Sx_data_g,
     proc_control_B.Sx_size, proc_control_B.Hv_data, proc_control_B.Hv_size,
-    proc_control_B.I2Jm_data, proc_control_B.tmp_size, proc_control_B.Ku1_data,
+    proc_control_B.I2Jm_data, proc_control_B.tmp_size_f, proc_control_B.Ku1_data,
     proc_control_B.Ku1_size, proc_control_B.I3_data, proc_control_B.I3_size,
     proc_control_B.Kx_data, proc_control_B.Kx_size,
     proc_control_B.varargin_4_data, proc_control_B.varargin_4_size,
@@ -26623,9 +26703,9 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
     *status = -2.0;
   } else {
     proc_control_eye_f3(proc_control_B.TotalFreeMoves + 1,
-                        proc_control_B.tmp_data_g, proc_control_B.tmp_size);
+                        proc_control_B.tmp_data_g, proc_control_B.tmp_size_f);
     proc_control_linsolve(proc_control_B.b_Linv_data, proc_control_B.Jm_size,
-                          proc_control_B.tmp_data_g, proc_control_B.tmp_size,
+                          proc_control_B.tmp_data_g, proc_control_B.tmp_size_f,
                           proc_control_B.b_H_data_g, proc_control_B.b_H_size);
     proc_control_mtimes_afa(proc_control_B.b_Mx, x, proc_control_B.r);
     if (proc_control_B.b_Mlim.size(0) == 1) {
@@ -26678,7 +26758,7 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
             proc_control_B.r2[proc_control_B.i_c]);
       }
     } else {
-      proc_control_binary_expand_op_7(proc_control_B.Bc, proc_control_B.b_Mlim,
+      proc_control_binary_expand_op_8(proc_control_B.Bc, proc_control_B.b_Mlim,
         proc_control_B.b_Mx, x, proc_control_B.b_Mu1, old_u, proc_control_B.b_Mv,
         vseq);
     }
@@ -26765,7 +26845,7 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
 
     proc_control_mtimes_a(proc_control_B.b_H_data_g, proc_control_B.b_H_size,
                           proc_control_B.b_H_data_g, proc_control_B.b_H_size,
-                          proc_control_B.tmp_data_g, proc_control_B.tmp_size);
+                          proc_control_B.tmp_data_g, proc_control_B.tmp_size_f);
     proc_control_mpc_solveQP(x, proc_control_B.ioff,
       proc_control_B.TotalFreeMoves + 1, proc_control_B.Kx_data,
       proc_control_B.varargin_2_data, proc_control_B.w_size, rseq,
@@ -26773,7 +26853,7 @@ void proc_control::proc_contr_mpcblock_optimizerPM(const coder::array<real_T, 1U
       proc_control_B.varargin_4_size, vseq, proc_control_B.I3_data,
       proc_control_B.I3_size, proc_control_B.utargetseq_data,
       proc_control_B.b_H_data_g, proc_control_B.b_H_size,
-      proc_control_B.tmp_data_g, proc_control_B.tmp_size, proc_control_B.b_Ac,
+      proc_control_B.tmp_data_g, proc_control_B.tmp_size_f, proc_control_B.b_Ac,
       proc_control_B.Bc, proc_control_B.r3, proc_control_B.zopt_data,
       proc_control_B.tmp_size_l, proc_control_B.f_data,
       proc_control_B.isMrows_size, status);
@@ -26841,7 +26921,7 @@ boolean_T proc_control::proc_control_isequal_p(const real_T varargin_1[6], const
   return p;
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 real_T proc_control::proc_control_norm_nt(const real_T x[169])
 {
   real_T y;
@@ -26853,11 +26933,11 @@ real_T proc_control::proc_control_norm_nt(const real_T x[169])
   while ((!exitg1) && (j < 13)) {
     real_T s;
     s = 0.0;
-    for (int32_T i = 0; i < 13; i++) {
-      s += fabs(x[13 * j + i]);
+    for (int32_T i{0}; i < 13; i++) {
+      s += std::abs(x[13 * j + i]);
     }
 
-    if (rtIsNaN(s)) {
+    if (std::isnan(s)) {
       y = (rtNaN);
       exitg1 = true;
     } else {
@@ -26872,7 +26952,7 @@ real_T proc_control::proc_control_norm_nt(const real_T x[169])
   return y;
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_mpower_g(const real_T a[169], real_T b, real_T
   c[169])
 {
@@ -26952,13 +27032,13 @@ void proc_control::proc_control_mpower_g(const real_T a[169], real_T b, real_T
                 memcpy(&proc_control_B.cBuffer_o[0], &proc_control_B.aBuffer_b[0],
                        169U * sizeof(real_T));
               } else {
-                memcpy(&proc_control_B.cBuffer_o[0], &proc_control_B.b_a[0],
-                       169U * sizeof(real_T));
+                std::memcpy(&proc_control_B.cBuffer_o[0], &proc_control_B.b_a[0],
+                            169U * sizeof(real_T));
               }
             } else if (proc_control_B.aBufferInUse_c) {
               memcpy(&c[0], &proc_control_B.aBuffer_b[0], 169U * sizeof(real_T));
             } else {
-              memcpy(&c[0], &proc_control_B.b_a[0], 169U * sizeof(real_T));
+              std::memcpy(&c[0], &proc_control_B.b_a[0], 169U * sizeof(real_T));
             }
           } else {
             if (proc_control_B.aBufferInUse_c) {
@@ -27186,7 +27266,8 @@ void proc_control::proc_control_mpower_g(const real_T a[169], real_T b, real_T
               }
             }
 
-            memcpy(&c[0], &proc_control_B.cBuffer_o[0], 169U * sizeof(real_T));
+            std::memcpy(&c[0], &proc_control_B.cBuffer_o[0], 169U * sizeof
+                        (real_T));
           }
         }
 
@@ -27215,8 +27296,8 @@ void proc_control::proc_control_mpower_g(const real_T a[169], real_T b, real_T
             }
           }
 
-          memcpy(&proc_control_B.b_a[0], &proc_control_B.cBuffer_o[0], 169U *
-                 sizeof(real_T));
+          std::memcpy(&proc_control_B.b_a[0], &proc_control_B.cBuffer_o[0], 169U
+                      * sizeof(real_T));
         }
       } while (exitg1 == 0);
     } else {
@@ -27228,22 +27309,22 @@ void proc_control::proc_control_mpower_g(const real_T a[169], real_T b, real_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 real_T proc_control::proc_control_log2_o(real_T x)
 {
   real_T f;
   int32_T inte;
   if (x == 0.0) {
     f = (rtMinusInf);
-  } else if ((!rtIsInf(x)) && (!rtIsNaN(x))) {
+  } else if ((!std::isinf(x)) && (!std::isnan(x))) {
     real_T t;
-    t = frexp(x, &inte);
+    t = std::frexp(x, &inte);
     if (t == 0.5) {
       f = static_cast<real_T>(inte) - 1.0;
     } else if ((inte == 1) && (t < 0.75)) {
-      f = log(2.0 * t) / 0.69314718055994529;
+      f = std::log(2.0 * t) / 0.69314718055994529;
     } else {
-      f = log(t) / 0.69314718055994529 + static_cast<real_T>(inte);
+      f = std::log(t) / 0.69314718055994529 + static_cast<real_T>(inte);
     }
   } else {
     f = x;
@@ -27252,7 +27333,7 @@ real_T proc_control::proc_control_log2_o(real_T x)
   return f;
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_contro_padeApproximation_b(const real_T A[169], const
   real_T A2[169], const real_T A4[169], const real_T A6[169], int32_T m, real_T
   F[169])
@@ -27271,7 +27352,7 @@ void proc_control::proc_contro_padeApproximation_b(const real_T A[169], const
   int8_T ipiv[13];
   switch (m) {
    case 3:
-    memcpy(&F[0], &A2[0], 169U * sizeof(real_T));
+    std::memcpy(&F[0], &A2[0], 169U * sizeof(real_T));
     e_k_0 = 0;
     for (e_k = 0; e_k < 13; e_k++) {
       F[e_k_0] += 60.0;
@@ -27553,6 +27634,11 @@ void proc_control::proc_contro_padeApproximation_b(const real_T A[169], const
         A2[e_k_0];
     }
 
+    for (e_k_0 = 168; e_k_0 < 169; e_k_0++) {
+      A6_0[e_k_0] = (182.0 * A6[e_k_0] + 960960.0 * A4[e_k_0]) + 1.32324192E+9 *
+        A2[e_k_0];
+    }
+
     for (e_k_0 = 0; e_k_0 < 13; e_k_0++) {
       e_k = 0;
       for (jj = 0; jj < 13; jj++) {
@@ -27708,11 +27794,11 @@ void proc_control::proc_contro_padeApproximation_b(const real_T A[169], const
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_contr_recomputeBlockDiag_a(const real_T A[169], real_T
   F[169], const int32_T blockFormat[12])
 {
-  for (int32_T j = 0; j < 12; j++) {
+  for (int32_T j{0}; j < 12; j++) {
     switch (blockFormat[j]) {
      case 0:
       break;
@@ -27724,7 +27810,6 @@ void proc_control::proc_contr_recomputeBlockDiag_a(const real_T A[169], real_T
         real_T delta;
         real_T expa;
         real_T sinchdelta;
-        real_T u1;
         int32_T A_tmp;
         int32_T A_tmp_0;
         A_tmp_0 = 13 * j + j;
@@ -27734,20 +27819,16 @@ void proc_control::proc_contr_recomputeBlockDiag_a(const real_T A[169], real_T
         A_1 = A[A_tmp + 1];
         expa = exp(A_1);
         sinchdelta = (A_1 + A_0) / 2.0;
-        u1 = fabs(A_0 - A_1) / 2.0;
-        if ((sinchdelta >= u1) || rtIsNaN(u1)) {
-          u1 = sinchdelta;
-        }
-
-        if (u1 < 709.782712893384) {
+        if (std::fmax(sinchdelta, std::abs(A_0 - A_1) / 2.0) < 709.782712893384)
+        {
           A_0 = (A_1 - A_0) / 2.0;
           if (A_0 == 0.0) {
             A_0 = 1.0;
           } else {
-            A_0 = sinh(A_0) / A_0;
+            A_0 = std::sinh(A_0) / A_0;
           }
 
-          sinchdelta = A[A_tmp] * exp(sinchdelta) * A_0;
+          sinchdelta = A[A_tmp] * std::exp(sinchdelta) * A_0;
         } else {
           sinchdelta = (expa - delta) * A[A_tmp] / (A_1 - A_0);
         }
@@ -27790,11 +27871,11 @@ void proc_control::proc_contr_recomputeBlockDiag_a(const real_T A[169], real_T
   }
 
   if (blockFormat[11] == 0) {
-    F[168] = exp(A[168]);
+    F[168] = std::exp(A[168]);
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 real_T proc_control::proc_control_xnrm2_h(int32_T n, const real_T x[169],
   int32_T ix0)
 {
@@ -27802,7 +27883,7 @@ real_T proc_control::proc_control_xnrm2_h(int32_T n, const real_T x[169],
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -27830,7 +27911,7 @@ real_T proc_control::proc_control_xnrm2_h(int32_T n, const real_T x[169],
   return y;
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xzsyhetrd_c(real_T A[169], real_T D[13], real_T
   E[12], real_T tau[12])
 {
@@ -27999,7 +28080,7 @@ void proc_control::proc_control_xzsyhetrd_c(real_T A[169], real_T D[13], real_T
   D[12] = A[168];
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xzlascl_g(real_T cfrom, real_T cto, int32_T m,
   real_T A[13], int32_T iA0)
 {
@@ -28045,7 +28126,7 @@ void proc_control::proc_control_xzlascl_g(real_T cfrom, real_T cto, int32_T m,
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xzlascl_gj(real_T cfrom, real_T cto, int32_T m,
   real_T A[12], int32_T iA0)
 {
@@ -28091,13 +28172,13 @@ void proc_control::proc_control_xzlascl_gj(real_T cfrom, real_T cto, int32_T m,
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xzlartg_c(real_T f, real_T g, real_T *cs, real_T
   *sn, real_T *r)
 {
   real_T f1;
-  f1 = fabs(f);
-  *r = fabs(g);
+  f1 = std::abs(f);
+  *r = std::abs(g);
   if (g == 0.0) {
     *cs = 1.0;
     *sn = 0.0;
@@ -28111,7 +28192,7 @@ void proc_control::proc_control_xzlartg_c(real_T f, real_T g, real_T *cs, real_T
     }
   } else if ((f1 > 1.4916681462400413E-154) && (f1 < 4.7403759540545887E+153) &&
              (*r > 1.4916681462400413E-154) && (*r < 4.7403759540545887E+153)) {
-    *r = sqrt(f * f + g * g);
+    *r = std::sqrt(f * f + g * g);
     *cs = f1 / *r;
     if (!(f >= 0.0)) {
       *r = -*r;
@@ -28121,24 +28202,12 @@ void proc_control::proc_control_xzlartg_c(real_T f, real_T g, real_T *cs, real_T
   } else {
     real_T fs;
     real_T gs;
-    if ((f1 >= *r) || rtIsNaN(*r)) {
-      *r = f1;
-    }
-
-    if ((*r <= 2.2250738585072014E-308) || rtIsNaN(*r)) {
-      *r = 2.2250738585072014E-308;
-    }
-
-    if (*r >= 4.49423283715579E+307) {
-      f1 = 4.49423283715579E+307;
-    } else {
-      f1 = *r;
-    }
-
+    f1 = std::fmin(4.49423283715579E+307, std::fmax(2.2250738585072014E-308, std::
+      fmax(f1, *r)));
     fs = f / f1;
     gs = g / f1;
-    *r = sqrt(fs * fs + gs * gs);
-    *cs = fabs(fs) / *r;
+    *r = std::sqrt(fs * fs + gs * gs);
+    *cs = std::abs(fs) / *r;
     if (!(f >= 0.0)) {
       *r = -*r;
     }
@@ -28148,7 +28217,7 @@ void proc_control::proc_control_xzlartg_c(real_T f, real_T g, real_T *cs, real_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_rotateRight_nh(int32_T n, real_T z[169], int32_T
   iz0, const real_T cs[24], int32_T ic0, int32_T is0)
 {
@@ -28176,7 +28245,7 @@ void proc_control::proc_control_rotateRight_nh(int32_T n, real_T z[169], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xdlaev2_d(real_T a, real_T b, real_T c, real_T
   *rt1, real_T *rt2, real_T *cs1, real_T *sn1)
 {
@@ -28255,7 +28324,7 @@ void proc_control::proc_control_xdlaev2_d(real_T a, real_T b, real_T c, real_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_rotateRight_n(int32_T n, real_T z[169], int32_T
   iz0, const real_T cs[24], int32_T ic0, int32_T is0)
 {
@@ -28283,7 +28352,7 @@ void proc_control::proc_control_rotateRight_n(int32_T n, real_T z[169], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 int32_T proc_control::proc_control_xzsteqr_h(real_T d[13], real_T e[12], real_T
   z[169])
 {
@@ -28627,7 +28696,7 @@ int32_T proc_control::proc_control_xzsteqr_h(real_T d[13], real_T e[12], real_T
   return info;
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_xsyheev_c(real_T A[169], int32_T *info, real_T
   W[13])
 {
@@ -28866,7 +28935,7 @@ void proc_control::proc_control_xsyheev_c(real_T A[169], int32_T *info, real_T
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
 {
   __m128d tmp;
@@ -28895,7 +28964,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
     proc_control_B.e_j = 0;
     exitg2 = false;
     while ((!exitg2) && (proc_control_B.e_j < 13)) {
-      proc_control_B.e_i = 0;
+      proc_control_B.e_i_k = 0;
       do {
         exitg1 = 0;
         if (proc_control_B.e_i < 13) {
@@ -28904,7 +28973,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
             proc_control_B.recomputeDiags_c = false;
             exitg1 = 1;
           } else {
-            proc_control_B.e_i++;
+            proc_control_B.e_i_k++;
           }
         } else {
           proc_control_B.e_j++;
@@ -28930,7 +28999,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
       proc_control_B.e_j = 0;
       exitg2 = false;
       while ((!exitg2) && (proc_control_B.e_j < 13)) {
-        proc_control_B.e_i = 0;
+        proc_control_B.e_i_k = 0;
         do {
           exitg1 = 0;
           if (proc_control_B.e_i <= proc_control_B.e_j) {
@@ -28939,7 +29008,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
               proc_control_B.recomputeDiags_c = false;
               exitg1 = 1;
             } else {
-              proc_control_B.e_i++;
+              proc_control_B.e_i_k++;
             }
           } else {
             proc_control_B.e_j++;
@@ -29012,10 +29081,10 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
             proc_control_B.i17 += 13;
           }
 
-          proc_control_B.e_i += 13;
+          proc_control_B.e_i_k += 13;
         }
 
-        memcpy(&F[0], &proc_control_B.A4_p[0], 169U * sizeof(real_T));
+        std::memcpy(&F[0], &proc_control_B.A4_p[0], 169U * sizeof(real_T));
       } else {
         proc_control_B.recomputeDiags_c = true;
         proc_control_B.e_j = 3;
@@ -29035,7 +29104,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
           proc_control_B.e_j = 1;
           exitg2 = false;
           while ((!exitg2) && (proc_control_B.e_j - 1 < 12)) {
-            proc_control_B.e_i = (proc_control_B.e_j - 1) * 13 +
+            proc_control_B.e_i_k = (proc_control_B.e_j - 1) * 13 +
               proc_control_B.e_j;
             proc_control_B.d6_ji = A[proc_control_B.e_i];
             if (proc_control_B.d6_ji != 0.0) {
@@ -29100,7 +29169,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
               proc_control_B.d6_ji;
           }
 
-          proc_control_B.e_i += 13;
+          proc_control_B.e_i_k += 13;
         }
 
         for (proc_control_B.e_i = 0; proc_control_B.e_i < 13; proc_control_B.e_i
@@ -29194,7 +29263,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
             for (proc_control_B.e_j = 168; proc_control_B.e_j < 169;
                  proc_control_B.e_j++) {
               proc_control_B.A4_e[proc_control_B.e_j] = 0.12321872304378752 *
-                fabs(A[proc_control_B.e_j]);
+                std::abs(A[proc_control_B.e_j]);
             }
 
             proc_control_mpower_g(proc_control_B.A4_e, 11.0, proc_control_B.dv3);
@@ -29237,7 +29306,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
             for (proc_control_B.e_j = 168; proc_control_B.e_j < 169;
                  proc_control_B.e_j++) {
               proc_control_B.A4_e[proc_control_B.e_j] = 0.090475336558796943 *
-                fabs(A[proc_control_B.e_j]);
+                std::abs(A[proc_control_B.e_j]);
             }
 
             proc_control_mpower_g(proc_control_B.A4_e, 15.0, proc_control_B.dv3);
@@ -29272,7 +29341,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
             for (proc_control_B.e_j = 168; proc_control_B.e_j < 169;
                  proc_control_B.e_j++) {
               proc_control_B.A4_e[proc_control_B.e_j] = 0.071467735648795785 *
-                fabs(A[proc_control_B.e_j]);
+                std::abs(A[proc_control_B.e_j]);
             }
 
             proc_control_mpower_g(proc_control_B.A4_e, 19.0, proc_control_B.dv3);
@@ -29530,7 +29599,7 @@ void proc_control::proc_control_expm_l(real_T A[169], real_T F[169])
   }
 }
 
-// Function for MATLAB Function: '<S72>/MATLAB Function'
+// Function for MATLAB Function: '<S141>/MATLAB Function'
 void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
 {
   real_T b_A[36];
@@ -29548,7 +29617,7 @@ void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
     ipiv[ijA] = static_cast<int8_T>(ijA + 1);
   }
 
-  for (int32_T b_j = 0; b_j < 5; b_j++) {
+  for (int32_T b_j{0}; b_j < 5; b_j++) {
     jj = b_j * 7;
     iy = 6 - b_j;
     b_ix = 0;
@@ -29608,7 +29677,7 @@ void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
     }
   }
 
-  for (int32_T b_j = 0; b_j < 5; b_j++) {
+  for (int32_T b_j{0}; b_j < 5; b_j++) {
     int8_T ipiv_0;
     ipiv_0 = ipiv[b_j];
     if (b_j + 1 != ipiv_0) {
@@ -29622,7 +29691,7 @@ void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
     }
   }
 
-  for (int32_T b_j = 0; b_j < 6; b_j++) {
+  for (int32_T b_j{0}; b_j < 6; b_j++) {
     jj = 6 * b_j;
     for (iy = 0; iy < 6; iy++) {
       b_ix = 6 * iy;
@@ -29636,7 +29705,7 @@ void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
     }
   }
 
-  for (int32_T b_j = 0; b_j < 6; b_j++) {
+  for (int32_T b_j{0}; b_j < 6; b_j++) {
     jj = 6 * b_j;
     for (iy = 5; iy >= 0; iy--) {
       b_ix = 6 * iy;
@@ -29653,7 +29722,7 @@ void proc_control::proc_control_mldivide_jo(const real_T A[36], real_T B[36])
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_AUV8QuatSimFcn(const real_T in1[13], const
   real_T in2[8], real_T out1[13])
 {
@@ -30092,7 +30161,7 @@ real_T proc_control::proc_control_norm_nti(const real_T x[4])
   real_T t;
   real_T y;
   scale = 3.3121686421112381E-170;
-  absxk = fabs(x[0]);
+  absxk = std::abs(x[0]);
   if (absxk > 3.3121686421112381E-170) {
     y = 1.0;
     scale = absxk;
@@ -30101,7 +30170,7 @@ real_T proc_control::proc_control_norm_nti(const real_T x[4])
     y = t * t;
   }
 
-  absxk = fabs(x[1]);
+  absxk = std::abs(x[1]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -30111,7 +30180,7 @@ real_T proc_control::proc_control_norm_nti(const real_T x[4])
     y += t * t;
   }
 
-  absxk = fabs(x[2]);
+  absxk = std::abs(x[2]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -30121,7 +30190,7 @@ real_T proc_control::proc_control_norm_nti(const real_T x[4])
     y += t * t;
   }
 
-  absxk = fabs(x[3]);
+  absxk = std::abs(x[3]);
   if (absxk > scale) {
     t = scale / absxk;
     y = y * t * t + 1.0;
@@ -30131,10 +30200,10 @@ real_T proc_control::proc_control_norm_nti(const real_T x[4])
     y += t * t;
   }
 
-  return scale * sqrt(y);
+  return scale * std::sqrt(y);
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_mpc_plantupdate(const real_T a[169], real_T b
   [104], const real_T c[169], real_T b_A[441], real_T b_B[630], real_T b_C[273],
   const real_T b_D[390], const int32_T b_mvindex[8], const int32_T b_myindex[13],
@@ -30189,7 +30258,7 @@ void proc_control::proc_control_mpc_plantupdate(const real_T a[169], real_T b
       b_B[i_0 + 21 * i_1] = b[(b_mvindex[i_1] - 1) * 13 + i_0];
     }
 
-    memcpy(&Bu[i_1 * 21], &b_B[i_1 * 21], 21U * sizeof(real_T));
+    std::memcpy(&Bu[i_1 * 21], &b_B[i_1 * 21], 21U * sizeof(real_T));
   }
 
   for (i_1 = 0; i_1 < 21; i_1++) {
@@ -30229,7 +30298,7 @@ void proc_control::proc_control_mpc_plantupdate(const real_T a[169], real_T b
 
   for (i_1 = 0; i_1 < 34; i_1++) {
     i_0 = 0;
-    for (int32_T i = 0; i < 34; i++) {
+    for (int32_T i{0}; i < 34; i++) {
       real_T CovMat;
       CovMat = 0.0;
       b_tmp = 0;
@@ -30246,21 +30315,21 @@ void proc_control::proc_control_mpc_plantupdate(const real_T a[169], real_T b
 
   i_1 = 0;
   i_0 = 0;
-  for (int32_T i = 0; i < 21; i++) {
-    memcpy(&QQ[i_1], &proc_control_B.CovMat[i_0], 21U * sizeof(real_T));
+  for (int32_T i{0}; i < 21; i++) {
+    std::memcpy(&QQ[i_1], &proc_control_B.CovMat[i_0], 21U * sizeof(real_T));
     i_1 += 21;
     i_0 += 34;
   }
 
   for (i_1 = 0; i_1 < 13; i_1++) {
-    memcpy(&RR[i_1 * 13], &proc_control_B.CovMat[i_1 * 34 + 735], 13U * sizeof
-           (real_T));
-    memcpy(&NN[i_1 * 21], &proc_control_B.CovMat[i_1 * 34 + 714], 21U * sizeof
-           (real_T));
+    std::memcpy(&RR[i_1 * 13], &proc_control_B.CovMat[i_1 * 34 + 735], 13U *
+                sizeof(real_T));
+    std::memcpy(&NN[i_1 * 21], &proc_control_B.CovMat[i_1 * 34 + 714], 21U *
+                sizeof(real_T));
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_cont_mpc_constraintcoefLTV(const real_T b_A[4851], const
   real_T Bu[1848], const real_T Bv[231], const real_T b_C[3003], const real_T
   Dv[143], const real_T b_Jm[640], real_T b_SuJm[1040], real_T b_Sx[2730],
@@ -30513,7 +30582,6 @@ void proc_control::proc_cont_mpc_constraintcoefLTV(const real_T b_A[4851], const
             proc_control_B.i27 + proc_control_B.i_jx];
         }
       }
-    }
 
     if (proc_control_B.i_m + 2 < 10) {
       for (proc_control_B.b_Su1_tmp = 0; proc_control_B.b_Su1_tmp <=
@@ -30568,7 +30636,7 @@ void proc_control::proc_cont_mpc_constraintcoefLTV(const real_T b_A[4851], const
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 int32_T proc_control::proc_control_xpotrf_f(real_T b_A[81])
 {
   int32_T info;
@@ -30584,7 +30652,7 @@ int32_T proc_control::proc_control_xpotrf_f(real_T b_A[81])
     idxAjj = j * 9 + j;
     ssq = 0.0;
     if (j >= 1) {
-      for (int32_T b_k = 0; b_k < j; b_k++) {
+      for (int32_T b_k{0}; b_k < j; b_k++) {
         c = b_A[b_k * 9 + j];
         ssq += c * c;
       }
@@ -30638,13 +30706,13 @@ int32_T proc_control::proc_control_xpotrf_f(real_T b_A[81])
   return info;
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 real_T proc_control::proc_control_minimum_l(const real_T x[9])
 {
   real_T ex;
   int32_T idx;
   int32_T k;
-  if (!rtIsNaN(x[0])) {
+  if (!std::isnan(x[0])) {
     idx = 1;
   } else {
     boolean_T exitg1;
@@ -30652,7 +30720,7 @@ real_T proc_control::proc_control_minimum_l(const real_T x[9])
     k = 2;
     exitg1 = false;
     while ((!exitg1) && (k < 10)) {
-      if (!rtIsNaN(x[k - 1])) {
+      if (!std::isnan(x[k - 1])) {
         idx = k;
         exitg1 = true;
       } else {
@@ -30677,13 +30745,13 @@ real_T proc_control::proc_control_minimum_l(const real_T x[9])
   return ex;
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_trisolve_g(const real_T b_A[81], real_T b_B[81])
 {
-  for (int32_T j = 0; j < 9; j++) {
+  for (int32_T j{0}; j < 9; j++) {
     int32_T jBcol;
     jBcol = 9 * j;
-    for (int32_T b_k = 0; b_k < 9; b_k++) {
+    for (int32_T b_k{0}; b_k < 9; b_k++) {
       real_T b_B_0;
       int32_T b_B_tmp;
       int32_T kAcol;
@@ -30692,7 +30760,7 @@ void proc_control::proc_control_trisolve_g(const real_T b_A[81], real_T b_B[81])
       b_B_0 = b_B[b_B_tmp];
       if (b_B_0 != 0.0) {
         b_B[b_B_tmp] = b_B_0 / b_A[b_k + kAcol];
-        for (int32_T i = b_k + 2; i < 10; i++) {
+        for (int32_T i{b_k + 2}; i < 10; i++) {
           int32_T tmp;
           tmp = (i + jBcol) - 1;
           b_B[tmp] -= b_A[(i + kAcol) - 1] * b_B[b_B_tmp];
@@ -30702,16 +30770,16 @@ void proc_control::proc_control_trisolve_g(const real_T b_A[81], real_T b_B[81])
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 real_T proc_control::proc_control_norm_n(const real_T x[9])
 {
   real_T scale;
   real_T y;
   y = 0.0;
   scale = 3.3121686421112381E-170;
-  for (int32_T k = 0; k < 9; k++) {
+  for (int32_T k{0}; k < 9; k++) {
     real_T absxk;
-    absxk = fabs(x[k]);
+    absxk = std::abs(x[k]);
     if (absxk > scale) {
       real_T t;
       t = scale / absxk;
@@ -30724,16 +30792,16 @@ real_T proc_control::proc_control_norm_n(const real_T x[9])
     }
   }
 
-  return scale * sqrt(y);
+  return scale * std::sqrt(y);
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 real_T proc_control::proc_control_maximum(const real_T x[9])
 {
   real_T ex;
   int32_T idx;
   int32_T k;
-  if (!rtIsNaN(x[0])) {
+  if (!std::isnan(x[0])) {
     idx = 1;
   } else {
     boolean_T exitg1;
@@ -30741,7 +30809,7 @@ real_T proc_control::proc_control_maximum(const real_T x[9])
     k = 2;
     exitg1 = false;
     while ((!exitg1) && (k < 10)) {
-      if (!rtIsNaN(x[k - 1])) {
+      if (!std::isnan(x[k - 1])) {
         idx = k;
         exitg1 = true;
       } else {
@@ -30766,7 +30834,7 @@ real_T proc_control::proc_control_maximum(const real_T x[9])
   return ex;
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 real_T proc_control::proc_control_xnrm2_g(int32_T n, const real_T x[81], int32_T
   ix0)
 {
@@ -30774,7 +30842,7 @@ real_T proc_control::proc_control_xnrm2_g(int32_T n, const real_T x[81], int32_T
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x[ix0 - 1]);
+      y = std::abs(x[ix0 - 1]);
     } else {
       proc_control_B.scale_d = 3.3121686421112381E-170;
       proc_control_B.kend = (ix0 + n) - 1;
@@ -30798,14 +30866,14 @@ real_T proc_control::proc_control_xnrm2_g(int32_T n, const real_T x[81], int32_T
   return y;
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_xgemv_f(int32_T b_m, int32_T n, const real_T
   b_A[81], int32_T ia0, const real_T x[81], int32_T ix0, real_T y[9])
 {
   if ((b_m != 0) && (n != 0)) {
     int32_T b;
     if (n - 1 >= 0) {
-      memset(&y[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
+      std::memset(&y[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
     }
 
     b = (n - 1) * 9 + ia0;
@@ -30825,7 +30893,7 @@ void proc_control::proc_control_xgemv_f(int32_T b_m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_xgerc_g(int32_T b_m, int32_T n, real_T alpha1,
   int32_T ix0, const real_T y[9], real_T b_A[81], int32_T ia0)
 {
@@ -30849,7 +30917,7 @@ void proc_control::proc_control_xgerc_g(int32_T b_m, int32_T n, real_T alpha1,
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_KWIKfactor_k(const real_T b_Ac[2034], const
   int32_T iC[226], int32_T nA, const real_T b_Linv[81], real_T b_D[81], real_T
   b_H[81], int32_T n, real_T RLinv[81], real_T *Status)
@@ -31250,14 +31318,14 @@ void proc_control::proc_control_KWIKfactor_k(const real_T b_Ac[2034], const
   } while (exitg1 == 0);
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_DropConstraint(int32_T kDrop, boolean_T iA[226],
   int32_T *nA, int32_T iC[226])
 {
   if (kDrop > 0) {
     iA[iC[kDrop - 1] - 1] = false;
     if (kDrop < *nA) {
-      for (int32_T i = kDrop; i < *nA; i++) {
+      for (int32_T i{kDrop}; i < *nA; i++) {
         iC[i - 1] = iC[i];
       }
     }
@@ -31267,7 +31335,7 @@ void proc_control::proc_control_DropConstraint(int32_T kDrop, boolean_T iA[226],
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_qpkwik(const real_T b_Linv[81], const real_T
   b_Hinv[81], const real_T f[9], const real_T b_Ac[2034], const real_T b[226],
   boolean_T iA[226], int32_T maxiter, real_T FeasTol, real_T x[9], real_T
@@ -31281,8 +31349,8 @@ void proc_control::proc_control_qpkwik(const real_T b_Linv[81], const real_T
   boolean_T exitg4;
   boolean_T guard1;
   boolean_T guard2;
-  memset(&x[0], 0, 9U * sizeof(real_T));
-  memset(&lambda[0], 0, 226U * sizeof(real_T));
+  std::memset(&x[0], 0, 9U * sizeof(real_T));
+  std::memset(&lambda[0], 0, 226U * sizeof(real_T));
   *status = 1;
   memset(&proc_control_B.r_i[0], 0, 9U * sizeof(real_T));
   proc_control_B.rMin = 0.0;
@@ -31432,7 +31500,7 @@ void proc_control::proc_control_qpkwik(const real_T b_Linv[81], const real_T
         }
       } else {
         if (proc_control_B.nA <= 0) {
-          memset(&lambda[0], 0, 226U * sizeof(real_T));
+          std::memset(&lambda[0], 0, 226U * sizeof(real_T));
           for (proc_control_B.tmp = 0; proc_control_B.tmp < 9;
                proc_control_B.tmp++) {
             proc_control_B.Xnorm0 = 0.0;
@@ -31746,17 +31814,12 @@ void proc_control::proc_control_qpkwik(const real_T b_Linv[81], const real_T
             }
           } else {
             proc_control_B.cMin = proc_control_norm_n(x);
-            if (fabs(proc_control_B.cMin - proc_control_B.Xnorm0) > 0.001) {
+            if (std::abs(proc_control_B.cMin - proc_control_B.Xnorm0) > 0.001) {
               proc_control_B.Xnorm0 = proc_control_B.cMin;
               for (proc_control_B.tmp = 0; proc_control_B.tmp < 226;
                    proc_control_B.tmp++) {
-                proc_control_B.cMin = fabs(b[proc_control_B.tmp]);
-                if (proc_control_B.cMin >= 1.0) {
-                  proc_control_B.cTol_p[proc_control_B.tmp] =
-                    proc_control_B.cMin;
-                } else {
-                  proc_control_B.cTol_p[proc_control_B.tmp] = 1.0;
-                }
+                proc_control_B.cTol_p[proc_control_B.tmp] = std::fmax(std::abs
+                  (b[proc_control_B.tmp]), 1.0);
               }
 
               proc_control_B.cTolComputed = false;
@@ -31774,7 +31837,7 @@ void proc_control::proc_control_qpkwik(const real_T b_Linv[81], const real_T
   }
 }
 
-// Function for MATLAB Function: '<S143>/FixedHorizonOptimizer'
+// Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
 void proc_control::proc_control_mpcblock_optimizer(const real_T rseq[130], const
   real_T vseq[11], const real_T umin[8], const real_T umax[8], const real_T x[21],
   const real_T old_u[8], const boolean_T iA[226], const real_T b_Mlim[226],
@@ -31798,7 +31861,7 @@ void proc_control::proc_control_mpcblock_optimizer(const real_T rseq[130], const
   boolean_T exitg2;
   boolean_T guard1;
   boolean_T guard2;
-  memset(&iAout[0], 0, 226U * sizeof(boolean_T));
+  std::memset(&iAout[0], 0, 226U * sizeof(boolean_T));
   proc_cont_mpc_constraintcoefLTV(b_A, Bu, Bv, b_C, Dv, b_Jm,
     proc_control_B.b_SuJm, proc_control_B.b_Sx, proc_control_B.b_Su1,
     proc_control_B.b_Hv);
@@ -32135,7 +32198,7 @@ void proc_control::proc_control_mpcblock_optimizer(const real_T rseq[130], const
   }
 
   proc_control_B.kidx = 0;
-  memcpy(&proc_control_B.L[0], &b_H[0], 81U * sizeof(real_T));
+  std::memcpy(&proc_control_B.L[0], &b_H[0], 81U * sizeof(real_T));
   proc_control_B.Tries = proc_control_xpotrf_f(proc_control_B.L);
   guard1 = false;
   if (proc_control_B.Tries == 0) {
@@ -32422,7 +32485,7 @@ void proc_control::proc_control_mpcblock_optimizer(const real_T rseq[130], const
                         proc_control_B.zopt, proc_control_B.a__1_fm,
                         &proc_control_B.kidx);
     if ((proc_control_B.kidx < 0) || (proc_control_B.kidx == 0)) {
-      memset(&proc_control_B.zopt[0], 0, 9U * sizeof(real_T));
+      std::memset(&proc_control_B.zopt[0], 0, 9U * sizeof(real_T));
     }
 
     *status = proc_control_B.kidx;
@@ -32527,46 +32590,36 @@ void proc_control::proc_control_mpcblock_optimizer(const real_T rseq[130], const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_isfinite(const real_T x[8], boolean_T b[8])
 {
-  for (int32_T i = 0; i < 8; i++) {
+  for (int32_T i{0}; i < 8; i++) {
     real_T x_0;
     x_0 = x[i];
-    b[i] = ((!rtIsInf(x_0)) && (!rtIsNaN(x_0)));
+    b[i] = ((!std::isinf(x_0)) && (!std::isnan(x_0)));
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_mtimes_e(const real_T A_data[], const int32_T
   A_size[2], real_T C_data[], int32_T C_size[2])
 {
   static const int8_T d[640] = { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
-  };
+    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 };
 
   proc_control_B.mc_h = A_size[0] - 1;
   C_size[0] = A_size[0];
@@ -32608,7 +32661,7 @@ void proc_control::proc_control_mtimes_e(const real_T A_data[], const int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_getUBounds(const real_T runtimedata_lastMV[8],
   const real_T runtimedata_MVMin[80], const real_T runtimedata_MVMax[80], const
   real_T runtimedata_MVRateMin[80], const real_T runtimedata_MVRateMax[80],
@@ -32823,7 +32876,7 @@ void proc_control::proc_control_getUBounds(const real_T runtimedata_lastMV[8],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_getXUe(const real_T z[139], const real_T x[13],
   real_T X[143], real_T U[88], real_T *e)
 {
@@ -32909,7 +32962,7 @@ void proc_control::proc_control_getXUe(const real_T z[139], const real_T x[13],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_con_AUV8QuatJacobianMatrix(const real_T in1[13], real_T
   Anqv[169])
 {
@@ -33392,31 +33445,21 @@ void proc_control::proc_control_stateEvolution(const real_T X[143], const real_T
   static const int8_T b[640] = { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
-  };
+    1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const real_T val[104] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T val[104]{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.002112443491058583, -0.0015284356933675683, -7.0837403672252151E-6,
     0.0062952228101239545, 0.0019032522297668638, -0.017235611708486639, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0021112545591001931, 0.001555652319878204,
@@ -33592,7 +33635,7 @@ void proc_control::proc_control_stateEvolution(const real_T X[143], const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_all(const boolean_T x[130], boolean_T y[13])
 {
   proc_control_B.i2_h = 1;
@@ -33614,7 +33657,7 @@ void proc_control::proc_control_all(const boolean_T x[130], boolean_T y[13])
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_control_any(const boolean_T x[26])
 {
   int32_T k;
@@ -33635,7 +33678,7 @@ boolean_T proc_control::proc_control_any(const boolean_T x[26])
   return y;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_reformJacobian(const real_T Jx_data[], const
   int32_T Jx_size[3], const real_T Jmv_data[], const real_T Je_data[], const
   int32_T Je_size[1], real_T Jc_data[], int32_T Jc_size[2])
@@ -33715,7 +33758,7 @@ void proc_control::proc_control_reformJacobian(const real_T Jx_data[], const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_outputBounds(const real_T runtimedata_OutputMin
   [130], const real_T runtimedata_OutputMax[130], const real_T X[143], real_T e,
   real_T c_data[], int32_T c_size[2], real_T Jc_data[], int32_T Jc_size[2])
@@ -33962,7 +34005,7 @@ void proc_control::proc_control_outputBounds(const real_T runtimedata_OutputMin
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_c4_mpclib_anonFcn2(const real_T runtimedata_x[13],
   const real_T runtimedata_OutputMin[130], const real_T runtimedata_OutputMax
   [130], const real_T z[139], real_T varargout_1_data[], int32_T
@@ -34036,7 +34079,7 @@ void proc_control::proc_control_c4_mpclib_anonFcn2(const real_T runtimedata_x[13
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factoryConstruct(int32_T nVarMax, int32_T
   mConstrMax, int32_T mIneq, int32_T mNonlinIneq,
   s_KPwpEZDfdzkqudEdVwjGjF_proc_T *obj)
@@ -34059,8 +34102,8 @@ void proc_control::proc_control_factoryConstruct(int32_T nVarMax, int32_T
   obj->sqpExitFlag = 0;
   obj->lambdasqp.size[0] = mConstrMax;
   if (mConstrMax - 1 >= 0) {
-    memset(&obj->lambdasqp.data[0], 0, static_cast<uint32_T>(mConstrMax) *
-           sizeof(real_T));
+    std::memset(&obj->lambdasqp.data[0], 0, static_cast<uint32_T>(mConstrMax) *
+                sizeof(real_T));
   }
 
   obj->lambdaStopTest.size[0] = mConstrMax;
@@ -34068,8 +34111,8 @@ void proc_control::proc_control_factoryConstruct(int32_T nVarMax, int32_T
   obj->steplength = 1.0;
   obj->delta_x.size[0] = nVarMax;
   if (nVarMax - 1 >= 0) {
-    memset(&obj->delta_x.data[0], 0, static_cast<uint32_T>(nVarMax) * sizeof
-           (real_T));
+    std::memset(&obj->delta_x.data[0], 0, static_cast<uint32_T>(nVarMax) *
+                sizeof(real_T));
   }
 
   obj->socDirection.size[0] = nVarMax;
@@ -34091,8 +34134,8 @@ void proc_control::proc_control_factoryConstruct(int32_T nVarMax, int32_T
   obj->firstorderopt = 0.0;
   obj->lambda.size[0] = mConstrMax;
   if (mConstrMax - 1 >= 0) {
-    memset(&obj->lambda.data[0], 0, static_cast<uint32_T>(mConstrMax) * sizeof
-           (real_T));
+    std::memset(&obj->lambda.data[0], 0, static_cast<uint32_T>(mConstrMax) *
+                sizeof(real_T));
   }
 
   obj->state = 0;
@@ -34101,7 +34144,7 @@ void proc_control::proc_control_factoryConstruct(int32_T nVarMax, int32_T
   obj->searchDir.size[0] = nVarMax;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_cont_factoryConstruct_p52k(int32_T MaxVars, int32_T
   obj_grad_size[1], int32_T obj_Hx_size[1], boolean_T *obj_hasLinear, int32_T
   *obj_nvar, int32_T *obj_maxVar, real_T *obj_beta, real_T *obj_rho, int32_T
@@ -34122,7 +34165,7 @@ void proc_control::proc_cont_factoryConstruct_p52k(int32_T MaxVars, int32_T
   *obj_gammaScalar = 0.0;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_con_factoryConstruct_p52kz(int32_T mIneqMax, int32_T
   nVarMax, int32_T mConstrMax, s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj)
 {
@@ -34146,7 +34189,7 @@ void proc_control::proc_con_factoryConstruct_p52kz(int32_T mIneqMax, int32_T
   obj->bwset.size[0] = mConstrMax;
   obj->nActiveConstr = 0;
   obj->maxConstrWorkspace.size[0] = mConstrMax;
-  for (int32_T i = 0; i < 5; i++) {
+  for (int32_T i{0}; i < 5; i++) {
     obj->sizes[i] = 0;
     obj->sizesNormal[i] = 0;
     obj->sizesPhaseOne[i] = 0;
@@ -34154,7 +34197,7 @@ void proc_control::proc_con_factoryConstruct_p52kz(int32_T mIneqMax, int32_T
     obj->sizesRegPhaseOne[i] = 0;
   }
 
-  for (int32_T i = 0; i < 6; i++) {
+  for (int32_T i{0}; i < 6; i++) {
     obj->isActiveIdx[i] = 0;
     obj->isActiveIdxNormal[i] = 0;
     obj->isActiveIdxPhaseOne[i] = 0;
@@ -34165,7 +34208,7 @@ void proc_control::proc_con_factoryConstruct_p52kz(int32_T mIneqMax, int32_T
   obj->isActiveConstr.size[0] = mConstrMax;
   obj->Wid.size[0] = mConstrMax;
   obj->Wlocalidx.size[0] = mConstrMax;
-  for (int32_T i = 0; i < 5; i++) {
+  for (int32_T i{0}; i < 5; i++) {
     obj->nWConstr[i] = 0;
   }
 
@@ -34173,7 +34216,7 @@ void proc_control::proc_con_factoryConstruct_p52kz(int32_T mIneqMax, int32_T
   obj->SLACK0 = 1.0E-5;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::computeObjectiveAndUserGradient(const
   s_xJmQKnCTzvv6aUzMZcIqsF_proc_T *obj_next_next_next_next_next_ne, const real_T
   x[139], real_T grad_workspace_data[], real_T *fval, int32_T *status)
@@ -34184,36 +34227,34 @@ void proc_control::computeObjectiveAndUserGradient(const
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
-  };
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const int8_T c[169] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  static const int8_T c[169]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
   proc_control_getXUe(x, obj_next_next_next_next_next_ne->runtimedata.x,
                       proc_control_B.X_c, proc_control_B.U_f,
@@ -34486,7 +34527,7 @@ void proc_control::computeObjectiveAndUserGradient(const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 int32_T proc_control::proc_contr_checkVectorNonFinite(int32_T N, const real_T
   vec_data[], int32_T iv0)
 {
@@ -34501,12 +34542,12 @@ int32_T proc_control::proc_contr_checkVectorNonFinite(int32_T N, const real_T
   while (allFinite && (idx_current + 2 <= idx_end)) {
     real_T allFinite_tmp;
     allFinite_tmp = vec_data[idx_current + 1];
-    allFinite = ((!rtIsInf(allFinite_tmp)) && (!rtIsNaN(allFinite_tmp)));
+    allFinite = ((!std::isinf(allFinite_tmp)) && (!std::isnan(allFinite_tmp)));
     idx_current++;
   }
 
   if (!allFinite) {
-    if (rtIsNaN(vec_data[idx_current])) {
+    if (std::isnan(vec_data[idx_current])) {
       status = -3;
     } else if (vec_data[idx_current] < 0.0) {
       status = -1;
@@ -34518,7 +34559,7 @@ int32_T proc_control::proc_contr_checkVectorNonFinite(int32_T N, const real_T
   return status;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 int32_T proc_control::proc_con_checkVectorNonFinite_a(const real_T vec[130])
 {
   int32_T idx_current;
@@ -34530,12 +34571,12 @@ int32_T proc_control::proc_con_checkVectorNonFinite_a(const real_T vec[130])
   while (allFinite && (idx_current + 2 <= 130)) {
     real_T allFinite_tmp;
     allFinite_tmp = vec[idx_current + 1];
-    allFinite = ((!rtIsInf(allFinite_tmp)) && (!rtIsNaN(allFinite_tmp)));
+    allFinite = ((!std::isinf(allFinite_tmp)) && (!std::isnan(allFinite_tmp)));
     idx_current++;
   }
 
   if (!allFinite) {
-    if (rtIsNaN(vec[idx_current])) {
+    if (std::isnan(vec[idx_current])) {
       status = -3;
     } else if (vec[idx_current] < 0.0) {
       status = -1;
@@ -34547,7 +34588,7 @@ int32_T proc_control::proc_con_checkVectorNonFinite_a(const real_T vec[130])
   return status;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 int32_T proc_control::computeConstraintsAndUserJacobi(int32_T
   obj_next_next_next_next_next_b_, const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   *obj_next_next_next_next_next_ne, const real_T x[139], real_T
@@ -34637,7 +34678,7 @@ int32_T proc_control::computeConstraintsAndUserJacobi(int32_T
       if (!proc_control_B.allFinite) {
         proc_control_B.idx_mat = (proc_control_B.col - 2) * ldJI +
           proc_control_B.row;
-        if (rtIsNaN(JacIneqTrans_workspace_data[proc_control_B.idx_mat])) {
+        if (std::isnan(JacIneqTrans_workspace_data[proc_control_B.idx_mat])) {
           status = -3;
         } else if (JacIneqTrans_workspace_data[proc_control_B.idx_mat] < 0.0) {
           status = -1;
@@ -34664,7 +34705,7 @@ int32_T proc_control::computeConstraintsAndUserJacobi(int32_T
         if (!proc_control_B.allFinite) {
           proc_control_B.col_end = ldJE * proc_control_B.col +
             proc_control_B.row;
-          if (rtIsNaN(JacEqTrans_workspace_data[proc_control_B.col_end])) {
+          if (std::isnan(JacEqTrans_workspace_data[proc_control_B.col_end])) {
             status = -3;
           } else if (JacEqTrans_workspace_data[proc_control_B.col_end] < 0.0) {
             status = -1;
@@ -34679,7 +34720,7 @@ int32_T proc_control::computeConstraintsAndUserJacobi(int32_T
   return status;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::evalObjAndConstrAndDerivatives(int32_T
   obj_next_next_next_next_next_b_, const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   *obj_next_next_next_next_next_ne, const s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
@@ -34699,25 +34740,25 @@ void proc_control::evalObjAndConstrAndDerivatives(int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_co_modifyOverheadPhaseOne_
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj)
 {
   int32_T d;
   int32_T idxEq;
   idxEq = static_cast<uint16_T>(obj->sizes[0]);
-  for (int32_T idx = 0; idx < idxEq; idx++) {
+  for (int32_T idx{0}; idx < idxEq; idx++) {
     obj->ATwset.data[(obj->nVar + obj->ldA * idx) - 1] = 0.0;
   }
 
-  for (int32_T idx = 0; idx < 130; idx++) {
+  for (int32_T idx{0}; idx < 130; idx++) {
     idxEq = (obj->ldA * idx + obj->nVar) - 1;
     obj->Aeq.data[idxEq] = 0.0;
     obj->ATwset.data[idxEq + obj->ldA * (obj->isActiveIdx[1] - 1)] = 0.0;
   }
 
   idxEq = static_cast<uint16_T>(obj->sizes[2]);
-  for (int32_T idx = 0; idx < idxEq; idx++) {
+  for (int32_T idx{0}; idx < idxEq; idx++) {
     obj->Aineq.data[(obj->nVar + obj->ldA * idx) - 1] = -1.0;
   }
 
@@ -34725,14 +34766,14 @@ void proc_control::proc_co_modifyOverheadPhaseOne_
   obj->lb.data[obj->nVar - 1] = 1.0E-5;
   idxEq = obj->isActiveIdx[2];
   d = obj->nActiveConstr;
-  for (int32_T idx = idxEq; idx <= d; idx++) {
+  for (int32_T idx{idxEq}; idx <= d; idx++) {
     obj->ATwset.data[(obj->nVar + obj->ldA * (idx - 1)) - 1] = -1.0;
   }
 
   idxEq = obj->isActiveIdx[4] - 1;
   if (obj->nWConstr[4] > 0) {
     d = obj->sizesNormal[4] - 1;
-    for (int32_T idx = d; idx >= 0; idx--) {
+    for (int32_T idx{d}; idx >= 0; idx--) {
       int32_T tmp;
       tmp = idxEq + idx;
       obj->isActiveConstr.data[tmp] = obj->isActiveConstr.data[tmp - 1];
@@ -34745,7 +34786,7 @@ void proc_control::proc_co_modifyOverheadPhaseOne_
   obj->isActiveConstr.data[obj->isActiveIdx[4] - 2] = false;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_setProblemType(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   *obj, int32_T PROBLEM_TYPE)
 {
@@ -34807,9 +34848,9 @@ void proc_control::proc_control_setProblemType(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
       c = static_cast<uint16_T>(obj->sizes[0]);
       for (idx_col = 0; idx_col < c; idx_col++) {
         colOffsetATw = obj->ldA * idx_col;
-        memset(&obj->ATwset.data[colOffsetATw + 139], 0, static_cast<uint32_T>
-               (((obj->nVar + colOffsetATw) - colOffsetATw) - 139) * sizeof
-               (real_T));
+        std::memset(&obj->ATwset.data[colOffsetATw + 139], 0,
+                    static_cast<uint32_T>(((obj->nVar + colOffsetATw) -
+          colOffsetATw) - 139) * sizeof(real_T));
       }
 
       idx_col = static_cast<uint16_T>(obj->sizes[2]);
@@ -34933,21 +34974,21 @@ void proc_control::proc_control_setProblemType(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
         if (obj->Wid.data[idxUpperExisting - 1] == 3) {
           c = obj->Wlocalidx.data[idxUpperExisting - 1];
           if (c + 138 >= 140) {
-            memset(&obj->ATwset.data[colOffsetATw + 140], 0,
-                   static_cast<uint32_T>((((c + 138) + colOffsetATw) -
-                     colOffsetATw) - 139) * sizeof(real_T));
+            std::memset(&obj->ATwset.data[colOffsetATw + 140], 0,
+                        static_cast<uint32_T>((((c + 138) + colOffsetATw) -
+              colOffsetATw) - 139) * sizeof(real_T));
           }
 
           obj->ATwset.data[(c + colOffsetATw) + 139] = -1.0;
           if (c + 140 <= obj->nVar) {
-            memset(&obj->ATwset.data[(c + 140) + colOffsetATw], 0,
-                   static_cast<uint32_T>((((obj->nVar + colOffsetATw) - (c + 140))
-                     - colOffsetATw) + 1) * sizeof(real_T));
+            std::memset(&obj->ATwset.data[(c + 140) + colOffsetATw], 0,
+                        static_cast<uint32_T>((((obj->nVar + colOffsetATw) - (c
+              + 140)) - colOffsetATw) + 1) * sizeof(real_T));
           }
         } else {
-          memset(&obj->ATwset.data[colOffsetATw + 140], 0, static_cast<uint32_T>
-                 (((obj->nVar + colOffsetATw) - colOffsetATw) - 139) * sizeof
-                 (real_T));
+          std::memset(&obj->ATwset.data[colOffsetATw + 140], 0,
+                      static_cast<uint32_T>(((obj->nVar + colOffsetATw) -
+            colOffsetATw) - 139) * sizeof(real_T));
         }
       }
     }
@@ -34974,7 +35015,7 @@ void proc_control::proc_control_setProblemType(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   obj->probType = PROBLEM_TYPE;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_initActiveSet(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   *obj)
 {
@@ -35052,12 +35093,14 @@ void proc_control::proc_contro_factoryConstruct_p5(int32_T maxRows, int32_T
   obj_Q_size[1] = maxRows;
   loop_ub = maxRows * maxRows;
   if (loop_ub - 1 >= 0) {
-    memset(&obj_Q_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+    std::memset(&obj_Q_data[0], 0, static_cast<uint32_T>(loop_ub) * sizeof
+                (real_T));
   }
 
   obj_jpvt_size[0] = maxCols;
   if (maxCols - 1 >= 0) {
-    memset(&obj_jpvt_data[0], 0, static_cast<uint32_T>(maxCols) * sizeof(int32_T));
+    std::memset(&obj_jpvt_data[0], 0, static_cast<uint32_T>(maxCols) * sizeof
+                (int32_T));
   }
 
   *obj_mrows = 0;
@@ -35072,7 +35115,7 @@ void proc_control::proc_contro_factoryConstruct_p5(int32_T maxRows, int32_T
   *obj_usedPivoting = false;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_contr_factoryConstruct_p52(int32_T MaxDims, int32_T
   obj_FMat_size[2], int32_T *obj_ldm, int32_T *obj_ndims, int32_T *obj_info,
   real_T *obj_scaleFactor, boolean_T *obj_ConvexCheck, real_T *obj_regTol_,
@@ -35090,7 +35133,7 @@ void proc_control::proc_contr_factoryConstruct_p52(int32_T MaxDims, int32_T
   *obj_workspace2_ = (rtInf);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_computeGradLag(real_T workspace_data[], int32_T
   ldA, int32_T nVar, const real_T grad_data[], int32_T mIneq, const real_T
   AineqTrans_data[], const real_T AeqTrans_data[], const int32_T
@@ -35103,8 +35146,8 @@ void proc_control::proc_control_computeGradLag(real_T workspace_data[], int32_T
   int32_T iL0;
   int32_T ix;
   int32_T tmp;
-  memcpy(&workspace_data[0], &grad_data[0], static_cast<uint16_T>(nVar) * sizeof
-         (real_T));
+  std::memcpy(&workspace_data[0], &grad_data[0], static_cast<uint16_T>(nVar) *
+              sizeof(real_T));
   b = static_cast<uint16_T>(mFixed);
   for (iL0 = 0; iL0 < b; iL0++) {
     ix = finiteFixed_data[iL0];
@@ -35155,53 +35198,40 @@ void proc_control::proc_control_computeGradLag(real_T workspace_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_con_computePrimalFeasError(const real_T x[139],
   int32_T mLinIneq, int32_T mNonlinIneq, const real_T cIneq_data[], const real_T
   cEq[130], const int32_T finiteLB_data[], int32_T mLB, const real_T lb[139],
   const int32_T finiteUB_data[], int32_T mUB)
 {
   real_T feasError;
-  real_T u1;
   int32_T mIneq;
   feasError = 0.0;
   mIneq = mNonlinIneq + mLinIneq;
-  for (int32_T idx = 0; idx < 130; idx++) {
-    u1 = fabs(cEq[idx]);
-    if ((!(feasError >= u1)) && (!rtIsNaN(u1))) {
-      feasError = u1;
-    }
+  for (int32_T idx{0}; idx < 130; idx++) {
+    feasError = std::fmax(feasError, std::abs(cEq[idx]));
   }
 
-  for (int32_T idx = 0; idx < mIneq; idx++) {
-    u1 = cIneq_data[idx];
-    if ((!(feasError >= u1)) && (!rtIsNaN(u1))) {
-      feasError = u1;
-    }
+  for (int32_T idx{0}; idx < mIneq; idx++) {
+    feasError = std::fmax(feasError, cIneq_data[idx]);
   }
 
   mIneq = static_cast<uint16_T>(mLB);
-  for (int32_T idx = 0; idx < mIneq; idx++) {
+  for (int32_T idx{0}; idx < mIneq; idx++) {
     int32_T finiteLB;
     finiteLB = finiteLB_data[idx];
-    u1 = lb[finiteLB - 1] - x[finiteLB - 1];
-    if ((!(feasError >= u1)) && (!rtIsNaN(u1))) {
-      feasError = u1;
-    }
+    feasError = std::fmax(feasError, lb[finiteLB - 1] - x[finiteLB - 1]);
   }
 
   mIneq = static_cast<uint16_T>(mUB);
-  for (int32_T idx = 0; idx < mIneq; idx++) {
-    u1 = x[finiteUB_data[idx] - 1] - (rtInf);
-    if ((!(feasError >= u1)) && (!rtIsNaN(u1))) {
-      feasError = u1;
-    }
+  for (int32_T idx{0}; idx < mIneq; idx++) {
+    feasError = std::fmax(feasError, x[finiteUB_data[idx] - 1] - (rtInf));
   }
 
   return feasError;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_contr_computeDualFeasError(int32_T nVar, const real_T
   gradLag_data[], boolean_T *gradOK, real_T *val)
 {
@@ -35212,22 +35242,17 @@ void proc_control::proc_contr_computeDualFeasError(int32_T nVar, const real_T
   idx = 0;
   exitg1 = false;
   while ((!exitg1) && (idx <= static_cast<uint16_T>(nVar) - 1)) {
-    *gradOK = ((!rtIsInf(gradLag_data[idx])) && (!rtIsNaN(gradLag_data[idx])));
+    *gradOK = ((!std::isinf(gradLag_data[idx])) && (!std::isnan(gradLag_data[idx])));
     if (!*gradOK) {
       exitg1 = true;
     } else {
-      real_T u1;
-      u1 = fabs(gradLag_data[idx]);
-      if ((!(*val >= u1)) && (!rtIsNaN(u1))) {
-        *val = u1;
-      }
-
+      *val = std::fmax(*val, std::abs(gradLag_data[idx]));
       idx++;
     }
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_saveJacobian(s_KPwpEZDfdzkqudEdVwjGjF_proc_T
   *obj, int32_T nVar, int32_T mIneq, const real_T JacCineqTrans_data[], int32_T
   ineqCol0, const real_T JacCeqTrans_data[], int32_T ldJ)
@@ -35238,23 +35263,23 @@ void proc_control::proc_control_saveJacobian(s_KPwpEZDfdzkqudEdVwjGjF_proc_T
   iCol = (ineqCol0 - 1) * ldJ;
   iCol_old = 0;
   b = mIneq - ineqCol0;
-  for (int32_T idx_col = 0; idx_col <= b; idx_col++) {
+  for (int32_T idx_col{0}; idx_col <= b; idx_col++) {
     int32_T c;
     int32_T loop_ub_tmp;
     loop_ub_tmp = obj->JacCineqTrans_old.size[0] * obj->JacCineqTrans_old.size[1];
     if (loop_ub_tmp - 1 >= 0) {
-      memcpy(&proc_control_B.y_data[0], &obj->JacCineqTrans_old.data[0],
-             static_cast<uint32_T>(loop_ub_tmp) * sizeof(real_T));
+      std::memcpy(&proc_control_B.y_data[0], &obj->JacCineqTrans_old.data[0],
+                  static_cast<uint32_T>(loop_ub_tmp) * sizeof(real_T));
     }
 
     c = static_cast<uint16_T>(nVar);
-    for (int32_T k = 0; k < c; k++) {
+    for (int32_T k{0}; k < c; k++) {
       proc_control_B.y_data[iCol_old + k] = JacCineqTrans_data[iCol + k];
     }
 
     if (loop_ub_tmp - 1 >= 0) {
-      memcpy(&obj->JacCineqTrans_old.data[0], &proc_control_B.y_data[0],
-             static_cast<uint32_T>(loop_ub_tmp) * sizeof(real_T));
+      std::memcpy(&obj->JacCineqTrans_old.data[0], &proc_control_B.y_data[0],
+                  static_cast<uint32_T>(loop_ub_tmp) * sizeof(real_T));
     }
 
     iCol += ldJ;
@@ -35264,8 +35289,8 @@ void proc_control::proc_control_saveJacobian(s_KPwpEZDfdzkqudEdVwjGjF_proc_T
   iCol = 0;
   iCol_old = 0;
   b = static_cast<uint16_T>(nVar);
-  for (int32_T idx_col = 0; idx_col < 130; idx_col++) {
-    for (int32_T k = 0; k < b; k++) {
+  for (int32_T idx_col{0}; idx_col < 130; idx_col++) {
+    for (int32_T k{0}; k < b; k++) {
       obj->JacCeqTrans_old.data[iCol_old + k] = JacCeqTrans_data[iCol + k];
     }
 
@@ -35274,7 +35299,7 @@ void proc_control::proc_control_saveJacobian(s_KPwpEZDfdzkqudEdVwjGjF_proc_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_computeComplError(const int32_T
   fscales_lineq_constraint_size[1], const int32_T fscales_cineq_constraint_size
   [1], const real_T xCurrent[139], int32_T mIneq, const real_T cIneq_data[],
@@ -35288,7 +35313,6 @@ real_T proc_control::proc_control_computeComplError(const int32_T
   if ((mIneq + mLB) + mUB > 0) {
     real_T lbDelta;
     real_T lbLambda;
-    real_T u0;
     int32_T iLineq0;
     int32_T idx;
     for (idx = 0; idx < mLinIneq; idx++) {
@@ -35332,7 +35356,7 @@ real_T proc_control::proc_control_computeComplError(const int32_T
     iLineq0 = (iL0 + mIneq) - 1;
     mLinIneq = iLineq0 + mLB;
     idx = static_cast<uint16_T>(mLB);
-    for (int32_T b_idx = 0; b_idx < idx; b_idx++) {
+    for (int32_T b_idx{0}; b_idx < idx; b_idx++) {
       int32_T finiteLB;
       finiteLB = finiteLB_data[b_idx];
       lbDelta = xCurrent[finiteLB - 1] - lb[finiteLB - 1];
@@ -35376,7 +35400,7 @@ real_T proc_control::proc_control_computeComplError(const int32_T
   return nlpComplError;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_computeGradLag_l(real_T workspace_data[],
   int32_T ldA, int32_T nVar, const real_T grad_data[], int32_T mIneq, const
   real_T AineqTrans_data[], const real_T AeqTrans_data[], const int32_T
@@ -35389,8 +35413,8 @@ void proc_control::proc_control_computeGradLag_l(real_T workspace_data[],
   int32_T iL0;
   int32_T ix;
   int32_T tmp;
-  memcpy(&workspace_data[0], &grad_data[0], static_cast<uint16_T>(nVar) * sizeof
-         (real_T));
+  std::memcpy(&workspace_data[0], &grad_data[0], static_cast<uint16_T>(nVar) *
+              sizeof(real_T));
   i = static_cast<uint16_T>(mFixed);
   for (iL0 = 0; iL0 < i; iL0++) {
     ix = finiteFixed_data[iL0];
@@ -35441,7 +35465,7 @@ void proc_control::proc_control_computeGradLag_l(real_T workspace_data[],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_con_computeDualFeasError_n(int32_T nVar, const real_T
   gradLag_data[], boolean_T *gradOK, real_T *val)
 {
@@ -35452,22 +35476,17 @@ void proc_control::proc_con_computeDualFeasError_n(int32_T nVar, const real_T
   idx = 0;
   exitg1 = false;
   while ((!exitg1) && (idx <= static_cast<uint16_T>(nVar) - 1)) {
-    *gradOK = ((!rtIsInf(gradLag_data[idx])) && (!rtIsNaN(gradLag_data[idx])));
+    *gradOK = ((!std::isinf(gradLag_data[idx])) && (!std::isnan(gradLag_data[idx])));
     if (!*gradOK) {
       exitg1 = true;
     } else {
-      real_T u1;
-      u1 = fabs(gradLag_data[idx]);
-      if ((!(*val >= u1)) && (!rtIsNaN(u1))) {
-        *val = u1;
-      }
-
+      *val = std::fmax(*val, std::abs(gradLag_data[idx]));
       idx++;
     }
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_c_updateWorkingSetForNewQP(const real_T xk[139],
   s_PAtG1CW05sRYOWrqzwRQyC_proc_T *WorkingSet, int32_T mIneq, int32_T
   mNonlinIneq, const real_T cIneq_data[], const real_T cEq[130], int32_T mLB,
@@ -35481,7 +35500,7 @@ void proc_control::proc_c_updateWorkingSetForNewQP(const real_T xk[139],
   nVar = WorkingSet->nVar;
   iw0 = WorkingSet->ldA * mFixed;
   iEq0 = 0;
-  for (int32_T idx = 0; idx < 130; idx++) {
+  for (int32_T idx{0}; idx < 130; idx++) {
     WorkingSet->beq[idx] = -cEq[idx];
     WorkingSet->bwset.data[mFixed + idx] = WorkingSet->beq[idx];
     for (i = 0; i < nVar; i++) {
@@ -35505,13 +35524,13 @@ void proc_control::proc_c_updateWorkingSetForNewQP(const real_T xk[139],
   }
 
   i = static_cast<uint16_T>(mLB);
-  for (int32_T idx = 0; idx < i; idx++) {
+  for (int32_T idx{0}; idx < i; idx++) {
     WorkingSet->lb.data[WorkingSet->indexLB.data[idx] - 1] = -lb
       [WorkingSet->indexLB.data[idx] - 1] + xk[WorkingSet->indexLB.data[idx] - 1];
   }
 
   i = static_cast<uint16_T>(mUB);
-  for (int32_T idx = 0; idx < i; idx++) {
+  for (int32_T idx{0}; idx < i; idx++) {
     WorkingSet->ub.data[WorkingSet->indexUB.data[idx] - 1] = (rtInf) -
       xk[WorkingSet->indexUB.data[idx] - 1];
   }
@@ -35526,7 +35545,7 @@ void proc_control::proc_c_updateWorkingSetForNewQP(const real_T xk[139],
 
   if (WorkingSet->nActiveConstr > mFixed + 130) {
     iw0 = WorkingSet->nActiveConstr;
-    for (int32_T idx = mFixed + 131; idx <= iw0; idx++) {
+    for (int32_T idx{mFixed + 131}; idx <= iw0; idx++) {
       switch (WorkingSet->Wid.data[idx - 1]) {
        case 4:
         WorkingSet->bwset.data[idx - 1] = WorkingSet->lb.data
@@ -35559,11 +35578,11 @@ void proc_control::proc_c_updateWorkingSetForNewQP(const real_T xk[139],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xswap(int32_T n, real_T x_data[], int32_T ix0,
   int32_T iy0)
 {
-  for (int32_T k = 0; k < n; k++) {
+  for (int32_T k{0}; k < n; k++) {
     real_T temp;
     int32_T temp_tmp;
     int32_T tmp;
@@ -35575,7 +35594,7 @@ void proc_control::proc_control_xswap(int32_T n, real_T x_data[], int32_T ix0,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_xnrm2_a(int32_T n, const real_T x_data[],
   int32_T ix0)
 {
@@ -35583,7 +35602,7 @@ real_T proc_control::proc_control_xnrm2_a(int32_T n, const real_T x_data[],
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x_data[ix0 - 1]);
+      y = std::abs(x_data[ix0 - 1]);
     } else {
       real_T scale;
       int32_T kend;
@@ -35611,7 +35630,7 @@ real_T proc_control::proc_control_xnrm2_a(int32_T n, const real_T x_data[],
   return y;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_xzlarfg(int32_T n, real_T *alpha1, real_T
   x_data[], int32_T ix0)
 {
@@ -35698,7 +35717,7 @@ real_T proc_control::proc_control_xzlarfg(int32_T n, real_T *alpha1, real_T
   return tau;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_j(int32_T m, int32_T n, const real_T
   A_data[], int32_T ia0, int32_T lda, const real_T x_data[], int32_T ix0, real_T
   y_data[])
@@ -35707,7 +35726,7 @@ void proc_control::proc_control_xgemv_j(int32_T m, int32_T n, const real_T
     int32_T b;
     int32_T iy;
     if (n - 1 >= 0) {
-      memset(&y_data[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
+      std::memset(&y_data[0], 0, static_cast<uint32_T>(n) * sizeof(real_T));
     }
 
     iy = 0;
@@ -35727,7 +35746,7 @@ void proc_control::proc_control_xgemv_j(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgerc_a(int32_T m, int32_T n, real_T alpha1,
   int32_T ix0, const real_T y_data[], real_T A_data[], int32_T ia0, int32_T lda)
 {
@@ -35751,7 +35770,7 @@ void proc_control::proc_control_xgerc_a(int32_T m, int32_T n, real_T alpha1,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xzlarf(int32_T m, int32_T n, int32_T iv0, real_T
   tau, real_T C_data[], int32_T ic0, int32_T ldc, real_T work_data[])
 {
@@ -35803,7 +35822,7 @@ void proc_control::proc_control_xzlarf(int32_T m, int32_T n, int32_T iv0, real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_qrf(real_T A_data[], const int32_T A_size[2],
   int32_T m, int32_T n, int32_T nfxd, real_T tau_data[])
 {
@@ -35845,7 +35864,7 @@ void proc_control::proc_control_qrf(real_T A_data[], const int32_T A_size[2],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_qrpf(real_T A_data[], const int32_T A_size[2],
   int32_T m, int32_T n, int32_T nfxd, real_T tau_data[], int32_T jpvt_data[])
 {
@@ -35968,7 +35987,7 @@ void proc_control::proc_control_qrpf(real_T A_data[], const int32_T A_size[2],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgeqp3(real_T A_data[], const int32_T A_size[2],
   int32_T m, int32_T n, int32_T jpvt_data[], real_T tau_data[], int32_T
   tau_size[1])
@@ -36039,7 +36058,7 @@ void proc_control::proc_control_xgeqp3(real_T A_data[], const int32_T A_size[2],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factorQRE(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   const real_T A_data[], int32_T mrows, int32_T ncols, int32_T ldA)
 {
@@ -36085,7 +36104,7 @@ void proc_control::proc_control_factorQRE(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xorgqr_l(int32_T m, int32_T n, int32_T k, real_T
   A_data[], const int32_T A_size[2], int32_T lda, const real_T tau_data[])
 {
@@ -36146,7 +36165,7 @@ void proc_control::proc_control_xorgqr_l(int32_T m, int32_T n, int32_T k, real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_sortLambdaQP(real_T lambda_data[], int32_T
   WorkingSet_nActiveConstr, const int32_T WorkingSet_sizes[5], const int32_T
   WorkingSet_isActiveIdx[6], const int32_T WorkingSet_Wid_data[], const int32_T
@@ -36159,12 +36178,13 @@ void proc_control::proc_control_sortLambdaQP(real_T lambda_data[], int32_T
     mAll = (((WorkingSet_sizes[0] + WorkingSet_sizes[3]) + WorkingSet_sizes[4])
             + WorkingSet_sizes[2]) + 129;
     if (static_cast<uint16_T>(mAll + 1) - 1 >= 0) {
-      memcpy(&workspace_data[0], &lambda_data[0], static_cast<uint16_T>(mAll + 1)
-             * sizeof(real_T));
+      std::memcpy(&workspace_data[0], &lambda_data[0], static_cast<uint16_T>
+                  (mAll + 1) * sizeof(real_T));
     }
 
     if (mAll >= 0) {
-      memset(&lambda_data[0], 0, static_cast<uint32_T>(mAll + 1) * sizeof(real_T));
+      std::memset(&lambda_data[0], 0, static_cast<uint32_T>(mAll + 1) * sizeof
+                  (real_T));
     }
 
     currentMplier = 0;
@@ -36206,7 +36226,7 @@ void proc_control::proc_control_sortLambdaQP(real_T lambda_data[], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_test_exit(s7RdrPWkr8UPAUyTdDJkLaG_proc__T *Flags,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, sG8JZ69axY52WWR6RKyApQC_proc__T
   *MeritFunction, const int32_T fscales_lineq_constraint_size[1], const int32_T
@@ -36276,12 +36296,8 @@ void proc_control::proc_control_test_exit(s7RdrPWkr8UPAUyTdDJkLaG_proc__T *Flags
      WorkingSet->indexLB.data, WorkingSet->sizes[3], lb,
      WorkingSet->indexUB.data, WorkingSet->sizes[4]);
   if (TrialState->sqpIterations == 0) {
-    if ((MeritFunction->nlpPrimalFeasError <= 1.0) || rtIsNaN
-        (MeritFunction->nlpPrimalFeasError)) {
-      MeritFunction->feasRelativeFactor = 1.0;
-    } else {
-      MeritFunction->feasRelativeFactor = MeritFunction->nlpPrimalFeasError;
-    }
+    MeritFunction->feasRelativeFactor = std::fmax(1.0,
+      MeritFunction->nlpPrimalFeasError);
   }
 
   isFeasible = (MeritFunction->nlpPrimalFeasError <= 0.02 *
@@ -36302,13 +36318,8 @@ void proc_control::proc_control_test_exit(s7RdrPWkr8UPAUyTdDJkLaG_proc__T *Flags
        WorkingSet->indexLB.data, WorkingSet->sizes[3], lb,
        WorkingSet->indexUB.data, WorkingSet->sizes[4],
        TrialState->lambdaStopTest.data, WorkingSet->sizes[0] + 131);
-    if ((MeritFunction->nlpDualFeasError >= MeritFunction->nlpComplError) ||
-        rtIsNaN(MeritFunction->nlpComplError)) {
-      MeritFunction->firstOrderOpt = MeritFunction->nlpDualFeasError;
-    } else {
-      MeritFunction->firstOrderOpt = MeritFunction->nlpComplError;
-    }
-
+    MeritFunction->firstOrderOpt = std::fmax(MeritFunction->nlpDualFeasError,
+      MeritFunction->nlpComplError);
     if (TrialState->sqpIterations > 1) {
       proc_control_computeGradLag_l(memspace->workspace_float.data,
         WorkingSet->ldA, WorkingSet->nVar, TrialState->grad.data,
@@ -36563,7 +36574,7 @@ void proc_control::proc_control_test_exit(s7RdrPWkr8UPAUyTdDJkLaG_proc__T *Flags
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_control_BFGSUpdate(int32_T nvar, real_T Bk[19321],
   const real_T sk_data[], real_T yk_data[], real_T workspace_data[])
 {
@@ -36588,7 +36599,7 @@ boolean_T proc_control::proc_control_BFGSUpdate(int32_T nvar, real_T Bk[19321],
   }
 
   b_tmp = static_cast<uint16_T>(nvar);
-  memset(&workspace_data[0], 0, static_cast<uint16_T>(nvar) * sizeof(real_T));
+  std::memset(&workspace_data[0], 0, static_cast<uint16_T>(nvar) * sizeof(real_T));
   ix = 0;
   jy = (nvar - 1) * 139 + 1;
   for (b = 1; b <= jy; b += 139) {
@@ -36703,7 +36714,7 @@ boolean_T proc_control::proc_control_BFGSUpdate(int32_T nvar, real_T Bk[19321],
   return success;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factorQRE_f(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   int32_T mrows, int32_T ncols)
 {
@@ -36726,7 +36737,7 @@ void proc_control::proc_control_factorQRE_f(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_countsort(int32_T x_data[], int32_T xLen,
   int32_T workspace_data[], int32_T xMin, int32_T xMax)
 {
@@ -36737,8 +36748,8 @@ void proc_control::proc_control_countsort(int32_T x_data[], int32_T xLen,
     int32_T maxOffset_tmp;
     idxEnd_tmp = xMax - xMin;
     if (idxEnd_tmp >= 0) {
-      memset(&workspace_data[0], 0, static_cast<uint32_T>(idxEnd_tmp + 1) *
-             sizeof(int32_T));
+      std::memset(&workspace_data[0], 0, static_cast<uint32_T>(idxEnd_tmp + 1) *
+                  sizeof(int32_T));
     }
 
     maxOffset_tmp = idxEnd_tmp - 1;
@@ -36753,7 +36764,7 @@ void proc_control::proc_control_countsort(int32_T x_data[], int32_T xLen,
 
     idxStart = 1;
     idxEnd = workspace_data[0];
-    for (int32_T maxOffset = 0; maxOffset <= maxOffset_tmp; maxOffset++) {
+    for (int32_T maxOffset{0}; maxOffset <= maxOffset_tmp; maxOffset++) {
       for (idxEnd_tmp = idxStart; idxEnd_tmp <= idxEnd; idxEnd_tmp++) {
         x_data[idxEnd_tmp - 1] = maxOffset + xMin;
       }
@@ -36762,13 +36773,13 @@ void proc_control::proc_control_countsort(int32_T x_data[], int32_T xLen,
       idxEnd = workspace_data[maxOffset + 1];
     }
 
-    for (int32_T maxOffset = idxStart; maxOffset <= idxEnd; maxOffset++) {
+    for (int32_T maxOffset{idxStart}; maxOffset <= idxEnd; maxOffset++) {
       x_data[maxOffset - 1] = xMax;
     }
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_removeConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   *obj, int32_T idx_global)
 {
@@ -36782,7 +36793,7 @@ void proc_control::proc_control_removeConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
     obj->Wlocalidx.data[idx_global - 1] = obj->Wlocalidx.data[obj->nActiveConstr
       - 1];
     b = static_cast<uint16_T>(obj->nVar);
-    for (int32_T idx = 0; idx < b; idx++) {
+    for (int32_T idx{0}; idx < b; idx++) {
       obj->ATwset.data[idx + obj->ldA * (idx_global - 1)] = obj->ATwset.data
         [(obj->nActiveConstr - 1) * obj->ldA + idx];
     }
@@ -36794,7 +36805,7 @@ void proc_control::proc_control_removeConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   obj->nWConstr[TYPE_tmp]--;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 int32_T proc_control::proc_control_RemoveDependentEq_
   (s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T
    *workingset, s_o1KzuWoPqzc62zOgqamCNH_proc_T *qrmanager)
@@ -36966,7 +36977,7 @@ int32_T proc_control::proc_control_RemoveDependentEq_
   return nDepInd;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_contr_RemoveDependentIneq_
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *workingset, s_o1KzuWoPqzc62zOgqamCNH_proc_T *
    qrmanager, s_z8miyzCNLMZx998HtZciUB_proc_T *memspace)
@@ -37036,7 +37047,7 @@ void proc_control::proc_contr_RemoveDependentIneq_
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgeqrf_e(real_T A_data[], const int32_T A_size[2],
   int32_T m, int32_T n, real_T tau_data[], int32_T tau_size[1])
 {
@@ -37064,7 +37075,7 @@ void proc_control::proc_control_xgeqrf_e(real_T A_data[], const int32_T A_size[2
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factorQR_a(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   const real_T A_data[], int32_T mrows, int32_T ncols, int32_T ldA)
 {
@@ -37124,7 +37135,7 @@ void proc_control::proc_control_factorQR_a(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factorQR(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
   int32_T mrows, int32_T ncols)
 {
@@ -37160,7 +37171,7 @@ void proc_control::proc_control_factorQR(s_o1KzuWoPqzc62zOgqamCNH_proc_T *obj,
                         obj->tau.size);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jh(int32_T m, int32_T n, const real_T
   A_data[], int32_T lda, const real_T x_data[], real_T y_data[])
 {
@@ -37199,7 +37210,7 @@ void proc_control::proc_control_xgemv_jh(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_con_maxConstraintViolation
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj, const real_T x_data[])
 {
@@ -37212,8 +37223,8 @@ real_T proc_control::proc_con_maxConstraintViolation
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jh(139, obj->sizes[2], obj->Aineq.data, obj->ldA,
@@ -37227,7 +37238,8 @@ real_T proc_control::proc_con_maxConstraintViolation
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jh(139, 130, obj->Aeq.data, obj->ldA, x_data,
                           obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37244,8 +37256,8 @@ real_T proc_control::proc_con_maxConstraintViolation
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jh(obj->nVar, obj->sizes[2], obj->Aineq.data, obj->ldA,
@@ -37258,7 +37270,8 @@ real_T proc_control::proc_con_maxConstraintViolation
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jh(obj->nVar, 130, obj->Aeq.data, obj->ldA, x_data,
                           obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37305,7 +37318,7 @@ real_T proc_control::proc_con_maxConstraintViolation
   return v;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jhn(int32_T m, int32_T n, const real_T
   A_data[], int32_T lda, const real_T x_data[], int32_T ix0, real_T y_data[])
 {
@@ -37344,7 +37357,7 @@ void proc_control::proc_control_xgemv_jhn(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_c_maxConstraintViolation_a
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj, const real_T x_data[], int32_T ix0)
 {
@@ -37357,8 +37370,8 @@ real_T proc_control::proc_c_maxConstraintViolation_a
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jhn(139, obj->sizes[2], obj->Aineq.data, obj->ldA,
@@ -37372,7 +37385,8 @@ real_T proc_control::proc_c_maxConstraintViolation_a
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jhn(139, 130, obj->Aeq.data, obj->ldA, x_data, ix0,
       obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37389,8 +37403,8 @@ real_T proc_control::proc_c_maxConstraintViolation_a
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jhn(obj->nVar, obj->sizes[2], obj->Aineq.data, obj->ldA,
@@ -37403,7 +37417,8 @@ real_T proc_control::proc_c_maxConstraintViolation_a
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jhn(obj->nVar, 130, obj->Aeq.data, obj->ldA, x_data, ix0,
       obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37450,7 +37465,7 @@ real_T proc_control::proc_c_maxConstraintViolation_a
   return v;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_co_feasibleX0ForWorkingSet(real_T workspace_data[],
   const int32_T workspace_size[2], real_T xCurrent_data[],
   s_PAtG1CW05sRYOWrqzwRQyC_proc_T *workingset, s_o1KzuWoPqzc62zOgqamCNH_proc_T
@@ -37701,7 +37716,7 @@ boolean_T proc_control::proc_co_feasibleX0ForWorkingSet(real_T workspace_data[],
   return nonDegenerateWset;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_con_RemoveDependentIneq__m
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *workingset, s_o1KzuWoPqzc62zOgqamCNH_proc_T *
    qrmanager, s_z8miyzCNLMZx998HtZciUB_proc_T *memspace)
@@ -37772,7 +37787,7 @@ void proc_control::proc_con_RemoveDependentIneq__m
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jhnw(int32_T m, int32_T n, const real_T
   A_data[], int32_T lda, const real_T x_data[], real_T y_data[])
 {
@@ -37811,7 +37826,7 @@ void proc_control::proc_control_xgemv_jhnw(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc__maxConstraintViolation_ah
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj, const real_T x_data[])
 {
@@ -37824,8 +37839,8 @@ real_T proc_control::proc__maxConstraintViolation_ah
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jhnw(139, obj->sizes[2], obj->Aineq.data, obj->ldA,
@@ -37839,7 +37854,8 @@ real_T proc_control::proc__maxConstraintViolation_ah
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jhnw(139, 130, obj->Aeq.data, obj->ldA, x_data,
       obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37856,8 +37872,8 @@ real_T proc_control::proc__maxConstraintViolation_ah
     if (obj->Aineq.size[0] != 0) {
       g_tmp = static_cast<uint16_T>(obj->sizes[2]);
       if (g_tmp - 1 >= 0) {
-        memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
-               static_cast<uint32_T>(g_tmp) * sizeof(real_T));
+        std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->bineq.data[0],
+                    static_cast<uint32_T>(g_tmp) * sizeof(real_T));
       }
 
       proc_control_xgemv_jhnw(obj->nVar, obj->sizes[2], obj->Aineq.data,
@@ -37870,7 +37886,8 @@ real_T proc_control::proc__maxConstraintViolation_ah
       }
     }
 
-    memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof(real_T));
+    std::memcpy(&obj->maxConstrWorkspace.data[0], &obj->beq[0], 130U * sizeof
+                (real_T));
     proc_control_xgemv_jhnw(obj->nVar, 130, obj->Aeq.data, obj->ldA, x_data,
       obj->maxConstrWorkspace.data);
     for (k = 0; k < 130; k++) {
@@ -37917,7 +37934,7 @@ real_T proc_control::proc__maxConstraintViolation_ah
   return v;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_PresolveWorkingSet
   (s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution, s_z8miyzCNLMZx998HtZciUB_proc_T
    *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T *workingset,
@@ -37980,20 +37997,20 @@ void proc_control::proc_control_PresolveWorkingSet
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jhnw4(int32_T m, int32_T n, const real_T
   A[19321], int32_T lda, const real_T x_data[], real_T y_data[])
 {
   if ((m != 0) && (n != 0)) {
     int32_T c;
     int32_T ix;
-    memset(&y_data[0], 0, static_cast<uint16_T>(m) * sizeof(real_T));
+    std::memset(&y_data[0], 0, static_cast<uint16_T>(m) * sizeof(real_T));
     ix = 0;
     c = (n - 1) * lda + 1;
-    for (int32_T b_iy = 1; lda < 0 ? b_iy >= c : b_iy <= c; b_iy += lda) {
+    for (int32_T b_iy{1}; lda < 0 ? b_iy >= c : b_iy <= c; b_iy += lda) {
       int32_T d;
       d = (b_iy + m) - 1;
-      for (int32_T b = b_iy; b <= d; b++) {
+      for (int32_T b{b_iy}; b <= d; b++) {
         int32_T tmp;
         tmp = b - b_iy;
         y_data[tmp] += A[b - 1] * x_data[ix];
@@ -38004,7 +38021,7 @@ void proc_control::proc_control_xgemv_jhnw4(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_contro_computeGrad_StoreHx
   (s_bsf2Fsale81D2LTDCKuKhG_proc_T *obj, const real_T H[19321], const real_T
    f_data[], const real_T x_data[])
@@ -38019,8 +38036,8 @@ void proc_control::proc_contro_computeGrad_StoreHx
   switch (obj->objtype) {
    case 5:
     if (obj->nvar - 2 >= 0) {
-      memset(&obj->grad.data[0], 0, static_cast<uint32_T>(obj->nvar - 1) *
-             sizeof(real_T));
+      std::memset(&obj->grad.data[0], 0, static_cast<uint32_T>(obj->nvar - 1) *
+                  sizeof(real_T));
     }
 
     obj->grad.data[obj->nvar - 1] = obj->gammaScalar;
@@ -38030,8 +38047,8 @@ void proc_control::proc_contro_computeGrad_StoreHx
     proc_control_xgemv_jhnw4(obj->nvar, obj->nvar, H, obj->nvar, x_data,
       obj->Hx.data);
     if (static_cast<uint16_T>(obj->nvar) - 1 >= 0) {
-      memcpy(&obj->grad.data[0], &obj->Hx.data[0], static_cast<uint16_T>
-             (obj->nvar) * sizeof(real_T));
+      std::memcpy(&obj->grad.data[0], &obj->Hx.data[0], static_cast<uint16_T>
+                  (obj->nvar) * sizeof(real_T));
     }
 
     if (obj->hasLinear && (obj->nvar >= 1)) {
@@ -38067,8 +38084,8 @@ void proc_control::proc_contro_computeGrad_StoreHx
       obj->Hx.data[idx - 1] = x_data[idx - 1] * obj->beta;
     }
 
-    memcpy(&obj->grad.data[0], &obj->Hx.data[0], static_cast<uint16_T>
-           (obj->maxVar - 1) * sizeof(real_T));
+    std::memcpy(&obj->grad.data[0], &obj->Hx.data[0], static_cast<uint16_T>
+                (obj->maxVar - 1) * sizeof(real_T));
     if (obj->hasLinear && (obj->nvar >= 1)) {
       iy = obj->nvar - 1;
       scalarLB = (obj->nvar / 2) << 1;
@@ -38104,7 +38121,7 @@ void proc_control::proc_contro_computeGrad_StoreHx
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_contro_computeFval_ReuseHx(const
   s_bsf2Fsale81D2LTDCKuKhG_proc_T *obj, real_T workspace_data[], const real_T
   f_data[], const real_T x_data[])
@@ -38147,7 +38164,7 @@ real_T proc_control::proc_contro_computeFval_ReuseHx(const
         if (obj->nvar >= 1) {
           int32_T b_k;
           b_k = static_cast<uint16_T>(obj->nvar);
-          for (int32_T maxRegVar = 0; maxRegVar < b_k; maxRegVar++) {
+          for (int32_T maxRegVar{0}; maxRegVar < b_k; maxRegVar++) {
             val += x_data[maxRegVar] * obj->Hx.data[maxRegVar];
           }
         }
@@ -38166,8 +38183,8 @@ real_T proc_control::proc_contro_computeFval_ReuseHx(const
         int32_T j;
         int32_T vectorUB;
         if (static_cast<uint16_T>(obj->nvar) - 1 >= 0) {
-          memcpy(&workspace_data[0], &f_data[0], static_cast<uint16_T>(obj->nvar)
-                 * sizeof(real_T));
+          std::memcpy(&workspace_data[0], &f_data[0], static_cast<uint16_T>
+                      (obj->nvar) * sizeof(real_T));
         }
 
         b_k = obj->maxVar - obj->nvar;
@@ -38202,14 +38219,14 @@ real_T proc_control::proc_contro_computeFval_ReuseHx(const
         val = 0.0;
         if (obj->maxVar - 1 >= 1) {
           j = static_cast<uint16_T>(obj->maxVar - 1);
-          for (int32_T b_k = 0; b_k < j; b_k++) {
+          for (int32_T b_k{0}; b_k < j; b_k++) {
             val += x_data[b_k] * obj->Hx.data[b_k];
           }
         }
 
         val *= 0.5;
         j = obj->nvar + 1;
-        for (int32_T b_k = j; b_k <= maxRegVar; b_k++) {
+        for (int32_T b_k{j}; b_k <= maxRegVar; b_k++) {
           val += x_data[b_k - 1] * obj->rho;
         }
       }
@@ -38220,7 +38237,7 @@ real_T proc_control::proc_contro_computeFval_ReuseHx(const
   return val;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xrotg(real_T *a, real_T *b, real_T *c, real_T *s)
 {
   real_T absa;
@@ -38264,7 +38281,7 @@ void proc_control::proc_control_xrotg(real_T *a, real_T *b, real_T *c, real_T *s
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_deleteColMoveEnd(s_o1KzuWoPqzc62zOgqamCNH_proc_T
   *obj, int32_T idx)
 {
@@ -38391,17 +38408,17 @@ void proc_control::proc_control_deleteColMoveEnd(s_o1KzuWoPqzc62zOgqamCNH_proc_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_control_strcmp(const char_T a[7])
 {
   int32_T ret;
-  static const char_T b[7] = { 'f', 'm', 'i', 'n', 'c', 'o', 'n' };
+  static const char_T b[7]{ 'f', 'm', 'i', 'n', 'c', 'o', 'n' };
 
   ret = memcmp(&a[0], &b[0], 7);
   return ret == 0;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemm(int32_T m, int32_T n, int32_T k, const
   real_T A[19321], int32_T lda, const real_T B_data[], int32_T ib0, int32_T ldb,
   real_T C_data[], int32_T ldc)
@@ -38412,19 +38429,19 @@ void proc_control::proc_control_xgemm(int32_T m, int32_T n, int32_T k, const
     int32_T lastColC;
     br = ib0;
     lastColC = (n - 1) * ldc;
-    for (int32_T cr = 0; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
+    for (int32_T cr{0}; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
       b = cr + m;
-      for (int32_T ic = cr + 1; ic <= b; ic++) {
+      for (int32_T ic{cr + 1}; ic <= b; ic++) {
         C_data[ic - 1] = 0.0;
       }
     }
 
-    for (int32_T cr = 0; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
+    for (int32_T cr{0}; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
       int32_T ar;
       int32_T c;
       ar = -1;
       c = br + k;
-      for (int32_T ic = br; ic < c; ic++) {
+      for (int32_T ic{br}; ic < c; ic++) {
         int32_T d;
         int32_T scalarLB;
         int32_T vectorUB;
@@ -38450,7 +38467,7 @@ void proc_control::proc_control_xgemm(int32_T m, int32_T n, int32_T k, const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemm_k(int32_T m, int32_T n, int32_T k, const
   real_T A_data[], int32_T ia0, int32_T lda, const real_T B_data[], int32_T ldb,
   real_T C_data[], int32_T ldc)
@@ -38460,20 +38477,20 @@ void proc_control::proc_control_xgemm_k(int32_T m, int32_T n, int32_T k, const
     int32_T br;
     int32_T lastColC;
     lastColC = (n - 1) * ldc;
-    for (int32_T cr = 0; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
+    for (int32_T cr{0}; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
       b = cr + m;
-      for (int32_T ic = cr + 1; ic <= b; ic++) {
+      for (int32_T ic{cr + 1}; ic <= b; ic++) {
         C_data[ic - 1] = 0.0;
       }
     }
 
     br = -1;
-    for (int32_T cr = 0; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
+    for (int32_T cr{0}; ldc < 0 ? cr >= lastColC : cr <= lastColC; cr += ldc) {
       int32_T ar;
       int32_T c;
       ar = ia0;
       c = cr + m;
-      for (int32_T ic = cr + 1; ic <= c; ic++) {
+      for (int32_T ic{cr + 1}; ic <= c; ic++) {
         real_T temp;
         temp = 0.0;
         for (b = 0; b < k; b++) {
@@ -38489,7 +38506,7 @@ void proc_control::proc_control_xgemm_k(int32_T m, int32_T n, int32_T k, const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_fullColLDL2_(s_962gqykB8vLiRVqsLdGQIG_proc_T
   *obj, int32_T LD_offset, int32_T NColsRemain)
 {
@@ -38555,7 +38572,7 @@ void proc_control::proc_control_fullColLDL2_(s_962gqykB8vLiRVqsLdGQIG_proc_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_partialColLDL3_(s_962gqykB8vLiRVqsLdGQIG_proc_T *
   obj, int32_T LD_offset, int32_T NColsRemain)
 {
@@ -38697,7 +38714,7 @@ void proc_control::proc_control_partialColLDL3_(s_962gqykB8vLiRVqsLdGQIG_proc_T 
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 int32_T proc_control::proc_control_xpotrf_g(int32_T n, real_T A_data[], int32_T
   lda)
 {
@@ -38770,20 +38787,20 @@ int32_T proc_control::proc_control_xpotrf_g(int32_T n, real_T A_data[], int32_T
   return info;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jhnw4q(int32_T m, int32_T n, const real_T
   A_data[], int32_T ia0, int32_T lda, const real_T x_data[], real_T y_data[])
 {
   if (m != 0) {
     int32_T b;
     int32_T ix;
-    memset(&y_data[0], 0, static_cast<uint32_T>(m) * sizeof(real_T));
+    std::memset(&y_data[0], 0, static_cast<uint32_T>(m) * sizeof(real_T));
     ix = 0;
     b = (n - 1) * lda + ia0;
-    for (int32_T b_iy = ia0; lda < 0 ? b_iy >= b : b_iy <= b; b_iy += lda) {
+    for (int32_T b_iy{ia0}; lda < 0 ? b_iy >= b : b_iy <= b; b_iy += lda) {
       int32_T c;
       c = (b_iy + m) - 1;
-      for (int32_T iyend = b_iy; iyend <= c; iyend++) {
+      for (int32_T iyend{b_iy}; iyend <= c; iyend++) {
         int32_T tmp;
         tmp = iyend - b_iy;
         y_data[tmp] += A_data[iyend - 1] * x_data[ix];
@@ -38794,7 +38811,7 @@ void proc_control::proc_control_xgemv_jhnw4q(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factor(s_962gqykB8vLiRVqsLdGQIG_proc_T *obj,
   const real_T A[19321], int32_T ndims, int32_T ldA)
 {
@@ -38814,7 +38831,7 @@ void proc_control::proc_control_factor(s_962gqykB8vLiRVqsLdGQIG_proc_T *obj,
   obj->info = proc_control_xpotrf_g(ndims, obj->FMat.data, obj->ldm);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_solve(const s_962gqykB8vLiRVqsLdGQIG_proc_T *obj,
   real_T rhs_data[])
 {
@@ -38822,21 +38839,21 @@ void proc_control::proc_control_solve(const s_962gqykB8vLiRVqsLdGQIG_proc_T *obj
   n_tmp = obj->ndims;
   if (obj->ndims != 0) {
     int32_T jA;
-    for (int32_T j = 0; j < n_tmp; j++) {
+    for (int32_T j{0}; j < n_tmp; j++) {
       real_T temp;
       jA = j * obj->ldm;
       temp = rhs_data[j];
-      for (int32_T i = 0; i < j; i++) {
+      for (int32_T i{0}; i < j; i++) {
         temp -= obj->FMat.data[jA + i] * rhs_data[i];
       }
 
       rhs_data[j] = temp / obj->FMat.data[jA + j];
     }
 
-    for (int32_T j = n_tmp; j >= 1; j--) {
+    for (int32_T j{n_tmp}; j >= 1; j--) {
       jA = ((j - 1) * obj->ldm + j) - 2;
       rhs_data[j - 1] /= obj->FMat.data[jA + 1];
-      for (int32_T i = 0; i <= j - 2; i++) {
+      for (int32_T i{0}; i <= j - 2; i++) {
         int32_T ix;
         ix = (j - i) - 2;
         rhs_data[ix] -= obj->FMat.data[jA - i] * rhs_data[j - 1];
@@ -38845,7 +38862,7 @@ void proc_control::proc_control_solve(const s_962gqykB8vLiRVqsLdGQIG_proc_T *obj
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_factor_h(s_962gqykB8vLiRVqsLdGQIG_proc_T *obj,
   const real_T A[19321], int32_T ndims, int32_T ldA)
 {
@@ -38929,7 +38946,7 @@ void proc_control::proc_control_factor_h(s_962gqykB8vLiRVqsLdGQIG_proc_T *obj,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_solve_f(const s_962gqykB8vLiRVqsLdGQIG_proc_T
   *obj, real_T rhs_data[])
 {
@@ -38937,11 +38954,11 @@ void proc_control::proc_control_solve_f(const s_962gqykB8vLiRVqsLdGQIG_proc_T
   int32_T n;
   n = obj->ndims - 1;
   if (obj->ndims != 0) {
-    for (int32_T b_j = 0; b_j <= n; b_j++) {
+    for (int32_T b_j{0}; b_j <= n; b_j++) {
       int32_T c;
       jjA = b_j * obj->ldm + b_j;
       c = n - b_j;
-      for (int32_T b_i = 0; b_i < c; b_i++) {
+      for (int32_T b_i{0}; b_i < c; b_i++) {
         int32_T ix;
         ix = (b_i + b_j) + 1;
         rhs_data[ix] -= obj->FMat.data[(b_i + jjA) + 1] * rhs_data[b_j];
@@ -38950,16 +38967,16 @@ void proc_control::proc_control_solve_f(const s_962gqykB8vLiRVqsLdGQIG_proc_T
   }
 
   n = obj->ndims;
-  for (int32_T b_j = 0; b_j < n; b_j++) {
+  for (int32_T b_j{0}; b_j < n; b_j++) {
     rhs_data[b_j] /= obj->FMat.data[obj->ldm * b_j + b_j];
   }
 
   if (obj->ndims != 0) {
-    for (int32_T b_j = n; b_j >= 1; b_j--) {
+    for (int32_T b_j{n}; b_j >= 1; b_j--) {
       real_T temp;
       jjA = (b_j - 1) * obj->ldm;
       temp = rhs_data[b_j - 1];
-      for (int32_T b_i = n; b_i >= b_j + 1; b_i--) {
+      for (int32_T b_i{n}; b_i >= b_j + 1; b_i--) {
         temp -= obj->FMat.data[(jjA + b_i) - 1] * rhs_data[b_i - 1];
       }
 
@@ -38968,7 +38985,7 @@ void proc_control::proc_control_solve_f(const s_962gqykB8vLiRVqsLdGQIG_proc_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_compute_deltax(const real_T H[19321],
   s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution, s_z8miyzCNLMZx998HtZciUB_proc_T
   *memspace, const s_o1KzuWoPqzc62zOgqamCNH_proc_T *qrmanager,
@@ -39284,14 +39301,14 @@ void proc_control::proc_control_compute_deltax(const real_T H[19321],
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_xnrm2_ap(int32_T n, const real_T x_data[])
 {
   real_T y;
   y = 0.0;
   if (n >= 1) {
     if (n == 1) {
-      y = fabs(x_data[0]);
+      y = std::abs(x_data[0]);
     } else {
       real_T scale;
       int32_T b;
@@ -39319,7 +39336,7 @@ real_T proc_control::proc_control_xnrm2_ap(int32_T n, const real_T x_data[])
   return y;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_xgemv_jhnw4qt(int32_T m, int32_T n, const real_T
   A_data[], int32_T lda, const real_T x_data[], real_T y_data[])
 {
@@ -39358,7 +39375,7 @@ void proc_control::proc_control_xgemv_jhnw4qt(int32_T m, int32_T n, const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_feasibleratiotest(const real_T
   solution_xstar_data[], const real_T solution_searchDir_data[], real_T
   workspace_data[], const int32_T workspace_size[2], int32_T workingset_nVar,
@@ -39392,8 +39409,8 @@ void proc_control::proc_control_feasibleratiotest(const real_T
   if (workingset_nWConstr[2] < workingset_sizes[2]) {
     d_tmp = static_cast<uint16_T>(workingset_sizes[2]);
     if (d_tmp - 1 >= 0) {
-      memcpy(&workspace_data[0], &workingset_bineq_data[0], static_cast<uint32_T>
-             (d_tmp) * sizeof(real_T));
+      std::memcpy(&workspace_data[0], &workingset_bineq_data[0], static_cast<
+                  uint32_T>(d_tmp) * sizeof(real_T));
     }
 
     proc_control_xgemv_jhnw4qt(workingset_nVar, workingset_sizes[2],
@@ -39494,13 +39511,11 @@ void proc_control::proc_control_feasibleratiotest(const real_T
 
   if (!isPhaseOne) {
     *newBlocking = (((!*newBlocking) || (!(*alpha > 1.0))) && (*newBlocking));
-    if (!(*alpha <= 1.0)) {
-      *alpha = 1.0;
-    }
+    *alpha = std::fmin(*alpha, 1.0);
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_c_checkUnboundedOrIllPosed
   (s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution, const
    s_bsf2Fsale81D2LTDCKuKhG_proc_T *objective)
@@ -39515,7 +39530,7 @@ void proc_control::proc_c_checkUnboundedOrIllPosed
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_addBoundToActiveSetMatrix_
   (s_PAtG1CW05sRYOWrqzwRQyC_proc_T *obj, int32_T TYPE, int32_T idx_local)
 {
@@ -39536,17 +39551,17 @@ void proc_control::proc_addBoundToActiveSetMatrix_
   }
 
   if (static_cast<uint16_T>(idx_bnd_local - 1) - 1 >= 0) {
-    memset(&obj->ATwset.data[colOffset + 1], 0, static_cast<uint32_T>((
-             static_cast<uint16_T>(idx_bnd_local - 1) + colOffset) - colOffset) *
-           sizeof(real_T));
+    std::memset(&obj->ATwset.data[colOffset + 1], 0, static_cast<uint32_T>((
+      static_cast<uint16_T>(idx_bnd_local - 1) + colOffset) - colOffset) *
+                sizeof(real_T));
   }
 
   obj->ATwset.data[idx_bnd_local + colOffset] = static_cast<real_T>(TYPE == 5) *
     2.0 - 1.0;
   if (idx_bnd_local + 1 <= obj->nVar) {
-    memset(&obj->ATwset.data[(idx_bnd_local + colOffset) + 1], 0,
-           static_cast<uint32_T>(((obj->nVar + colOffset) - idx_bnd_local) -
-            colOffset) * sizeof(real_T));
+    std::memset(&obj->ATwset.data[(idx_bnd_local + colOffset) + 1], 0,
+                static_cast<uint32_T>(((obj->nVar + colOffset) - idx_bnd_local)
+      - colOffset) * sizeof(real_T));
   }
 
   switch (obj->probType) {
@@ -39560,7 +39575,7 @@ void proc_control::proc_addBoundToActiveSetMatrix_
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_addAineqConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   *obj, int32_T idx_local)
 {
@@ -39575,14 +39590,14 @@ void proc_control::proc_control_addAineqConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   iAineq0 = (idx_local - 1) * obj->ldA;
   iAw0 = (obj->nActiveConstr - 1) * obj->ldA;
   b = obj->nVar - 1;
-  for (int32_T idx = 0; idx <= b; idx++) {
+  for (int32_T idx{0}; idx <= b; idx++) {
     obj->ATwset.data[iAw0 + idx] = obj->Aineq.data[iAineq0 + idx];
   }
 
   obj->bwset.data[obj->nActiveConstr - 1] = obj->bineq.data[idx_local - 1];
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_checkStoppingAndUpdateFval(int32_T *activeSetChangeID,
   const real_T f_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, const
@@ -39663,7 +39678,7 @@ void proc_control::proc_checkStoppingAndUpdateFval(int32_T *activeSetChangeID,
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_iterate(const real_T H[19321], const real_T
   f_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T
@@ -40038,7 +40053,7 @@ void proc_control::proc_control_iterate(const real_T H[19321], const real_T
   } while (exitg1 == 0);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_linearForm_(boolean_T obj_hasLinear, int32_T
   obj_nvar, real_T workspace_data[], const real_T H[19321], const real_T f_data[],
   const real_T x_data[])
@@ -40047,8 +40062,8 @@ void proc_control::proc_control_linearForm_(boolean_T obj_hasLinear, int32_T
   beta1 = 0;
   if (obj_hasLinear) {
     if (static_cast<uint16_T>(obj_nvar) - 1 >= 0) {
-      memcpy(&workspace_data[0], &f_data[0], static_cast<uint16_T>(obj_nvar) *
-             sizeof(real_T));
+      std::memcpy(&workspace_data[0], &f_data[0], static_cast<uint16_T>(obj_nvar)
+                  * sizeof(real_T));
     }
 
     beta1 = 1;
@@ -40058,8 +40073,8 @@ void proc_control::proc_control_linearForm_(boolean_T obj_hasLinear, int32_T
     int32_T e;
     int32_T ix;
     if (beta1 != 1) {
-      memset(&workspace_data[0], 0, static_cast<uint16_T>(obj_nvar) * sizeof
-             (real_T));
+      std::memset(&workspace_data[0], 0, static_cast<uint16_T>(obj_nvar) *
+                  sizeof(real_T));
     }
 
     ix = 0;
@@ -40069,7 +40084,7 @@ void proc_control::proc_control_linearForm_(boolean_T obj_hasLinear, int32_T
       int32_T g;
       c = 0.5 * x_data[ix];
       g = (beta1 + obj_nvar) - 1;
-      for (int32_T b = beta1; b <= g; b++) {
+      for (int32_T b{beta1}; b <= g; b++) {
         int32_T tmp;
         tmp = b - beta1;
         workspace_data[tmp] += H[b - 1] * c;
@@ -40080,7 +40095,7 @@ void proc_control::proc_control_linearForm_(boolean_T obj_hasLinear, int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_computeFval(const
   s_bsf2Fsale81D2LTDCKuKhG_proc_T *obj, real_T workspace_data[], const real_T H
   [19321], const real_T f_data[], const real_T x_data[])
@@ -40137,7 +40152,7 @@ real_T proc_control::proc_control_computeFval(const
   return val;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_phaseone(const real_T H[19321], const real_T
   f_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T
@@ -40222,7 +40237,7 @@ void proc_control::proc_control_phaseone(const real_T H[19321], const real_T
   options->StepTolerance = 1.0E-6;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_driver_m(const real_T H[19321], const real_T
   f_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *solution,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T
@@ -40355,7 +40370,7 @@ void proc_control::proc_control_driver_m(const real_T H[19321], const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_addAeqConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   *obj, int32_T idx_local)
 {
@@ -40398,7 +40413,7 @@ void proc_control::proc_control_addAeqConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
     obj->Wlocalidx.data[totalEq] = idx_local;
     iAeq0 = (idx_local - 1) * obj->ldA;
     iAw0 = obj->ldA * totalEq;
-    for (int32_T b_idx = 0; b_idx < iAw0_tmp; b_idx++) {
+    for (int32_T b_idx{0}; b_idx < iAw0_tmp; b_idx++) {
       obj->ATwset.data[iAw0 + b_idx] = obj->Aeq.data[iAeq0 + b_idx];
     }
 
@@ -40406,7 +40421,7 @@ void proc_control::proc_control_addAeqConstr(s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_control_soc(const real_T Hessian[19321], const
   real_T grad_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
   s_z8miyzCNLMZx998HtZciUB_proc_T *memspace, s_PAtG1CW05sRYOWrqzwRQyC_proc_T
@@ -40638,7 +40653,7 @@ boolean_T proc_control::proc_control_soc(const real_T Hessian[19321], const
   return success;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_normal(const real_T Hessian[19321], const real_T
   grad_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
   sG8JZ69axY52WWR6RKyApQC_proc__T *MeritFunction,
@@ -40753,7 +40768,7 @@ void proc_control::proc_control_normal(const real_T Hessian[19321], const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_relaxed(const real_T Hessian[19321], const
   real_T grad_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
   sG8JZ69axY52WWR6RKyApQC_proc__T *MeritFunction,
@@ -40859,8 +40874,8 @@ void proc_control::proc_control_relaxed(const real_T Hessian[19321], const
       memspace->workspace_float.data[mFiniteLBOrig];
   }
 
-  memcpy(&memspace->workspace_float.data[0], &proc_control_B.b_WorkingSet.beq[0],
-         130U * sizeof(real_T));
+  std::memcpy(&memspace->workspace_float.data[0],
+              &proc_control_B.b_WorkingSet.beq[0], 130U * sizeof(real_T));
   proc_control_xgemv_jhnw4qt(WorkingSet->nVar, 130,
     proc_control_B.b_WorkingSet.Aeq.data, proc_control_B.b_WorkingSet.ldA,
     TrialState->xstar.data, memspace->workspace_float.data);
@@ -41070,7 +41085,7 @@ void proc_control::proc_control_relaxed(const real_T Hessian[19321], const
     WorkingSet->Wlocalidx.data, memspace->workspace_float.data);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 boolean_T proc_control::proc_control_step_k(int32_T *STEP_TYPE, real_T Hessian
   [19321], const real_T lb[139], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
   sG8JZ69axY52WWR6RKyApQC_proc__T *MeritFunction,
@@ -41305,7 +41320,7 @@ boolean_T proc_control::proc_control_step_k(int32_T *STEP_TYPE, real_T Hessian
   return stepSuccess;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_outputBounds_k(const real_T
   runtimedata_OutputMin[130], const real_T runtimedata_OutputMax[130], const
   real_T X[143], real_T e, real_T c_data[], int32_T c_size[2])
@@ -41386,8 +41401,8 @@ void proc_control::proc_control_outputBounds_k(const real_T
         proc_control_B.runtimedata_OutputMax = runtimedata_OutputMax[10 *
           proc_control_B.i_jn + proc_control_B.k_k];
         proc_control_B.icf[static_cast<int32_T>
-          (proc_control_B.runtimedata_OutputMin + 13.0) - 1] = ((!rtIsInf
-          (proc_control_B.runtimedata_OutputMax)) && (!rtIsNaN
+          (proc_control_B.runtimedata_OutputMin + 13.0) - 1] = ((!std::isinf
+          (proc_control_B.runtimedata_OutputMax)) && (!std::isnan
           (proc_control_B.runtimedata_OutputMax)));
         proc_control_B.ic[proc_control_B.i_jn] = static_cast<int32_T>
           (proc_control_B.runtimedata_OutputMin) - 1;
@@ -41462,7 +41477,7 @@ void proc_control::proc_control_outputBounds_k(const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_stateEvolution_f(const real_T X[143], const
   real_T U[88], real_T c[130])
 {
@@ -41476,7 +41491,7 @@ void proc_control::proc_control_stateEvolution_f(const real_T X[143], const
   int32_T i_0;
   int32_T i_1;
   int32_T i_2;
-  memset(&c[0], 0, 130U * sizeof(real_T));
+  std::memset(&c[0], 0, 130U * sizeof(real_T));
   for (i_0 = 0; i_0 < 13; i_0++) {
     ic[i_0] = static_cast<real_T>(i_0) + 1.0;
   }
@@ -41517,7 +41532,7 @@ void proc_control::proc_control_stateEvolution_f(const real_T X[143], const
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_contr_c4_mpclib_anonFcn2_n(const real_T runtimedata_x[13],
   const real_T runtimedata_OutputMin[130], const real_T runtimedata_OutputMax
   [130], const real_T z[139], real_T varargout_1_data[], int32_T
@@ -41556,7 +41571,7 @@ void proc_control::proc_contr_c4_mpclib_anonFcn2_n(const real_T runtimedata_x[13
     varargout_2);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_evalObjAndConstr(int32_T
   obj_next_next_next_next_next_b_, const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   *obj_next_next_next_next_next_ne, const s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
@@ -41712,7 +41727,7 @@ void proc_control::proc_control_evalObjAndConstr(int32_T
         = proc_control_B.b_data_f[proc_control_B.i_j];
     }
 
-    memcpy(&Ceq_workspace[0], &proc_control_B.c[0], 130U * sizeof(real_T));
+    std::memcpy(&Ceq_workspace[0], &proc_control_B.c[0], 130U * sizeof(real_T));
     *status = proc_contr_checkVectorNonFinite(obj_next_next_next_next_next_b_,
       Cineq_workspace_data, ineq0);
     if (*status == 1) {
@@ -41721,7 +41736,7 @@ void proc_control::proc_control_evalObjAndConstr(int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_con_computeLinearResiduals(const real_T x[139], int32_T
   nVar, real_T workspaceIneq_data[], const int32_T workspaceIneq_size[1],
   int32_T mLinIneq, const real_T AineqT_data[], const real_T bineq_data[],
@@ -41733,19 +41748,19 @@ void proc_control::proc_con_computeLinearResiduals(const real_T x[139], int32_T
     int32_T vectorUB;
     loop_ub = workspaceIneq_size[0];
     if (loop_ub - 1 >= 0) {
-      memcpy(&proc_control_B.y_data_bj[0], &workspaceIneq_data[0],
-             static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+      std::memcpy(&proc_control_B.y_data_bj[0], &workspaceIneq_data[0],
+                  static_cast<uint32_T>(loop_ub) * sizeof(real_T));
     }
 
     b_tmp = static_cast<uint16_T>(mLinIneq);
     if (static_cast<uint16_T>(mLinIneq) - 1 >= 0) {
-      memcpy(&proc_control_B.y_data_bj[0], &bineq_data[0], static_cast<uint16_T>
-             (mLinIneq) * sizeof(real_T));
+      std::memcpy(&proc_control_B.y_data_bj[0], &bineq_data[0],
+                  static_cast<uint16_T>(mLinIneq) * sizeof(real_T));
     }
 
     if (loop_ub - 1 >= 0) {
-      memcpy(&workspaceIneq_data[0], &proc_control_B.y_data_bj[0],
-             static_cast<uint32_T>(loop_ub) * sizeof(real_T));
+      std::memcpy(&workspaceIneq_data[0], &proc_control_B.y_data_bj[0],
+                  static_cast<uint32_T>(loop_ub) * sizeof(real_T));
     }
 
     loop_ub = (static_cast<uint16_T>(mLinIneq) / 2) << 1;
@@ -41777,7 +41792,7 @@ void proc_control::proc_con_computeLinearResiduals(const real_T x[139], int32_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 real_T proc_control::proc_control_computeMeritFcn(real_T obj_penaltyParam,
   real_T fval, const real_T Cineq_workspace_data[], int32_T mIneq, const real_T
   Ceq_workspace[130], boolean_T evalWellDefined)
@@ -41789,12 +41804,12 @@ real_T proc_control::proc_control_computeMeritFcn(real_T obj_penaltyParam,
     int32_T k;
     constrViolationEq = 0.0;
     for (k = 0; k < 130; k++) {
-      constrViolationEq += fabs(Ceq_workspace[k]);
+      constrViolationEq += std::abs(Ceq_workspace[k]);
     }
 
     constrViolationIneq = 0.0;
     k = static_cast<uint16_T>(mIneq);
-    for (int32_T idx = 0; idx < k; idx++) {
+    for (int32_T idx{0}; idx < k; idx++) {
       real_T Cineq_workspace;
       Cineq_workspace = Cineq_workspace_data[idx];
       if (Cineq_workspace > 0.0) {
@@ -41810,7 +41825,7 @@ real_T proc_control::proc_control_computeMeritFcn(real_T obj_penaltyParam,
   return val;
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_linesearch(boolean_T *evalWellDefined, const
   real_T bineq_data[], int32_T WorkingSet_nVar, int32_T WorkingSet_ldA, const
   real_T WorkingSet_Aineq_data[], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
@@ -41950,7 +41965,7 @@ void proc_control::proc_control_linesearch(boolean_T *evalWellDefined, const
   } while (exitg1 == 0);
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
   lb[139], s_KPwpEZDfdzkqudEdVwjGjF_proc_T *TrialState,
   sG8JZ69axY52WWR6RKyApQC_proc__T *MeritFunction, const
@@ -41968,747 +41983,747 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const char_T x[7] = { 'f', 'm', 'i', 'n', 'c', 'o', 'n' };
+  static const char_T x[7]{ 'f', 'm', 'i', 'n', 'c', 'o', 'n' };
 
   int32_T exitg1;
   for (proc_control_B.idx_max_tmp = 0; proc_control_B.idx_max_tmp < 19321;
@@ -42766,12 +42781,9 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
     }
   }
 
-  proc_control_B.smax = fabs(TrialState->grad.data[proc_control_B.idx_max - 1]);
-  if ((proc_control_B.smax <= 1.0) || rtIsNaN(proc_control_B.smax)) {
-    proc_control_B.smax = 1.0;
-  }
-
-  if (rtIsInf(proc_control_B.smax)) {
+  proc_control_B.smax = std::fmax(1.0, std::abs(TrialState->
+    grad.data[proc_control_B.idx_max - 1]));
+  if (std::isinf(proc_control_B.smax)) {
     proc_control_B.smax = 1.0;
   }
 
@@ -42853,7 +42865,7 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
            static_cast<uint32_T>(proc_control_B.b_nVar) * sizeof(real_T));
   }
 
-  memcpy(&TrialState->cEq_old[0], &TrialState->cEq[0], 130U * sizeof(real_T));
+  std::memcpy(&TrialState->cEq_old[0], &TrialState->cEq[0], 130U * sizeof(real_T));
   if (!proc_control_B.Flags.done) {
     TrialState->sqpIterations = 1;
   }
@@ -42997,8 +43009,9 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
       }
 
       if (proc_control_B.b_nVar_tmp - 1 >= 0) {
-        memcpy(&proc_control_B.y_data_n[0], &TrialState->cIneq.data[0],
-               static_cast<uint32_T>(proc_control_B.b_nVar_tmp) * sizeof(real_T));
+        std::memcpy(&proc_control_B.y_data_n[0], &TrialState->cIneq.data[0],
+                    static_cast<uint32_T>(proc_control_B.b_nVar_tmp) * sizeof
+                    (real_T));
       }
 
       if (proc_control_B.b_nVar - 1 >= 0) {
@@ -43006,7 +43019,8 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
                static_cast<uint32_T>(proc_control_B.b_nVar) * sizeof(real_T));
       }
 
-      memcpy(&TrialState->cEq_old[0], &TrialState->cEq[0], 130U * sizeof(real_T));
+      std::memcpy(&TrialState->cEq_old[0], &TrialState->cEq[0], 130U * sizeof
+                  (real_T));
       proc_control_B.Flags.gradOK = true;
       evalObjAndConstrAndDerivatives
         (FcnEvaluator->next.next.next.next.next.b_value,
@@ -43030,8 +43044,9 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
       }
 
       if (proc_control_B.b_nVar_tmp - 1 >= 0) {
-        memcpy(&proc_control_B.y_data_n[0], &TrialState->cIneq_old.data[0],
-               static_cast<uint32_T>(proc_control_B.b_nVar_tmp) * sizeof(real_T));
+        std::memcpy(&proc_control_B.y_data_n[0], &TrialState->cIneq_old.data[0],
+                    static_cast<uint32_T>(proc_control_B.b_nVar_tmp) * sizeof
+                    (real_T));
       }
 
       if (proc_control_B.b_nVar - 1 >= 0) {
@@ -43039,7 +43054,8 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
                static_cast<uint32_T>(proc_control_B.b_nVar) * sizeof(real_T));
       }
 
-      memcpy(&TrialState->cEq[0], &TrialState->cEq_old[0], 130U * sizeof(real_T));
+      std::memcpy(&TrialState->cEq[0], &TrialState->cEq_old[0], 130U * sizeof
+                  (real_T));
     }
 
     proc_control_test_exit(&proc_control_B.Flags, memspace, MeritFunction,
@@ -43053,8 +43069,8 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
         129;
       proc_control_B.u1 = WorkingSet->ldA;
       proc_control_B.idx_max = static_cast<uint16_T>(proc_control_B.nVar_tmp_tmp);
-      memcpy(&TrialState->delta_gradLag.data[0], &TrialState->grad.data[0],
-             static_cast<uint32_T>(proc_control_B.idx_max) * sizeof(real_T));
+      std::memcpy(&TrialState->delta_gradLag.data[0], &TrialState->grad.data[0],
+                  static_cast<uint32_T>(proc_control_B.idx_max) * sizeof(real_T));
       if (proc_control_B.nVar_tmp_tmp >= 1) {
         proc_control_B.idx_max_tmp = (proc_control_B.nVar_tmp_tmp / 2) << 1;
         proc_control_B.idx_max = proc_control_B.idx_max_tmp - 2;
@@ -43174,7 +43190,7 @@ void proc_control::proc_control_driver(const real_T bineq_data[], const real_T
   }
 }
 
-// Function for MATLAB Function: '<S148>/NLMPC'
+// Function for MATLAB Function: '<S217>/NLMPC'
 void proc_control::proc_control_fmincon(const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   *fun_workspace_runtimedata, const sumhYdZsdukPgvAXm7nzHOD_proc__T
   *fun_workspace_userdata, const real_T x0[139], const real_T Aineq_data[],
@@ -43207,103 +43223,104 @@ void proc_control::proc_control_fmincon(const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   proc_control_factoryConstruct(proc_control_B.mIneq + 400,
     proc_control_B.mConstrMax, proc_control_B.mIneq, proc_control_B.mNonlinIneq,
     &proc_control_B.TrialState);
-  memcpy(&proc_control_B.TrialState.xstarsqp[0], &x0[0], 139U * sizeof(real_T));
+  std::memcpy(&proc_control_B.TrialState.xstarsqp[0], &x0[0], 139U * sizeof
+              (real_T));
   proc_control_B.FcnEvaluator.next.next.next.next.next.b_value =
     proc_control_B.mNonlinIneq;
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.x
      [0], &nonlcon_workspace_runtimedata->x[0], 13U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.lastMV
      [0], &nonlcon_workspace_runtimedata->lastMV[0], sizeof(real_T) << 3U);
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.ref
      [0], &nonlcon_workspace_runtimedata->ref[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputWeights
      [0], &nonlcon_workspace_runtimedata->OutputWeights[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVWeights
      [0], &nonlcon_workspace_runtimedata->MVWeights[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateWeights
      [0], &nonlcon_workspace_runtimedata->MVRateWeights[0], 80U * sizeof(real_T));
   proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.ECRWeight
     = nonlcon_workspace_runtimedata->ECRWeight;
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputMin
      [0], &nonlcon_workspace_runtimedata->OutputMin[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputMax
      [0], &nonlcon_workspace_runtimedata->OutputMax[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.StateMin
      [0], &nonlcon_workspace_runtimedata->StateMin[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.StateMax
      [0], &nonlcon_workspace_runtimedata->StateMax[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVMin
      [0], &nonlcon_workspace_runtimedata->MVMin[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVMax
      [0], &nonlcon_workspace_runtimedata->MVMax[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateMin
      [0], &nonlcon_workspace_runtimedata->MVRateMin[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateMax
      [0], &nonlcon_workspace_runtimedata->MVRateMax[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVScaledTarget
      [0], &nonlcon_workspace_runtimedata->MVScaledTarget[0], 80U * sizeof(real_T));
   proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.b_value.workspace.userdata
     = *nonlcon_workspace_userdata;
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.x
      [0], &fun_workspace_runtimedata->x[0], 13U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.lastMV
      [0], &fun_workspace_runtimedata->lastMV[0], sizeof(real_T) << 3U);
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.ref
      [0], &fun_workspace_runtimedata->ref[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputWeights
      [0], &fun_workspace_runtimedata->OutputWeights[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVWeights
      [0], &fun_workspace_runtimedata->MVWeights[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateWeights
      [0], &fun_workspace_runtimedata->MVRateWeights[0], 80U * sizeof(real_T));
   proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.ECRWeight
     = fun_workspace_runtimedata->ECRWeight;
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputMin
      [0], &fun_workspace_runtimedata->OutputMin[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.OutputMax
      [0], &fun_workspace_runtimedata->OutputMax[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.StateMin
      [0], &fun_workspace_runtimedata->StateMin[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.StateMax
      [0], &fun_workspace_runtimedata->StateMax[0], 130U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVMin
      [0], &fun_workspace_runtimedata->MVMin[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVMax
      [0], &fun_workspace_runtimedata->MVMax[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateMin
      [0], &fun_workspace_runtimedata->MVRateMin[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVRateMax
      [0], &fun_workspace_runtimedata->MVRateMax[0], 80U * sizeof(real_T));
-  memcpy
+  std::memcpy
     (&proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.runtimedata.MVScaledTarget
      [0], &fun_workspace_runtimedata->MVScaledTarget[0], 80U * sizeof(real_T));
   proc_control_B.FcnEvaluator.next.next.next.next.next.next.next.next.b_value.workspace.userdata
@@ -43667,8 +43684,8 @@ void proc_control::proc_control_fmincon(const s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   *output_firstorderopt = proc_control_B.MeritFunction.firstOrderOpt;
 }
 
-void proc_control::proc_contr_Subscriber_setupImpl(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::proc_co_AUV8QuatPerturbedSimFcn(const real_T in1[13], const
+  real_T in2[6], const real_T in3[8], real_T out1[13])
 {
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
@@ -43698,9 +43715,74 @@ void proc_control::proc_contr_Subscriber_setupImpl(const
   Sub_proc_control_209_83.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::proc_con_Subscriber_setupImpl_p(const
+void proc_control::proc_control_binary_expand_op(real_T in1[3], const int32_T
+  in2_size[2], const real_T in3_data[], const real_T in4[4])
+{
+  int32_T i;
+  int32_T in2_idx_0;
+
+  // Outputs for Enabled SubSystem: '<Root>/Model System' incorporates:
+  //   EnablePort: '<S3>/Enable'
+
+  // MATLAB Function: '<S29>/MATLAB Function'
+  in2_idx_0 = in2_size[1];
+  for (i = 0; i < in2_idx_0; i++) {
+    in1[0] = -in3_data[0] * 2.0 * rt_atan2d_snf(in4[1], in4[0]);
+  }
+
+  // End of MATLAB Function: '<S29>/MATLAB Function'
+  // End of Outputs for SubSystem: '<Root>/Model System'
+}
+
+real_T rt_urand_Upu32_Yd_f_pw_snf(uint32_T *u)
+{
+  uint32_T hi;
+  uint32_T lo;
+
+  // Uniform random number generator (random number between 0 and 1)
+
+  // #define IA      16807                      magic multiplier = 7^5
+  // #define IM      2147483647                 modulus = 2^31-1
+  // #define IQ      127773                     IM div IA
+  // #define IR      2836                       IM modulo IA
+  // #define S       4.656612875245797e-10      reciprocal of 2^31-1
+  // test = IA * (seed % IQ) - IR * (seed/IQ)
+  // seed = test < 0 ? (test + IM) : test
+  // return (seed*S)
+
+  lo = *u % 127773U * 16807U;
+  hi = *u / 127773U * 2836U;
+  if (lo < hi) {
+    *u = 2147483647U - (hi - lo);
+  } else {
+    *u = lo - hi;
+  }
+
+  return static_cast<real_T>(*u) * 4.6566128752457969E-10;
+}
+
+real_T rt_nrand_Upu32_Yd_f_pw_snf(uint32_T *u)
+{
+  real_T si;
+  real_T sr;
+  real_T y;
+
+  // Normal (Gaussian) random number generator
+  do {
+    sr = 2.0 * rt_urand_Upu32_Yd_f_pw_snf(u) - 1.0;
+    si = 2.0 * rt_urand_Upu32_Yd_f_pw_snf(u) - 1.0;
+    si = sr * sr + si * si;
+  } while (si > 1.0);
+
+  y = std::sqrt(-2.0 * std::log(si) / si) * sr;
+  return y;
+}
+
+void proc_control::proc_c_Subscriber_setupImpl_pr3(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[26]{ "/proc_simulation/imu_info" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43732,6 +43814,8 @@ void proc_control::proc_con_Subscriber_setupImpl_p(const
 void proc_control::proc_co_Subscriber_setupImpl_pr(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[30]{ "/proc_simulation/dvl_velocity" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43760,9 +43844,11 @@ void proc_control::proc_co_Subscriber_setupImpl_pr(const
   Sub_proc_control_209_85.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::proc_c_Subscriber_setupImpl_pr3(const
+void proc_control::proc_con_Subscriber_setupImpl_p(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[23]{ "/proc_simulation/depth" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43791,9 +43877,11 @@ void proc_control::proc_c_Subscriber_setupImpl_pr3(const
   Sub_proc_control_209_4.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::proc__Subscriber_setupImpl_pr35(const
+void proc_control::pro_Subscriber_setupImpl_pr351e(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[23]{ "/provider_imu/imu_info" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43825,6 +43913,40 @@ void proc_control::proc__Subscriber_setupImpl_pr35(const
 void proc_control::proc_Subscriber_setupImpl_pr351(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[27]{ "/provider_dvl/dvl_velocity" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF deadline;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  char_T b_zeroDelimTopic[27];
+  qos_profile = rmw_qos_profile_default;
+
+  // Start for MATLABSystem: '<S84>/SourceBlock'
+  deadline.sec = 0.0;
+  deadline.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 27; i++) {
+    // Start for MATLABSystem: '<S84>/SourceBlock'
+    b_zeroDelimTopic[i] = b_zeroDelimTopic_0[i];
+  }
+
+  Sub_proc_control_209_5.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
+}
+
+void proc_control::proc__Subscriber_setupImpl_pr35(const
+  ros_slros2_internal_block_Sub_T *obj)
+{
+  static const char_T b_zeroDelimTopic_0[22]{ "/provider_depth/depth" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43864,8 +43986,8 @@ void proc_control::pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t rmwProfile,
   real_T sec;
   input = qosDeadline;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   if (qosDeadline == (rtInf)) {
     input = 0.0;
@@ -43874,40 +43996,40 @@ void proc_control::pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t rmwProfile,
   sec = floor(input);
   deadline.sec = sec;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   deadline.nsec = (input - sec) * 1.0E+9;
   input = qosLifespan;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   if (qosLifespan == (rtInf)) {
     input = 0.0;
   }
 
-  sec = floor(input);
+  sec = std::floor(input);
   lifespan.sec = sec;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   lifespan.nsec = (input - sec) * 1.0E+9;
   input = qosLeaseDuration;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   if (qosLeaseDuration == (rtInf)) {
     input = 0.0;
   }
 
-  sec = floor(input);
+  sec = std::floor(input);
   liveliness_lease_duration.sec = sec;
 
-  // Start for MATLABSystem: '<S15>/SinkBlock' incorporates:
-  //   MATLABSystem: '<S111>/SinkBlock'
+  // Start for MATLABSystem: '<S17>/SinkBlock' incorporates:
+  //   MATLABSystem: '<S180>/SinkBlock'
 
   liveliness_lease_duration.nsec = (input - sec) * 1.0E+9;
   SET_QOS_VALUES(rmwProfile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)qosDepth,
@@ -43920,6 +44042,8 @@ void proc_control::pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t rmwProfile,
 void proc_control::proc_contro_Publisher_setupImpl(const
   ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[24]{ "/proc_control/sensor_on" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43948,9 +44072,11 @@ void proc_control::proc_contro_Publisher_setupImpl(const
   Pub_proc_control_500.createPublisher(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setupIm_pr351ewpk3k4(const
+void proc_control::Subscriber_setupI_pr351ewpk3k4u(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[28]{ "/proc_control/set_mpc_gains" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -43979,9 +44105,11 @@ void proc_control::Subscriber_setupIm_pr351ewpk3k4(const
   Sub_proc_control_780.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setupI_pr351ewpk3k4u(const
+void proc_control::Subscriber_setup_pr351ewpk3k4u0(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[28]{ "/provider_power/current_not" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44020,11 +44148,11 @@ void proc_control::proc_cont_PolyTrajSys_setupImpl
   real_T tmp[2];
   int32_T b_j;
   for (b_j = 0; b_j < 6; b_j++) {
-    // Start for MATLABSystem: '<S254>/Polynomial Trajectory'
+    // Start for MATLABSystem: '<S322>/Polynomial Trajectory'
     obj->PrevOptInputs.f1[b_j] = 1.0;
   }
 
-  // Start for MATLABSystem: '<S254>/Polynomial Trajectory'
+  // Start for MATLABSystem: '<S322>/Polynomial Trajectory'
   obj->PrevOptInputs.f2[0] = 1.0;
   obj->PrevOptInputs.f2[1] = 1.0;
   tmp[0] = 1.0;
@@ -44049,9 +44177,11 @@ void proc_control::proc_cont_PolyTrajSys_setupImpl
   obj->PPFormUpdatedNeeded = false;
 }
 
-void proc_control::proc_con_Subscriber_setupImpl_n(const
+void proc_control::proc_con_Subscriber_setupImpl_g(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[23]{ "/proc_control/add_pose" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44083,6 +44213,9 @@ void proc_control::proc_con_Subscriber_setupImpl_n(const
 void proc_control::proc_cont_Publisher_setupImpl_p(const
   ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[32]{ "/provider_thruster/thruster_pwm"
+  };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44114,6 +44247,8 @@ void proc_control::proc_cont_Publisher_setupImpl_p(const
 void proc_control::proc_con_Publisher_setupImpl_pr(const
   ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[27]{ "/telemetry/thruster_newton" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44145,6 +44280,8 @@ void proc_control::proc_con_Publisher_setupImpl_pr(const
 void proc_control::proc_co_Publisher_setupImpl_pr3(const
   ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[29]{ "proc_control/controller_info" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44173,9 +44310,11 @@ void proc_control::proc_co_Publisher_setupImpl_pr3(const
   Pub_proc_control_1430.createPublisher(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::pro_Subscriber_setupImpl_pr351e(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::proc_c_Publisher_setupImpl_pr35(const
+  ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[30]{ "/proc_simulation/thruster_rpm" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44189,9 +44328,9 @@ void proc_control::pro_Subscriber_setupImpl_pr351e(const
   deadline.nsec = 0.0;
   lifespan.sec = 0.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.sec = 5.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44204,9 +44343,45 @@ void proc_control::pro_Subscriber_setupImpl_pr351e(const
   Sub_proc_control_1.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setupImp_pr351ewpk3k(const
+void proc_control::proc_contr_Subscriber_setupImpl(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[37]{
+    "/proc_simulation/set_pinger_location" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF deadline;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  char_T b_zeroDelimTopic[37];
+  qos_profile = rmw_qos_profile_default;
+
+  // Start for MATLABSystem: '<S58>/SourceBlock'
+  deadline.sec = 5.0;
+  deadline.nsec = 0.0;
+  lifespan.sec = 5.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 5.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 37; i++) {
+    // Start for MATLABSystem: '<S58>/SourceBlock'
+    b_zeroDelimTopic[i] = b_zeroDelimTopic_0[i];
+  }
+
+  Sub_proc_control_1278.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
+}
+
+void proc_control::proc__Publisher_setupImpl_pr351(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic_0[33]{ "/proc_simulation/pinger_location"
+  };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44220,7 +44395,7 @@ void proc_control::Subscriber_setupImp_pr351ewpk3k(const
   deadline.nsec = 0.0;
   lifespan.sec = 0.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.sec = 5.0;
   liveliness_lease_duration.nsec = 0.0;
   SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
@@ -44235,9 +44410,11 @@ void proc_control::Subscriber_setupImp_pr351ewpk3k(const
   Sub_proc_control_1486.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::pr_Subscriber_setupImpl_pr351ew(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::p_Publisher_setupImpl_pr351ewpk(const
+  ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[28]{ "proc_simulation/true_states" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44253,7 +44430,7 @@ void proc_control::pr_Subscriber_setupImpl_pr351ew(const
   lifespan.nsec = 0.0;
   liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44266,9 +44443,12 @@ void proc_control::pr_Subscriber_setupImpl_pr351ew(const
   Sub_proc_control_13.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::p_Subscriber_setupImpl_pr351ewp(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::proc_Publisher_setupImpl_pr351e(const
+  ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[39]{
+    "/my_topic/proc_simulation/dvl_velocity" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44278,14 +44458,14 @@ void proc_control::p_Subscriber_setupImpl_pr351ewp(const
     "/proc_simulation/start_sim/proc_simulation/start_simulationulation";
   qos_profile = rmw_qos_profile_default;
 
-  // Start for MATLABSystem: '<S58>/SourceBlock'
+  // Start for MATLABSystem: '<S105>/SinkBlock'
   deadline.sec = 0.0;
   deadline.nsec = 0.0;
   lifespan.sec = 0.0;
   lifespan.nsec = 0.0;
   liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44294,9 +44474,11 @@ void proc_control::p_Subscriber_setupImpl_pr351ewp(const
   Sub_proc_control_40.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setupImpl_pr351ewpk(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::pro_Publisher_setupImpl_pr351ew(const
+  ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[23]{ "/proc_simulation/depth" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44312,7 +44494,7 @@ void proc_control::Subscriber_setupImpl_pr351ewpk(const
   lifespan.nsec = 0.0;
   liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44325,9 +44507,11 @@ void proc_control::Subscriber_setupImpl_pr351ewpk(const
   Sub_proc_control_15.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setupImpl_pr351ewpk3(const
-  ros_slros2_internal_block_Sub_T *obj)
+void proc_control::pr_Publisher_setupImpl_pr351ewp(const
+  ros_slros2_internal_block_Pub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[26]{ "/proc_simulation/imu_info" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44343,7 +44527,7 @@ void proc_control::Subscriber_setupImpl_pr351ewpk3(const
   lifespan.nsec = 0.0;
   liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44356,9 +44540,11 @@ void proc_control::Subscriber_setupImpl_pr351ewpk3(const
   Sub_proc_control_16.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setup_pr351ewpk3k4u0(const
+void proc_control::pr_Subscriber_setupImpl_pr351ew(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[23]{ "/proc_control/set_mode" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44372,9 +44558,9 @@ void proc_control::Subscriber_setup_pr351ewpk3k4u0(const
   deadline.nsec = 0.0;
   lifespan.sec = 5.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 5.0;
+  liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -44387,9 +44573,11 @@ void proc_control::Subscriber_setup_pr351ewpk3k4u0(const
   Sub_proc_control_532.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::Subscriber_setu_pr351ewpk3k4u0o(const
+void proc_control::p_Subscriber_setupImpl_pr351ewp(const
   ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[20]{ "/proc_nav/reset_pos" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44404,7 +44592,7 @@ void proc_control::Subscriber_setu_pr351ewpk3k4u0o(const
   deadline.nsec = 0.0;
   lifespan.sec = 5.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 5.0;
+  liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
   SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
@@ -44419,9 +44607,11 @@ void proc_control::Subscriber_setu_pr351ewpk3k4u0o(const
   Sub_proc_control_572.createSubscriber(&b_zeroDelimTopic[0], qos_profile);
 }
 
-void proc_control::proc_c_Publisher_setupImpl_pr35(const
-  ros_slros2_internal_block_Pub_T *obj)
+void proc_control::Subscriber_setupImp_pr351ewpk3k(const
+  ros_slros2_internal_block_Sub_T *obj)
 {
+  static const char_T b_zeroDelimTopic_0[28]{ "/provider_rs485/kill_status" };
+
   rmw_qos_profile_t qos_profile;
   sJ4ih70VmKcvCeguWN0mNVF deadline;
   sJ4ih70VmKcvCeguWN0mNVF lifespan;
@@ -44435,9 +44625,9 @@ void proc_control::proc_c_Publisher_setupImpl_pr35(const
   deadline.nsec = 0.0;
   lifespan.sec = 5.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 5.0;
+  liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, deadline, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
@@ -45078,7 +45268,9 @@ void proc_control::step()
 
   static const int8_T tmp_6[7] = { 0, 0, 0, 1, 0, 0, 0 };
 
-  static real_T d[130] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const int8_T tmp_6[7]{ 0, 0, 0, 1, 0, 0, 0 };
+
+  static real_T d[130]{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
     -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
@@ -45090,7 +45282,7 @@ void proc_control::step()
     -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0
   };
 
-  static real_T f[130] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static real_T f[130]{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,
     5.0, 5.0, 5.0, 5.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
@@ -45100,12 +45292,12 @@ void proc_control::step()
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
 
-  static const real_T b[441] = { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T b[441]{ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     -4.6042543754832843E-6, -0.0022720436034725897, 0.00013605399495041681, 0.0,
     0.94789999991422014, 0.00023231657375355515, 0.00085021850252945286,
     -7.4644574418929129E-5, -0.042372304854011958, 0.0024338870206531576,
@@ -45156,7 +45348,7 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
-  static const real_T c[630] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T c[630]{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0020445512957285371, -0.0014603487861040302, -4.9246767934457643E-6,
     0.0052868326178782173, 0.0020754199270452169, -0.015163628780498446, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -45213,33 +45405,33 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0 };
 
-  static const int8_T d_0[273] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+  static const int8_T d_0[273]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const real_T e[226] = { 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+  static const real_T e[226]{ 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
+    4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 4.7, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.7,
+    0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
     15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0 };
 
   static const real_T f_0[21] = { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -45266,7 +45458,6 @@ void proc_control::step()
 
   static const int8_T a[640] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -45288,10 +45479,9 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-  };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-  static const real_T g[81] = { 2.5651005531616526, 1.7832054070796954,
+  static const real_T g[81]{ 2.5651005531616526, 1.7832054070796954,
     -1.4357517509568314, -1.6576468970387899, 0.038415984331270484,
     0.3095395073701282, -0.036229291873675157, -0.31172619982772343, 0.0,
     1.7832054070796954, 2.5938374699880686, -1.6864513320323564,
@@ -45315,7 +45505,7 @@ void proc_control::step()
     0.23483646377640785, 2.4756910605625873, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 100000.0 };
 
-  static const real_T h[2034] = { -0.0, -0.0, -0.0, -0.0, -0.0,
+  static const real_T h[2034]{ -0.0, -0.0, -0.0, -0.0, -0.0,
     -0.0020445512957285371, 0.0014603487861040302, 4.9246767934457643E-6,
     -0.0052868326178782173, -0.0020754199270452169, 0.015163628780498446,
     3.1616010707720436E-7, -0.0, -0.00019811352068166413, -9.733336993428119E-5,
@@ -45837,124 +46027,124 @@ void proc_control::step()
     1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0 };
 
-  static const int8_T c_0[3003] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+  static const int8_T c_0[3003]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const real_T d_1[4851] = { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T d_1[4851]{ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -46560,7 +46750,7 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
-  static const real_T h_0[390] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T h_0[390]{ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -46575,7 +46765,6 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
@@ -46586,9 +46775,10 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 1.0 };
 
-  static const int8_T b_D[4290] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  static const int8_T b_D[4290]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46596,14 +46786,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46611,14 +46801,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46626,14 +46816,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46641,14 +46831,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46656,14 +46846,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46671,14 +46861,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46686,14 +46876,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46701,14 +46891,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46716,14 +46906,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -46731,14 +46921,14 @@ void proc_control::step()
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -47499,7 +47689,7 @@ void proc_control::step()
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-  static const real_T q[1808] = { -0.0, -0.0, -0.0, -0.0, -0.0,
+  static const real_T q[1808]{ -0.0, -0.0, -0.0, -0.0, -0.0,
     -0.0020445512957285371, 0.0014603487861040302, 4.9246767934457643E-6,
     -0.0052868326178782173, -0.0020754199270452169, 0.015163628780498446,
     3.1616010707720436E-7, -0.0, -0.00019811352068166413, -9.733336993428119E-5,
@@ -48006,105 +48196,103 @@ void proc_control::step()
     -0.0, -0.0, -0.0, -0.0, -0.0, -0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     1.0 };
 
-  static const real_T u[640] = { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  static const real_T u[640]{ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0 };
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-  static const real_T v[640] = { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+  static const real_T v[640]{ 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    1.0 };
+    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
 
-  static const int8_T c_1[169] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+  static const int8_T c_1[169]{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
 
-  static const real_T c_b[48] = { 0.02112443491058583, -0.015284356933675683,
+  static const real_T c_b[48]{ 0.02112443491058583, -0.015284356933675683,
     -7.0837403672252146E-5, 0.062952228101239543, 0.019032522297668636,
     -0.17235611708486639, 0.021112545591001931, 0.015556523198782039,
     9.3712054745178266E-5, -0.060884483374622281, 0.019613805650913103,
@@ -48125,11 +48313,11 @@ void proc_control::step()
   boolean_T exitg1;
   boolean_T guard1;
 
-  // Outputs for IfAction SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' incorporates:
-  //   ActionPort: '<S75>/Action Port'
+  // Outputs for IfAction SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' incorporates:
+  //   ActionPort: '<S144>/Action Port'
 
-  // SwitchCase: '<S68>/Switch Case' incorporates:
-  //   MATLAB Function: '<S148>/NLMPC'
+  // SwitchCase: '<S137>/Switch Case' incorporates:
+  //   MATLAB Function: '<S217>/NLMPC'
 
   f[0U] = (rtInf);
   f[1U] = (rtInf);
@@ -48182,91 +48370,91 @@ void proc_control::step()
   d[28U] = (rtMinusInf);
   d[29U] = (rtMinusInf);
 
-  // End of Outputs for SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' 
+  // End of Outputs for SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' 
   if ((&proc_control_M)->Timing.TaskCounters.TID[2] == 0) {
-    // MATLABSystem: '<S56>/SourceBlock'
+    // MATLABSystem: '<S125>/SourceBlock'
     proc_control_B.SourceBlock_o1_f = Sub_proc_control_1.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_d_o);
 
-    // Outputs for Enabled SubSystem: '<S56>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S62>/Enable'
+    // Outputs for Enabled SubSystem: '<S125>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S131>/Enable'
 
     if (proc_control_B.SourceBlock_o1_f) {
-      // SignalConversion generated from: '<S62>/In1' incorporates:
-      //   MATLABSystem: '<S56>/SourceBlock'
+      // SignalConversion generated from: '<S131>/In1' incorporates:
+      //   MATLABSystem: '<S125>/SourceBlock'
 
       proc_control_B.In1_me = proc_control_B.rtb_SourceBlock_o2_d_o;
     }
 
-    // End of Outputs for SubSystem: '<S56>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S125>/Enabled Subsystem'
 
-    // MATLABSystem: '<S61>/SourceBlock'
+    // MATLABSystem: '<S126>/SourceBlock'
     proc_control_B.SourceBlock_o1_j = Sub_proc_control_1486.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_my_m);
 
-    // MATLABSystem: '<S57>/SourceBlock'
+    // MATLABSystem: '<S129>/SourceBlock'
     proc_control_B.SourceBlock_o1_e = Sub_proc_control_13.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_i_m);
 
-    // Outputs for Enabled SubSystem: '<S57>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S63>/Enable'
+    // Outputs for Enabled SubSystem: '<S129>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S135>/Enable'
 
     if (proc_control_B.SourceBlock_o1_e) {
-      // SignalConversion generated from: '<S63>/In1' incorporates:
-      //   MATLABSystem: '<S57>/SourceBlock'
+      // SignalConversion generated from: '<S135>/In1' incorporates:
+      //   MATLABSystem: '<S129>/SourceBlock'
 
       proc_control_B.In1_lz = proc_control_B.rtb_SourceBlock_o2_i_m;
     }
 
-    // End of Outputs for SubSystem: '<S57>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S129>/Enabled Subsystem'
 
-    // MATLABSystem: '<S58>/SourceBlock'
+    // MATLABSystem: '<S128>/SourceBlock'
     proc_control_B.SourceBlock_o1_a = Sub_proc_control_40.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_m_n);
 
-    // Outputs for Enabled SubSystem: '<S58>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S64>/Enable'
+    // Outputs for Enabled SubSystem: '<S128>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S134>/Enable'
 
     if (proc_control_B.SourceBlock_o1_a) {
-      // SignalConversion generated from: '<S64>/In1' incorporates:
-      //   MATLABSystem: '<S58>/SourceBlock'
+      // SignalConversion generated from: '<S134>/In1' incorporates:
+      //   MATLABSystem: '<S128>/SourceBlock'
 
       proc_control_B.In1_gs = proc_control_B.rtb_SourceBlock_o2_m_n;
     }
 
-    // End of Outputs for SubSystem: '<S58>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S128>/Enabled Subsystem'
 
     // MATLABSystem: '<S59>/SourceBlock'
     proc_control_B.SourceBlock_o1_k3 = Sub_proc_control_15.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_my_m);
 
-    // Outputs for Enabled SubSystem: '<S59>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S65>/Enable'
+    // Outputs for Enabled SubSystem: '<S130>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S136>/Enable'
 
-    if (proc_control_B.SourceBlock_o1_k3) {
-      // SignalConversion generated from: '<S65>/In1' incorporates:
-      //   MATLABSystem: '<S59>/SourceBlock'
+    if (proc_control_B.SourceBlock_o1_k) {
+      // SignalConversion generated from: '<S136>/In1' incorporates:
+      //   MATLABSystem: '<S130>/SourceBlock'
 
       proc_control_B.In1_gf = proc_control_B.rtb_SourceBlock_o2_my_m;
     }
 
-    // End of Outputs for SubSystem: '<S59>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S130>/Enabled Subsystem'
 
     // MATLABSystem: '<S60>/SourceBlock'
     proc_control_B.SourceBlock_o1_k = Sub_proc_control_16.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_my_m);
   }
 
-  // MATLABSystem: '<S45>/MATLAB System' incorporates:
-  //   Delay: '<S45>/Delay'
-  //   SignalConversion generated from: '<S45>/MATLAB System'
+  // MATLABSystem: '<S114>/MATLAB System' incorporates:
+  //   Delay: '<S114>/Delay'
+  //   SignalConversion generated from: '<S114>/MATLAB System'
 
   if (proc_control_DW.obj_i.initial_mode != proc_control_P.mode.init) {
     proc_control_DW.obj_i.initial_mode = proc_control_P.mode.init;
   }
 
   //         %% Fonction qui détermine si on est mode dry_run
-  if (proc_control_B.SourceBlock_o1_k3) {
+  if (proc_control_B.SourceBlock_o1_k) {
     proc_control_DW.obj_i.m_notDryRun = !proc_control_B.In1_gf.data;
   }
 
@@ -48281,7 +48469,7 @@ void proc_control::step()
 
     //         %% Fonction qui vérifie si le quaternion est unitaire
     proc_control_B.scale = 3.3121686421112381E-170;
-    proc_control_B.absxk = fabs(proc_control_B.In1_gs.orientation.x);
+    proc_control_B.absxk = std::abs(proc_control_B.In1_gs.orientation.x);
     if (proc_control_B.absxk > 3.3121686421112381E-170) {
       proc_control_B.d_oi = 1.0;
       proc_control_B.scale = proc_control_B.absxk;
@@ -48290,7 +48478,7 @@ void proc_control::step()
       proc_control_B.d_oi = proc_control_B.t * proc_control_B.t;
     }
 
-    proc_control_B.absxk = fabs(proc_control_B.In1_gs.orientation.y);
+    proc_control_B.absxk = std::abs(proc_control_B.In1_gs.orientation.y);
     if (proc_control_B.absxk > proc_control_B.scale) {
       proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
       proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -48301,7 +48489,7 @@ void proc_control::step()
       proc_control_B.d_oi += proc_control_B.t * proc_control_B.t;
     }
 
-    proc_control_B.absxk = fabs(proc_control_B.In1_gs.orientation.z);
+    proc_control_B.absxk = std::abs(proc_control_B.In1_gs.orientation.z);
     if (proc_control_B.absxk > proc_control_B.scale) {
       proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
       proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -48312,7 +48500,7 @@ void proc_control::step()
       proc_control_B.d_oi += proc_control_B.t * proc_control_B.t;
     }
 
-    proc_control_B.absxk = fabs(proc_control_B.In1_gs.orientation.w);
+    proc_control_B.absxk = std::abs(proc_control_B.In1_gs.orientation.w);
     if (proc_control_B.absxk > proc_control_B.scale) {
       proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
       proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -48373,7 +48561,7 @@ void proc_control::step()
 
   //  regarder l'états de la kill
   if (proc_control_B.SourceBlock_o1_f && (!(proc_control_DW.obj_i.m_killStatus
-        != 0.0)) && (proc_control_DW.Delay_DSTATE_j != 0.0)) {
+        != 0.0)) && (proc_control_DW.Delay_DSTATE != 0.0)) {
     proc_control_DW.obj_i.m_mode = proc_control_B.In1_me.data;
   }
 
@@ -48382,7 +48570,7 @@ void proc_control::step()
     proc_control_DW.obj_i.m_mode = 0.0;
   }
 
-  // Start for MATLABSystem: '<S45>/MATLAB System'
+  // Start for MATLABSystem: '<S114>/MATLAB System'
   //          %% Fonction qui détermine si on reset
   proc_control_B.Reset = (proc_control_B.SourceBlock_o1_j ||
     proc_control_B.SourceBlock_o1_a);
@@ -48394,8 +48582,8 @@ void proc_control::step()
   proc_control_DW.obj_i.m_trajClear = (proc_control_B.Reset ||
     proc_control_B.SourceBlock_o1_f || proc_control_B.SourceBlock_o1_k);
 
-  // DataTypeConversion: '<S45>/Data Type Conversion' incorporates:
-  //   MATLABSystem: '<S45>/MATLAB System'
+  // DataTypeConversion: '<S114>/Data Type Conversion' incorporates:
+  //   MATLABSystem: '<S114>/MATLAB System'
   //
   proc_control_B.n_c = floor(proc_control_DW.obj_i.m_mode);
   if (rtIsNaN(proc_control_B.n_c) || rtIsInf(proc_control_B.n_c)) {
@@ -48415,26 +48603,26 @@ void proc_control::step()
 
   // End of DataTypeConversion: '<S45>/Data Type Conversion'
 
-  // ZeroOrderHold: '<S4>/Zero-Order Hold'
+  // ZeroOrderHold: '<S7>/Zero-Order Hold'
   if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
     // If: '<S4>/If'
     if (proc_control_B.mode == 0) {
       // Outputs for IfAction SubSystem: '<S4>/Get_ROS_param' incorporates:
       //   ActionPort: '<S44>/Action Port'
 
-      // MATLABSystem: '<S48>/Get Parameter'
+      // MATLABSystem: '<S117>/MPC.P'
       ParamGet_proc_control_140.getParameter(&proc_control_B.b_value);
 
-      // DataTypeConversion: '<S48>/Data Type Conversion' incorporates:
-      //   MATLABSystem: '<S48>/Get Parameter'
+      // DataTypeConversion: '<S117>/Data Type Conversion' incorporates:
+      //   MATLABSystem: '<S117>/MPC.P'
 
       proc_control_B.p_h = static_cast<real_T>(proc_control_B.b_value);
 
-      // MATLABSystem: '<S48>/Get Parameter1'
+      // MATLABSystem: '<S117>/MPC.M'
       ParamGet_proc_control_143.getParameter(&proc_control_B.b_value);
 
-      // DataTypeConversion: '<S48>/Data Type Conversion1' incorporates:
-      //   MATLABSystem: '<S48>/Get Parameter1'
+      // DataTypeConversion: '<S117>/Data Type Conversion1' incorporates:
+      //   MATLABSystem: '<S117>/MPC.M'
 
       proc_control_B.m_a = static_cast<real_T>(proc_control_B.b_value);
 
@@ -48450,20 +48638,20 @@ void proc_control::step()
       ParamGet_proc_control_74.getParameter(64U, &proc_control_B.dv9[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S50>/MATLAB System1' incorporates:
-      //   MATLABSystem: '<S50>/Get Parameter2'
+      // MATLABSystem: '<S119>/MATLAB System1' incorporates:
+      //   MATLABSystem: '<S119>/Default MVR'
 
       memcpy(&proc_control_B.MVR_cn[0], &proc_control_B.dv9[0], sizeof(real_T) <<
              3U);
 
-      // MATLABSystem: '<S50>/MATLAB System3' incorporates:
-      //   MATLABSystem: '<S50>/Get Parameter'
+      // MATLABSystem: '<S119>/MATLAB System3' incorporates:
+      //   MATLABSystem: '<S119>/Default OV'
 
       memcpy(&proc_control_B.OV_d[0], &proc_control_B.dv7[0], 13U * sizeof
              (real_T));
 
-      // MATLABSystem: '<S50>/MATLAB System4' incorporates:
-      //   MATLABSystem: '<S50>/Get Parameter1'
+      // MATLABSystem: '<S119>/MATLAB System4' incorporates:
+      //   MATLABSystem: '<S119>/Default MV'
 
       memcpy(&proc_control_B.MV_p[0], &proc_control_B.dv8[0], sizeof(real_T) <<
              3U);
@@ -48480,20 +48668,20 @@ void proc_control::step()
       ParamGet_proc_control_99.getParameter(64U, &proc_control_B.dv9[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S51>/MATLAB System3' incorporates:
-      //   MATLABSystem: '<S51>/Get Parameter2'
+      // MATLABSystem: '<S120>/MATLAB System3' incorporates:
+      //   MATLABSystem: '<S120>/C10 MVR'
 
       memcpy(&proc_control_B.MVR_a[0], &proc_control_B.dv9[0], sizeof(real_T) <<
              3U);
 
-      // MATLABSystem: '<S51>/MATLAB System4' incorporates:
-      //   MATLABSystem: '<S51>/Get Parameter'
+      // MATLABSystem: '<S120>/MATLAB System4' incorporates:
+      //   MATLABSystem: '<S120>/C10 OV'
 
       memcpy(&proc_control_B.OV_c[0], &proc_control_B.dv7[0], 13U * sizeof
              (real_T));
 
-      // MATLABSystem: '<S51>/MATLAB System5' incorporates:
-      //   MATLABSystem: '<S51>/Get Parameter1'
+      // MATLABSystem: '<S120>/MATLAB System5' incorporates:
+      //   MATLABSystem: '<S120>/C10 MV'
 
       memcpy(&proc_control_B.MV_j[0], &proc_control_B.dv8[0], sizeof(real_T) <<
              3U);
@@ -48510,20 +48698,20 @@ void proc_control::step()
       ParamGet_proc_control_108.getParameter(64U, &proc_control_B.dv9[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S52>/MATLAB System3' incorporates:
-      //   MATLABSystem: '<S52>/Get Parameter2'
+      // MATLABSystem: '<S121>/MATLAB System3' incorporates:
+      //   MATLABSystem: '<S121>/C11 MVR'
 
       memcpy(&proc_control_B.MVR_c[0], &proc_control_B.dv9[0], sizeof(real_T) <<
              3U);
 
-      // MATLABSystem: '<S52>/MATLAB System4' incorporates:
-      //   MATLABSystem: '<S52>/Get Parameter'
+      // MATLABSystem: '<S121>/MATLAB System4' incorporates:
+      //   MATLABSystem: '<S121>/C11 OV'
 
       memcpy(&proc_control_B.OV_l[0], &proc_control_B.dv7[0], 13U * sizeof
              (real_T));
 
-      // MATLABSystem: '<S52>/MATLAB System5' incorporates:
-      //   MATLABSystem: '<S52>/Get Parameter1'
+      // MATLABSystem: '<S121>/MATLAB System5' incorporates:
+      //   MATLABSystem: '<S121>/C11 MV'
 
       memcpy(&proc_control_B.MV_l[0], &proc_control_B.dv8[0], sizeof(real_T) <<
              3U);
@@ -48540,19 +48728,19 @@ void proc_control::step()
       ParamGet_proc_control_117.getParameter(64U, &proc_control_B.dv9[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S53>/MATLAB System3' incorporates:
-      //   MATLABSystem: '<S53>/Get Parameter2'
+      // MATLABSystem: '<S122>/MATLAB System3' incorporates:
+      //   MATLABSystem: '<S122>/C19 MVR'
 
       memcpy(&proc_control_B.MVR[0], &proc_control_B.dv9[0], sizeof(real_T) <<
              3U);
 
-      // MATLABSystem: '<S53>/MATLAB System4' incorporates:
-      //   MATLABSystem: '<S53>/Get Parameter'
+      // MATLABSystem: '<S122>/MATLAB System4' incorporates:
+      //   MATLABSystem: '<S122>/C19 OV'
 
       memcpy(&proc_control_B.OV[0], &proc_control_B.dv7[0], 13U * sizeof(real_T));
 
-      // MATLABSystem: '<S53>/MATLAB System5' incorporates:
-      //   MATLABSystem: '<S53>/Get Parameter1'
+      // MATLABSystem: '<S122>/MATLAB System5' incorporates:
+      //   MATLABSystem: '<S122>/C19 MV'
 
       memcpy(&proc_control_B.MV_c[0], &proc_control_B.dv8[0], sizeof(real_T) <<
              3U);
@@ -48561,32 +48749,32 @@ void proc_control::step()
       ParamGet_proc_control_133.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S54>/MATLAB System5' incorporates:
-      //   MATLABSystem: '<S54>/Get Parameter'
+      // MATLABSystem: '<S123>/MATLAB System5' incorporates:
+      //   MATLABSystem: '<S123>/NoDVL MV'
 
       memcpy(&proc_control_B.MV[0], &proc_control_B.dv7[0], sizeof(real_T) << 3U);
 
-      // MATLABSystem: '<S48>/Get Parameter2'
+      // MATLABSystem: '<S117>/MPC.TMAX'
       ParamGet_proc_control_144.getParameter(&proc_control_B.tmax);
 
-      // MATLABSystem: '<S48>/Get Parameter3'
+      // MATLABSystem: '<S117>/MPC.TMIN'
       ParamGet_proc_control_145.getParameter(&proc_control_B.tmin);
 
-      // MATLABSystem: '<S49>/Get Parameter'
-      ParamGet_proc_control_150.getParameter(&proc_control_B.linearTol);
-
-      // MATLABSystem: '<S49>/Get Parameter1'
+      // MATLABSystem: '<S118>/Angular Tolerance'
       ParamGet_proc_control_151.getParameter(&proc_control_B.angularTol);
 
-      // MATLABSystem: '<S49>/Get Parameter2'
+      // MATLABSystem: '<S118>/Linear Tolerance'
+      ParamGet_proc_control_150.getParameter(&proc_control_B.linearTol);
+
+      // MATLABSystem: '<S118>/Time in Tolerance'
       ParamGet_proc_control_152.getParameter(&proc_control_B.timeInTol);
 
-      // BusCreator: '<S47>/Bus Creator' incorporates:
-      //   MATLABSystem: '<S47>/Rho'
-      //   MATLABSystem: '<S47>/g'
-      //   MATLABSystem: '<S47>/mass'
-      //   MATLABSystem: '<S47>/sub height'
-      //   MATLABSystem: '<S47>/volume'
+      // BusCreator: '<S116>/Bus Creator' incorporates:
+      //   MATLABSystem: '<S116>/Physics G'
+      //   MATLABSystem: '<S116>/Physics Mass'
+      //   MATLABSystem: '<S116>/Physics Rho'
+      //   MATLABSystem: '<S116>/Physics Sub Height'
+      //   MATLABSystem: '<S116>/Physics Volume'
 
       ParamGet_proc_control_166.getParameter(&proc_control_B.BusCreator.rho);
       ParamGet_proc_control_167.getParameter(&proc_control_B.BusCreator.g);
@@ -48599,8 +48787,8 @@ void proc_control::step()
       ParamGet_proc_control_171.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System11' incorporates:
-      //   MATLABSystem: '<S47>/rg'
+      // MATLABSystem: '<S116>/MATLAB System11' incorporates:
+      //   MATLABSystem: '<S116>/Physics RG'
 
       proc_control_B.obj_n0.lastValues[0] = proc_control_B.dv7[0];
       proc_control_B.obj_n0.lastValues[1] = proc_control_B.dv7[1];
@@ -48610,8 +48798,8 @@ void proc_control::step()
       ParamGet_proc_control_173.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System12' incorporates:
-      //   MATLABSystem: '<S47>/rb'
+      // MATLABSystem: '<S116>/MATLAB System12' incorporates:
+      //   MATLABSystem: '<S116>/Physics RB'
 
       proc_control_B.obj_jm.lastValues[0] = proc_control_B.dv7[0];
       proc_control_B.obj_jm.lastValues[1] = proc_control_B.dv7[1];
@@ -48621,8 +48809,8 @@ void proc_control::step()
       ParamGet_proc_control_175.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System1' incorporates:
-      //   MATLABSystem: '<S47>/cdl'
+      // MATLABSystem: '<S116>/MATLAB System1' incorporates:
+      //   MATLABSystem: '<S116>/Physics CDL'
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 6; proc_control_B.Ns++) {
         proc_control_B.obj_n.lastValues[proc_control_B.Ns] =
@@ -48633,8 +48821,8 @@ void proc_control::step()
       ParamGet_proc_control_177.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System2' incorporates:
-      //   MATLABSystem: '<S47>/cdq'
+      // MATLABSystem: '<S116>/MATLAB System2' incorporates:
+      //   MATLABSystem: '<S116>/Physics CDQ'
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 6; proc_control_B.Ns++) {
         proc_control_B.obj_li.lastValues[proc_control_B.Ns] =
@@ -48645,30 +48833,30 @@ void proc_control::step()
       ParamGet_proc_control_180.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System3' incorporates:
-      //   MATLABSystem: '<S47>/added mass'
+      // MATLABSystem: '<S116>/MATLAB System3' incorporates:
+      //   MATLABSystem: '<S116>/Physics Added Mass'
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 6; proc_control_B.Ns++) {
         proc_control_B.obj_d.lastValues[proc_control_B.Ns] =
           proc_control_B.dv7[proc_control_B.Ns];
       }
 
-      // MATLABSystem: '<S47>/I'
+      // MATLABSystem: '<S116>/Physics I'
       ParamGet_proc_control_182.getParameter(128U,
         &proc_control_B.VectorConcatenate[0], &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System4' incorporates:
-      //   MATLABSystem: '<S47>/I'
+      // MATLABSystem: '<S116>/MATLAB System4' incorporates:
+      //   MATLABSystem: '<S116>/Physics I'
 
-      memcpy(&proc_control_B.obj_lw.lastValues[0],
-             &proc_control_B.VectorConcatenate[0], 9U * sizeof(real_T));
+      std::memcpy(&proc_control_B.obj_lw.lastValues[0],
+                  &proc_control_B.VectorConcatenate[0], 9U * sizeof(real_T));
 
       // MATLABSystem: '<S47>/depth pose'
       ParamGet_proc_control_184.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System5' incorporates:
-      //   MATLABSystem: '<S47>/depth pose'
+      // MATLABSystem: '<S116>/MATLAB System5' incorporates:
+      //   MATLABSystem: '<S116>/Physics Depth Pose'
 
       proc_control_B.obj_bx.lastValues[0] = proc_control_B.dv7[0];
       proc_control_B.obj_bx.lastValues[1] = proc_control_B.dv7[1];
@@ -48678,8 +48866,8 @@ void proc_control::step()
       ParamGet_proc_control_186.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System6' incorporates:
-      //   MATLABSystem: '<S47>/hydro pose'
+      // MATLABSystem: '<S116>/MATLAB System6' incorporates:
+      //   MATLABSystem: '<S116>/Physics Hydro Pose'
 
       proc_control_B.obj_o4.lastValues[0] = proc_control_B.dv7[0];
       proc_control_B.obj_o4.lastValues[1] = proc_control_B.dv7[1];
@@ -48689,8 +48877,8 @@ void proc_control::step()
       ParamGet_proc_control_190.getParameter(64U, &proc_control_B.dv7[0],
         &proc_control_B.len);
 
-      // MATLABSystem: '<S47>/MATLAB System7' incorporates:
-      //   MATLABSystem: '<S47>/sonar pose'
+      // MATLABSystem: '<S116>/MATLAB System7' incorporates:
+      //   MATLABSystem: '<S116>/Physics Sonar Pose'
 
       proc_control_B.obj_k3.lastValues[0] = proc_control_B.dv7[0];
       proc_control_B.obj_k3.lastValues[1] = proc_control_B.dv7[1];
@@ -48704,8 +48892,8 @@ void proc_control::step()
       ParamGet_proc_control_194.getParameter(48U, &proc_control_B.a__1_j[0],
         &proc_control_B.len);
 
-      // MATLAB Function: '<S47>/MATLAB Function' incorporates:
-      //   MATLABSystem: '<S47>/thrusters'
+      // MATLAB Function: '<S116>/MATLAB Function' incorporates:
+      //   MATLABSystem: '<S116>/Physics Thrusters'
 
       for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i
            ++) {
@@ -48718,25 +48906,25 @@ void proc_control::step()
         }
       }
 
-      // End of MATLAB Function: '<S47>/MATLAB Function'
+      // End of MATLAB Function: '<S116>/MATLAB Function'
 
       // MATLABSystem: '<S47>/dvl lost override'
       ParamGet_proc_control_196.getParameter(&proc_control_B.b_value_e);
 
-      // BusCreator: '<S47>/Bus Creator' incorporates:
-      //   DataTypeConversion: '<S47>/Data Type Conversion'
-      //   MATLABSystem: '<S47>/MATLAB System1'
-      //   MATLABSystem: '<S47>/MATLAB System11'
-      //   MATLABSystem: '<S47>/MATLAB System12'
-      //   MATLABSystem: '<S47>/MATLAB System2'
-      //   MATLABSystem: '<S47>/MATLAB System3'
-      //   MATLABSystem: '<S47>/MATLAB System4'
-      //   MATLABSystem: '<S47>/MATLAB System5'
-      //   MATLABSystem: '<S47>/MATLAB System6'
-      //   MATLABSystem: '<S47>/MATLAB System7'
-      //   MATLABSystem: '<S47>/MATLAB System8'
-      //   MATLABSystem: '<S47>/dvl lost override'
-      //   MATLABSystem: '<S47>/dvl rotation'
+      // BusCreator: '<S116>/Bus Creator' incorporates:
+      //   DataTypeConversion: '<S116>/Data Type Conversion'
+      //   MATLABSystem: '<S116>/DVL Lost Override'
+      //   MATLABSystem: '<S116>/MATLAB System1'
+      //   MATLABSystem: '<S116>/MATLAB System11'
+      //   MATLABSystem: '<S116>/MATLAB System12'
+      //   MATLABSystem: '<S116>/MATLAB System2'
+      //   MATLABSystem: '<S116>/MATLAB System3'
+      //   MATLABSystem: '<S116>/MATLAB System4'
+      //   MATLABSystem: '<S116>/MATLAB System5'
+      //   MATLABSystem: '<S116>/MATLAB System6'
+      //   MATLABSystem: '<S116>/MATLAB System7'
+      //   MATLABSystem: '<S116>/MATLAB System8'
+      //   MATLABSystem: '<S116>/Physics DVL Rotation'
       //
       proc_control_B.BusCreator.rg[0] = proc_control_B.obj_n0.lastValues[0];
       proc_control_B.BusCreator.rb[0] = proc_control_B.obj_jm.lastValues[0];
@@ -48753,8 +48941,8 @@ void proc_control::step()
           proc_control_B.obj_d.lastValues[proc_control_B.Ns];
       }
 
-      memcpy(&proc_control_B.BusCreator.I[0], &proc_control_B.obj_lw.lastValues
-             [0], 9U * sizeof(real_T));
+      std::memcpy(&proc_control_B.BusCreator.I[0],
+                  &proc_control_B.obj_lw.lastValues[0], 9U * sizeof(real_T));
       proc_control_B.BusCreator.depth_pose[0] =
         proc_control_B.obj_bx.lastValues[0];
       proc_control_B.BusCreator.hydro_pose[0] =
@@ -48780,12 +48968,12 @@ void proc_control::step()
              48U * sizeof(real_T));
       proc_control_B.BusCreator.dvl_lost_override = proc_control_B.b_value_e;
 
-      // End of Outputs for SubSystem: '<S4>/Get_ROS_param'
+      // End of Outputs for SubSystem: '<S7>/Get_ROS_param'
     }
 
-    // End of If: '<S4>/If'
+    // End of If: '<S7>/If'
 
-    // Math: '<S181>/Transpose'
+    // Math: '<S250>/Transpose'
     proc_control_B.Ns = 0;
     for (proc_control_B.nz = 0; proc_control_B.nz < 6; proc_control_B.nz++) {
       proc_control_B.b_k = 0;
@@ -48800,13 +48988,13 @@ void proc_control::step()
       proc_control_B.Ns += 8;
     }
 
-    // End of Math: '<S181>/Transpose'
+    // End of Math: '<S250>/Transpose'
   }
 
-  // End of ZeroOrderHold: '<S4>/Zero-Order Hold'
+  // End of ZeroOrderHold: '<S7>/Zero-Order Hold'
 
-  // DataTypeConversion: '<S3>/Data Type Conversion' incorporates:
-  //   MATLABSystem: '<S45>/MATLAB System'
+  // DataTypeConversion: '<S5>/Data Type Conversion' incorporates:
+  //   MATLABSystem: '<S114>/MATLAB System'
   //
   proc_control_B.n_c = floor(proc_control_DW.obj_i.m_simulation);
   if (rtIsNaN(proc_control_B.n_c) || rtIsInf(proc_control_B.n_c)) {
@@ -48839,178 +49027,178 @@ void proc_control::step()
     proc_control_B.b_value_e = Sub_proc_control_209_83.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_n_m);
 
-    // Outputs for Enabled SubSystem: '<S38>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S41>/Enable'
+    // Outputs for Enabled SubSystem: '<S96>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S99>/Enable'
 
     if (proc_control_B.b_value_e) {
       // SignalConversion generated from: '<S41>/In1'
       proc_control_B.In1_g = proc_control_B.rtb_SourceBlock_o2_n_m;
     }
 
-    // End of Outputs for SubSystem: '<S38>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S96>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S183>/ SFunction ' incorporates:
-    //   MATLAB Function: '<S176>/MATLAB Function'
-    //   MATLABSystem: '<S38>/SourceBlock'
-    //   SignalConversion generated from: '<S26>/imu data'
+    // SignalConversion generated from: '<S252>/ SFunction ' incorporates:
+    //   MATLAB Function: '<S245>/MATLAB Function'
+    //   MATLABSystem: '<S96>/SourceBlock'
+    //   SignalConversion generated from: '<S82>/imu data'
     //
     proc_control_B.n[1] = proc_control_B.In1_g.orientation.x;
     proc_control_B.n[2] = proc_control_B.In1_g.orientation.y;
     proc_control_B.n[3] = proc_control_B.In1_g.orientation.z;
 
-    // SignalConversion generated from: '<S26>/imu data' incorporates:
-    //   Merge: '<S3>/Merge'
+    // SignalConversion generated from: '<S82>/imu data' incorporates:
+    //   Merge: '<S5>/Merge'
 
     proc_control_B.t = proc_control_B.In1_g.orientation.w;
-    proc_control_B.i = proc_control_B.In1_g.angular_velocity.x;
-    proc_control_B.linearScaling = proc_control_B.In1_g.angular_velocity.y;
-    proc_control_B.residue = proc_control_B.In1_g.angular_velocity.z;
+    proc_control_B.b_norm = proc_control_B.In1_g.angular_velocity.x;
+    proc_control_B.t6 = proc_control_B.In1_g.angular_velocity.y;
+    proc_control_B.oa = proc_control_B.In1_g.angular_velocity.z;
 
     // MATLABSystem: '<S39>/SourceBlock'
     proc_control_B.NewDvlMsg = Sub_proc_control_209_84.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_p_n);
 
-    // Outputs for Enabled SubSystem: '<S39>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S42>/Enable'
+    // Outputs for Enabled SubSystem: '<S95>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S98>/Enable'
 
     if (proc_control_B.NewDvlMsg) {
       // SignalConversion generated from: '<S42>/In1'
       proc_control_B.In1_iq = proc_control_B.rtb_SourceBlock_o2_p_n;
     }
 
-    // End of Outputs for SubSystem: '<S39>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S95>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S26>/dvl data' incorporates:
-    //   MATLABSystem: '<S39>/SourceBlock'
-    //   Merge: '<S3>/Merge1'
+    // SignalConversion generated from: '<S82>/dvl data' incorporates:
+    //   MATLABSystem: '<S95>/SourceBlock'
+    //   Merge: '<S5>/Merge1'
     //
-    proc_control_B.oc = proc_control_B.In1_iq.x_vel_btm;
-    proc_control_B.t10 = proc_control_B.In1_iq.y_vel_btm;
-    proc_control_B.t11 = proc_control_B.In1_iq.z_vel_btm;
-    proc_control_B.t13 = proc_control_B.In1_iq.velocity1;
-    proc_control_B.t19 = proc_control_B.In1_iq.velocity2;
-    proc_control_B.t20 = proc_control_B.In1_iq.velocity3;
-    proc_control_B.t24 = proc_control_B.In1_iq.velocity4;
+    proc_control_B.Divide3_b = proc_control_B.In1_iq.x_vel_btm;
+    proc_control_B.Divide_a = proc_control_B.In1_iq.y_vel_btm;
+    proc_control_B.oc = proc_control_B.In1_iq.z_vel_btm;
+    proc_control_B.t11 = proc_control_B.In1_iq.velocity1;
+    proc_control_B.t12 = proc_control_B.In1_iq.velocity2;
+    proc_control_B.t13 = proc_control_B.In1_iq.velocity3;
+    proc_control_B.t19 = proc_control_B.In1_iq.velocity4;
 
     // MATLABSystem: '<S40>/SourceBlock'
     proc_control_B.newPressureMsg = Sub_proc_control_209_85.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_pk_n);
 
-    // Outputs for Enabled SubSystem: '<S40>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S43>/Enable'
+    // Outputs for Enabled SubSystem: '<S94>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S97>/Enable'
 
     if (proc_control_B.newPressureMsg) {
       // SignalConversion generated from: '<S43>/In1'
       proc_control_B.In1_hb = proc_control_B.rtb_SourceBlock_o2_pk_n;
     }
 
-    // End of Outputs for SubSystem: '<S40>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S94>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S26>/depth data' incorporates:
-    //   MATLABSystem: '<S40>/SourceBlock'
-    //   Merge: '<S3>/Merge2'
+    // SignalConversion generated from: '<S82>/depth data' incorporates:
+    //   MATLABSystem: '<S94>/SourceBlock'
+    //   Merge: '<S5>/Merge2'
     //
     proc_control_B.rtb_Merge2_data = proc_control_B.In1_hb.data;
 
-    // End of Outputs for SubSystem: '<S3>/Simulation'
+    // End of Outputs for SubSystem: '<S5>/Simulation'
   } else {
-    // Outputs for IfAction SubSystem: '<S3>/AUV' incorporates:
-    //   ActionPort: '<S24>/Action Port'
+    // Outputs for IfAction SubSystem: '<S5>/AUV' incorporates:
+    //   ActionPort: '<S80>/Action Port'
 
     // MATLABSystem: '<S27>/SourceBlock'
     proc_control_B.b_value_e = Sub_proc_control_209_4.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_n_m);
 
-    // Outputs for Enabled SubSystem: '<S27>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S30>/Enable'
+    // Outputs for Enabled SubSystem: '<S85>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S88>/Enable'
 
     if (proc_control_B.b_value_e) {
       // SignalConversion generated from: '<S30>/In1'
       proc_control_B.In1_e = proc_control_B.rtb_SourceBlock_o2_n_m;
     }
 
-    // End of Outputs for SubSystem: '<S27>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S85>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S183>/ SFunction ' incorporates:
-    //   MATLAB Function: '<S176>/MATLAB Function'
-    //   MATLABSystem: '<S27>/SourceBlock'
-    //   SignalConversion generated from: '<S24>/imu data'
+    // SignalConversion generated from: '<S252>/ SFunction ' incorporates:
+    //   MATLAB Function: '<S245>/MATLAB Function'
+    //   MATLABSystem: '<S85>/SourceBlock'
+    //   SignalConversion generated from: '<S80>/imu data'
     //
     proc_control_B.n[1] = proc_control_B.In1_e.orientation.x;
     proc_control_B.n[2] = proc_control_B.In1_e.orientation.y;
     proc_control_B.n[3] = proc_control_B.In1_e.orientation.z;
 
-    // SignalConversion generated from: '<S24>/imu data' incorporates:
-    //   Merge: '<S3>/Merge'
+    // SignalConversion generated from: '<S80>/imu data' incorporates:
+    //   Merge: '<S5>/Merge'
 
     proc_control_B.t = proc_control_B.In1_e.orientation.w;
-    proc_control_B.i = proc_control_B.In1_e.angular_velocity.x;
-    proc_control_B.linearScaling = proc_control_B.In1_e.angular_velocity.y;
-    proc_control_B.residue = proc_control_B.In1_e.angular_velocity.z;
+    proc_control_B.b_norm = proc_control_B.In1_e.angular_velocity.x;
+    proc_control_B.t6 = proc_control_B.In1_e.angular_velocity.y;
+    proc_control_B.oa = proc_control_B.In1_e.angular_velocity.z;
 
     // MATLABSystem: '<S28>/SourceBlock'
     proc_control_B.NewDvlMsg = Sub_proc_control_209_5.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_p_n);
 
-    // Outputs for Enabled SubSystem: '<S28>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S31>/Enable'
+    // Outputs for Enabled SubSystem: '<S84>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S87>/Enable'
 
     if (proc_control_B.NewDvlMsg) {
       // SignalConversion generated from: '<S31>/In1'
       proc_control_B.In1_m = proc_control_B.rtb_SourceBlock_o2_p_n;
     }
 
-    // End of Outputs for SubSystem: '<S28>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S84>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S24>/dvl data' incorporates:
-    //   MATLABSystem: '<S28>/SourceBlock'
-    //   Merge: '<S3>/Merge1'
+    // SignalConversion generated from: '<S80>/dvl data' incorporates:
+    //   MATLABSystem: '<S84>/SourceBlock'
+    //   Merge: '<S5>/Merge1'
     //
-    proc_control_B.oc = proc_control_B.In1_m.x_vel_btm;
-    proc_control_B.t10 = proc_control_B.In1_m.y_vel_btm;
-    proc_control_B.t11 = proc_control_B.In1_m.z_vel_btm;
-    proc_control_B.t13 = proc_control_B.In1_m.velocity1;
-    proc_control_B.t19 = proc_control_B.In1_m.velocity2;
-    proc_control_B.t20 = proc_control_B.In1_m.velocity3;
-    proc_control_B.t24 = proc_control_B.In1_m.velocity4;
+    proc_control_B.Divide3_b = proc_control_B.In1_m.x_vel_btm;
+    proc_control_B.Divide_a = proc_control_B.In1_m.y_vel_btm;
+    proc_control_B.oc = proc_control_B.In1_m.z_vel_btm;
+    proc_control_B.t11 = proc_control_B.In1_m.velocity1;
+    proc_control_B.t12 = proc_control_B.In1_m.velocity2;
+    proc_control_B.t13 = proc_control_B.In1_m.velocity3;
+    proc_control_B.t19 = proc_control_B.In1_m.velocity4;
 
     // MATLABSystem: '<S29>/SourceBlock'
     proc_control_B.newPressureMsg = Sub_proc_control_209_6.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_pk_n);
 
-    // Outputs for Enabled SubSystem: '<S29>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S32>/Enable'
+    // Outputs for Enabled SubSystem: '<S83>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S86>/Enable'
 
     if (proc_control_B.newPressureMsg) {
       // SignalConversion generated from: '<S32>/In1'
       proc_control_B.In1_b = proc_control_B.rtb_SourceBlock_o2_pk_n;
     }
 
-    // End of Outputs for SubSystem: '<S29>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S83>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S24>/depth data' incorporates:
-    //   MATLABSystem: '<S29>/SourceBlock'
-    //   Merge: '<S3>/Merge2'
+    // SignalConversion generated from: '<S80>/depth data' incorporates:
+    //   MATLABSystem: '<S83>/SourceBlock'
+    //   Merge: '<S5>/Merge2'
     //
     proc_control_B.rtb_Merge2_data = proc_control_B.In1_b.data;
 
-    // End of Outputs for SubSystem: '<S3>/AUV'
+    // End of Outputs for SubSystem: '<S5>/AUV'
   }
 
-  // End of SwitchCase: '<S3>/Switch Case'
+  // End of SwitchCase: '<S5>/Switch Case'
 
-  // SignalConversion generated from: '<S183>/ SFunction ' incorporates:
-  //   MATLAB Function: '<S176>/MATLAB Function'
-  //   Merge: '<S3>/Merge'
+  // SignalConversion generated from: '<S252>/ SFunction ' incorporates:
+  //   MATLAB Function: '<S245>/MATLAB Function'
+  //   Merge: '<S5>/Merge'
 
   proc_control_B.n[0] = proc_control_B.t;
 
-  // MATLAB Function: '<S176>/MATLAB Function' incorporates:
-  //   Merge: '<S3>/Merge'
-  //   SignalConversion generated from: '<S183>/ SFunction '
+  // MATLAB Function: '<S245>/MATLAB Function' incorporates:
+  //   Merge: '<S5>/Merge'
+  //   SignalConversion generated from: '<S252>/ SFunction '
 
   proc_control_B.scale = 3.3121686421112381E-170;
-  proc_control_B.absxk = fabs(proc_control_B.t);
+  proc_control_B.absxk = std::abs(proc_control_B.t);
   if (proc_control_B.absxk > 3.3121686421112381E-170) {
     proc_control_B.d_oi = 1.0;
     proc_control_B.scale = proc_control_B.absxk;
@@ -49019,7 +49207,7 @@ void proc_control::step()
     proc_control_B.d_oi = proc_control_B.t * proc_control_B.t;
   }
 
-  proc_control_B.absxk = fabs(proc_control_B.n[1]);
+  proc_control_B.absxk = std::abs(proc_control_B.n[1]);
   if (proc_control_B.absxk > proc_control_B.scale) {
     proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
     proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -49030,7 +49218,7 @@ void proc_control::step()
     proc_control_B.d_oi += proc_control_B.t * proc_control_B.t;
   }
 
-  proc_control_B.absxk = fabs(proc_control_B.n[2]);
+  proc_control_B.absxk = std::abs(proc_control_B.n[2]);
   if (proc_control_B.absxk > proc_control_B.scale) {
     proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
     proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -49041,7 +49229,7 @@ void proc_control::step()
     proc_control_B.d_oi += proc_control_B.t * proc_control_B.t;
   }
 
-  proc_control_B.absxk = fabs(proc_control_B.n[3]);
+  proc_control_B.absxk = std::abs(proc_control_B.n[3]);
   if (proc_control_B.absxk > proc_control_B.scale) {
     proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
     proc_control_B.d_oi = proc_control_B.d_oi * proc_control_B.t *
@@ -49117,13 +49305,13 @@ void proc_control::step()
 
   if (proc_control_B.NewDvlMsg) {
     if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
-      // Outputs for Enabled SubSystem: '<S202>/Enabled Subsystem' incorporates:
-      //   EnablePort: '<S205>/Enable'
+      // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+      //   EnablePort: '<S274>/Enable'
 
-      // Delay: '<S202>/Delay'
+      // Delay: '<S271>/Delay'
       if (proc_control_DW.Delay_DSTATE_i > 0.0) {
-        // Gain: '<S206>/1//2' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Gain: '<S275>/1//2' incorporates:
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.n_c = proc_control_P.u2_Gain *
           proc_control_B.BusCreator.dvl_rotation[0];
@@ -49132,8 +49320,8 @@ void proc_control::step()
         proc_control_B.rtb_sincos_o2_idx_0 = cos(proc_control_B.n_c);
         proc_control_B.t57 = sin(proc_control_B.n_c);
 
-        // Gain: '<S206>/1//2' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Gain: '<S275>/1//2' incorporates:
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.n_c = proc_control_P.u2_Gain *
           proc_control_B.BusCreator.dvl_rotation[1];
@@ -49142,8 +49330,8 @@ void proc_control::step()
         proc_control_B.rtb_sincos_o2_idx_1 = cos(proc_control_B.n_c);
         proc_control_B.t39 = sin(proc_control_B.n_c);
 
-        // Gain: '<S206>/1//2' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        proc_control_B.rtb_sincos_o1_idx_1 = std::cos(proc_control_B.t10);
+        proc_control_B.t41 = std::sin(proc_control_B.t10);
 
         proc_control_B.n_c = proc_control_P.u2_Gain *
           proc_control_B.BusCreator.dvl_rotation[2];
@@ -49152,75 +49340,75 @@ void proc_control::step()
         proc_control_B.rtb_sincos_o2_idx_2 = cos(proc_control_B.n_c);
         proc_control_B.n_c = sin(proc_control_B.n_c);
 
-        // Fcn: '<S206>/q0' incorporates:
-        //   Fcn: '<S206>/q3'
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q0' incorporates:
+        //   Fcn: '<S275>/q3'
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.q0_tmp = proc_control_B.rtb_sincos_o2_idx_0 *
           proc_control_B.rtb_sincos_o2_idx_1;
         proc_control_B.Product3_l = proc_control_B.t57 * proc_control_B.t39;
 
-        // Fcn: '<S206>/q0' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q0' incorporates:
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.q0 = proc_control_B.q0_tmp *
           proc_control_B.rtb_sincos_o2_idx_2 - proc_control_B.Product3_l *
           proc_control_B.n_c;
 
-        // Fcn: '<S206>/q1' incorporates:
-        //   Fcn: '<S206>/q2'
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q1' incorporates:
+        //   Fcn: '<S275>/q2'
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.rtb_sincos_o2_idx_0 *= proc_control_B.t39;
         proc_control_B.t57 *= proc_control_B.rtb_sincos_o2_idx_1;
 
-        // Fcn: '<S206>/q1' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q1' incorporates:
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.q1 = proc_control_B.rtb_sincos_o2_idx_0 *
           proc_control_B.n_c + proc_control_B.t57 *
           proc_control_B.rtb_sincos_o2_idx_2;
 
-        // Fcn: '<S206>/q2' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q2' incorporates:
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.q2 = proc_control_B.rtb_sincos_o2_idx_0 *
           proc_control_B.rtb_sincos_o2_idx_2 - proc_control_B.t57 *
           proc_control_B.n_c;
 
-        // Fcn: '<S206>/q3' incorporates:
-        //   Trigonometry: '<S206>/sincos'
+        // Fcn: '<S275>/q3' incorporates:
+        //   Trigonometry: '<S275>/sincos'
+        //   Trigonometry: '<S55>/sincos'
 
         proc_control_B.q3 = proc_control_B.q0_tmp * proc_control_B.n_c +
           proc_control_B.Product3_l * proc_control_B.rtb_sincos_o2_idx_2;
       }
 
-      // End of Delay: '<S202>/Delay'
-      // End of Outputs for SubSystem: '<S202>/Enabled Subsystem'
+      // End of Delay: '<S271>/Delay'
+      // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
     }
 
-    // SignalConversion generated from: '<S203>/ SFunction ' incorporates:
-    //   MATLAB Function: '<S177>/MATLAB Function'
-    //   Merge: '<S3>/Merge1'
+    // MATLAB Function: '<S246>/MATLAB Function' incorporates:
+    //   Constant: '<S246>/Constant'
+    //   Merge: '<S5>/Merge1'
+    //   SignalConversion generated from: '<S272>/ SFunction '
 
-    proc_control_B.TmpSignalConversionAtSFunct[0] = proc_control_B.oc;
-
-    // MATLAB Function: '<S177>/MATLAB Function' incorporates:
-    //   Constant: '<S177>/Constant'
-    //   Merge: '<S3>/Merge1'
-    //   SignalConversion generated from: '<S203>/ SFunction '
-
-    proc_control_B.sincos_o1[0] = fabs(proc_control_B.oc);
-    proc_control_B.sincos_o1[1] = fabs(proc_control_B.t10);
-    proc_control_B.sincos_o1[2] = fabs(proc_control_B.t11);
-    if (!rtIsNaN(proc_control_B.sincos_o1[0])) {
+    proc_control_B.v[0] = std::abs(proc_control_B.Divide3_b);
+    proc_control_B.v[1] = std::abs(proc_control_B.Divide_a);
+    proc_control_B.v[2] = std::abs(proc_control_B.oc);
+    if (!std::isnan(proc_control_B.v[0])) {
       proc_control_B.base_index = 1;
     } else {
       proc_control_B.base_index = 0;
       proc_control_B.b_k = 2;
       exitg1 = false;
       while ((!exitg1) && (proc_control_B.b_k <= 3)) {
-        if (!rtIsNaN(proc_control_B.sincos_o1[proc_control_B.b_k - 1])) {
+        if (!std::isnan(proc_control_B.v[proc_control_B.b_k - 1])) {
           proc_control_B.base_index = proc_control_B.b_k;
           exitg1 = true;
         } else {
@@ -49230,9 +49418,10 @@ void proc_control::step()
     }
 
     if (proc_control_B.base_index == 0) {
-      proc_control_B.oc = proc_control_B.sincos_o1[0];
+      proc_control_B.Product3_bo = proc_control_B.v[0];
     } else {
-      proc_control_B.oc = proc_control_B.sincos_o1[proc_control_B.base_index - 1];
+      proc_control_B.Product3_bo = proc_control_B.v[proc_control_B.base_index -
+        1];
       for (proc_control_B.nz = proc_control_B.base_index + 1; proc_control_B.nz <
            4; proc_control_B.nz++) {
         proc_control_B.n_c = proc_control_B.sincos_o1[proc_control_B.nz - 1];
@@ -49242,24 +49431,28 @@ void proc_control::step()
       }
     }
 
-    if (proc_control_B.oc < proc_control_P.Constant_Value_iv) {
-      proc_control_B.sincos_o1[0] = proc_control_B.TmpSignalConversionAtSFunct[0];
-      proc_control_B.sincos_o1[1] = proc_control_B.t10;
-      proc_control_B.sincos_o1[2] = proc_control_B.t11;
+    if (proc_control_B.Product3_bo < proc_control_P.Constant_Value_iv) {
+      proc_control_B.v[0] = proc_control_B.Divide3_b;
+      proc_control_B.v[1] = proc_control_B.Divide_a;
+      proc_control_B.v[2] = proc_control_B.oc;
       proc_control_B.enable_i = 1.0;
     } else {
-      proc_control_B.TmpSignalConversionAtSFunct[0] = fabs(proc_control_B.t13);
-      proc_control_B.TmpSignalConversionAtSFunct[1] = fabs(proc_control_B.t19);
-      proc_control_B.TmpSignalConversionAtSFunct[2] = fabs(proc_control_B.t20);
-      proc_control_B.TmpSignalConversionAtSFunct[3] = fabs(proc_control_B.t24);
-      if (!rtIsNaN(proc_control_B.TmpSignalConversionAtSFunct[0])) {
+      proc_control_B.TmpSignalConversionAtSFunct[0] = std::abs
+        (proc_control_B.t11);
+      proc_control_B.TmpSignalConversionAtSFunct[1] = std::abs
+        (proc_control_B.t12);
+      proc_control_B.TmpSignalConversionAtSFunct[2] = std::abs
+        (proc_control_B.t13);
+      proc_control_B.TmpSignalConversionAtSFunct[3] = std::abs
+        (proc_control_B.t19);
+      if (!std::isnan(proc_control_B.TmpSignalConversionAtSFunct[0])) {
         proc_control_B.base_index = 1;
       } else {
         proc_control_B.base_index = 0;
         proc_control_B.nz = 2;
         exitg1 = false;
         while ((!exitg1) && (proc_control_B.nz <= 4)) {
-          if (!rtIsNaN
+          if (!std::isnan
               (proc_control_B.TmpSignalConversionAtSFunct[proc_control_B.nz - 1]))
           {
             proc_control_B.base_index = proc_control_B.nz;
@@ -49271,176 +49464,183 @@ void proc_control::step()
       }
 
       if (proc_control_B.base_index == 0) {
-        proc_control_B.oc = proc_control_B.TmpSignalConversionAtSFunct[0];
+        proc_control_B.Product3_bo = proc_control_B.TmpSignalConversionAtSFunct
+          [0];
       } else {
-        proc_control_B.oc =
+        proc_control_B.Product3_bo =
           proc_control_B.TmpSignalConversionAtSFunct[proc_control_B.base_index -
           1];
         for (proc_control_B.nz = proc_control_B.base_index + 1;
              proc_control_B.nz < 5; proc_control_B.nz++) {
-          proc_control_B.t10 =
+          proc_control_B.oc =
             proc_control_B.TmpSignalConversionAtSFunct[proc_control_B.nz - 1];
-          if (proc_control_B.oc < proc_control_B.t10) {
-            proc_control_B.oc = proc_control_B.t10;
+          if (proc_control_B.Product3_bo < proc_control_B.oc) {
+            proc_control_B.Product3_bo = proc_control_B.oc;
           }
         }
       }
 
-      if (proc_control_B.oc < proc_control_P.Constant_Value_iv) {
-        proc_control_B.sincos_o1[0] = proc_control_B.t13;
-        proc_control_B.sincos_o1[1] = proc_control_B.t19;
-        proc_control_B.sincos_o1[2] = proc_control_B.t20;
+      if (proc_control_B.Product3_bo < proc_control_P.Constant_Value_iv) {
+        proc_control_B.v[0] = proc_control_B.t11;
+        proc_control_B.v[1] = proc_control_B.t12;
+        proc_control_B.v[2] = proc_control_B.t13;
         proc_control_B.enable_i = 0.0;
       } else {
-        proc_control_B.sincos_o1[0] = 0.0;
-        proc_control_B.sincos_o1[1] = 0.0;
-        proc_control_B.sincos_o1[2] = 0.0;
+        proc_control_B.v[0] = 0.0;
+        proc_control_B.v[1] = 0.0;
+        proc_control_B.v[2] = 0.0;
         proc_control_B.enable_i = 0.0;
       }
     }
 
+    // End of MATLAB Function: '<S246>/MATLAB Function'
     if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
-      // Sqrt: '<S211>/sqrt' incorporates:
-      //   Product: '<S212>/Product'
-      //   Product: '<S212>/Product1'
-      //   Product: '<S212>/Product2'
-      //   Product: '<S212>/Product3'
-      //   Sum: '<S212>/Sum'
+      // Sqrt: '<S280>/sqrt' incorporates:
+      //   Product: '<S281>/Product'
+      //   Product: '<S281>/Product1'
+      //   Product: '<S281>/Product2'
+      //   Product: '<S281>/Product3'
+      //   Sum: '<S281>/Sum'
 
-      proc_control_B.Product3_h = sqrt(((proc_control_B.q0 * proc_control_B.q0 +
-        proc_control_B.q1 * proc_control_B.q1) + proc_control_B.q2 *
-        proc_control_B.q2) + proc_control_B.q3 * proc_control_B.q3);
+      proc_control_B.Product3_dy = std::sqrt(((proc_control_B.q0 *
+        proc_control_B.q0 + proc_control_B.q1 * proc_control_B.q1) +
+        proc_control_B.q2 * proc_control_B.q2) + proc_control_B.q3 *
+        proc_control_B.q3);
 
-      // Product: '<S207>/Product'
-      proc_control_B.Product_o = proc_control_B.q0 / proc_control_B.Product3_h;
+      // Product: '<S276>/Product'
+      proc_control_B.Product1_fr = proc_control_B.q0 /
+        proc_control_B.Product3_dy;
 
-      // Product: '<S207>/Product1'
-      proc_control_B.Product1_hg = proc_control_B.q1 / proc_control_B.Product3_h;
+      // Product: '<S276>/Product1'
+      proc_control_B.Product_al = proc_control_B.q1 / proc_control_B.Product3_dy;
 
-      // Product: '<S207>/Product2'
-      proc_control_B.Product2_j = proc_control_B.q2 / proc_control_B.Product3_h;
+      // Product: '<S276>/Product2'
+      proc_control_B.Product2_al = proc_control_B.q2 /
+        proc_control_B.Product3_dy;
 
-      // Product: '<S207>/Product3'
-      proc_control_B.Product3_h = proc_control_B.q3 / proc_control_B.Product3_h;
+      // Product: '<S276>/Product3'
+      proc_control_B.Product3_dy = proc_control_B.q3 /
+        proc_control_B.Product3_dy;
 
-      // Product: '<S208>/Product' incorporates:
-      //   Product: '<S209>/Product'
+      // Product: '<S277>/Product' incorporates:
+      //   Product: '<S278>/Product'
 
       proc_control_B.n_c = proc_control_B.Product1_hg *
         proc_control_B.Product2_j;
 
-      // Product: '<S208>/Product1' incorporates:
-      //   Product: '<S209>/Product1'
+      // Product: '<S277>/Product1' incorporates:
+      //   Product: '<S278>/Product1'
 
-      proc_control_B.t10 = proc_control_B.Product_o * proc_control_B.Product3_h;
+      proc_control_B.t13 = proc_control_B.Product1_fr *
+        proc_control_B.Product3_dy;
 
-      // Gain: '<S208>/Gain' incorporates:
-      //   Product: '<S208>/Product'
-      //   Product: '<S208>/Product1'
-      //   Sum: '<S208>/Sum1'
+      // Gain: '<S277>/Gain' incorporates:
+      //   Product: '<S277>/Product'
+      //   Product: '<S277>/Product1'
+      //   Sum: '<S277>/Sum1'
 
       proc_control_B.Gain_l = (proc_control_B.n_c + proc_control_B.t10) *
         proc_control_P.Gain_Gain;
 
-      // Gain: '<S208>/Gain1' incorporates:
-      //   Product: '<S208>/Product2'
-      //   Product: '<S208>/Product3'
-      //   Sum: '<S208>/Sum2'
+      // Gain: '<S277>/Gain1' incorporates:
+      //   Product: '<S277>/Product2'
+      //   Product: '<S277>/Product3'
+      //   Sum: '<S277>/Sum2'
 
-      proc_control_B.Gain1 = (proc_control_B.Product1_hg *
-        proc_control_B.Product3_h - proc_control_B.Product_o *
-        proc_control_B.Product2_j) * proc_control_P.Gain1_Gain;
+      proc_control_B.Gain1 = (proc_control_B.Product_al *
+        proc_control_B.Product3_dy - proc_control_B.Product1_fr *
+        proc_control_B.Product2_al) * proc_control_P.Gain1_Gain_o;
 
-      // Product: '<S208>/Product7' incorporates:
-      //   Product: '<S209>/Product7'
+      // Product: '<S277>/Product7' incorporates:
+      //   Product: '<S278>/Product7'
 
       proc_control_B.Product3_l = proc_control_B.Product3_h *
         proc_control_B.Product3_h;
 
-      // Gain: '<S208>/Gain2' incorporates:
-      //   Constant: '<S208>/Constant'
-      //   Product: '<S208>/Product6'
-      //   Product: '<S208>/Product7'
-      //   Sum: '<S208>/Sum3'
+      // Gain: '<S277>/Gain2' incorporates:
+      //   Constant: '<S277>/Constant'
+      //   Product: '<S277>/Product6'
+      //   Product: '<S277>/Product7'
+      //   Sum: '<S277>/Sum3'
 
       proc_control_B.Gain2 = ((proc_control_P.Constant_Value_or -
         proc_control_B.Product2_j * proc_control_B.Product2_j) -
         proc_control_B.Product3_l) * proc_control_P.Gain2_Gain;
 
-      // Gain: '<S209>/Gain' incorporates:
-      //   Sum: '<S209>/Sum1'
+      // Gain: '<S278>/Gain' incorporates:
+      //   Sum: '<S278>/Sum1'
 
       proc_control_B.Gain_o = (proc_control_B.n_c - proc_control_B.t10) *
         proc_control_P.Gain_Gain_g;
 
-      // Gain: '<S209>/Gain1' incorporates:
-      //   Product: '<S209>/Product2'
-      //   Product: '<S209>/Product3'
-      //   Sum: '<S209>/Sum2'
+      // Gain: '<S278>/Gain1' incorporates:
+      //   Product: '<S278>/Product2'
+      //   Product: '<S278>/Product3'
+      //   Sum: '<S278>/Sum2'
 
-      proc_control_B.Gain1_d = (proc_control_B.Product_o *
-        proc_control_B.Product1_hg + proc_control_B.Product2_j *
-        proc_control_B.Product3_h) * proc_control_P.Gain1_Gain_j;
+      proc_control_B.Gain1_d = (proc_control_B.Product1_fr *
+        proc_control_B.Product_al + proc_control_B.Product2_al *
+        proc_control_B.Product3_dy) * proc_control_P.Gain1_Gain_jy;
 
-      // Gain: '<S209>/Gain2' incorporates:
-      //   Constant: '<S209>/Constant'
-      //   Product: '<S209>/Product6'
-      //   Sum: '<S209>/Sum3'
+      // Gain: '<S278>/Gain2' incorporates:
+      //   Constant: '<S278>/Constant'
+      //   Product: '<S278>/Product6'
+      //   Sum: '<S278>/Sum3'
 
       proc_control_B.Gain2_l = ((proc_control_P.Constant_Value_m -
         proc_control_B.Product1_hg * proc_control_B.Product1_hg) -
         proc_control_B.Product3_l) * proc_control_P.Gain2_Gain_j;
     }
 
-    // Sum: '<S208>/Sum' incorporates:
-    //   Product: '<S208>/Product4'
-    //   Product: '<S208>/Product5'
-    //   Product: '<S208>/Product8'
+    // Sum: '<S277>/Sum' incorporates:
+    //   Product: '<S277>/Product4'
+    //   Product: '<S277>/Product5'
+    //   Product: '<S277>/Product8'
 
-    proc_control_B.Sum = (proc_control_B.sincos_o1[0] * proc_control_B.Gain2 +
-                          proc_control_B.Gain_l * proc_control_B.sincos_o1[1]) +
-      proc_control_B.Gain1 * proc_control_B.sincos_o1[2];
+    proc_control_B.Sum = (proc_control_B.v[0] * proc_control_B.Gain2 +
+                          proc_control_B.Gain_l * proc_control_B.v[1]) +
+      proc_control_B.Gain1 * proc_control_B.v[2];
 
-    // Sum: '<S209>/Sum' incorporates:
-    //   Product: '<S209>/Product4'
-    //   Product: '<S209>/Product5'
-    //   Product: '<S209>/Product8'
+    // Sum: '<S278>/Sum' incorporates:
+    //   Product: '<S278>/Product4'
+    //   Product: '<S278>/Product5'
+    //   Product: '<S278>/Product8'
 
-    proc_control_B.Sum_n = (proc_control_B.sincos_o1[0] * proc_control_B.Gain_o
-      + proc_control_B.Gain2_l * proc_control_B.sincos_o1[1]) +
-      proc_control_B.Gain1_d * proc_control_B.sincos_o1[2];
+    proc_control_B.Sum_n = (proc_control_B.v[0] * proc_control_B.Gain_o +
+      proc_control_B.Gain2_l * proc_control_B.v[1]) + proc_control_B.Gain1_d *
+      proc_control_B.v[2];
     if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
-      // Gain: '<S210>/Gain' incorporates:
-      //   Product: '<S210>/Product'
-      //   Product: '<S210>/Product1'
-      //   Sum: '<S210>/Sum1'
+      // Gain: '<S279>/Gain' incorporates:
+      //   Product: '<S279>/Product'
+      //   Product: '<S279>/Product1'
+      //   Sum: '<S279>/Sum1'
 
-      proc_control_B.Gain_d = (proc_control_B.Product1_hg *
-        proc_control_B.Product3_h + proc_control_B.Product_o *
-        proc_control_B.Product2_j) * proc_control_P.Gain_Gain_e;
+      proc_control_B.Gain_d = (proc_control_B.Product_al *
+        proc_control_B.Product3_dy + proc_control_B.Product1_fr *
+        proc_control_B.Product2_al) * proc_control_P.Gain_Gain_e;
 
-      // Gain: '<S210>/Gain1' incorporates:
-      //   Product: '<S210>/Product2'
-      //   Product: '<S210>/Product3'
-      //   Sum: '<S210>/Sum2'
+      // Gain: '<S279>/Gain1' incorporates:
+      //   Product: '<S279>/Product2'
+      //   Product: '<S279>/Product3'
+      //   Sum: '<S279>/Sum2'
 
-      proc_control_B.Gain1_e = (proc_control_B.Product2_j *
-        proc_control_B.Product3_h - proc_control_B.Product_o *
-        proc_control_B.Product1_hg) * proc_control_P.Gain1_Gain_e;
+      proc_control_B.Gain1_e = (proc_control_B.Product2_al *
+        proc_control_B.Product3_dy - proc_control_B.Product1_fr *
+        proc_control_B.Product_al) * proc_control_P.Gain1_Gain_e;
 
-      // Gain: '<S210>/Gain2' incorporates:
-      //   Constant: '<S210>/Constant'
-      //   Product: '<S210>/Product6'
-      //   Product: '<S210>/Product7'
-      //   Sum: '<S210>/Sum3'
+      // Gain: '<S279>/Gain2' incorporates:
+      //   Constant: '<S279>/Constant'
+      //   Product: '<S279>/Product6'
+      //   Product: '<S279>/Product7'
+      //   Sum: '<S279>/Sum3'
 
       proc_control_B.Gain2_n = ((proc_control_P.Constant_Value_j5 -
-        proc_control_B.Product1_hg * proc_control_B.Product1_hg) -
-        proc_control_B.Product2_j * proc_control_B.Product2_j) *
+        proc_control_B.Product_al * proc_control_B.Product_al) -
+        proc_control_B.Product2_al * proc_control_B.Product2_al) *
         proc_control_P.Gain2_Gain_h;
 
-      // Update for Delay: '<S202>/Delay' incorporates:
-      //   Constant: '<S202>/Constant'
+      // Update for Delay: '<S271>/Delay' incorporates:
+      //   Constant: '<S271>/Constant'
 
       proc_control_DW.Delay_DSTATE_i = proc_control_P.Constant_Value_ll;
     }
@@ -49508,25 +49708,25 @@ void proc_control::step()
     //   Sum: '<S218>/Sum3'
 
     proc_control_B.zposition = proc_control_B.rtb_Merge2_data -
-      (((proc_control_B.Product1_hg * proc_control_B.Product3_h +
-         proc_control_B.Product_o * proc_control_B.Product3_l) *
+      (((proc_control_B.Product3_dy * proc_control_B.Divide3_b +
+         proc_control_B.Divide_a * proc_control_B.scale) *
         proc_control_P.Gain_Gain_c * proc_control_B.BusCreator.depth_pose[0] +
-        (proc_control_B.Product3_l * proc_control_B.Product3_h -
-         proc_control_B.Product_o * proc_control_B.Product1_hg) *
-        proc_control_P.Gain1_Gain_p * proc_control_B.BusCreator.depth_pose[1]) +
-       ((proc_control_P.Constant_Value_b - proc_control_B.Product1_hg *
-         proc_control_B.Product1_hg) - proc_control_B.Product3_l *
-        proc_control_B.Product3_l) * proc_control_P.Gain2_Gain_e *
+        (proc_control_B.scale * proc_control_B.Divide3_b -
+         proc_control_B.Divide_a * proc_control_B.Product3_dy) *
+        proc_control_P.Gain1_Gain_p0 * proc_control_B.BusCreator.depth_pose[1])
+       + ((proc_control_P.Constant_Value_b - proc_control_B.Product3_dy *
+           proc_control_B.Product3_dy) - proc_control_B.scale *
+          proc_control_B.scale) * proc_control_P.Gain2_Gain_e *
        proc_control_B.BusCreator.depth_pose[2]);
   }
 
-  // End of Outputs for SubSystem: '<S6>/Depth Measurements'
+  // End of Outputs for SubSystem: '<S9>/Depth Measurements'
 
-  // Outputs for Enabled SubSystem: '<S3>/Enabled Subsystem' incorporates:
-  //   EnablePort: '<S25>/Enable'
+  // Outputs for Enabled SubSystem: '<S5>/Enabled Subsystem' incorporates:
+  //   EnablePort: '<S81>/Enable'
 
-  // Logic: '<S3>/NOT' incorporates:
-  //   Delay: '<S3>/Delay'
+  // Logic: '<S5>/NOT' incorporates:
+  //   Delay: '<S5>/Delay'
 
   if (!(proc_control_DW.Delay_DSTATE_m != 0.0)) {
     // Switch: '<S36>/Reset' incorporates:
@@ -49542,13 +49742,13 @@ void proc_control::step()
         proc_control_DW.Memory_PreviousInput_e);
     }
 
-    // End of Switch: '<S36>/Reset'
+    // End of Switch: '<S92>/Reset'
 
-    // Switch: '<S37>/Reset' incorporates:
-    //   Constant: '<S25>/Constant1'
-    //   Constant: '<S37>/Initial Condition'
-    //   Memory: '<S37>/Memory'
-    //   MinMax: '<S35>/MinMax'
+    // Switch: '<S93>/Reset' incorporates:
+    //   Constant: '<S81>/Constant1'
+    //   Constant: '<S93>/Initial Condition'
+    //   Memory: '<S93>/Memory'
+    //   MinMax: '<S91>/MinMax'
 
     if (proc_control_P.Constant1_Value_i != 0.0) {
       proc_control_B.b_value_e = proc_control_P.MinMaxRunningResettable1_vinit;
@@ -49557,7 +49757,7 @@ void proc_control::step()
         proc_control_DW.Memory_PreviousInput_n);
     }
 
-    // End of Switch: '<S37>/Reset'
+    // End of Switch: '<S93>/Reset'
 
     // MATLAB Function: '<S25>/MATLAB Function'
     proc_control_B.y = (proc_control_B.Reset + proc_control_B.b_value_e >= 2);
@@ -49569,8 +49769,8 @@ void proc_control::step()
     proc_control_DW.Memory_PreviousInput_n = proc_control_B.b_value_e;
   }
 
-  // End of Logic: '<S3>/NOT'
-  // End of Outputs for SubSystem: '<S3>/Enabled Subsystem'
+  // End of Logic: '<S5>/NOT'
+  // End of Outputs for SubSystem: '<S5>/Enabled Subsystem'
 
   // Outputs for Enabled SubSystem: '<Root>/Enabled Subsystem' incorporates:
   //   EnablePort: '<S1>/Enable'
@@ -49592,19 +49792,19 @@ void proc_control::step()
   //   Switch: '<S179>/Switch'
   //
   if ((!(proc_control_DW.obj_i.m_reset != 0.0)) && (proc_control_B.y != 0.0)) {
-    // DataTypeConversion: '<S221>/DataTypeConversion_uState' incorporates:
-    //   Delay: '<S181>/Delay'
+    // DataTypeConversion: '<S290>/DataTypeConversion_uState' incorporates:
+    //   Delay: '<S250>/Delay'
 
     proc_control_B.DataTypeConversion_uState[0] = proc_control_B.Probe_o1;
-    memcpy(&proc_control_B.DataTypeConversion_uState[1],
-           &proc_control_DW.Delay_DSTATE[0], sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.DataTypeConversion_uState[1],
+                &proc_control_DW.Delay_DSTATE_c[0], sizeof(real_T) << 3U);
     proc_control_B.DataTypeConversion_uState[9] = proc_control_B.BusCreator.mass;
     proc_control_B.DataTypeConversion_uState[10] =
       proc_control_B.BusCreator.volume;
     proc_control_B.DataTypeConversion_uState[11] =
       proc_control_B.BusCreator.sub_height;
-    memcpy(&proc_control_B.DataTypeConversion_uState[12],
-           &proc_control_B.BusCreator.I[0], 9U * sizeof(real_T));
+    std::memcpy(&proc_control_B.DataTypeConversion_uState[12],
+                &proc_control_B.BusCreator.I[0], 9U * sizeof(real_T));
     proc_control_B.DataTypeConversion_uState[21] = proc_control_B.BusCreator.rg
       [0];
     proc_control_B.DataTypeConversion_uState[24] = proc_control_B.BusCreator.rb
@@ -49629,42 +49829,33 @@ void proc_control::step()
 
     proc_control_B.DataTypeConversion_uState[45] = proc_control_B.BusCreator.rho;
     proc_control_B.DataTypeConversion_uState[46] = proc_control_B.BusCreator.g;
-    memcpy(&proc_control_B.DataTypeConversion_uState[47],
-           &proc_control_B.Transpose[0], 48U * sizeof(real_T));
+    std::memcpy(&proc_control_B.DataTypeConversion_uState[47],
+                &proc_control_B.Transpose[0], 48U * sizeof(real_T));
 
-    // End of DataTypeConversion: '<S221>/DataTypeConversion_uState'
+    // End of DataTypeConversion: '<S290>/DataTypeConversion_uState'
 
-    // Outputs for Enabled SubSystem: '<S221>/Correct1' incorporates:
-    //   EnablePort: '<S222>/Enable'
+    // Outputs for Enabled SubSystem: '<S290>/Correct1' incorporates:
+    //   EnablePort: '<S291>/Enable'
 
     if (proc_control_P.Enable1_Value) {
-      // MATLABSystem: '<S222>/MATLAB System' incorporates:
-      //   Constant: '<S221>/BlockOrdering'
+      // MATLABSystem: '<S291>/MATLAB System' incorporates:
+      //   Constant: '<S290>/BlockOrdering'
 
       proc_control_B.MATLABSystem_o3_k = proc_control_P.BlockOrdering_Value;
 
-      // MATLABSystem: '<S222>/MATLAB System' incorporates:
-      //   DataStoreRead: '<S222>/Data Store ReadX'
+      // MATLABSystem: '<S291>/MATLAB System' incorporates:
+      //   DataStoreRead: '<S291>/Data Store ReadX'
 
       // EKFNAVMESUREDF Summary of this function goes here
       //    Detailed explanation goes here
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
       {
-        memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U * sizeof
-               (real_T));
-
-        // Start for MATLABSystem: '<S222>/MATLAB System' incorporates:
-        //   DataStoreRead: '<S222>/Data Store ReadX'
-
-        proc_control_B.Product3_h = 1.4901161193847656E-8 * fabs
-          (proc_control_DW.x[proc_control_B.b_j]);
-        if ((proc_control_B.Product3_h <= 1.4901161193847656E-8) || rtIsNaN
-            (proc_control_B.Product3_h)) {
-          proc_control_B.Product3_h = 1.4901161193847656E-8;
-        }
-
+        std::memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U *
+                    sizeof(real_T));
+        proc_control_B.scale = std::fmax(1.4901161193847656E-8,
+          1.4901161193847656E-8 * std::abs(proc_control_DW.x[proc_control_B.b_j]));
         proc_control_B.imvec[proc_control_B.b_j] =
-          proc_control_DW.x[proc_control_B.b_j] + proc_control_B.Product3_h;
+          proc_control_DW.x[proc_control_B.b_j] + proc_control_B.scale;
 
         // EKFNAVMESUREDF Summary of this function goes here
         //    Detailed explanation goes here
@@ -49693,9 +49884,9 @@ void proc_control::step()
       //    Detailed explanation goes here
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 7; proc_control_B.b_j++)
       {
-        // Start for MATLABSystem: '<S222>/MATLAB System' incorporates:
-        //   Constant: '<S221>/R1'
-        //   DataStoreRead: '<S222>/Data Store ReadP'
+        // Start for MATLABSystem: '<S291>/MATLAB System' incorporates:
+        //   Constant: '<S290>/R1'
+        //   DataStoreRead: '<S291>/Data Store ReadP'
         //
         for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 13;
              proc_control_B.Ns_i++) {
@@ -49735,8 +49926,8 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
-        // Start for MATLABSystem: '<S222>/MATLAB System' incorporates:
-        //   DataStoreRead: '<S222>/Data Store ReadP'
+        // Start for MATLABSystem: '<S291>/MATLAB System' incorporates:
+        //   DataStoreRead: '<S291>/Data Store ReadP'
 
         proc_control_B.nz = 0;
         for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k
@@ -49758,7 +49949,7 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 7; proc_control_B.Ns++) {
-        // Start for MATLABSystem: '<S222>/MATLAB System'
+        // Start for MATLABSystem: '<S291>/MATLAB System'
         proc_control_B.nz = 0;
         for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k
              ++) {
@@ -49801,7 +49992,7 @@ void proc_control::step()
 
       proc_control_trisolve_pr(proc_control_B.R_m, proc_control_B.C_i);
 
-      // MATLABSystem: '<S222>/MATLAB System'
+      // MATLABSystem: '<S291>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 7; proc_control_B.nz++) {
         proc_control_B.b_k = 0;
@@ -49830,8 +50021,8 @@ void proc_control::step()
           -proc_control_B.K_k[proc_control_B.Ns];
       }
 
-      // MATLABSystem: '<S222>/MATLAB System' incorporates:
-      //   DataStoreRead: '<S222>/Data Store ReadP'
+      // MATLABSystem: '<S291>/MATLAB System' incorporates:
+      //   DataStoreRead: '<S291>/Data Store ReadP'
 
       proc_control_B.Ns = 0;
       proc_control_B.nz = 0;
@@ -49883,8 +50074,8 @@ void proc_control::step()
         }
       }
 
-      // Start for MATLABSystem: '<S222>/MATLAB System' incorporates:
-      //   Constant: '<S221>/R1'
+      // Start for MATLABSystem: '<S291>/MATLAB System' incorporates:
+      //   Constant: '<S290>/R1'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 7; proc_control_B.nz++) {
@@ -49910,8 +50101,9 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
-        memcpy(&proc_control_B.y_i[proc_control_B.Ns * 20],
-               &proc_control_B.y_m[proc_control_B.Ns * 13], 13U * sizeof(real_T));
+        std::memcpy(&proc_control_B.y_i[proc_control_B.Ns * 20],
+                    &proc_control_B.y_m[proc_control_B.Ns * 13], 13U * sizeof
+                    (real_T));
         for (proc_control_B.nz = 0; proc_control_B.nz < 7; proc_control_B.nz++)
         {
           proc_control_B.y_i[(proc_control_B.nz + 20 * proc_control_B.Ns) + 13] =
@@ -49919,12 +50111,12 @@ void proc_control::step()
         }
       }
 
-      // MATLABSystem: '<S222>/MATLAB System'
+      // MATLABSystem: '<S291>/MATLAB System'
       proc_control_qr_p(proc_control_B.y_i, proc_control_B.a__1_f,
                         proc_control_B.A_h);
 
-      // DataStoreWrite: '<S222>/Data Store WriteP' incorporates:
-      //   MATLABSystem: '<S222>/MATLAB System'
+      // DataStoreWrite: '<S291>/Data Store WriteP' incorporates:
+      //   MATLABSystem: '<S291>/MATLAB System'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
@@ -49939,10 +50131,10 @@ void proc_control::step()
         proc_control_B.Ns += 13;
       }
 
-      // End of DataStoreWrite: '<S222>/Data Store WriteP'
+      // End of DataStoreWrite: '<S291>/Data Store WriteP'
 
-      // SignalConversion generated from: '<S222>/MATLAB System' incorporates:
-      //   Merge: '<S3>/Merge'
+      // SignalConversion generated from: '<S291>/MATLAB System' incorporates:
+      //   Merge: '<S5>/Merge'
 
       proc_control_B.d[0] = proc_control_B.d_oi;
       proc_control_B.d[1] = proc_control_B.scale;
@@ -49965,9 +50157,9 @@ void proc_control::step()
           proc_control_DW.x[tmp_4[proc_control_B.Ns]];
       }
 
-      // DataStoreWrite: '<S222>/Data Store WriteX' incorporates:
-      //   DataStoreRead: '<S222>/Data Store ReadX'
-      //   MATLABSystem: '<S222>/MATLAB System'
+      // DataStoreWrite: '<S291>/Data Store WriteX' incorporates:
+      //   DataStoreRead: '<S291>/Data Store ReadX'
+      //   MATLABSystem: '<S291>/MATLAB System'
       //
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
         proc_control_B.n_c = 0.0;
@@ -49982,7 +50174,7 @@ void proc_control::step()
         proc_control_DW.x[proc_control_B.Ns] += proc_control_B.n_c;
       }
 
-      // End of DataStoreWrite: '<S222>/Data Store WriteX'
+      // End of DataStoreWrite: '<S291>/Data Store WriteX'
     }
 
     // End of Outputs for SubSystem: '<S221>/Correct1'
@@ -50000,29 +50192,21 @@ void proc_control::step()
       proc_control_B.n_c = proc_control_B.enable_i;
     }
 
-    // Outputs for Enabled SubSystem: '<S221>/Correct2' incorporates:
-    //   EnablePort: '<S223>/Enable'
+    // Outputs for Enabled SubSystem: '<S290>/Correct2' incorporates:
+    //   EnablePort: '<S292>/Enable'
 
     if (proc_control_B.n_c != 0.0) {
       // MATLABSystem: '<S223>/MATLAB System' incorporates:
       //   DataStoreRead: '<S223>/Data Store ReadP'
       //   DataStoreRead: '<S223>/Data Store ReadX'
 
+      proc_control_B.Ns = 0;
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
       {
-        memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U * sizeof
-               (real_T));
-
-        // Start for MATLABSystem: '<S223>/MATLAB System' incorporates:
-        //   DataStoreRead: '<S223>/Data Store ReadX'
-
-        proc_control_B.Product3_h = 1.4901161193847656E-8 * fabs
-          (proc_control_DW.x[proc_control_B.b_j]);
-        if ((proc_control_B.Product3_h <= 1.4901161193847656E-8) || rtIsNaN
-            (proc_control_B.Product3_h)) {
-          proc_control_B.Product3_h = 1.4901161193847656E-8;
-        }
-
+        std::memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U *
+                    sizeof(real_T));
+        proc_control_B.scale = std::fmax(1.4901161193847656E-8,
+          1.4901161193847656E-8 * std::abs(proc_control_DW.x[proc_control_B.b_j]));
         proc_control_B.imvec[proc_control_B.b_j] =
           proc_control_DW.x[proc_control_B.b_j] + proc_control_B.Product3_h;
         tmp_2 = _mm_div_pd(_mm_sub_pd(_mm_loadu_pd(&proc_control_B.imvec[7]),
@@ -50064,8 +50248,8 @@ void proc_control::step()
           proc_control_B.K_d[proc_control_B.Ns + 26];
       }
 
-      // Start for MATLABSystem: '<S223>/MATLAB System' incorporates:
-      //   Constant: '<S221>/R2'
+      // Start for MATLABSystem: '<S292>/MATLAB System' incorporates:
+      //   Constant: '<S290>/R2'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 3; proc_control_B.nz++) {
@@ -50093,8 +50277,8 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
-        // Start for MATLABSystem: '<S223>/MATLAB System' incorporates:
-        //   DataStoreRead: '<S223>/Data Store ReadP'
+        // Start for MATLABSystem: '<S292>/MATLAB System' incorporates:
+        //   DataStoreRead: '<S292>/Data Store ReadP'
 
         proc_control_B.nz = 0;
         for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k
@@ -50116,7 +50300,7 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 3; proc_control_B.Ns++) {
-        // Start for MATLABSystem: '<S223>/MATLAB System'
+        // Start for MATLABSystem: '<S292>/MATLAB System'
         proc_control_B.nz = 0;
         for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k
              ++) {
@@ -50139,7 +50323,7 @@ void proc_control::step()
         }
       }
 
-      // MATLABSystem: '<S223>/MATLAB System'
+      // MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
       {
@@ -50155,7 +50339,7 @@ void proc_control::step()
       // Start for MATLABSystem: '<S223>/MATLAB System'
       proc_control_trisolve_pr3(proc_control_B.twpt, proc_control_B.C_n);
 
-      // MATLABSystem: '<S223>/MATLAB System'
+      // MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
       {
@@ -50168,7 +50352,7 @@ void proc_control::step()
         proc_control_B.Ns += 3;
       }
 
-      // Start for MATLABSystem: '<S223>/MATLAB System'
+      // Start for MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 3; proc_control_B.nz++) {
         proc_control_B.twpt_c[proc_control_B.Ns] =
@@ -50182,7 +50366,7 @@ void proc_control::step()
 
       proc_control_trisolve_pr35(proc_control_B.twpt_c, proc_control_B.C_c);
 
-      // MATLABSystem: '<S223>/MATLAB System'
+      // MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
         proc_control_B.K_d[proc_control_B.nz] =
@@ -50209,7 +50393,14 @@ void proc_control::step()
           -proc_control_B.K_d[proc_control_B.Ns];
       }
 
-      // MATLABSystem: '<S223>/MATLAB System'
+      for (proc_control_B.Ns = 38; proc_control_B.Ns < 39; proc_control_B.Ns++)
+      {
+        // Start for MATLABSystem: '<S292>/MATLAB System'
+        proc_control_B.C_d[proc_control_B.Ns] =
+          -proc_control_B.K_n[proc_control_B.Ns];
+      }
+
+      // MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       proc_control_B.nz = 0;
       for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k++)
@@ -50249,7 +50440,7 @@ void proc_control::step()
         proc_control_B.Ns += 14;
       }
 
-      // Start for MATLABSystem: '<S223>/MATLAB System'
+      // Start for MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
       {
@@ -50272,8 +50463,8 @@ void proc_control::step()
             proc_control_B.Product3_h;
         }
 
-        // Start for MATLABSystem: '<S223>/MATLAB System' incorporates:
-        //   Constant: '<S221>/R2'
+        // Start for MATLABSystem: '<S292>/MATLAB System' incorporates:
+        //   Constant: '<S290>/R2'
         //
         proc_control_B.t10 = proc_control_B.K_d[proc_control_B.b_j + 13];
         proc_control_B.residue = proc_control_B.K_d[proc_control_B.b_j];
@@ -50293,7 +50484,7 @@ void proc_control::step()
         proc_control_B.Ns += 3;
       }
 
-      // Start for MATLABSystem: '<S223>/MATLAB System'
+      // Start for MATLABSystem: '<S292>/MATLAB System'
       proc_control_B.Ns = 0;
       proc_control_B.nz = 0;
       proc_control_B.b_k = 0;
@@ -50312,8 +50503,8 @@ void proc_control::step()
         proc_control_B.b_k += 13;
       }
 
-      // MATLABSystem: '<S223>/MATLAB System'
-      proc_control_qr_pr3(proc_control_B.y_o, proc_control_B.a__1_e,
+      // MATLABSystem: '<S292>/MATLAB System'
+      proc_control_qr_pr3(proc_control_B.y_o4, proc_control_B.a__1_e,
                           proc_control_B.A_h);
       tmp_2 = _mm_sub_pd(_mm_set_pd(proc_control_B.Sum_n, proc_control_B.Sum),
                          _mm_loadu_pd(&proc_control_DW.x[7]));
@@ -50350,19 +50541,19 @@ void proc_control::step()
         proc_control_B.Ns += 13;
       }
 
-      // End of DataStoreWrite: '<S223>/Data Store WriteP'
+      // End of DataStoreWrite: '<S292>/Data Store WriteP'
     }
 
-    // End of Outputs for SubSystem: '<S221>/Correct2'
+    // End of Outputs for SubSystem: '<S290>/Correct2'
 
-    // Outputs for Enabled SubSystem: '<S221>/Correct3' incorporates:
-    //   EnablePort: '<S224>/Enable'
+    // Outputs for Enabled SubSystem: '<S290>/Correct3' incorporates:
+    //   EnablePort: '<S293>/Enable'
 
     if (proc_control_P.Enable3_Value) {
-      // MATLABSystem: '<S224>/MATLAB System' incorporates:
-      //   Constant: '<S221>/R3'
-      //   DataStoreRead: '<S224>/Data Store ReadP'
-      //   DataStoreRead: '<S224>/Data Store ReadX'
+      // MATLABSystem: '<S293>/MATLAB System' incorporates:
+      //   Constant: '<S290>/R3'
+      //   DataStoreRead: '<S293>/Data Store ReadP'
+      //   DataStoreRead: '<S293>/Data Store ReadX'
 
       EKFCorrectorAdditive_getMeasure(proc_control_P.R3_Value, proc_control_DW.x,
         proc_control_DW.P, &proc_control_B.residue, proc_control_B.imvec,
@@ -50395,8 +50586,8 @@ void proc_control::step()
           -proc_control_B.imvec[proc_control_B.Ns];
       }
 
-      // MATLABSystem: '<S224>/MATLAB System' incorporates:
-      //   DataStoreRead: '<S224>/Data Store ReadP'
+      // MATLABSystem: '<S293>/MATLAB System' incorporates:
+      //   DataStoreRead: '<S293>/Data Store ReadP'
 
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
@@ -50443,16 +50634,16 @@ void proc_control::step()
         }
 
         proc_control_B.y_l[14 * proc_control_B.b_j + 13] =
-          proc_control_B.imvec[proc_control_B.b_j] * proc_control_B.i;
+          proc_control_B.imvec[proc_control_B.b_j] * proc_control_B.Divide3_b;
       }
 
       proc_control_qr_pr35(proc_control_B.y_l, proc_control_B.a__1_h,
                            proc_control_B.A_h);
 
-      // DataStoreWrite: '<S224>/Data Store WriteP' incorporates:
-      //   DataStoreRead: '<S224>/Data Store ReadX'
-      //   DataStoreWrite: '<S224>/Data Store WriteX'
-      //   MATLABSystem: '<S224>/MATLAB System'
+      // DataStoreWrite: '<S293>/Data Store WriteP' incorporates:
+      //   DataStoreRead: '<S293>/Data Store ReadX'
+      //   DataStoreWrite: '<S293>/Data Store WriteX'
+      //   MATLABSystem: '<S293>/MATLAB System'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
@@ -50465,11 +50656,11 @@ void proc_control::step()
         }
 
         proc_control_DW.x[proc_control_B.nz] +=
-          proc_control_B.imvec[proc_control_B.nz] * proc_control_B.residue;
+          proc_control_B.imvec[proc_control_B.nz] * proc_control_B.Divide_a;
         proc_control_B.Ns += 13;
       }
 
-      // End of DataStoreWrite: '<S224>/Data Store WriteP'
+      // End of DataStoreWrite: '<S293>/Data Store WriteP'
     }
 
     // End of Outputs for SubSystem: '<S221>/Correct3'
@@ -50486,11 +50677,11 @@ void proc_control::step()
     memcpy(&proc_control_B.DataStoreRead[0], &proc_control_DW.x[0], 13U * sizeof
            (real_T));
 
-    // Outputs for Atomic SubSystem: '<S221>/Predict'
-    // Start for MATLABSystem: '<S226>/MATLAB System' incorporates:
-    //   DataStoreRead: '<S225>/Data Store Read'
-    //   DataStoreRead: '<S226>/Data Store ReadX'
-    //   DataTypeConversion: '<S221>/DataTypeConversion_uState'
+    // Outputs for Atomic SubSystem: '<S290>/Predict'
+    // Start for MATLABSystem: '<S295>/MATLAB System' incorporates:
+    //   DataStoreRead: '<S294>/Data Store Read'
+    //   DataStoreRead: '<S295>/Data Store ReadX'
+    //   DataTypeConversion: '<S290>/DataTypeConversion_uState'
 
     memcpy(&proc_control_B.z_c[0], &proc_control_DW.x[0], 13U * sizeof(real_T));
 
@@ -50501,30 +50692,21 @@ void proc_control::step()
     proc_control_EkfNavStatesEq(proc_control_B.z_c,
       proc_control_B.DataTypeConversion_uState);
 
-    // MATLABSystem: '<S226>/MATLAB System' incorporates:
-    //   DataStoreRead: '<S226>/Data Store ReadX'
+    // MATLABSystem: '<S295>/MATLAB System' incorporates:
+    //   DataStoreRead: '<S295>/Data Store ReadX'
 
     for (proc_control_B.b_j = 0; proc_control_B.b_j < 13; proc_control_B.b_j++)
     {
-      memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U * sizeof
-             (real_T));
-
-      // Start for MATLABSystem: '<S226>/MATLAB System' incorporates:
-      //   DataStoreRead: '<S226>/Data Store ReadX'
-
-      proc_control_B.Product3_h = 1.4901161193847656E-8 * fabs
-        (proc_control_DW.x[proc_control_B.b_j]);
-      if ((proc_control_B.Product3_h <= 1.4901161193847656E-8) || rtIsNaN
-          (proc_control_B.Product3_h)) {
-        proc_control_B.Product3_h = 1.4901161193847656E-8;
-      }
-
+      std::memcpy(&proc_control_B.imvec[0], &proc_control_DW.x[0], 13U * sizeof
+                  (real_T));
+      proc_control_B.scale = std::fmax(1.4901161193847656E-8,
+        1.4901161193847656E-8 * std::abs(proc_control_DW.x[proc_control_B.b_j]));
       proc_control_B.imvec[proc_control_B.b_j] =
-        proc_control_DW.x[proc_control_B.b_j] + proc_control_B.Product3_h;
+        proc_control_DW.x[proc_control_B.b_j] + proc_control_B.scale;
 
-      // Start for MATLABSystem: '<S226>/MATLAB System' incorporates:
-      //   DataStoreRead: '<S226>/Data Store ReadX'
-      //   DataTypeConversion: '<S221>/DataTypeConversion_uState'
+      // Start for MATLABSystem: '<S295>/MATLAB System' incorporates:
+      //   DataStoreRead: '<S295>/Data Store ReadX'
+      //   DataTypeConversion: '<S290>/DataTypeConversion_uState'
 
       proc_control_EkfNavStatesEq(proc_control_B.imvec,
         proc_control_B.DataTypeConversion_uState);
@@ -50546,9 +50728,9 @@ void proc_control::step()
       }
     }
 
-    // DataStoreWrite: '<S226>/Data Store WriteX' incorporates:
-    //   DataTypeConversion: '<S221>/DataTypeConversion_uState'
-    //   MATLABSystem: '<S226>/MATLAB System'
+    // DataStoreWrite: '<S295>/Data Store WriteX' incorporates:
+    //   DataTypeConversion: '<S290>/DataTypeConversion_uState'
+    //   MATLABSystem: '<S295>/MATLAB System'
     //
     proc_control_EkfNavStatesEq(proc_control_DW.x,
       proc_control_B.DataTypeConversion_uState);
@@ -50568,8 +50750,8 @@ void proc_control::step()
             proc_control_B.A_h[proc_control_B.b_k * 13 + proc_control_B.b_j];
         }
 
-        // Start for MATLABSystem: '<S226>/MATLAB System' incorporates:
-        //   Constant: '<S221>/Q'
+        // Start for MATLABSystem: '<S295>/MATLAB System' incorporates:
+        //   Constant: '<S290>/Q'
         //
         proc_control_B.Ns = 26 * proc_control_B.b_j + proc_control_B.Ns_i;
         proc_control_B.y_a[proc_control_B.Ns] = proc_control_B.Product3_h;
@@ -50578,12 +50760,12 @@ void proc_control::step()
       }
     }
 
-    // MATLABSystem: '<S226>/MATLAB System'
+    // MATLABSystem: '<S295>/MATLAB System'
     proc_control_qr_pr351(proc_control_B.y_a, proc_control_B.a__1_a,
                           proc_control_B.A_h);
 
-    // DataStoreWrite: '<S226>/Data Store WriteP' incorporates:
-    //   MATLABSystem: '<S226>/MATLAB System'
+    // DataStoreWrite: '<S295>/Data Store WriteP' incorporates:
+    //   MATLABSystem: '<S295>/MATLAB System'
     //
     proc_control_B.Ns = 0;
     for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
@@ -50598,12 +50780,11 @@ void proc_control::step()
       proc_control_B.Ns += 13;
     }
 
-    // End of DataStoreWrite: '<S226>/Data Store WriteP'
-    // End of Outputs for SubSystem: '<S221>/Predict'
+    // End of DataStoreWrite: '<S295>/Data Store WriteP'
+    // End of Outputs for SubSystem: '<S290>/Predict'
 
-    // Outputs for Atomic SubSystem: '<S9>/Header Assignment'
-    // ASCIIToString: '<S13>/ASCII to String' incorporates:
-    //   Constant: '<S12>/Constant'
+    // Outputs for Atomic SubSystem: '<S12>/Header Assignment'
+    proc_control_CurrentTime(&proc_control_B.CurrentTime);
 
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 128; proc_control_B.Ns_i
          ++) {
@@ -50621,31 +50802,28 @@ void proc_control::step()
     //   StringConstant: '<S13>/String Constant1'
 
     if (proc_control_P.Constant1_Value != 0.0) {
-      strncpy(&proc_control_B.Switch1_p[0],
-              &proc_control_P.StringConstant1_String[0], 255U);
-      proc_control_B.Switch1_p[255] = '\x00';
+      proc_control_B.Switch1_j = proc_control_P.StringConstant1_String;
     } else {
-      strncpy(&proc_control_B.Switch1_p[0], &proc_control_B.Switch1[0], 255U);
-      proc_control_B.Switch1_p[255] = '\x00';
-    }
+      // ASCIIToString: '<S16>/ASCII to String' incorporates:
+      //   Constant: '<S15>/Constant'
 
-    // End of Switch: '<S13>/Switch1'
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 128;
+           proc_control_B.Ns_h++) {
+        proc_control_B.cv[proc_control_B.Ns_h] = static_cast<int8_T>
+          (proc_control_P.Constant_Value_g3.header.frame_id[proc_control_B.Ns_h]);
+      }
 
-    // Switch: '<S13>/Switch' incorporates:
-    //   Constant: '<S13>/Constant'
-
-    if (!(proc_control_P.Constant_Value_gj != 0.0)) {
-      // BusCreator: '<S9>/Bus Creator' incorporates:
-      //   Constant: '<S12>/Constant'
+      proc_control_B.Switch1_j.assign(&proc_control_B.cv[0], 128U);
 
       proc_control_B.BusCreator_l.header.stamp =
         proc_control_P.Constant_Value_g3.header.stamp;
     }
 
-    // End of Switch: '<S13>/Switch'
+    // End of Switch: '<S16>/Switch1'
 
-    // StringToASCII: '<S13>/String To ASCII'
-    strncpy(&proc_control_B.cv[0], &proc_control_B.Switch1_p[0], 128U);
+    // StringToASCII: '<S16>/String To ASCII'
+    std::strncpy((char_T *)&proc_control_B.BusAssignment_g.header.frame_id[0],
+                 proc_control_B.Switch1_j.c_str(), 128U);
 
     // BusCreator: '<S9>/Bus Creator' incorporates:
     //   BusCreator: '<S9>/Bus Creator7'
@@ -50671,7 +50849,8 @@ void proc_control::step()
       proc_control_B.BusCreator_l.child_frame_id[proc_control_B.Ns_i] =
         proc_control_P.Constant_Value_g3.child_frame_id[proc_control_B.Ns_i];
 
-      // End of Outputs for SubSystem: '<S9>/Header Assignment'
+      proc_control_B.BusAssignment_g.header.stamp =
+        proc_control_P.Constant_Value_g3.header.stamp;
     }
 
     // Outputs for Atomic SubSystem: '<S9>/Header Assignment'
@@ -50714,9 +50893,9 @@ void proc_control::step()
     Pub_proc_control_478.publish(&proc_control_B.BusCreator_l);
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.WorldPosition[0] = proc_control_B.DataStoreRead[0];
-    proc_control_B.WorldPosition[1] = proc_control_B.DataStoreRead[1];
-    proc_control_B.WorldPosition[2] = proc_control_B.DataStoreRead[2];
+    proc_control_B.WorldPosition_f[0] = proc_control_B.DataStoreRead[0];
+    proc_control_B.WorldPosition_f[1] = proc_control_B.DataStoreRead[1];
+    proc_control_B.WorldPosition_f[2] = proc_control_B.DataStoreRead[2];
 
     // SignalConversion generated from: '<S1>/Output'
     proc_control_B.qS2W[0] = proc_control_B.DataStoreRead[3];
@@ -50725,39 +50904,39 @@ void proc_control::step()
     proc_control_B.qS2W[3] = proc_control_B.DataStoreRead[6];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.BodyVelocity[0] = proc_control_B.DataStoreRead[7];
+    proc_control_B.BodyVelocity_b[0] = proc_control_B.DataStoreRead[7];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.AngularRate[0] = proc_control_B.DataStoreRead[10];
+    proc_control_B.AngularRate_m[0] = proc_control_B.DataStoreRead[10];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.BodyVelocity[1] = proc_control_B.DataStoreRead[8];
+    proc_control_B.BodyVelocity_b[1] = proc_control_B.DataStoreRead[8];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.AngularRate[1] = proc_control_B.DataStoreRead[11];
+    proc_control_B.AngularRate_m[1] = proc_control_B.DataStoreRead[11];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.BodyVelocity[2] = proc_control_B.DataStoreRead[9];
+    proc_control_B.BodyVelocity_b[2] = proc_control_B.DataStoreRead[9];
 
     // SignalConversion generated from: '<S1>/Output'
-    proc_control_B.AngularRate[2] = proc_control_B.DataStoreRead[12];
+    proc_control_B.AngularRate_m[2] = proc_control_B.DataStoreRead[12];
 
-    // BusAssignment: '<S8>/Bus Assignment' incorporates:
-    //   DataTypeConversion: '<S8>/Data Type Conversion'
+    // BusAssignment: '<S11>/Bus Assignment' incorporates:
+    //   DataTypeConversion: '<S11>/Data Type Conversion'
 
     proc_control_B.BusAssignment_g.data = (proc_control_B.y != 0.0);
 
-    // ZeroOrderHold: '<S8>/Zero-Order Hold'
+    // ZeroOrderHold: '<S11>/Zero-Order Hold'
     if ((&proc_control_M)->Timing.TaskCounters.TID[3] == 0) {
       // MATLABSystem: '<S11>/SinkBlock'
       Pub_proc_control_500.publish(&proc_control_B.BusAssignment_g);
     }
 
-    // End of ZeroOrderHold: '<S8>/Zero-Order Hold'
+    // End of ZeroOrderHold: '<S11>/Zero-Order Hold'
   }
 
-  // End of Logic: '<S180>/AND'
-  // End of Outputs for SubSystem: '<S6>/Enabled Subsystem'
+  // End of Logic: '<S249>/AND'
+  // End of Outputs for SubSystem: '<S9>/Enabled Subsystem'
   // End of Outputs for SubSystem: '<Root>/Enabled Subsystem'
   if ((&proc_control_M)->Timing.TaskCounters.TID[2] == 0) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i++)
@@ -50795,22 +50974,22 @@ void proc_control::step()
     // SystemReset for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
     //   ActionPort: '<S69>/Action Port'
 
-    // SystemReset for If: '<S5>/If' incorporates:
-    //   MATLABSystem: '<S69>/MATLAB System'
+    // SystemReset for If: '<S8>/If' incorporates:
+    //   MATLABSystem: '<S138>/MATLAB System'
 
     proc_contr_mpcManager_resetImpl(&proc_control_DW.obj_k);
 
-    // End of SystemReset for SubSystem: '<S5>/If Action Subsystem'
+    // End of SystemReset for SubSystem: '<S8>/If Action Subsystem'
   }
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
   proc_control_B.b_value_e = Sub_proc_control_780.getLatestMessage
     (&proc_control_B.rtb_SourceBlock_o2_h_e);
 
-  // Outputs for Enabled SubSystem: '<S171>/Enabled Subsystem' incorporates:
-  //   EnablePort: '<S173>/Enable'
+  // Outputs for Enabled SubSystem: '<S240>/Enabled Subsystem' incorporates:
+  //   EnablePort: '<S242>/Enable'
 
   if (proc_control_B.b_value_e) {
     // SignalConversion generated from: '<S173>/In1'
@@ -50821,15 +51000,15 @@ void proc_control::step()
   proc_control_B.Reset = Sub_proc_control_781.getLatestMessage
     (&proc_control_B.rtb_SourceBlock_o2_a);
 
-  // Outputs for Enabled SubSystem: '<S172>/Enabled Subsystem' incorporates:
-  //   EnablePort: '<S174>/Enable'
+  // Outputs for Enabled SubSystem: '<S241>/Enabled Subsystem' incorporates:
+  //   EnablePort: '<S243>/Enable'
 
   if (proc_control_B.Reset) {
     // SignalConversion generated from: '<S174>/In1'
     proc_control_B.In1 = proc_control_B.rtb_SourceBlock_o2_a;
   }
 
-  // End of Outputs for SubSystem: '<S172>/Enabled Subsystem'
+  // End of Outputs for SubSystem: '<S241>/Enabled Subsystem'
   //         %% Fonction D'initialisation
   //  Conditions initial
   if (proc_control_DW.obj_k.init == 0.0) {
@@ -50892,20 +51071,20 @@ void proc_control::step()
   if (proc_control_B.b_value_e) {
     if (proc_control_B.In1_j.ov_SL_Info.CurrentLength == 13U) {
       //  regarder la vaiditée des ov
-      memcpy(&proc_control_DW.obj_k.rosOV[0], &proc_control_B.In1_j.ov[0], 13U *
-             sizeof(real_T));
+      std::memcpy(&proc_control_DW.obj_k.rosOV[0], &proc_control_B.In1_j.ov[0],
+                  13U * sizeof(real_T));
     }
 
     if (proc_control_B.In1_j.mv_SL_Info.CurrentLength == 8U) {
       //  regarder la vaiditée des mv
-      memcpy(&proc_control_DW.obj_k.rosMV[0], &proc_control_B.In1_j.mv[0],
-             sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_DW.obj_k.rosMV[0], &proc_control_B.In1_j.mv[0],
+                  sizeof(real_T) << 3U);
     }
 
     if (proc_control_B.In1_j.mvr_SL_Info.CurrentLength == 8U) {
       //  regarder la vaiditée des mvr
-      memcpy(&proc_control_DW.obj_k.rosMVR[0], &proc_control_B.In1_j.mvr[0],
-             sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_DW.obj_k.rosMVR[0], &proc_control_B.In1_j.mvr[0],
+                  sizeof(real_T) << 3U);
     }
   }
 
@@ -50929,16 +51108,20 @@ void proc_control::step()
     proc_control_B.nz = proc_control_B.corr[0];
     for (proc_control_B.base_index = 0; proc_control_B.base_index < 19;
          proc_control_B.base_index++) {
-      // Outputs for Enabled SubSystem: '<S6>/DVL Measurements' incorporates:
-      //   EnablePort: '<S177>/Enable'
+      // Outputs for Enabled SubSystem: '<Root>/Model System' incorporates:
+      //   EnablePort: '<S3>/Enable'
 
-      // Outputs for Enabled SubSystem: '<S202>/Enabled Subsystem' incorporates:
-      //   EnablePort: '<S205>/Enable'
+      // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+      //   EnablePort: '<S246>/Enable'
+
+      // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+      //   EnablePort: '<S274>/Enable'
 
       proc_control_B.nz += proc_control_B.corr[proc_control_B.base_index + 1];
 
-      // End of Outputs for SubSystem: '<S202>/Enabled Subsystem'
-      // End of Outputs for SubSystem: '<S6>/DVL Measurements'
+      // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+      // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+      // End of Outputs for SubSystem: '<Root>/Model System'
     }
 
     if (proc_control_B.nz == 1) {
@@ -50972,29 +51155,33 @@ void proc_control::step()
       }
 
       if (proc_control_B.Ns == 0) {
-        proc_control_B.i = 0.0;
+        proc_control_B.Product1_fr = 0.0;
       } else {
-        proc_control_B.i = proc_control_B.i_data[0];
+        proc_control_B.Product1_fr = proc_control_B.i_data[0];
         for (proc_control_B.base_index = 2; proc_control_B.base_index <=
              proc_control_B.Ns; proc_control_B.base_index++) {
-          // Outputs for Enabled SubSystem: '<S6>/DVL Measurements' incorporates:
-          //   EnablePort: '<S177>/Enable'
+          // Outputs for Enabled SubSystem: '<Root>/Model System' incorporates:
+          //   EnablePort: '<S3>/Enable'
 
-          // Outputs for Enabled SubSystem: '<S202>/Enabled Subsystem' incorporates:
-          //   EnablePort: '<S205>/Enable'
+          // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+          //   EnablePort: '<S246>/Enable'
 
-          proc_control_B.i += static_cast<real_T>
+          // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+          //   EnablePort: '<S274>/Enable'
+
+          proc_control_B.Product1_fr += static_cast<real_T>
             (proc_control_B.i_data[proc_control_B.base_index - 1]);
 
-          // End of Outputs for SubSystem: '<S202>/Enabled Subsystem'
-          // End of Outputs for SubSystem: '<S6>/DVL Measurements'
+          // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+          // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+          // End of Outputs for SubSystem: '<Root>/Model System'
         }
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
         proc_control_B.imvec[proc_control_B.Ns] =
           proc_control_DW.obj_k.gainsList[((proc_control_B.Ns + 1) * 20 +
-          static_cast<int32_T>(proc_control_B.i)) - 1];
+          static_cast<int32_T>(proc_control_B.Product1_fr)) - 1];
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 8; proc_control_B.Ns++) {
@@ -51057,11 +51244,11 @@ void proc_control::step()
   // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
   proc_control_B.nz = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
 
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51070,15 +51257,15 @@ void proc_control::step()
     }
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.g_size[0] = proc_control_B.nz;
   proc_control_B.nz = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
 
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51087,15 +51274,15 @@ void proc_control::step()
     }
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.b_k = proc_control_B.nz;
   proc_control_B.nz = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
   //
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51108,14 +51295,14 @@ void proc_control::step()
     proc_control_B.b_x_data = proc_control_B.Product3_h;
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.Ns = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
   //
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51127,7 +51314,7 @@ void proc_control::step()
   proc_control_B.b_j = proc_control_B.Ns - 1;
   for (proc_control_B.base_index = 0; proc_control_B.base_index <=
        proc_control_B.b_j; proc_control_B.base_index++) {
-    if (rtIsNaN(proc_control_B.b_x_data)) {
+    if (std::isnan(proc_control_B.b_x_data)) {
       proc_control_B.b_x_data = (rtNaN);
     } else if (proc_control_B.b_x_data < 0.0) {
       proc_control_B.b_x_data = -1.0;
@@ -51160,7 +51347,7 @@ void proc_control::step()
     proc_control_B.n_size_o[0] = proc_control_B.Ns;
     if (proc_control_B.Ns - 1 >= 0) {
       proc_control_B.n_data = proc_control_B.n[1];
-      proc_control_B.n_data_j = proc_control_B.n[0];
+      proc_control_B.n_data_h = proc_control_B.n[0];
     }
 
     proc_control_expand_atan2(&proc_control_B.n_data, proc_control_B.n_size,
@@ -51168,14 +51355,14 @@ void proc_control::step()
       proc_control_B.j_size);
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.Ns = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
 
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51184,34 +51371,34 @@ void proc_control::step()
     }
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.g_size[0] = proc_control_B.Ns;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
 
   if (proc_control_B.nz != proc_control_B.j_size[0]) {
-    proc_control_binary_expand_op_1(proc_control_B.sincos_o1,
-      proc_control_B.g_size, &proc_control_B.b_x_data, &proc_control_B.j_data);
+    proc_control_binary_expand_op_2(proc_control_B.v, proc_control_B.g_size,
+      &proc_control_B.b_x_data, &proc_control_B.j_data);
   }
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   proc_control_B.nz = 0;
 
-  // Outputs for IfAction SubSystem: '<S5>/If Action Subsystem' incorporates:
-  //   ActionPort: '<S69>/Action Port'
+  // Outputs for IfAction SubSystem: '<S8>/If Action Subsystem' incorporates:
+  //   ActionPort: '<S138>/Action Port'
 
-  // If: '<S5>/If' incorporates:
-  //   BusCreator generated from: '<S69>/MATLAB System'
-  //   Delay: '<S5>/Delay'
-  //   MATLABSystem: '<S172>/SourceBlock'
-  //   MATLABSystem: '<S54>/MATLAB System5'
-  //   MATLABSystem: '<S69>/MATLAB System'
-  //   Math: '<S69>/Transpose'
-  //   SignalConversion generated from: '<S69>/MATLAB System'
+  // If: '<S8>/If' incorporates:
+  //   BusCreator generated from: '<S138>/MATLAB System'
+  //   Delay: '<S8>/Delay'
+  //   MATLABSystem: '<S123>/MATLAB System5'
+  //   MATLABSystem: '<S138>/MATLAB System'
+  //   MATLABSystem: '<S241>/SourceBlock'
+  //   Math: '<S138>/Transpose'
+  //   SignalConversion generated from: '<S138>/MATLAB System'
   //
   if (proc_control_B.NewDvlMsg) {
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 1; proc_control_B.Ns_i++)
@@ -51221,19 +51408,19 @@ void proc_control::step()
   }
 
   if (proc_control_B.nz - 1 >= 0) {
-    proc_control_B.sincos_o1[2] = 0.0;
+    proc_control_B.v[2] = 0.0;
   }
 
-  if ((fabs(proc_control_B.sincos_o1[1]) > 0.3490658503988659) || (fabs
-       (proc_control_B.sincos_o1[2]) > 0.3490658503988659)) {
+  if ((std::abs(proc_control_B.v[1]) > 0.3490658503988659) || (std::abs
+       (proc_control_B.v[2]) > 0.3490658503988659)) {
     //  If roll pitch exeed 20deg
-    memcpy(&proc_control_B.u_scale[0], &proc_control_B.MV[0], sizeof(real_T) <<
-           3U);
+    std::memcpy(&proc_control_B.u_scale[0], &proc_control_B.MV[0], sizeof(real_T)
+                << 3U);
   }
 
   //  Avoir les gains selon le mode
-  memcpy(&proc_control_B.VectorConcatenate[0], &proc_control_B.In1.data[0],
-         sizeof(real_T) << 7U);
+  std::memcpy(&proc_control_B.VectorConcatenate[0], &proc_control_B.In1.data[0],
+              sizeof(real_T) << 7U);
 
   //         %% Fonction qui vérifie l'états des moteurs.
   if (proc_control_B.Reset) {
@@ -51273,7 +51460,7 @@ void proc_control::step()
     proc_control_B.mvmin[proc_control_B.Ns + 1] = proc_control_B.tmin *
       proc_control_B.residue;
 
-    // MATLABSystem: '<S69>/MATLAB System'
+    // MATLABSystem: '<S138>/MATLAB System'
     proc_control_B.mvmax[proc_control_B.Ns] = proc_control_B.tmax *
       static_cast<real_T>
       (!proc_control_DW.obj_k.isThrusterFault[proc_control_B.Ns]);
@@ -51281,17 +51468,18 @@ void proc_control::step()
       proc_control_B.residue;
   }
 
-  memcpy(&proc_control_B.ywt[0], &proc_control_B.imvec[0], 13U * sizeof(real_T));
+  std::memcpy(&proc_control_B.ywt[0], &proc_control_B.imvec[0], 13U * sizeof
+              (real_T));
   for (proc_control_B.Ns = 0; proc_control_B.Ns < 8; proc_control_B.Ns++) {
-    // SignalConversion generated from: '<S69>/MATLAB System'
+    // SignalConversion generated from: '<S138>/MATLAB System'
     proc_control_B.mvwt[proc_control_B.Ns] =
       proc_control_B.u_scale[proc_control_B.Ns];
 
-    // SignalConversion generated from: '<S69>/MATLAB System'
+    // SignalConversion generated from: '<S138>/MATLAB System'
     proc_control_B.dmwwt[proc_control_B.Ns] =
       proc_control_B.U_f1[proc_control_B.Ns];
 
-    // SignalConversion generated from: '<S69>/MATLAB System'
+    // SignalConversion generated from: '<S138>/MATLAB System'
     proc_control_B.thrustersStatus[proc_control_B.Ns] =
       !proc_control_DW.obj_k.isThrusterFault[proc_control_B.Ns];
   }
@@ -51299,14 +51487,14 @@ void proc_control::step()
   proc_control_B.p = proc_control_B.p_h;
   proc_control_B.m = proc_control_B.m_a;
 
-  // End of Outputs for SubSystem: '<S5>/If Action Subsystem'
+  // End of Outputs for SubSystem: '<S8>/If Action Subsystem'
   if ((&proc_control_M)->Timing.TaskCounters.TID[1] == 0) {
     // MATLABSystem: '<S245>/SourceBlock'
     proc_control_B.b_value_e = Sub_proc_control_532.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_g_b);
 
-    // Outputs for Enabled SubSystem: '<S245>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S246>/Enable'
+    // Outputs for Enabled SubSystem: '<S314>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S315>/Enable'
 
     // Start for MATLABSystem: '<S245>/SourceBlock'
     if (proc_control_B.b_value_e) {
@@ -51314,10 +51502,10 @@ void proc_control::step()
       proc_control_B.In1_l = proc_control_B.rtb_SourceBlock_o2_g_b;
     }
 
-    // End of Start for MATLABSystem: '<S245>/SourceBlock'
-    // End of Outputs for SubSystem: '<S245>/Enabled Subsystem'
+    // End of Start for MATLABSystem: '<S314>/SourceBlock'
+    // End of Outputs for SubSystem: '<S314>/Enabled Subsystem'
 
-    // Gain: '<S236>/Gain'
+    // Gain: '<S305>/Gain'
     proc_control_B.Gain[0] = proc_control_P.Gain_Gain_er *
       proc_control_B.In1_l.angular.x;
     proc_control_B.Gain[1] = proc_control_P.Gain_Gain_er *
@@ -51327,21 +51515,21 @@ void proc_control::step()
   }
 
   if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
-    // MATLABSystem: '<S247>/SourceBlock'
+    // MATLABSystem: '<S316>/SourceBlock'
     proc_control_B.SourceBlock_o1 = Sub_proc_control_572.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_j_l);
 
-    // Outputs for Enabled SubSystem: '<S247>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S248>/Enable'
+    // Outputs for Enabled SubSystem: '<S316>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S317>/Enable'
 
     if (proc_control_B.SourceBlock_o1) {
-      // SignalConversion generated from: '<S248>/In1' incorporates:
-      //   MATLABSystem: '<S247>/SourceBlock'
+      // SignalConversion generated from: '<S317>/In1' incorporates:
+      //   MATLABSystem: '<S316>/SourceBlock'
 
       proc_control_B.In1_i = proc_control_B.rtb_SourceBlock_o2_j_l;
     }
 
-    // End of Outputs for SubSystem: '<S247>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S316>/Enabled Subsystem'
   }
 
   // SwitchCase: '<S7>/Switch Case' incorporates:
@@ -51384,11 +51572,11 @@ void proc_control::step()
   proc_control_DW.SwitchCase_ActiveSubsystem = proc_control_B.rtAction;
   switch (proc_control_B.rtAction) {
    case 0:
-    // Outputs for IfAction SubSystem: '<S7>/SpaceNav' incorporates:
-    //   ActionPort: '<S235>/Action Port'
+    // Outputs for IfAction SubSystem: '<S10>/SpaceNav' incorporates:
+    //   ActionPort: '<S304>/Action Port'
 
-    // SignalConversion generated from: '<S235>/Transpose' incorporates:
-    //   Constant: '<S235>/Constant'
+    // SignalConversion generated from: '<S304>/Transpose' incorporates:
+    //   Constant: '<S304>/Constant'
 
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 7; proc_control_B.Ns_i++)
     {
@@ -51403,10 +51591,10 @@ void proc_control::step()
     proc_control_B.imvec[11] = proc_control_B.Gain[1];
     proc_control_B.imvec[12] = proc_control_B.Gain[2];
 
-    // End of SignalConversion generated from: '<S235>/Transpose'
+    // End of SignalConversion generated from: '<S304>/Transpose'
 
-    // MATLAB Function: '<S235>/MATLAB Function' incorporates:
-    //   Math: '<S235>/Transpose'
+    // MATLAB Function: '<S304>/MATLAB Function' incorporates:
+    //   Math: '<S304>/Transpose'
 
     for (proc_control_B.base_index = 0; proc_control_B.base_index < 13;
          proc_control_B.base_index++) {
@@ -51418,30 +51606,30 @@ void proc_control::step()
       }
     }
 
-    // End of MATLAB Function: '<S235>/MATLAB Function'
+    // End of MATLAB Function: '<S304>/MATLAB Function'
 
-    // Merge generated from: '<S7>/Merge' incorporates:
-    //   Constant: '<S235>/Constant2'
-    //   SignalConversion generated from: '<S235>/Out1'
+    // Merge generated from: '<S10>/Merge' incorporates:
+    //   Constant: '<S304>/Constant2'
+    //   SignalConversion generated from: '<S304>/Out1'
 
     proc_control_B.Reset = proc_control_P.Constant2_Value_h;
 
-    // Merge generated from: '<S7>/Merge' incorporates:
-    //   Constant: '<S235>/Constant3'
-    //   SignalConversion generated from: '<S235>/Out1'
+    // Merge generated from: '<S10>/Merge' incorporates:
+    //   Constant: '<S304>/Constant3'
+    //   SignalConversion generated from: '<S304>/Out1'
 
     proc_control_B.NewDvlMsg = proc_control_P.Constant3_Value_i;
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 7; proc_control_B.Ns_i++)
     {
-      // Merge generated from: '<S7>/Merge' incorporates:
-      //   Math: '<S235>/Transpose'
-      //   SignalConversion generated from: '<S235>/Out1'
+      // Merge generated from: '<S10>/Merge' incorporates:
+      //   Math: '<S304>/Transpose'
+      //   SignalConversion generated from: '<S304>/Out1'
 
       proc_control_B.TmpSignalConversionAtMATLAB[proc_control_B.Ns_i] =
         proc_control_B.imvec[proc_control_B.Ns_i];
     }
 
-    // End of Outputs for SubSystem: '<S7>/SpaceNav'
+    // End of Outputs for SubSystem: '<S10>/SpaceNav'
     break;
 
    case 1:
@@ -51477,7 +51665,7 @@ void proc_control::step()
     //   RelationalOperator: '<S240>/FixPt Relational Operator'
     //   UnitDelay: '<S240>/Delay Input1'
     //  *
-    //  Block description for '<S240>/Delay Input1':
+    //  Block description for '<S309>/Delay Input1':
     //
     //   Store in Global RAM
 
@@ -51486,20 +51674,20 @@ void proc_control::step()
       (proc_control_DW.DelayInput1_DSTATE)), proc_control_B.In1_i.transforms,
       proc_control_B.In1_i.transforms_SL_Info.ReceivedLength,
       proc_control_B.In1_i.velocities, proc_control_DW.obj_i.m_trajClear,
-      proc_control_B.DataStoreRead, proc_control_B.linearTol,
+      proc_control_B.imvec_c, proc_control_B.linearTol,
       proc_control_B.angularTol, proc_control_B.timeInTol,
       proc_control_B.CostFcn_workspace_runtimedata.ref, &proc_control_B.Reset,
       &proc_control_B.NewDvlMsg, proc_control_B.TmpSignalConversionAtMATLAB);
 
-    // Update for UnitDelay: '<S240>/Delay Input1'
+    // Update for UnitDelay: '<S309>/Delay Input1'
     //
-    //  Block description for '<S240>/Delay Input1':
+    //  Block description for '<S309>/Delay Input1':
     //
     //   Store in Global RAM
 
     proc_control_DW.DelayInput1_DSTATE = proc_control_B.b_value_e;
 
-    // End of Outputs for SubSystem: '<S7>/ProcPlanner Trajectory'
+    // End of Outputs for SubSystem: '<S10>/ProcPlanner Trajectory'
     break;
 
    case 2:
@@ -51507,28 +51695,28 @@ void proc_control::step()
       // InitializeConditions for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' incorporates:
       //   ActionPort: '<S238>/Action Port'
 
-      // InitializeConditions for SwitchCase: '<S7>/Switch Case' incorporates:
-      //   Delay: '<S238>/Delay'
+      // InitializeConditions for SwitchCase: '<S10>/Switch Case' incorporates:
+      //   Delay: '<S307>/Delay'
 
       proc_control_DW.Delay_DSTATE_g = proc_control_P.Delay_InitialCondition_az;
 
-      // End of InitializeConditions for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+      // End of InitializeConditions for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
 
-      // SystemReset for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' incorporates:
-      //   ActionPort: '<S238>/Action Port'
+      // SystemReset for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' incorporates:
+      //   ActionPort: '<S307>/Action Port'
 
       //  Fonction Reset
       //  Initialize / reset discrete-state properties
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 18; proc_control_B.Ns++) {
-        // SystemReset for SwitchCase: '<S7>/Switch Case' incorporates:
-        //   MATLABSystem: '<S238>/MATLAB System'
+        // SystemReset for SwitchCase: '<S10>/Switch Case' incorporates:
+        //   MATLABSystem: '<S307>/MATLAB System'
         //
-        proc_control_DW.obj_f.poseList[proc_control_B.Ns] = 999.0;
+        proc_control_DW.obj_fo.poseList[proc_control_B.Ns] = 999.0;
       }
 
-      // SystemReset for SwitchCase: '<S7>/Switch Case' incorporates:
-      //   DiscreteIntegrator: '<S251>/Discrete-Time Integrator'
-      //   MATLABSystem: '<S238>/MATLAB System'
+      // SystemReset for SwitchCase: '<S10>/Switch Case' incorporates:
+      //   DiscreteIntegrator: '<S320>/Discrete-Time Integrator'
+      //   MATLABSystem: '<S307>/MATLAB System'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++) {
@@ -51543,28 +51731,28 @@ void proc_control::step()
           tmp_6[proc_control_B.Ns];
       }
 
-      proc_control_DW.obj_f.i = 2.0;
+      proc_control_DW.obj_fo.i = 2.0;
 
-      // SystemReset for Resettable SubSystem: '<S238>/Resettable Subsystem'
+      // SystemReset for Resettable SubSystem: '<S307>/Resettable Subsystem'
       proc_control_DW.DiscreteTimeIntegrator_DSTATE =
         proc_control_P.DiscreteTimeIntegrator_IC;
 
-      // End of SystemReset for SubSystem: '<S238>/Resettable Subsystem'
-      // End of SystemReset for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+      // End of SystemReset for SubSystem: '<S307>/Resettable Subsystem'
+      // End of SystemReset for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
     }
 
-    // Outputs for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' incorporates:
-    //   ActionPort: '<S238>/Action Port'
+    // Outputs for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' incorporates:
+    //   ActionPort: '<S307>/Action Port'
 
     // MATLABSystem: '<S252>/SourceBlock'
     proc_control_B.b_value_e = Sub_proc_control_589.getLatestMessage
       (&proc_control_B.rtb_SourceBlock_o2_ne_h);
 
-    // Outputs for Enabled SubSystem: '<S238>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S249>/Enable'
+    // Outputs for Enabled SubSystem: '<S307>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S318>/Enable'
 
-    // Outputs for Enabled SubSystem: '<S252>/Enabled Subsystem' incorporates:
-    //   EnablePort: '<S255>/Enable'
+    // Outputs for Enabled SubSystem: '<S321>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S323>/Enable'
 
     if (proc_control_B.b_value_e) {
       // DataTypeConversion: '<S249>/Data Type Conversion'
@@ -51581,22 +51769,22 @@ void proc_control::step()
       proc_control_B.DataTypeConversion[5] =
         proc_control_B.rtb_SourceBlock_o2_ne_h.orientation.x;
 
-      // DataTypeConversion: '<S249>/Data Type Conversion1'
+      // DataTypeConversion: '<S318>/Data Type Conversion1'
       proc_control_B.DataTypeConversion1[0] =
         proc_control_B.rtb_SourceBlock_o2_ne_h.frame;
       proc_control_B.DataTypeConversion1[1] =
         proc_control_B.rtb_SourceBlock_o2_ne_h.speed;
 
-      // DataTypeConversion: '<S249>/Data Type Conversion2'
+      // DataTypeConversion: '<S318>/Data Type Conversion2'
       proc_control_B.DataTypeConversion2 =
         proc_control_B.rtb_SourceBlock_o2_ne_h.fine;
     }
 
-    // End of Outputs for SubSystem: '<S252>/Enabled Subsystem'
-    // End of Outputs for SubSystem: '<S238>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S321>/Enabled Subsystem'
+    // End of Outputs for SubSystem: '<S307>/Enabled Subsystem'
 
-    // SignalConversion generated from: '<S238>/MATLAB System' incorporates:
-    //   MATLABSystem: '<S252>/SourceBlock'
+    // SignalConversion generated from: '<S307>/MATLAB System' incorporates:
+    //   MATLABSystem: '<S321>/SourceBlock'
     //
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 6; proc_control_B.Ns_i++)
     {
@@ -51611,20 +51799,20 @@ void proc_control::step()
     proc_control_B.TmpSignalConversionAtMATL_d[8] =
       proc_control_B.DataTypeConversion2;
 
-    // SignalConversion generated from: '<S238>/MATLAB System'
+    // SignalConversion generated from: '<S307>/MATLAB System'
     proc_control_B.TmpSignalConversionAtMATLAB[0] =
-      proc_control_B.WorldPosition[0];
+      proc_control_B.WorldPosition_f[0];
     proc_control_B.TmpSignalConversionAtMATLAB[1] =
-      proc_control_B.WorldPosition[1];
+      proc_control_B.WorldPosition_f[1];
     proc_control_B.TmpSignalConversionAtMATLAB[2] =
-      proc_control_B.WorldPosition[2];
+      proc_control_B.WorldPosition_f[2];
 
-    // MATLABSystem: '<S238>/MATLAB System' incorporates:
-    //   Constant: '<S238>/Constant'
-    //   Delay: '<S238>/Delay'
-    //   MATLABSystem: '<S252>/SourceBlock'
-    //   MATLABSystem: '<S45>/MATLAB System'
-    //   SignalConversion generated from: '<S238>/MATLAB System'
+    // MATLABSystem: '<S307>/MATLAB System' incorporates:
+    //   Constant: '<S307>/Constant'
+    //   Delay: '<S307>/Delay'
+    //   MATLABSystem: '<S114>/MATLAB System'
+    //   MATLABSystem: '<S321>/SourceBlock'
+    //   SignalConversion generated from: '<S307>/MATLAB System'
     //
     //  Main appeller à chaque exécution
     //  Suppression du buffer.
@@ -51636,11 +51824,11 @@ void proc_control::step()
       //  supprimer le buffer de way points
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++) {
-        proc_control_DW.obj_f.poseList[proc_control_B.Ns + 1] = 999.0;
+        proc_control_DW.obj_fo.poseList[proc_control_B.Ns + 1] = 999.0;
         proc_control_B.Ns += 2;
       }
 
-      proc_control_DW.obj_f.i = 2.0;
+      proc_control_DW.obj_fo.i = 2.0;
     }
 
     //  Ajout d'un waypoint provenant de ROS.
@@ -51651,7 +51839,7 @@ void proc_control::step()
       //  Orde de rotation : ZYX.
       //  Reel
       //  Information sur le nouveau waypoints
-      memset(&proc_control_B.twpt[0], 0, 9U * sizeof(real_T));
+      std::memset(&proc_control_B.twpt[0], 0, 9U * sizeof(real_T));
       proc_control_B.twpt[7] = proc_control_B.DataTypeConversion1[1];
 
       //  Information de la pose précédente
@@ -51698,17 +51886,17 @@ void proc_control::step()
       //  calculer
       //  quaternion partie scalaire
       //  quaternion partie vectoriel
-      proc_control_B.linearScaling = 0.0;
+      proc_control_B.Product_al = 0.0;
       for (proc_control_B.b_k = 0; proc_control_B.b_k < 3; proc_control_B.b_k++)
       {
-        proc_control_B.linearScaling += proc_control_DW.obj_f.poseList
+        proc_control_B.Product_al += proc_control_DW.obj_fo.poseList
           [(((proc_control_B.b_k + 4) << 1) + static_cast<int32_T>
-            (proc_control_DW.obj_f.i - 1.0)) - 1] *
+            (proc_control_DW.obj_fo.i - 1.0)) - 1] *
           proc_control_B.TmpSignalConversionAtMATL_d[proc_control_B.b_k];
       }
 
-      proc_control_B.i = 2.0 * proc_control_B.linearScaling;
-      proc_control_B.linearScaling = 0.0;
+      proc_control_B.Product1_fr = 2.0 * proc_control_B.Product_al;
+      proc_control_B.Product_al = 0.0;
       for (proc_control_B.b_k = 0; proc_control_B.b_k < 3; proc_control_B.b_k++)
       {
         proc_control_B.Product3_l = proc_control_DW.obj_f.poseList
@@ -51718,11 +51906,11 @@ void proc_control::step()
           proc_control_B.Product3_l;
       }
 
-      proc_control_B.Product_o = proc_control_DW.obj_f.poseList
-        [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 5];
-      proc_control_B.linearScaling = proc_control_B.Product_o *
-        proc_control_B.Product_o - proc_control_B.linearScaling;
-      proc_control_B.residue = proc_control_B.Product_o * 2.0;
+      proc_control_B.oa = proc_control_DW.obj_fo.poseList[static_cast<int32_T>
+        (proc_control_DW.obj_fo.i - 1.0) + 5];
+      proc_control_B.Product_al = proc_control_B.oa * proc_control_B.oa -
+        proc_control_B.Product_al;
+      proc_control_B.Product2_al = proc_control_B.oa * 2.0;
 
       //  QuatRotate n'est pas compilable
       //  choisir sens du quaternion
@@ -51733,20 +51921,19 @@ void proc_control::step()
       // ========================================================================== 
       //  Fonnction qui retoure le quaternion le plus court/long selon
       //  l'utilisateur
-      proc_control_B.Product3_h = 0.0;
+      proc_control_B.b_norm = 0.0;
       for (proc_control_B.b_k = 0; proc_control_B.b_k < 4; proc_control_B.b_k++)
       {
-        proc_control_B.Product3_h += proc_control_DW.obj_f.poseList
+        proc_control_B.b_norm += proc_control_DW.obj_fo.poseList
           [(((proc_control_B.b_k + 3) << 1) + static_cast<int32_T>
-            (proc_control_DW.obj_f.i - 1.0)) - 1] *
+            (proc_control_DW.obj_fo.i - 1.0)) - 1] *
           proc_control_B.n[proc_control_B.b_k];
       }
 
       //  conjuger le quaternion au besoin
-      if (((proc_control_B.Product3_h > 1.0) &&
-           (proc_control_B.DataTypeConversion2 == 0.0)) ||
-          ((proc_control_B.Product3_h < 1.0) &&
-           (proc_control_B.DataTypeConversion2 == 1.0))) {
+      if (((proc_control_B.b_norm > 1.0) && (proc_control_B.DataTypeConversion2 ==
+            0.0)) || ((proc_control_B.b_norm < 1.0) &&
+                      (proc_control_B.DataTypeConversion2 == 1.0))) {
         proc_control_B.TmpSignalConversionAtSFunct[1] = -proc_control_B.n[1];
         proc_control_B.TmpSignalConversionAtSFunct[2] = -proc_control_B.n[2];
         proc_control_B.TmpSignalConversionAtSFunct[3] = -proc_control_B.n[3];
@@ -51861,8 +52048,8 @@ void proc_control::step()
           proc_control_B.residue + (proc_control_B.d34 * proc_control_B.i +
           proc_control_B.linearScaling *
           proc_control_B.TmpSignalConversionAtMATL_d[2])) +
-          proc_control_DW.obj_f.poseList[static_cast<int32_T>
-          (proc_control_DW.obj_f.i - 1.0) + 3];
+          proc_control_DW.obj_fo.poseList[static_cast<int32_T>
+          (proc_control_DW.obj_fo.i - 1.0) + 3];
         proc_control_B.twpt[3] = proc_control_B.n[0];
         proc_control_B.twpt[4] = proc_control_B.n[1];
         proc_control_B.twpt[5] = proc_control_B.n[2];
@@ -51914,42 +52101,42 @@ void proc_control::step()
 
        default:
         //  retourne le point précédent
-        proc_control_B.twpt[0] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) - 1];
-        proc_control_B.twpt[1] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 1];
-        proc_control_B.twpt[2] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 3];
-        proc_control_B.twpt[3] = proc_control_B.Product_o;
-        proc_control_B.twpt[4] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 7];
-        proc_control_B.twpt[5] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 9];
-        proc_control_B.twpt[6] = proc_control_DW.obj_f.poseList
-          [static_cast<int32_T>(proc_control_DW.obj_f.i - 1.0) + 11];
+        proc_control_B.twpt[0] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) - 1];
+        proc_control_B.twpt[1] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) + 1];
+        proc_control_B.twpt[2] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) + 3];
+        proc_control_B.twpt[3] = proc_control_B.oa;
+        proc_control_B.twpt[4] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) + 7];
+        proc_control_B.twpt[5] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) + 9];
+        proc_control_B.twpt[6] = proc_control_DW.obj_fo.poseList
+          [static_cast<int32_T>(proc_control_DW.obj_fo.i - 1.0) + 11];
         break;
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 9; proc_control_B.Ns++) {
-        proc_control_DW.obj_f.poseList[(static_cast<int32_T>
-          (proc_control_DW.obj_f.i) + (proc_control_B.Ns << 1)) - 1] =
+        proc_control_DW.obj_fo.poseList[(static_cast<int32_T>
+          (proc_control_DW.obj_fo.i) + (proc_control_B.Ns << 1)) - 1] =
           proc_control_B.twpt[proc_control_B.Ns];
       }
 
-      proc_control_DW.obj_f.i++;
+      proc_control_DW.obj_fo.i++;
     }
 
     //  Générer la trajectoire
     if (proc_control_DW.Delay_DSTATE_g) {
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 9; proc_control_B.Ns++) {
         proc_control_B.nz = proc_control_B.Ns << 1;
-        proc_control_DW.obj_f.poseList[proc_control_B.nz] =
-          proc_control_DW.obj_f.poseList[(static_cast<int32_T>
-          (proc_control_DW.obj_f.i - 1.0) + proc_control_B.nz) - 1];
-        proc_control_DW.obj_f.poseList[proc_control_B.nz + 1] = 999.0;
+        proc_control_DW.obj_fo.poseList[proc_control_B.nz] =
+          proc_control_DW.obj_fo.poseList[(static_cast<int32_T>
+          (proc_control_DW.obj_fo.i - 1.0) + proc_control_B.nz) - 1];
+        proc_control_DW.obj_fo.poseList[proc_control_B.nz + 1] = 999.0;
       }
 
-      proc_control_DW.obj_f.i = 2.0;
+      proc_control_DW.obj_fo.i = 2.0;
     }
 
     //  Reset Trajectoire
@@ -52002,7 +52189,7 @@ void proc_control::step()
       }
 
       if (proc_control_B.nz - 1 >= 0) {
-        proc_control_B.sincos_o1[0] = 0.0;
+        proc_control_B.v[0] = 0.0;
       }
 
       proc_control_B.nz = 0;
@@ -52032,7 +52219,7 @@ void proc_control::step()
       }
 
       if (proc_control_B.nz - 1 >= 0) {
-        proc_control_B.b_x_data = proc_control_B.Product3_h;
+        proc_control_B.b_x_data = proc_control_B.Product1_fr;
       }
 
       proc_control_B.Ns = 0;
@@ -52046,7 +52233,7 @@ void proc_control::step()
       proc_control_B.b_j = proc_control_B.Ns - 1;
       for (proc_control_B.base_index = 0; proc_control_B.base_index <=
            proc_control_B.b_j; proc_control_B.base_index++) {
-        if (rtIsNaN(proc_control_B.b_x_data)) {
+        if (std::isnan(proc_control_B.b_x_data)) {
           proc_control_B.b_x_data = (rtNaN);
         } else if (proc_control_B.b_x_data < 0.0) {
           proc_control_B.b_x_data = -1.0;
@@ -52079,7 +52266,7 @@ void proc_control::step()
         proc_control_B.n_size_o[0] = proc_control_B.Ns;
         if (proc_control_B.Ns - 1 >= 0) {
           proc_control_B.n_data = proc_control_B.n[1];
-          proc_control_B.n_data_j = proc_control_B.n[0];
+          proc_control_B.n_data_h = proc_control_B.n[0];
         }
 
         proc_control_expand_atan2(&proc_control_B.n_data, proc_control_B.n_size,
@@ -52098,13 +52285,11 @@ void proc_control::step()
       proc_control_B.g_size[0] = proc_control_B.Ns;
       if (proc_control_B.nz == proc_control_B.j_size[0]) {
         if (proc_control_B.g_size[0] - 1 >= 0) {
-          proc_control_B.sincos_o1[2] = proc_control_B.b_x_data *
-            proc_control_B.j_data;
+          proc_control_B.v[2] = proc_control_B.b_x_data * proc_control_B.j_data;
         }
       } else {
-        proc_control_binary_expand_op(proc_control_B.sincos_o1,
-          proc_control_B.g_size, &proc_control_B.b_x_data,
-          &proc_control_B.j_data);
+        proc_control_binary_expand_op_1(proc_control_B.v, proc_control_B.g_size,
+          &proc_control_B.b_x_data, &proc_control_B.j_data);
       }
 
       //  Retransformer en quaternion
@@ -52135,65 +52320,65 @@ void proc_control::step()
         (proc_control_B.rtb_sincos_o2_idx_0, -proc_control_B.sincos_o1[0]),
         tmp_2), tmp_1), _mm_mul_pd(_mm_mul_pd(tmp, tmp_0), tmp_3)));
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 7; proc_control_B.Ns++) {
-        proc_control_DW.obj_f.initcond[proc_control_B.Ns] =
+        proc_control_DW.obj_fo.initcond[proc_control_B.Ns] =
           proc_control_B.TmpSignalConversionAtMATLAB[proc_control_B.Ns];
       }
 
       //  definir les conditions initiaux
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++) {
-        proc_control_DW.obj_f.poseList[proc_control_B.Ns + 1] = 999.0;
+        proc_control_DW.obj_fo.poseList[proc_control_B.Ns + 1] = 999.0;
         proc_control_B.Ns += 2;
       }
 
-      proc_control_DW.obj_f.poseList[14] = 0.0;
-      proc_control_DW.obj_f.poseList[16] = 0.0;
+      proc_control_DW.obj_fo.poseList[14] = 0.0;
+      proc_control_DW.obj_fo.poseList[16] = 0.0;
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 7; proc_control_B.nz++) {
-        proc_control_DW.obj_f.poseList[proc_control_B.Ns] =
-          proc_control_DW.obj_f.initcond[proc_control_B.nz];
-        proc_control_DW.obj_f.poseList[proc_control_B.Ns + 1] =
-          proc_control_DW.obj_f.initcond[proc_control_B.nz];
+        proc_control_DW.obj_fo.poseList[proc_control_B.Ns] =
+          proc_control_DW.obj_fo.initcond[proc_control_B.nz];
+        proc_control_DW.obj_fo.poseList[proc_control_B.Ns + 1] =
+          proc_control_DW.obj_fo.initcond[proc_control_B.nz];
         proc_control_B.Ns += 2;
       }
 
-      proc_control_DW.obj_f.poseList[15] = 1.0;
-      proc_control_DW.obj_f.poseList[17] = 0.0;
-      proc_control_DW.obj_f.i = 2.0;
+      proc_control_DW.obj_fo.poseList[15] = 1.0;
+      proc_control_DW.obj_fo.poseList[17] = 0.0;
+      proc_control_DW.obj_fo.i = 2.0;
     }
 
-    // Outputs for Enabled SubSystem: '<S238>/Pre-traitement' incorporates:
-    //   EnablePort: '<S250>/Enable'
+    // Outputs for Enabled SubSystem: '<S307>/Pre-traitement' incorporates:
+    //   EnablePort: '<S319>/Enable'
 
     if (proc_control_B.b_value_e || (proc_control_DW.obj_i.m_trajClear != 0.0))
     {
       proc_control_B.MatrixConcatenate[0] = proc_control_P.Constant_Value_j55;
 
-      // Math: '<S250>/Transpose' incorporates:
-      //   Concatenate: '<S250>/Matrix Concatenate'
-      //   Constant: '<S250>/Constant'
-      //   MATLABSystem: '<S238>/MATLAB System'
+      // Math: '<S319>/Transpose' incorporates:
+      //   Concatenate: '<S319>/Matrix Concatenate'
+      //   Constant: '<S319>/Constant'
+      //   MATLABSystem: '<S307>/MATLAB System'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++) {
         proc_control_B.Transpose_b[proc_control_B.nz] =
-          proc_control_DW.obj_f.poseList[proc_control_B.Ns];
+          proc_control_DW.obj_fo.poseList[proc_control_B.Ns];
         proc_control_B.Transpose_b[proc_control_B.nz + 9] =
-          proc_control_DW.obj_f.poseList[proc_control_B.Ns + 1];
+          proc_control_DW.obj_fo.poseList[proc_control_B.Ns + 1];
         proc_control_B.Ns += 2;
       }
 
-      // End of Math: '<S250>/Transpose'
+      // End of Math: '<S319>/Transpose'
 
-      // Selector: '<S250>/Selector2' incorporates:
-      //   Concatenate: '<S250>/Matrix Concatenate'
-      //   Math: '<S250>/Transpose'
+      // Selector: '<S319>/Selector2' incorporates:
+      //   Concatenate: '<S319>/Matrix Concatenate'
+      //   Math: '<S319>/Transpose'
 
       proc_control_B.MatrixConcatenate[1] = proc_control_B.Transpose_b[16];
 
-      // Selector: '<S250>/Selector' incorporates:
-      //   Math: '<S250>/Transpose'
-      //   Selector: '<S250>/Selector1'
+      // Selector: '<S319>/Selector' incorporates:
+      //   Math: '<S319>/Transpose'
+      //   Selector: '<S319>/Selector1'
 
       proc_control_B.Ns = 0;
       proc_control_B.nz = 0;
@@ -52219,20 +52404,20 @@ void proc_control::step()
         proc_control_B.b_k += 4;
       }
 
-      // End of Selector: '<S250>/Selector'
+      // End of Selector: '<S319>/Selector'
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 7; proc_control_B.Ns++) {
-        // Selector: '<S250>/Selector4' incorporates:
-        //   Math: '<S250>/Transpose'
+        // Selector: '<S319>/Selector4' incorporates:
+        //   Math: '<S319>/Transpose'
 
         proc_control_B.Selector4[proc_control_B.Ns] =
           proc_control_B.Transpose_b[proc_control_B.Ns + 9];
       }
     }
 
-    // End of Outputs for SubSystem: '<S238>/Pre-traitement'
+    // End of Outputs for SubSystem: '<S307>/Pre-traitement'
 
-    // Outputs for Resettable SubSystem: '<S238>/Resettable Subsystem' incorporates:
-    //   ResetPort: '<S251>/Reset'
+    // Outputs for Resettable SubSystem: '<S307>/Resettable Subsystem' incorporates:
+    //   ResetPort: '<S320>/Reset'
 
     if (proc_control_B.b_value_e &&
         (proc_control_PrevZCX.ResettableSubsystem_Reset_ZCE != POS_ZCSIG)) {
@@ -52244,13 +52429,13 @@ void proc_control::step()
     proc_control_PrevZCX.ResettableSubsystem_Reset_ZCE =
       proc_control_B.b_value_e;
 
-    // DiscreteIntegrator: '<S251>/Discrete-Time Integrator' incorporates:
-    //   Concatenate: '<S250>/Matrix Concatenate'
-    //   Constant: '<S250>/Constant'
-    //   Constant: '<S251>/Constant'
-    //   Logic: '<S238>/OR'
-    //   MATLABSystem: '<S252>/SourceBlock'
-    //   MATLABSystem: '<S45>/MATLAB System'
+    // DiscreteIntegrator: '<S320>/Discrete-Time Integrator' incorporates:
+    //   Concatenate: '<S319>/Matrix Concatenate'
+    //   Constant: '<S319>/Constant'
+    //   Constant: '<S320>/Constant'
+    //   Logic: '<S307>/OR'
+    //   MATLABSystem: '<S114>/MATLAB System'
+    //   MATLABSystem: '<S321>/SourceBlock'
     //
     proc_control_B.n_c = proc_control_P.DiscreteTimeIntegrator_gainval *
       proc_control_P.Constant_Value_ht;
@@ -52259,9 +52444,9 @@ void proc_control::step()
     proc_control_B.i = proc_control_B.n_c +
       proc_control_DW.DiscreteTimeIntegrator_DSTATE;
 
-    // MATLABSystem: '<S251>/Rotation Trajectory' incorporates:
-    //   Concatenate: '<S250>/Matrix Concatenate'
-    //   MATLABSystem: '<S254>/Polynomial Trajectory'
+    // MATLABSystem: '<S320>/Rotation Trajectory' incorporates:
+    //   Concatenate: '<S319>/Matrix Concatenate'
+    //   MATLABSystem: '<S322>/Polynomial Trajectory'
 
     if (proc_control_DW.obj_p3.TunablePropsChanged) {
       proc_control_DW.obj_p3.TunablePropsChanged = false;
@@ -52280,20 +52465,20 @@ void proc_control::step()
       proc_control_B.Product3_h = 1.0;
     }
 
-    if (proc_control_B.i < proc_control_B.MatrixConcatenate[0]) {
-      proc_control_B.linearScaling = 0.0;
+    if (proc_control_B.Product1_fr < proc_control_B.MatrixConcatenate[0]) {
+      proc_control_B.Product_al = 0.0;
     }
 
-    // MATLABSystem: '<S251>/Rotation Trajectory' incorporates:
-    //   Concatenate: '<S250>/Matrix Concatenate'
+    // MATLABSystem: '<S320>/Rotation Trajectory' incorporates:
+    //   Concatenate: '<S319>/Matrix Concatenate'
 
-    proc_control_B.scale = proc_control_B.linearScaling;
-    if (proc_control_B.i > proc_control_B.MatrixConcatenate[1]) {
-      proc_control_B.scale = 0.0;
+    proc_control_B.absxk = proc_control_B.Product_al;
+    if (proc_control_B.Product1_fr > proc_control_B.MatrixConcatenate[1]) {
+      proc_control_B.absxk = 0.0;
     }
 
-    // MATLABSystem: '<S251>/Rotation Trajectory' incorporates:
-    //   Concatenate: '<S250>/Matrix Concatenate'
+    // MATLABSystem: '<S320>/Rotation Trajectory' incorporates:
+    //   Concatenate: '<S319>/Matrix Concatenate'
 
     proc_control_B.linearScaling = proc_control_B.Product3_h;
     if ((proc_control_B.Product3_h > 1.0) && (proc_control_B.Product3_h <
@@ -52306,11 +52491,11 @@ void proc_control::step()
       proc_control_B.linearScaling = 0.0;
     }
 
-    // MATLABSystem: '<S251>/Rotation Trajectory' incorporates:
-    //   Selector: '<S250>/Selector1'
-    //   Selector: '<S251>/Selector'
+    // MATLABSystem: '<S320>/Rotation Trajectory' incorporates:
+    //   Selector: '<S319>/Selector1'
+    //   Selector: '<S320>/Selector'
 
-    proc_control_B.Product_o = sqrt(((proc_control_B.Selector1[0] *
+    proc_control_B.t6 = std::sqrt(((proc_control_B.Selector1[0] *
       proc_control_B.Selector1[0] + proc_control_B.Selector1[1] *
       proc_control_B.Selector1[1]) + proc_control_B.Selector1[2] *
       proc_control_B.Selector1[2]) + proc_control_B.Selector1[3] *
@@ -52586,15 +52771,15 @@ void proc_control::step()
       }
     }
 
-    // Update for DiscreteIntegrator: '<S251>/Discrete-Time Integrator' incorporates:
-    //   MATLABSystem: '<S254>/Polynomial Trajectory'
+    // Update for DiscreteIntegrator: '<S320>/Discrete-Time Integrator' incorporates:
+    //   MATLABSystem: '<S322>/Polynomial Trajectory'
     //
     proc_control_DW.DiscreteTimeIntegrator_DSTATE = proc_control_B.n_c +
       proc_control_B.i;
 
-    // End of Outputs for SubSystem: '<S238>/Resettable Subsystem'
+    // End of Outputs for SubSystem: '<S307>/Resettable Subsystem'
 
-    // MATLABSystem: '<S238>/MATLAB System1'
+    // MATLABSystem: '<S307>/MATLAB System1'
     if (proc_control_DW.obj.linearConvergence !=
         proc_control_P.MATLABSystem1_linearConvergence) {
       proc_control_DW.obj.linearConvergence =
@@ -52613,10 +52798,10 @@ void proc_control::step()
         proc_control_P.MATLABSystem1_TargetThreshold;
     }
 
-    // Outputs for Resettable SubSystem: '<S238>/Resettable Subsystem' incorporates:
-    //   ResetPort: '<S251>/Reset'
+    // Outputs for Resettable SubSystem: '<S307>/Resettable Subsystem' incorporates:
+    //   ResetPort: '<S320>/Reset'
 
-    // MATLABSystem: '<S254>/Polynomial Trajectory'
+    // MATLABSystem: '<S322>/Polynomial Trajectory'
     proc_control_ppval(proc_control_DW.obj_m.PPStruct.breaks,
                        proc_control_DW.obj_m.PPStruct.coefs, proc_control_B.i,
                        proc_control_B.dv20);
@@ -52624,10 +52809,10 @@ void proc_control::step()
                        proc_control_DW.obj_m.PPDStruct.coefs,
                        proc_control_B.Product3_h, proc_control_B.dv21);
 
-    // Start for MATLABSystem: '<S238>/MATLAB System1' incorporates:
-    //   MATLABSystem: '<S251>/Rotation Trajectory'
-    //   MATLABSystem: '<S254>/Polynomial Trajectory'
-    //   SignalConversion generated from: '<S238>/Transpose2'
+    // Start for MATLABSystem: '<S307>/MATLAB System1' incorporates:
+    //   MATLABSystem: '<S320>/Rotation Trajectory'
+    //   MATLABSystem: '<S322>/Polynomial Trajectory'
+    //   SignalConversion generated from: '<S307>/Transpose2'
     //
     proc_control_B.DataStoreRead[0] = proc_control_B.dv20[0];
     proc_control_B.DataStoreRead[1] = proc_control_B.dv20[1];
@@ -52683,40 +52868,40 @@ void proc_control::step()
       proc_control_B.z_c, proc_control_B.CostFcn_workspace_runtimedata.ref,
       &proc_control_B.Reset);
 
-    // Merge generated from: '<S7>/Merge' incorporates:
-    //   Constant: '<S238>/Constant1'
-    //   SignalConversion generated from: '<S238>/Reference'
+    // Merge generated from: '<S10>/Merge' incorporates:
+    //   Constant: '<S307>/Constant1'
+    //   SignalConversion generated from: '<S307>/Reference'
 
     proc_control_B.NewDvlMsg = proc_control_P.Constant1_Value_is;
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 7; proc_control_B.Ns_i++)
     {
-      // Merge generated from: '<S7>/Merge' incorporates:
-      //   Math: '<S238>/Transpose1'
-      //   Selector: '<S250>/Selector4'
-      //   SignalConversion generated from: '<S238>/Reference'
+      // Merge generated from: '<S10>/Merge' incorporates:
+      //   Math: '<S307>/Transpose1'
+      //   Selector: '<S319>/Selector4'
+      //   SignalConversion generated from: '<S307>/Reference'
 
       proc_control_B.TmpSignalConversionAtMATLAB[proc_control_B.Ns_i] =
         proc_control_B.Selector4[proc_control_B.Ns_i];
     }
 
-    // Update for Delay: '<S238>/Delay' incorporates:
-    //   MATLABSystem: '<S252>/SourceBlock'
+    // Update for Delay: '<S307>/Delay' incorporates:
+    //   MATLABSystem: '<S321>/SourceBlock'
     //
     proc_control_DW.Delay_DSTATE_g = proc_control_B.b_value_e;
 
-    // End of Outputs for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+    // End of Outputs for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
     break;
 
    default:
-    // Outputs for IfAction SubSystem: '<S7>/IDLE' incorporates:
-    //   ActionPort: '<S231>/Action Port'
+    // Outputs for IfAction SubSystem: '<S10>/IDLE' incorporates:
+    //   ActionPort: '<S300>/Action Port'
 
-    // MATLAB Function: '<S231>/MATLAB Function' incorporates:
-    //   Constant: '<S231>/Constant'
-    //   Math: '<S231>/Transpose'
+    // MATLAB Function: '<S300>/MATLAB Function' incorporates:
+    //   Constant: '<S300>/Constant'
+    //   Math: '<S300>/Transpose'
 
-    memcpy(&proc_control_B.imvec[0], &proc_control_P.Constant_Value_mt[0], 13U *
-           sizeof(real_T));
+    std::memcpy(&proc_control_B.imvec[0], &proc_control_P.Constant_Value_mt[0],
+                13U * sizeof(real_T));
     proc_control_B.imvec[9] = -proc_control_P.Constant_Value_mt[9];
     for (proc_control_B.base_index = 0; proc_control_B.base_index < 13;
          proc_control_B.base_index++) {
@@ -52728,31 +52913,31 @@ void proc_control::step()
       }
     }
 
-    // End of MATLAB Function: '<S231>/MATLAB Function'
+    // End of MATLAB Function: '<S300>/MATLAB Function'
 
-    // Merge generated from: '<S7>/Merge' incorporates:
-    //   Constant: '<S231>/Constant2'
-    //   SignalConversion generated from: '<S231>/y'
+    // Merge generated from: '<S10>/Merge' incorporates:
+    //   Constant: '<S300>/Constant2'
+    //   SignalConversion generated from: '<S300>/y'
 
     proc_control_B.Reset = proc_control_P.Constant2_Value_a;
 
-    // Merge generated from: '<S7>/Merge' incorporates:
-    //   Constant: '<S231>/Constant3'
-    //   SignalConversion generated from: '<S231>/y'
+    // Merge generated from: '<S10>/Merge' incorporates:
+    //   Constant: '<S300>/Constant3'
+    //   SignalConversion generated from: '<S300>/y'
 
     proc_control_B.NewDvlMsg = proc_control_P.Constant3_Value_n;
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 7; proc_control_B.Ns_i++)
     {
-      // Merge generated from: '<S7>/Merge' incorporates:
-      //   Constant: '<S231>/Constant'
-      //   Math: '<S231>/Transpose'
-      //   SignalConversion generated from: '<S231>/y'
+      // Merge generated from: '<S10>/Merge' incorporates:
+      //   Constant: '<S300>/Constant'
+      //   Math: '<S300>/Transpose'
+      //   SignalConversion generated from: '<S300>/y'
 
       proc_control_B.TmpSignalConversionAtMATLAB[proc_control_B.Ns_i] =
         proc_control_P.Constant_Value_mt[proc_control_B.Ns_i];
     }
 
-    // End of Outputs for SubSystem: '<S7>/IDLE'
+    // End of Outputs for SubSystem: '<S10>/IDLE'
     break;
   }
 
@@ -52814,21 +52999,21 @@ void proc_control::step()
                &proc_control_P.last_mv_InitialCondition[0], sizeof(real_T) << 3U);
         proc_control_DW.clockTickCounter_f = 0;
 
-        // End of InitializeConditions for SubSystem: '<S68>/If Action Subsystem' 
+        // End of InitializeConditions for SubSystem: '<S137>/If Action Subsystem' 
 
-        // SystemReset for IfAction SubSystem: '<S68>/If Action Subsystem' incorporates:
-        //   ActionPort: '<S71>/Action Port'
+        // SystemReset for IfAction SubSystem: '<S137>/If Action Subsystem' incorporates:
+        //   ActionPort: '<S140>/Action Port'
 
-        // SystemReset for SwitchCase: '<S68>/Switch Case' incorporates:
-        //   MATLABSystem: '<S71>/MATLAB System'
+        // SystemReset for SwitchCase: '<S137>/Switch Case' incorporates:
+        //   MATLABSystem: '<S140>/MATLAB System'
         //
         proc_contro_TrimPlant_resetImpl(&proc_control_DW.obj_b);
 
-        // End of SystemReset for SubSystem: '<S68>/If Action Subsystem'
+        // End of SystemReset for SubSystem: '<S137>/If Action Subsystem'
       }
 
-      // Outputs for IfAction SubSystem: '<S68>/If Action Subsystem' incorporates:
-      //   ActionPort: '<S71>/Action Port'
+      // Outputs for IfAction SubSystem: '<S137>/If Action Subsystem' incorporates:
+      //   ActionPort: '<S140>/Action Port'
 
       // Outputs for Atomic SubSystem: '<S78>/Header Assignment'
       // ASCIIToString: '<S110>/ASCII to String' incorporates:
@@ -52845,58 +53030,59 @@ void proc_control::step()
       // MATLABSystem: '<S110>/Current Time'
       currentROS2TimeBus(&proc_control_B.BusAssignment_k.header.stamp);
 
-      // Switch: '<S110>/Switch1' incorporates:
-      //   ASCIIToString: '<S110>/ASCII to String'
-      //   Constant: '<S110>/Constant1'
-      //   StringConstant: '<S110>/String Constant1'
+      // Switch: '<S179>/Switch1' incorporates:
+      //   Constant: '<S179>/Constant1'
+      //   StringConstant: '<S179>/String Constant1'
 
       if (proc_control_P.Constant1_Value_l != 0.0) {
-        strncpy(&proc_control_B.Switch1[0],
-                &proc_control_P.StringConstant1_String_j[0], 255U);
-        proc_control_B.Switch1[255] = '\x00';
+        proc_control_B.Switch1 = proc_control_P.StringConstant1_String_j;
       } else {
         strncpy(&proc_control_B.Switch1[0], &proc_control_B.rtb_ASCIItoString_k
                 [0], 255U);
         proc_control_B.Switch1[255] = '\x00';
       }
 
-      // End of Switch: '<S110>/Switch1'
+      // End of Switch: '<S179>/Switch1'
 
-      // Switch: '<S110>/Switch' incorporates:
-      //   Constant: '<S110>/Constant'
+      // StringToASCII: '<S179>/String To ASCII'
+      std::strncpy((char_T *)&proc_control_B.BusAssignment_k.header.frame_id[0],
+                   proc_control_B.Switch1.c_str(), 128U);
+
+      // Switch: '<S179>/Switch' incorporates:
+      //   Constant: '<S179>/Constant'
 
       if (!(proc_control_P.Constant_Value_l != 0.0)) {
-        // BusAssignment: '<S78>/Bus Assignment' incorporates:
-        //   Constant: '<S109>/Constant'
+        // BusAssignment: '<S147>/Bus Assignment' incorporates:
+        //   Constant: '<S178>/Constant'
 
         proc_control_B.BusAssignment_k.header.stamp =
           proc_control_P.Constant_Value_f.header.stamp;
       }
 
-      // End of Switch: '<S110>/Switch'
-      // End of Outputs for SubSystem: '<S78>/Header Assignment'
+      // End of Switch: '<S179>/Switch'
+      // End of Outputs for SubSystem: '<S147>/Header Assignment'
 
-      // SignalConversion generated from: '<S71>/MATLAB System'
-      proc_control_B.DataStoreRead[0] = proc_control_B.WorldPosition[0];
-      proc_control_B.DataStoreRead[1] = proc_control_B.WorldPosition[1];
-      proc_control_B.DataStoreRead[2] = proc_control_B.WorldPosition[2];
-      proc_control_B.DataStoreRead[3] = proc_control_B.qS2W[0];
-      proc_control_B.DataStoreRead[4] = proc_control_B.qS2W[1];
-      proc_control_B.DataStoreRead[5] = proc_control_B.qS2W[2];
-      proc_control_B.DataStoreRead[6] = proc_control_B.qS2W[3];
-      proc_control_B.DataStoreRead[7] = proc_control_B.BodyVelocity[0];
-      proc_control_B.DataStoreRead[10] = proc_control_B.AngularRate[0];
-      proc_control_B.DataStoreRead[8] = proc_control_B.BodyVelocity[1];
-      proc_control_B.DataStoreRead[11] = proc_control_B.AngularRate[1];
-      proc_control_B.DataStoreRead[9] = proc_control_B.BodyVelocity[2];
-      proc_control_B.DataStoreRead[12] = proc_control_B.AngularRate[2];
+      // SignalConversion generated from: '<S140>/MATLAB System'
+      proc_control_B.imvec_c[0] = proc_control_B.WorldPosition_f[0];
+      proc_control_B.imvec_c[1] = proc_control_B.WorldPosition_f[1];
+      proc_control_B.imvec_c[2] = proc_control_B.WorldPosition_f[2];
+      proc_control_B.imvec_c[3] = proc_control_B.qS2W[0];
+      proc_control_B.imvec_c[4] = proc_control_B.qS2W[1];
+      proc_control_B.imvec_c[5] = proc_control_B.qS2W[2];
+      proc_control_B.imvec_c[6] = proc_control_B.qS2W[3];
+      proc_control_B.imvec_c[7] = proc_control_B.BodyVelocity_b[0];
+      proc_control_B.imvec_c[10] = proc_control_B.AngularRate_m[0];
+      proc_control_B.imvec_c[8] = proc_control_B.BodyVelocity_b[1];
+      proc_control_B.imvec_c[11] = proc_control_B.AngularRate_m[1];
+      proc_control_B.imvec_c[9] = proc_control_B.BodyVelocity_b[2];
+      proc_control_B.imvec_c[12] = proc_control_B.AngularRate_m[2];
 
-      // Start for MATLABSystem: '<S71>/MATLAB System' incorporates:
-      //   BusCreator: '<S47>/Bus Creator'
-      //   Delay: '<S71>/Delay'
+      // Start for MATLABSystem: '<S140>/MATLAB System' incorporates:
+      //   BusCreator: '<S116>/Bus Creator'
+      //   Delay: '<S140>/Delay'
 
       proc_control_TrimPlant_stepImpl(&proc_control_DW.obj_b,
-        proc_control_DW.Delay_DSTATE_a, proc_control_B.DataStoreRead,
+        proc_control_DW.Delay_DSTATE_a, proc_control_B.imvec_c,
         proc_control_B.CostFcn_workspace_runtimedata.ref,
         proc_control_B.BusCreator.rho, proc_control_B.BusCreator.g,
         proc_control_B.BusCreator.mass, proc_control_B.BusCreator.volume,
@@ -52921,7 +53107,7 @@ void proc_control::step()
       //   StringToASCII: '<S110>/String To ASCII'
 
       proc_control_B.BusAssignment_k.header.frame_id_SL_Info.CurrentLength =
-        strlen(&proc_control_B.Switch1[0]);
+        proc_control_B.Switch1.length();
       proc_control_B.BusAssignment_k.header.frame_id_SL_Info.ReceivedLength =
         proc_control_P.Constant_Value_f.header.frame_id_SL_Info.ReceivedLength;
 
@@ -52940,14 +53126,14 @@ void proc_control::step()
       // Outputs for Atomic SubSystem: '<S78>/Header Assignment'
       proc_control_B.BusAssignment_k.child_frame_id_SL_Info =
         proc_control_P.Constant_Value_f.child_frame_id_SL_Info;
-      memcpy(&proc_control_B.BusAssignment_k.pose.covariance[0],
-             &proc_control_P.Constant_Value_f.pose.covariance[0], 36U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.BusAssignment_k.twist.covariance[0],
-             &proc_control_P.Constant_Value_f.twist.covariance[0], 36U * sizeof
-             (real_T));
+      std::memcpy(&proc_control_B.BusAssignment_k.pose.covariance[0],
+                  &proc_control_P.Constant_Value_f.pose.covariance[0], 36U *
+                  sizeof(real_T));
+      std::memcpy(&proc_control_B.BusAssignment_k.twist.covariance[0],
+                  &proc_control_P.Constant_Value_f.twist.covariance[0], 36U *
+                  sizeof(real_T));
 
-      // End of Outputs for SubSystem: '<S78>/Header Assignment'
+      // End of Outputs for SubSystem: '<S147>/Header Assignment'
       proc_control_B.BusAssignment_k.pose.pose.position.x =
         proc_control_B.rtb_MATLABSystem_o10_c[0];
       proc_control_B.BusAssignment_k.pose.pose.position.y =
@@ -52975,25 +53161,16 @@ void proc_control::step()
       proc_control_B.BusAssignment_k.twist.twist.angular.z =
         proc_control_B.rtb_MATLABSystem_o10_c[12];
 
-      // MATLABSystem: '<S111>/SinkBlock'
+      // MATLABSystem: '<S180>/SinkBlock'
       Pub_proc_control_913.publish(&proc_control_B.BusAssignment_k);
 
-      // Rounding: '<S79>/Floor'
-      proc_control_B.residue = floor(proc_control_B.p);
+      // MATLAB Function: '<S176>/VariableHorizonOptimizer' incorporates:
+      //   Constant: '<S148>/Constant'
+      //   MinMax: '<S148>/Min'
+      //   Rounding: '<S148>/Floor'
 
-      // MinMax: '<S79>/Min' incorporates:
-      //   Constant: '<S79>/Constant'
-
-      if ((proc_control_P.Constant_Value_aa <= proc_control_B.residue) ||
-          rtIsNaN(proc_control_B.residue)) {
-        proc_control_B.residue = proc_control_P.Constant_Value_aa;
-      }
-
-      // MATLAB Function: '<S107>/VariableHorizonOptimizer' incorporates:
-      //   MinMax: '<S79>/Min'
-
-      proc_control_B.base_index = static_cast<int32_T>(rt_roundd_snf
-        (proc_control_B.residue));
+      proc_control_B.base_index = static_cast<int32_T>(std::round(std::fmin
+        (proc_control_P.Constant_Value_aa, std::floor(proc_control_B.p))));
       proc_control_B.Bu.set_size(21, 8, proc_control_B.base_index + 1);
 
       // MATLAB Function: '<S107>/VariableHorizonOptimizer'
@@ -53014,9 +53191,9 @@ void proc_control::step()
 
       proc_control_B.Dv.set_size(13, 1, proc_control_B.base_index + 1);
 
-      // MATLAB Function: '<S107>/VariableHorizonOptimizer' incorporates:
-      //   DiscretePulseGenerator: '<S75>/Pulse Generator'
-      //   MATLABSystem: '<S71>/MATLAB System'
+      // MATLAB Function: '<S176>/VariableHorizonOptimizer' incorporates:
+      //   DiscretePulseGenerator: '<S144>/Pulse Generator'
+      //   MATLABSystem: '<S140>/MATLAB System'
 
       proc_control_B.Ns_i = (proc_control_B.base_index + 1) * 13;
       for (proc_control_B.Ns = 0; proc_control_B.Ns < proc_control_B.Ns_i;
@@ -53024,8 +53201,8 @@ void proc_control::step()
         proc_control_B.Dv[proc_control_B.Ns] = 0.0;
       }
 
-      memcpy(&proc_control_B.b_A_c[0], &b[0], 441U * sizeof(real_T));
-      memcpy(&proc_control_B.b_B[0], &c[0], 630U * sizeof(real_T));
+      std::memcpy(&proc_control_B.b_A_c[0], &b[0], 441U * sizeof(real_T));
+      std::memcpy(&proc_control_B.b_B[0], &c[0], 630U * sizeof(real_T));
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 273; proc_control_B.Ns++)
       {
         proc_control_B.b_C_o[proc_control_B.Ns] = d_0[proc_control_B.Ns];
@@ -53035,10 +53212,10 @@ void proc_control::step()
       proc_control_B.nz = 0;
       for (proc_control_B.b_k = 0; proc_control_B.b_k < 13; proc_control_B.b_k++)
       {
-        memcpy(&proc_control_B.b_C_o[proc_control_B.Ns],
-               &proc_control_B.A_h[proc_control_B.Ns], 13U * sizeof(real_T));
-        memcpy(&proc_control_B.b_A_c[proc_control_B.nz],
-               &proc_control_B.y_m[proc_control_B.Ns], 13U * sizeof(real_T));
+        std::memcpy(&proc_control_B.b_C_o[proc_control_B.Ns],
+                    &proc_control_B.A_h[proc_control_B.Ns], 13U * sizeof(real_T));
+        std::memcpy(&proc_control_B.b_A_c[proc_control_B.nz],
+                    &proc_control_B.y_m[proc_control_B.Ns], 13U * sizeof(real_T));
         proc_control_B.Ns += 13;
         proc_control_B.nz += 21;
       }
@@ -53120,8 +53297,8 @@ void proc_control::step()
 
       proc_control_B.rseq.set_size(proc_control_B.base_index * 13);
 
-      // MATLAB Function: '<S107>/VariableHorizonOptimizer' incorporates:
-      //   MATLABSystem: '<S71>/MATLAB System'
+      // MATLAB Function: '<S176>/VariableHorizonOptimizer' incorporates:
+      //   MATLABSystem: '<S140>/MATLAB System'
 
       proc_control_B.Ns_i = proc_control_B.base_index * 13;
       for (proc_control_B.Ns = 0; proc_control_B.Ns < proc_control_B.Ns_i;
@@ -53161,8 +53338,8 @@ void proc_control::step()
           }
         }
 
-        // SignalConversion generated from: '<S108>/ SFunction ' incorporates:
-        //   MATLABSystem: '<S71>/MATLAB System'
+        // SignalConversion generated from: '<S177>/ SFunction ' incorporates:
+        //   MATLABSystem: '<S140>/MATLAB System'
 
         proc_control_B.rtb_X_e_o[proc_control_B.b_j] =
           proc_control_B.X_e_m[proc_control_B.b_j] -
@@ -53273,38 +53450,38 @@ void proc_control::step()
                            (&proc_control_P.u_scale_Gain[proc_control_B.Ns_i]),
                            tmp_2);
 
-        // Math: '<S70>/Transpose' incorporates:
-        //   Gain: '<S79>/u_scale'
-        //   Merge generated from: '<S68>/Merge'
-        //   SignalConversion generated from: '<S71>/Out1'
+        // Math: '<S139>/Transpose' incorporates:
+        //   Gain: '<S148>/u_scale'
+        //   Merge generated from: '<S137>/Merge'
+        //   SignalConversion generated from: '<S140>/Out1'
 
         _mm_storeu_pd(&proc_control_B.Transpose_n[proc_control_B.Ns_i], tmp_1);
 
-        // Update for Delay: '<S71>/Delay' incorporates:
-        //   Gain: '<S79>/u_scale'
+        // Update for Delay: '<S140>/Delay' incorporates:
+        //   Gain: '<S148>/u_scale'
 
         _mm_storeu_pd(&proc_control_DW.Delay_DSTATE_a[proc_control_B.Ns_i],
                       tmp_1);
 
-        // Update for UnitDelay: '<S79>/last_mv' incorporates:
-        //   Gain: '<S79>/u_scale'
+        // Update for UnitDelay: '<S148>/last_mv' incorporates:
+        //   Gain: '<S148>/u_scale'
 
         _mm_storeu_pd(&proc_control_DW.last_mv_DSTATE_j[proc_control_B.Ns_i],
                       tmp_2);
       }
 
-      // End of Outputs for SubSystem: '<S68>/If Action Subsystem'
+      // End of Outputs for SubSystem: '<S137>/If Action Subsystem'
       break;
 
      case 1:
-      // Outputs for IfAction SubSystem: '<S68>/If Action Subsystem2' incorporates:
-      //   ActionPort: '<S73>/Action Port'
+      // Outputs for IfAction SubSystem: '<S137>/If Action Subsystem2' incorporates:
+      //   ActionPort: '<S142>/Action Port'
 
-      // SampleTimeMath: '<S145>/TSamp' incorporates:
-      //   Merge generated from: '<S7>/Merge'
-      //   Selector: '<S73>/Selector'
+      // SampleTimeMath: '<S214>/TSamp' incorporates:
+      //   Merge generated from: '<S10>/Merge'
+      //   Selector: '<S142>/Selector'
       //
-      //  About '<S145>/TSamp':
+      //  About '<S214>/TSamp':
       //   y = u * K where K = 1 / ( w * Ts )
       //
       proc_control_B.Ns = 0;
@@ -53315,11 +53492,11 @@ void proc_control::step()
         proc_control_B.Ns += 10;
       }
 
-      // End of SampleTimeMath: '<S145>/TSamp'
+      // End of SampleTimeMath: '<S214>/TSamp'
 
-      // MATLABSystem: '<S73>/MATLAB System' incorporates:
-      //   Merge generated from: '<S7>/Merge'
-      //   Selector: '<S73>/Selector'
+      // MATLABSystem: '<S142>/MATLAB System' incorporates:
+      //   Merge generated from: '<S10>/Merge'
+      //   Selector: '<S142>/Selector'
 
       if (proc_control_DW.obj_p.k != proc_control_P.MATLABSystem_k) {
         proc_control_DW.obj_p.k = proc_control_P.MATLABSystem_k;
@@ -53624,20 +53801,20 @@ void proc_control::step()
         proc_control_B.modCoeffs[35] = proc_control_B.constValues[11] -
           proc_control_B.constValues[35];
 
-        // Sum: '<S145>/Diff' incorporates:
-        //   Merge generated from: '<S7>/Merge'
-        //   SampleTimeMath: '<S145>/TSamp'
-        //   Selector: '<S73>/Selector'
-        //   UnitDelay: '<S145>/UD'
+        // Sum: '<S214>/Diff' incorporates:
+        //   Merge generated from: '<S10>/Merge'
+        //   SampleTimeMath: '<S214>/TSamp'
+        //   Selector: '<S142>/Selector'
+        //   UnitDelay: '<S214>/UD'
         //
-        //  About '<S145>/TSamp':
+        //  About '<S214>/TSamp':
         //   y = u * K where K = 1 / ( w * Ts )
         //    *
-        //  Block description for '<S145>/Diff':
+        //  Block description for '<S214>/Diff':
         //
         //   Add in CPU
         //
-        //  Block description for '<S145>/UD':
+        //  Block description for '<S214>/UD':
         //
         //   Store in Global RAM
 
@@ -53850,37 +54027,37 @@ void proc_control::step()
         break;
 
        default:
-        memset(&proc_control_B.u_scale[0], 0, sizeof(real_T) << 3U);
+        std::memset(&proc_control_B.u_scale[0], 0, sizeof(real_T) << 3U);
         break;
       }
 
-      // Math: '<S70>/Transpose' incorporates:
-      //   MATLABSystem: '<S73>/MATLAB System'
-      //   Merge generated from: '<S68>/Merge'
-      //   Reshape: '<S73>/Reshape'
+      // Math: '<S139>/Transpose' incorporates:
+      //   MATLABSystem: '<S142>/MATLAB System'
+      //   Merge generated from: '<S137>/Merge'
+      //   Reshape: '<S142>/Reshape'
 
-      memcpy(&proc_control_B.Transpose_n[0], &proc_control_B.u_scale[0], sizeof
-             (real_T) << 3U);
+      std::memcpy(&proc_control_B.Transpose_n[0], &proc_control_B.u_scale[0],
+                  sizeof(real_T) << 3U);
 
-      // Merge generated from: '<S68>/Merge' incorporates:
-      //   Constant: '<S73>/Constant1'
-      //   SignalConversion generated from: '<S73>/Constant1'
+      // Merge generated from: '<S137>/Merge' incorporates:
+      //   Constant: '<S142>/Constant1'
+      //   SignalConversion generated from: '<S142>/Constant1'
 
       proc_control_B.alive = proc_control_P.Constant1_Value_g0;
 
-      // Merge generated from: '<S68>/Merge' incorporates:
-      //   Constant: '<S73>/Constant'
-      //   SignalConversion generated from: '<S73>/Constant'
+      // Merge generated from: '<S137>/Merge' incorporates:
+      //   Constant: '<S142>/Constant'
+      //   SignalConversion generated from: '<S142>/Constant'
 
       proc_control_B.MpcStatus = proc_control_P.Constant_Value_m0;
 
-      // Update for UnitDelay: '<S145>/UD' incorporates:
-      //   SampleTimeMath: '<S145>/TSamp'
+      // Update for UnitDelay: '<S214>/UD' incorporates:
+      //   SampleTimeMath: '<S214>/TSamp'
       //
-      //  About '<S145>/TSamp':
+      //  About '<S214>/TSamp':
       //   y = u * K where K = 1 / ( w * Ts )
       //    *
-      //  Block description for '<S145>/UD':
+      //  Block description for '<S214>/UD':
       //
       //   Store in Global RAM
 
@@ -53890,8 +54067,8 @@ void proc_control::step()
           proc_control_B.TSamp[proc_control_B.Ns_i];
       }
 
-      // End of Update for UnitDelay: '<S145>/UD'
-      // End of Outputs for SubSystem: '<S68>/If Action Subsystem2'
+      // End of Update for UnitDelay: '<S214>/UD'
+      // End of Outputs for SubSystem: '<S137>/If Action Subsystem2'
       break;
 
      case 2:
@@ -53915,36 +54092,48 @@ void proc_control::step()
                &proc_control_P.Delay1_InitialCondition[0], 88U * sizeof(real_T));
         proc_control_DW.clockTickCounter_n = 0;
 
-        // End of InitializeConditions for SubSystem: '<S68>/If Action Subsystem1' 
+        // End of InitializeConditions for SubSystem: '<S137>/If Action Subsystem1' 
       }
 
-      // Outputs for IfAction SubSystem: '<S68>/If Action Subsystem1' incorporates:
-      //   ActionPort: '<S72>/Action Port'
+      // Outputs for IfAction SubSystem: '<S137>/If Action Subsystem1' incorporates:
+      //   ActionPort: '<S141>/Action Port'
 
-      // MATLAB Function: '<S72>/MATLAB Function' incorporates:
-      //   Constant: '<S72>/Constant'
-      //   Constant: '<S72>/Constant1'
-      //   Delay: '<S72>/Delay1'
-      //   Lookup_n-D: '<S70>/N to A'
-      //   Lookup_n-D: '<S70>/n-D Lookup Table1'
-      //   SignalConversion generated from: '<S114>/ SFunction '
-      //   Trigonometry: '<S206>/sincos'
-
-      proc_control_B.imvec[0] = proc_control_B.WorldPosition[0];
-      proc_control_B.imvec[1] = proc_control_B.WorldPosition[1];
-      proc_control_B.imvec[2] = proc_control_B.WorldPosition[2];
+      // MATLAB Function: '<S141>/MATLAB Function' incorporates:
+      //   Constant: '<S141>/Constant'
+      //   Constant: '<S141>/Constant1'
+      //   Delay: '<S141>/Delay1'
+      //   DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+      //   Lookup_n-D: '<S139>/N to A'
+      //   Lookup_n-D: '<S139>/n-D Lookup Table1'
+      //   Lookup_n-D: '<S26>/PWN to N'
+      //   Lookup_n-D: '<S32>/N to RPM'
+      //   SignalConversion generated from: '<S183>/ SFunction '
+      //   Trigonometry: '<S275>/sincos'
+      //   Trigonometry: '<S55>/sincos'
+      //   UniformRandomNumber: '<S27>/Drift'
+      //
+      proc_control_B.imvec[0] = proc_control_B.WorldPosition_f[0];
+      proc_control_B.imvec[1] = proc_control_B.WorldPosition_f[1];
+      proc_control_B.imvec[2] = proc_control_B.WorldPosition_f[2];
       proc_control_B.imvec[3] = proc_control_B.qS2W[0];
       proc_control_B.imvec[4] = proc_control_B.qS2W[1];
       proc_control_B.imvec[5] = proc_control_B.qS2W[2];
       proc_control_B.imvec[6] = proc_control_B.qS2W[3];
-      proc_control_B.imvec[7] = proc_control_B.BodyVelocity[0];
-      proc_control_B.imvec[10] = proc_control_B.AngularRate[0];
-      proc_control_B.imvec[8] = proc_control_B.BodyVelocity[1];
-      proc_control_B.imvec[11] = proc_control_B.AngularRate[1];
-      proc_control_B.imvec[9] = proc_control_B.BodyVelocity[2];
-      proc_control_B.imvec[12] = proc_control_B.AngularRate[2];
-      memset(&proc_control_B.A[0], 0, 1859U * sizeof(real_T));
-      memset(&proc_control_B.A_h[0], 0, 38U * sizeof(real_T));
+      proc_control_B.imvec[7] = proc_control_B.BodyVelocity_b[0];
+      proc_control_B.imvec[10] = proc_control_B.AngularRate_m[0];
+      proc_control_B.imvec[8] = proc_control_B.BodyVelocity_b[1];
+      proc_control_B.imvec[11] = proc_control_B.AngularRate_m[1];
+      proc_control_B.imvec[9] = proc_control_B.BodyVelocity_b[2];
+      proc_control_B.imvec[12] = proc_control_B.AngularRate_m[2];
+      std::memset(&proc_control_B.A[0], 0, 1859U * sizeof(real_T));
+      std::memset(&proc_control_B.A_h[0], 0, 38U * sizeof(real_T));
       proc_control_B.A_h[38] = 0.0;
       proc_control_B.A_h[42] = 0.0;
       proc_control_B.A_h[56] = 0.0;
@@ -53971,7 +54160,7 @@ void proc_control::step()
       proc_control_B.A_h[156] = 0.0;
       proc_control_B.A_h[157] = 0.0;
       proc_control_B.A_h[158] = 0.0;
-      memset(&proc_control_B.y_m[0], 0, 38U * sizeof(real_T));
+      std::memset(&proc_control_B.y_m[0], 0, 38U * sizeof(real_T));
       proc_control_B.y_m[38] = 0.0;
       proc_control_B.y_m[42] = 0.0;
       proc_control_B.y_m[56] = 0.0;
@@ -54011,21 +54200,21 @@ void proc_control::step()
             proc_control_B.Ns_i];
         }
 
-        proc_control_B.i = fabs(proc_control_B.imvec[10]);
-        proc_control_B.linearScaling = fabs(proc_control_B.imvec[11]);
-        proc_control_B.residue = fabs(proc_control_B.imvec[12]);
-        proc_control_B.Product3_h = fabs(proc_control_B.imvec[7]);
-        proc_control_B.Product_o = fabs(proc_control_B.imvec[8]);
-        proc_control_B.Product1_hg = fabs(proc_control_B.imvec[9]);
-        if (rtIsNaN(proc_control_B.imvec[10])) {
-          proc_control_B.Product2_j = (rtNaN);
+        proc_control_B.Product1_fr = std::abs(proc_control_B.imvec[10]);
+        proc_control_B.Product_al = std::abs(proc_control_B.imvec[11]);
+        proc_control_B.Product2_al = std::abs(proc_control_B.imvec[12]);
+        proc_control_B.b_norm = std::abs(proc_control_B.imvec[7]);
+        proc_control_B.t6 = std::abs(proc_control_B.imvec[8]);
+        proc_control_B.oa = std::abs(proc_control_B.imvec[9]);
+        if (std::isnan(proc_control_B.imvec[10])) {
+          proc_control_B.d_c = (rtNaN);
         } else if (proc_control_B.imvec[10] < 0.0) {
-          proc_control_B.Product2_j = -1.0;
+          proc_control_B.d_c = -1.0;
         } else {
-          proc_control_B.Product2_j = (proc_control_B.imvec[10] > 0.0);
+          proc_control_B.d_c = (proc_control_B.imvec[10] > 0.0);
         }
 
-        if (rtIsNaN(proc_control_B.imvec[11])) {
+        if (std::isnan(proc_control_B.imvec[11])) {
           proc_control_B.oc = (rtNaN);
         } else if (proc_control_B.imvec[11] < 0.0) {
           proc_control_B.oc = -1.0;
@@ -54033,7 +54222,7 @@ void proc_control::step()
           proc_control_B.oc = (proc_control_B.imvec[11] > 0.0);
         }
 
-        if (rtIsNaN(proc_control_B.imvec[12])) {
+        if (std::isnan(proc_control_B.imvec[12])) {
           proc_control_B.t10 = (rtNaN);
         } else if (proc_control_B.imvec[12] < 0.0) {
           proc_control_B.t10 = -1.0;
@@ -54041,7 +54230,7 @@ void proc_control::step()
           proc_control_B.t10 = (proc_control_B.imvec[12] > 0.0);
         }
 
-        if (rtIsNaN(proc_control_B.imvec[7])) {
+        if (std::isnan(proc_control_B.imvec[7])) {
           proc_control_B.t11 = (rtNaN);
         } else if (proc_control_B.imvec[7] < 0.0) {
           proc_control_B.t11 = -1.0;
@@ -54049,7 +54238,7 @@ void proc_control::step()
           proc_control_B.t11 = (proc_control_B.imvec[7] > 0.0);
         }
 
-        if (rtIsNaN(proc_control_B.imvec[8])) {
+        if (std::isnan(proc_control_B.imvec[8])) {
           proc_control_B.t12 = (rtNaN);
         } else if (proc_control_B.imvec[8] < 0.0) {
           proc_control_B.t12 = -1.0;
@@ -54057,7 +54246,7 @@ void proc_control::step()
           proc_control_B.t12 = (proc_control_B.imvec[8] > 0.0);
         }
 
-        if (rtIsNaN(proc_control_B.imvec[9])) {
+        if (std::isnan(proc_control_B.imvec[9])) {
           proc_control_B.t13 = (rtNaN);
         } else if (proc_control_B.imvec[9] < 0.0) {
           proc_control_B.t13 = -1.0;
@@ -54071,29 +54260,24 @@ void proc_control::step()
           2.0;
         proc_control_B.t19 = proc_control_B.imvec[5] * proc_control_B.imvec[6] *
           2.0;
-        proc_control_B.t20 = proc_control_B.imvec[3] * proc_control_B.imvec[4] *
-          2.0;
+        proc_control_B.absxk = proc_control_B.imvec[3] * proc_control_B.imvec[4]
+          * 2.0;
         proc_control_B.t21 = proc_control_B.imvec[3] * proc_control_B.imvec[5] *
           2.0;
         proc_control_B.t15 = proc_control_B.imvec[3] * proc_control_B.imvec[6] *
           2.0;
         proc_control_B.t16 = proc_control_B.imvec[4] * proc_control_B.imvec[7] *
           2.0;
-        proc_control_B.t24_tmp = proc_control_B.imvec[5] * proc_control_B.imvec
-          [7];
-        proc_control_B.t24 = proc_control_B.t24_tmp * 2.0;
+        proc_control_B.t_tmp = proc_control_B.imvec[5] * proc_control_B.imvec[7];
+        proc_control_B.t = proc_control_B.t_tmp * 2.0;
         proc_control_B.t25_tmp = proc_control_B.imvec[6] * proc_control_B.imvec
           [7];
         proc_control_B.t25 = proc_control_B.t25_tmp * 2.0;
         proc_control_B.d_oi = proc_control_B.imvec[3] * proc_control_B.imvec[7] *
           2.0;
-        proc_control_B.scale_tmp = proc_control_B.imvec[4] *
-          proc_control_B.imvec[8];
-        proc_control_B.scale = proc_control_B.scale_tmp * 2.0;
-        proc_control_B.absxk = proc_control_B.imvec[5] * proc_control_B.imvec[8]
-          * 2.0;
-        proc_control_B.t_tmp = proc_control_B.imvec[6] * proc_control_B.imvec[8];
-        proc_control_B.t = proc_control_B.t_tmp * 2.0;
+        proc_control_B.t29_tmp = proc_control_B.imvec[6] * proc_control_B.imvec
+          [8];
+        proc_control_B.t29 = proc_control_B.t29_tmp * 2.0;
         proc_control_B.t52 = proc_control_B.imvec[3] * proc_control_B.imvec[8] *
           2.0;
         proc_control_B.t70_tmp = proc_control_B.imvec[4] * proc_control_B.imvec
@@ -54106,8 +54290,8 @@ void proc_control::step()
           2.0;
         proc_control_B.t34 = proc_control_B.imvec[3] * proc_control_B.imvec[9] *
           2.0;
-        proc_control_B.t39 = proc_control_B.imvec[4] / 2.0;
-        proc_control_B.t40 = proc_control_B.imvec[5] / 2.0;
+        proc_control_B.rtb_sincos_o1_idx_1 = proc_control_B.imvec[4] / 2.0;
+        proc_control_B.rtb_sincos_o1_idx_0 = proc_control_B.imvec[5] / 2.0;
         proc_control_B.t41 = proc_control_B.imvec[6] / 2.0;
         proc_control_B.t42 = proc_control_B.imvec[3] / 2.0;
         proc_control_B.t43 = proc_control_B.imvec[10] / 2.0;
@@ -54124,13 +54308,14 @@ void proc_control::step()
           0.00568699616459184;
         proc_control_B.Product3_l = proc_control_B.imvec[9] *
           0.069014505171846527;
-        proc_control_B.t68 = proc_control_B.imvec[8] * 0.0071670223909459834;
-        proc_control_B.t35_tmp = proc_control_B.imvec[4] * proc_control_B.imvec
-          [4] * 2.0;
+        proc_control_B.Product3_bo = proc_control_B.imvec[8] *
+          0.0071670223909459834;
+        proc_control_B.Divide1_e = proc_control_B.imvec[4] *
+          proc_control_B.imvec[4] * 2.0;
         proc_control_B.t36_tmp = proc_control_B.imvec[5] * proc_control_B.imvec
           [5] * 2.0;
-        proc_control_B.t37_tmp = proc_control_B.imvec[6] * proc_control_B.imvec
-          [6] * 2.0;
+        proc_control_B.Divide2_j = proc_control_B.imvec[6] *
+          proc_control_B.imvec[6] * 2.0;
         proc_control_B.t60 = -(proc_control_B.imvec[10] * 9.1703771260780813E-5);
         proc_control_B.n_c = -proc_control_B.t + proc_control_B.t32;
         proc_control_B.A_h[39] = proc_control_B.n_c;
@@ -54203,7 +54388,7 @@ void proc_control::step()
         proc_control_B.A_h[66] = proc_control_B.t33;
         proc_control_B.t = (-proc_control_B.d_oi + proc_control_B.t) -
           proc_control_B.t32_tmp * 4.0;
-        proc_control_B.A_h[67] = proc_control_B.t;
+        proc_control_B.A_h[67] = proc_control_B.t29;
         proc_control_B.A_h[68] = -proc_control_B.t44;
         proc_control_B.A_h[69] = proc_control_B.t45;
         proc_control_B.A_h[71] = -proc_control_B.t43;
@@ -54211,10 +54396,10 @@ void proc_control::step()
           - proc_control_B.imvec[6] * 0.0013017970932508) +
           proc_control_B.imvec[3] * 0.4138016519122657;
         proc_control_B.A_h[72] = proc_control_B.t32_tmp;
-        proc_control_B.t24_tmp = (proc_control_B.imvec[5] * -0.05386046241846134
-          - proc_control_B.imvec[6] * 0.51979016069898065) +
-          proc_control_B.imvec[3] * 0.00099202109956931486;
-        proc_control_B.A_h[73] = proc_control_B.t24_tmp;
+        proc_control_B.t_tmp = (proc_control_B.imvec[5] * -0.05386046241846134 -
+          proc_control_B.imvec[6] * 0.51979016069898065) + proc_control_B.imvec
+          [3] * 0.00099202109956931486;
+        proc_control_B.A_h[73] = proc_control_B.t_tmp;
         proc_control_B.t34 = (proc_control_B.imvec[5] * 0.37271497842704371 +
                               proc_control_B.imvec[6] * 0.033540735888224739) -
           proc_control_B.imvec[3] * 0.0058758415205803329;
@@ -54242,7 +54427,7 @@ void proc_control::step()
         proc_control_B.A_h[81] = -proc_control_B.t45;
         proc_control_B.A_h[82] = -proc_control_B.t44;
         proc_control_B.A_h[83] = proc_control_B.t43;
-        proc_control_B.t16 = proc_control_B.imvec[4] * -0.4138016519122657 -
+        proc_control_B.t28 = proc_control_B.imvec[4] * -0.4138016519122657 -
           proc_control_B.imvec[5] * 0.0013017970932508;
         proc_control_B.A_h[85] = proc_control_B.t16;
         proc_control_B.t_tmp = proc_control_B.imvec[4] * -0.00099202109956931486
@@ -54289,7 +54474,7 @@ void proc_control::step()
         proc_control_B.A_h[100] = proc_control_B.d16;
         proc_control_B.d17 = (((proc_control_B.imvec[11] * 0.032506453976272241
           + proc_control_B.imvec[12] * 0.24400486517334929) -
-          proc_control_B.Product3_h * 0.0001525121428377004) +
+          proc_control_B.b_norm * 0.0001525121428377004) +
                               ((proc_control_B.imvec[8] * 0.044446246736648841 -
           proc_control_B.imvec[9] * 0.1148218101592509) - proc_control_B.t11 *
           0.0001525121428377004)) - 0.0019552838825346208;
@@ -54303,25 +54488,25 @@ void proc_control::step()
         proc_control_B.A_h[102] = proc_control_B.d18;
         proc_control_B.t11 = (((proc_control_B.imvec[11] *
           -7.5569972812640509E-5 - proc_control_B.imvec[12] *
-          0.00477039452928936) - proc_control_B.Product3_h *
-          0.0011846302503005471) + ((proc_control_B.imvec[8] * -5.91169722427816
-          - proc_control_B.imvec[9] * 2.2977499514997389E-5) -
-          proc_control_B.t11 * 0.0011846302503005471)) - 0.015187567311545479;
+          0.00477039452928936) - proc_control_B.b_norm * 0.0011846302503005471)
+                              + ((proc_control_B.imvec[8] * -5.91169722427816 -
+          proc_control_B.imvec[9] * 2.2977499514997389E-5) - proc_control_B.t11 *
+          0.0011846302503005471)) - 0.015187567311545479;
         proc_control_B.A_h[103] = proc_control_B.t11;
-        proc_control_B.Product3_h = proc_control_B.t17 - proc_control_B.t15;
-        proc_control_B.A_h[104] = proc_control_B.Product3_h;
-        proc_control_B.t37_tmp = (-proc_control_B.t35_tmp -
-          proc_control_B.t37_tmp) + 1.0;
-        proc_control_B.A_h[105] = proc_control_B.t37_tmp;
-        proc_control_B.t15 = proc_control_B.t19 + proc_control_B.t20;
+        proc_control_B.b_norm = proc_control_B.t17 - proc_control_B.t15;
+        proc_control_B.A_h[104] = proc_control_B.b_norm;
+        proc_control_B.Divide2_j = (-proc_control_B.Divide1_e -
+          proc_control_B.Divide2_j) + 1.0;
+        proc_control_B.A_h[105] = proc_control_B.Divide2_j;
+        proc_control_B.t15 = proc_control_B.t19 + proc_control_B.absxk;
         proc_control_B.A_h[106] = proc_control_B.t15;
         proc_control_B.t12 *= proc_control_B.imvec[8];
         proc_control_B.t17 = (((proc_control_B.imvec[10] *
           -2.1519484922730651E-5 + proc_control_B.imvec[12] * 1.3454180758607359)
-          - proc_control_B.Product_o * 7.7738505218783331E-7) -
-                              proc_control_B.imvec[7] * 0.01129023503850542) +
-          ((proc_control_B.imvec[9] * -0.00041111798914172931 -
-            proc_control_B.t12 * 7.7738505218783331E-7) - 1.8960611028971542E-5);
+          - proc_control_B.t6 * 7.7738505218783331E-7) - proc_control_B.imvec[7]
+                              * 0.01129023503850542) + ((proc_control_B.imvec[9]
+          * -0.00041111798914172931 - proc_control_B.t12 * 7.7738505218783331E-7)
+          - 1.8960611028971542E-5);
         proc_control_B.A_h[111] = proc_control_B.t17;
         proc_control_B.t55 = (proc_control_B.Product_o * -0.01903042325061665 +
                               proc_control_B.t55) +
@@ -54338,9 +54523,9 @@ void proc_control::step()
         proc_control_B.A_h[113] = proc_control_B.d20;
         proc_control_B.d21 = (((proc_control_B.imvec[10] *
           -0.0071670223909459834 + proc_control_B.imvec[12] *
-          0.00145353196782447) - proc_control_B.Product_o * 0.017943464992838758)
-                              + ((proc_control_B.imvec[7] * 0.044446246736648841
-          - proc_control_B.imvec[9] * 5.3937622658585171) - proc_control_B.t12 *
+          0.00145353196782447) - proc_control_B.t6 * 0.017943464992838758) +
+                              ((proc_control_B.imvec[7] * 0.044446246736648841 -
+          proc_control_B.imvec[9] * 5.3937622658585171) - proc_control_B.t12 *
           0.017943464992838758)) - 0.4376454876302136;
         proc_control_B.A_h[114] = proc_control_B.d21;
         proc_control_B.d22 = (((proc_control_B.imvec[10] * 0.0012538688125934979
@@ -54351,68 +54536,64 @@ void proc_control::step()
             * 0.025315910649035739) + 0.0020538236482641531);
         proc_control_B.A_h[115] = proc_control_B.d22;
         proc_control_B.t12 = (((proc_control_B.imvec[10] * 1.6661666253314429E-5
-          + proc_control_B.imvec[12] * 0.01129023503850542) +
-          proc_control_B.Product_o * 0.00035080205133418912) +
-                              ((proc_control_B.imvec[7] * -5.91169722427816 +
-          proc_control_B.imvec[9] * 0.01257120723021817) + proc_control_B.t12 *
-          0.00035080205133418912)) + 0.0085561475935168052;
+          + proc_control_B.imvec[12] * 0.01129023503850542) + proc_control_B.t6 *
+          0.00035080205133418912) + ((proc_control_B.imvec[7] *
+          -5.91169722427816 + proc_control_B.imvec[9] * 0.01257120723021817) +
+          proc_control_B.t12 * 0.00035080205133418912)) + 0.0085561475935168052;
         proc_control_B.A_h[116] = proc_control_B.t12;
-        proc_control_B.Product_o = proc_control_B.t14 + proc_control_B.t21;
-        proc_control_B.A_h[117] = proc_control_B.Product_o;
-        proc_control_B.t19 -= proc_control_B.t20;
+        proc_control_B.t6 = proc_control_B.t14 + proc_control_B.t21;
+        proc_control_B.A_h[117] = proc_control_B.t6;
+        proc_control_B.t19 -= proc_control_B.absxk;
         proc_control_B.A_h[118] = proc_control_B.t19;
-        proc_control_B.t35_tmp = (-proc_control_B.t35_tmp -
+        proc_control_B.Divide1_e = (-proc_control_B.Divide1_e -
           proc_control_B.t36_tmp) + 1.0;
-        proc_control_B.A_h[119] = proc_control_B.t35_tmp;
+        proc_control_B.A_h[119] = proc_control_B.Divide1_e;
         proc_control_B.t13 *= proc_control_B.imvec[9];
-        proc_control_B.t20 = (((proc_control_B.imvec[10] * 2.989993556213668E-6
-          - proc_control_B.imvec[11] * 1.4431163638272659) +
-          proc_control_B.Product1_hg * 5.1582899272597018E-6) -
-                              proc_control_B.imvec[7] * 0.143523560675718) +
-          ((proc_control_B.t13 * 5.1582899272597018E-6 + proc_control_B.imvec[8]
-            * -0.00041111798914172931) + 0.0001592064792364106);
-        proc_control_B.A_h[124] = proc_control_B.t20;
+        proc_control_B.absxk = (((proc_control_B.imvec[10] *
+          2.989993556213668E-6 - proc_control_B.imvec[11] * 1.4431163638272659)
+          + proc_control_B.oa * 5.1582899272597018E-6) - proc_control_B.imvec[7]
+          * 0.143523560675718) + ((proc_control_B.t13 * 5.1582899272597018E-6 +
+          proc_control_B.imvec[8] * -0.00041111798914172931) +
+          0.0001592064792364106);
+        proc_control_B.A_h[124] = proc_control_B.absxk;
         proc_control_B.t14 = (((proc_control_B.imvec[10] * 1.0731951852318531 -
-          proc_control_B.imvec[11] * 1.356129262930646E-5) +
-          proc_control_B.Product1_hg * 2.1981689677272681E-5) +
-                              ((proc_control_B.imvec[7] * -0.001468966557066211
-          - proc_control_B.imvec[8] * 0.069014505171846527) + proc_control_B.t13
-          * 2.1981689677272681E-5)) + 0.00067844721226150231;
+          proc_control_B.imvec[11] * 1.356129262930646E-5) + proc_control_B.oa *
+          2.1981689677272681E-5) + ((proc_control_B.imvec[7] *
+          -0.001468966557066211 - proc_control_B.imvec[8] * 0.069014505171846527)
+          + proc_control_B.t13 * 2.1981689677272681E-5)) +
+          0.00067844721226150231;
         proc_control_B.A_h[125] = proc_control_B.t14;
-        proc_control_B.t56 += proc_control_B.Product1_hg * -0.01616685726098728;
+        proc_control_B.t56 += proc_control_B.oa * -0.01616685726098728;
         proc_control_B.t21 = proc_control_B.t13 * 0.01616685726098728;
         proc_control_B.A_h[126] = ((((proc_control_B.t56 - proc_control_B.t59) +
           proc_control_B.rtb_sincos_o2_idx_0) + proc_control_B.t68) -
           proc_control_B.t21) - 0.49897707595639768;
         proc_control_B.t59 = (((proc_control_B.imvec[10] * 0.069014505171846527
           - proc_control_B.imvec[11] * 0.0018646499569661989) +
-          proc_control_B.Product1_hg * 0.00171795837774031) +
-                              ((proc_control_B.imvec[7] * -0.1148218101592509 -
-          proc_control_B.imvec[8] * 5.3937622658585171) + proc_control_B.t13 *
-          0.00171795837774031)) + 0.053023406720379938;
+          proc_control_B.oa * 0.00171795837774031) + ((proc_control_B.imvec[7] *
+          -0.1148218101592509 - proc_control_B.imvec[8] * 5.3937622658585171) +
+          proc_control_B.t13 * 0.00171795837774031)) + 0.053023406720379938;
         proc_control_B.A_h[127] = proc_control_B.t59;
         proc_control_B.t36_tmp = (((proc_control_B.imvec[10] *
           -0.00032387772021301561 + proc_control_B.imvec[11] * 0.143523560675718)
-          - proc_control_B.Product1_hg * 0.00030055639757781919) +
+          - proc_control_B.oa * 0.00030055639757781919) +
           ((proc_control_B.imvec[7] * 8.3502908029033716 + proc_control_B.imvec
             [8] * 0.025315910649035739) - proc_control_B.t13 *
            0.00030055639757781919)) - 0.0092764320240067664;
         proc_control_B.A_h[128] = proc_control_B.t36_tmp;
         proc_control_B.t13 = (((proc_control_B.imvec[10] *
           -0.0013492616947596331 - proc_control_B.imvec[11] *
-          0.01448357294143097) - proc_control_B.Product1_hg *
-          3.993855127780116E-6) - proc_control_B.imvec[7] *
-                              2.2977499514997389E-5) + ((proc_control_B.imvec[8]
-          * 0.01257120723021817 - proc_control_B.t13 * 3.993855127780116E-6) -
-          0.00012326713357346041);
+          0.01448357294143097) - proc_control_B.oa * 3.993855127780116E-6) -
+                              proc_control_B.imvec[7] * 2.2977499514997389E-5) +
+          ((proc_control_B.imvec[8] * 0.01257120723021817 - proc_control_B.t13 *
+            3.993855127780116E-6) - 0.00012326713357346041);
         proc_control_B.A_h[129] = proc_control_B.t13;
-        proc_control_B.A_h[133] = -proc_control_B.t39;
+        proc_control_B.A_h[133] = -proc_control_B.rtb_sincos_o1_idx_1;
         proc_control_B.A_h[134] = proc_control_B.t42;
         proc_control_B.A_h[135] = proc_control_B.t41;
-        proc_control_B.A_h[136] = -proc_control_B.t40;
-        proc_control_B.Product1_hg = proc_control_B.imvec[10] *
-          proc_control_B.Product2_j;
-        proc_control_B.Product2_j = (((proc_control_B.imvec[10] *
+        proc_control_B.A_h[136] = -proc_control_B.rtb_sincos_o1_idx_0;
+        proc_control_B.oa = proc_control_B.imvec[10] * proc_control_B.d_c;
+        proc_control_B.d_c = (((proc_control_B.imvec[10] *
           -0.00010396365424827521 - proc_control_B.imvec[11] *
           0.0030560301354578762) - proc_control_B.imvec[12] *
           0.030270009262121408) - proc_control_B.i * 2.1768827225552109E-5) +
@@ -54446,7 +54627,8 @@ void proc_control::step()
         proc_control_B.A_h[140] = proc_control_B.d25;
         proc_control_B.d26 = (((proc_control_B.imvec[10] * 0.005100926963153893
           + proc_control_B.imvec[11] * 7.54282242443926E-5) +
-          proc_control_B.imvec[12] * 0.76112100692746432) + ((proc_control_B.i *
+          proc_control_B.imvec[12] * 0.76112100692746432) +
+                              ((proc_control_B.Product1_fr *
           0.0013404854555911631 + proc_control_B.imvec[8] *
           0.0012538688125934979) - proc_control_B.imvec[9] *
           0.00032387772021301561)) + (proc_control_B.Product1_hg *
@@ -54464,29 +54646,29 @@ void proc_control::step()
         proc_control_B.A_h[146] = -proc_control_B.t40;
         proc_control_B.A_h[147] = -proc_control_B.t41;
         proc_control_B.A_h[148] = proc_control_B.t42;
-        proc_control_B.A_h[149] = proc_control_B.t39;
-        proc_control_B.i = proc_control_B.imvec[11] * proc_control_B.oc;
-        proc_control_B.oc = ((((proc_control_B.imvec[10] *
+        proc_control_B.A_h[149] = proc_control_B.rtb_sincos_o1_idx_1;
+        proc_control_B.oc *= proc_control_B.imvec[11];
+        proc_control_B.Product1_fr = ((((proc_control_B.imvec[10] *
           -0.0030560301354578762 + proc_control_B.imvec[11] *
           0.001929418735906703) + proc_control_B.imvec[12] *
-          6.2884941489263073E-5) + proc_control_B.linearScaling *
-                              0.001003331497170287) + ((proc_control_B.imvec[7] *
+          6.2884941489263073E-5) + proc_control_B.Product_al *
+          0.001003331497170287) + ((proc_control_B.imvec[7] *
           9.7602896722846373E-5 - proc_control_B.imvec[9] * 1.4431163638272659)
           + proc_control_B.i * 0.001003331497170287)) + 0.0234110682673067;
         proc_control_B.A_h[150] = proc_control_B.oc;
         proc_control_B.d27 = (((proc_control_B.imvec[10] *
           -0.00032316342950661811 + proc_control_B.imvec[11] *
           4.5292476302332957E-6) - proc_control_B.imvec[12] *
-          0.016528998001422841) + proc_control_B.linearScaling *
+          0.016528998001422841) + proc_control_B.Product_al *
                               1.026911824132076E-5) + (((proc_control_B.imvec[7]
           * 0.00041592787873873338 - proc_control_B.imvec[9] *
-          1.356129262930646E-5) + proc_control_B.i * 1.026911824132076E-5) +
+          1.356129262930646E-5) + proc_control_B.oc * 1.026911824132076E-5) +
           0.00023961275896415121);
         proc_control_B.A_h[151] = proc_control_B.d27;
         proc_control_B.d28 = (((proc_control_B.imvec[10] * 4.0426879502317728E-6
           + proc_control_B.imvec[11] * 0.023860477346842442) -
           proc_control_B.imvec[12] * 0.000941018323416786) +
-                              ((proc_control_B.linearScaling *
+                              ((proc_control_B.Product_al *
           -3.9756137245743291E-5 + proc_control_B.imvec[7] * 0.69409782663856512)
           + proc_control_B.imvec[9] * 9.7602896722846373E-5)) +
           (proc_control_B.i * -3.9756137245743291E-5 - 0.00092764320240067675);
@@ -54494,7 +54676,7 @@ void proc_control::step()
         proc_control_B.d29 = (((proc_control_B.imvec[10] * -0.00301187450220627
           + proc_control_B.imvec[11] * 0.00082864946354184129) -
           proc_control_B.imvec[12] * 0.291807921220024) +
-                              ((proc_control_B.linearScaling *
+                              ((proc_control_B.Product_al *
           0.00080268590155159437 + proc_control_B.imvec[7] *
           0.032506453976272241) - proc_control_B.imvec[9] *
           0.0018646499569661989)) + (proc_control_B.i * 0.00080268590155159437 +
@@ -54508,29 +54690,29 @@ void proc_control::step()
           0.00019446645525741661) - proc_control_B.imvec[12] *
           0.003324115892995542);
         proc_control_B.A_h[154] = proc_control_B.t61;
-        proc_control_B.i = ((((proc_control_B.linearScaling *
+        proc_control_B.oc = ((((proc_control_B.Product_al *
           1.6062902063655571E-7 - proc_control_B.imvec[7] *
           7.5569972812640509E-5) - proc_control_B.imvec[9] * 0.01448357294143097)
-                             + proc_control_B.i * 1.6062902063655571E-7) +
-                            ((proc_control_B.imvec[10] * -0.59953739020136265 +
-                              proc_control_B.imvec[11] * 0.0085432434746820687)
-                             + proc_control_B.imvec[12] * 0.0030111351640179931))
+                              + proc_control_B.oc * 1.6062902063655571E-7) +
+                             ((proc_control_B.imvec[10] * -0.59953739020136265 +
+          proc_control_B.imvec[11] * 0.0085432434746820687) +
+                              proc_control_B.imvec[12] * 0.0030111351640179931))
           + 3.7480104815196341E-6;
-        proc_control_B.A_h[155] = proc_control_B.i;
+        proc_control_B.A_h[155] = proc_control_B.oc;
         proc_control_B.A_h[159] = -proc_control_B.t41;
-        proc_control_B.A_h[160] = proc_control_B.t40;
-        proc_control_B.A_h[161] = -proc_control_B.t39;
+        proc_control_B.A_h[160] = proc_control_B.rtb_sincos_o1_idx_0;
+        proc_control_B.A_h[161] = -proc_control_B.rtb_sincos_o1_idx_1;
         proc_control_B.A_h[162] = proc_control_B.t42;
-        proc_control_B.linearScaling = proc_control_B.imvec[12] *
+        proc_control_B.Product_al = proc_control_B.imvec[12] *
           proc_control_B.t10;
         proc_control_B.t10 = (((proc_control_B.imvec[10] * -0.030270009262121408
           + proc_control_B.imvec[11] * 6.2884941489263073E-5) +
           proc_control_B.imvec[12] * 0.0020006959490984312) -
-                              proc_control_B.residue * 0.0001032754577185093) +
-          (((proc_control_B.imvec[7] * 1.0571299073092789E-5 +
-             proc_control_B.imvec[8] * 1.3454180758607359) -
-            proc_control_B.linearScaling * 0.0001032754577185093) -
-           0.0050625224371818262);
+                              proc_control_B.Product2_al * 0.0001032754577185093)
+          + (((proc_control_B.imvec[7] * 1.0571299073092789E-5 +
+               proc_control_B.imvec[8] * 1.3454180758607359) -
+              proc_control_B.Product_al * 0.0001032754577185093) -
+             0.0050625224371818262);
         proc_control_B.A_h[163] = proc_control_B.t10;
         proc_control_B.d30 = (((proc_control_B.imvec[10] * 4.2079285691049859E-5
           - proc_control_B.imvec[11] * 0.016528998001422841) +
@@ -54553,10 +54735,10 @@ void proc_control::step()
         proc_control_B.d32 = (((proc_control_B.imvec[10] * 0.0032852614324183722
           - proc_control_B.imvec[11] * 0.291807921220024) -
           proc_control_B.imvec[12] * 0.00063467747547131872) +
-                              ((proc_control_B.residue * 0.00040656429737222281
-          + proc_control_B.imvec[7] * 0.24400486517334929) +
-          proc_control_B.imvec[8] * 0.00145353196782447)) +
-          (proc_control_B.linearScaling * 0.00040656429737222281 +
+                              ((proc_control_B.Product2_al *
+          0.00040656429737222281 + proc_control_B.imvec[7] * 0.24400486517334929)
+          + proc_control_B.imvec[8] * 0.00145353196782447)) +
+          (proc_control_B.Product_al * 0.00040656429737222281 +
            0.019929622420207);
         proc_control_B.A_h[166] = proc_control_B.d32;
         proc_control_B.d33 = ((((proc_control_B.residue * 1.6384160104928689E-7
@@ -54575,7 +54757,7 @@ void proc_control::step()
           [10] * -6.8948828938803766E-5 + proc_control_B.imvec[11] *
           0.0030111351640179931) + proc_control_B.imvec[12] *
           1.7711862430984169E-5);
-        proc_control_B.A_h[168] = proc_control_B.linearScaling;
+        proc_control_B.A_h[168] = proc_control_B.Product_al;
         for (proc_control_B.Ns = 0; proc_control_B.Ns < 169; proc_control_B.Ns++)
         {
           proc_control_B.C[proc_control_B.Ns + proc_control_B.Ns_i * 169] =
@@ -54589,29 +54771,34 @@ void proc_control::step()
                             proc_control_B.Ns_i]);
         memset(&proc_control_B.modCoeffs[0], 0, 36U * sizeof(real_T));
 
-        // Outputs for Enabled SubSystem: '<S6>/DVL Measurements' incorporates:
-        //   EnablePort: '<S177>/Enable'
+        // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+        //   EnablePort: '<S246>/Enable'
 
-        // Outputs for Enabled SubSystem: '<S202>/Enabled Subsystem' incorporates:
-        //   EnablePort: '<S205>/Enable'
+        // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+        //   EnablePort: '<S274>/Enable'
 
         proc_control_B.Ns = 0;
 
-        // End of Outputs for SubSystem: '<S202>/Enabled Subsystem'
-        // End of Outputs for SubSystem: '<S6>/DVL Measurements'
+        // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+        // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+        // End of Outputs for SubSystem: '<Root>/Model System'
         for (proc_control_B.base_index = 0; proc_control_B.base_index < 6;
              proc_control_B.base_index++) {
-          // Outputs for Enabled SubSystem: '<S6>/DVL Measurements' incorporates:
-          //   EnablePort: '<S177>/Enable'
+          // Outputs for Enabled SubSystem: '<Root>/Model System' incorporates:
+          //   EnablePort: '<S3>/Enable'
 
-          // Outputs for Enabled SubSystem: '<S202>/Enabled Subsystem' incorporates:
-          //   EnablePort: '<S205>/Enable'
+          // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+          //   EnablePort: '<S246>/Enable'
+
+          // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+          //   EnablePort: '<S274>/Enable'
 
           proc_control_B.modCoeffs[proc_control_B.Ns] = 1.0;
           proc_control_B.Ns += 7;
 
-          // End of Outputs for SubSystem: '<S202>/Enabled Subsystem'
-          // End of Outputs for SubSystem: '<S6>/DVL Measurements'
+          // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+          // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+          // End of Outputs for SubSystem: '<Root>/Model System'
         }
 
         proc_control_B.y_m[39] = proc_control_B.n_c;
@@ -54640,12 +54827,12 @@ void proc_control::step()
         proc_control_B.y_m[64] = proc_control_B.d7;
         proc_control_B.y_m[65] = proc_control_B.scale;
         proc_control_B.y_m[66] = proc_control_B.t33;
-        proc_control_B.y_m[67] = proc_control_B.t;
+        proc_control_B.y_m[67] = proc_control_B.t29;
         proc_control_B.y_m[68] = -proc_control_B.t44;
         proc_control_B.y_m[69] = proc_control_B.t45;
         proc_control_B.y_m[71] = -proc_control_B.t43;
         proc_control_B.y_m[72] = proc_control_B.t32_tmp;
-        proc_control_B.y_m[73] = proc_control_B.t24_tmp;
+        proc_control_B.y_m[73] = proc_control_B.t_tmp;
         proc_control_B.y_m[74] = proc_control_B.t34;
         proc_control_B.y_m[75] = proc_control_B.d8;
         proc_control_B.y_m[76] = proc_control_B.d9;
@@ -54671,8 +54858,8 @@ void proc_control::step()
         proc_control_B.y_m[101] = proc_control_B.d17;
         proc_control_B.y_m[102] = proc_control_B.d18;
         proc_control_B.y_m[103] = proc_control_B.t11;
-        proc_control_B.y_m[104] = proc_control_B.Product3_h;
-        proc_control_B.y_m[105] = proc_control_B.t37_tmp;
+        proc_control_B.y_m[104] = proc_control_B.b_norm;
+        proc_control_B.y_m[105] = proc_control_B.Divide2_j;
         proc_control_B.y_m[106] = proc_control_B.t15;
         proc_control_B.y_m[111] = proc_control_B.t17;
         proc_control_B.y_m[112] = (((proc_control_B.t55 + proc_control_B.t60) -
@@ -54681,10 +54868,10 @@ void proc_control::step()
         proc_control_B.y_m[114] = proc_control_B.d21;
         proc_control_B.y_m[115] = proc_control_B.d22;
         proc_control_B.y_m[116] = proc_control_B.t12;
-        proc_control_B.y_m[117] = proc_control_B.Product_o;
+        proc_control_B.y_m[117] = proc_control_B.t6;
         proc_control_B.y_m[118] = proc_control_B.t19;
-        proc_control_B.y_m[119] = proc_control_B.t35_tmp;
-        proc_control_B.y_m[124] = proc_control_B.t20;
+        proc_control_B.y_m[119] = proc_control_B.Divide1_e;
+        proc_control_B.y_m[124] = proc_control_B.absxk;
         proc_control_B.y_m[125] = proc_control_B.t14;
         proc_control_B.y_m[126] = ((((proc_control_B.t56 + proc_control_B.t60) +
           proc_control_B.rtb_sincos_o2_idx_0) + proc_control_B.t68) -
@@ -54692,7 +54879,7 @@ void proc_control::step()
         proc_control_B.y_m[127] = proc_control_B.t59;
         proc_control_B.y_m[128] = proc_control_B.t36_tmp;
         proc_control_B.y_m[129] = proc_control_B.t13;
-        proc_control_B.y_m[133] = -proc_control_B.t39;
+        proc_control_B.y_m[133] = -proc_control_B.rtb_sincos_o1_idx_1;
         proc_control_B.y_m[134] = proc_control_B.t42;
         proc_control_B.y_m[135] = proc_control_B.t41;
         proc_control_B.y_m[136] = -proc_control_B.t40;
@@ -54711,10 +54898,10 @@ void proc_control::step()
         proc_control_B.y_m[152] = proc_control_B.d28;
         proc_control_B.y_m[153] = proc_control_B.d29;
         proc_control_B.y_m[154] = proc_control_B.t61;
-        proc_control_B.y_m[155] = proc_control_B.i;
+        proc_control_B.y_m[155] = proc_control_B.oc;
         proc_control_B.y_m[159] = -proc_control_B.t41;
-        proc_control_B.y_m[160] = proc_control_B.t40;
-        proc_control_B.y_m[161] = -proc_control_B.t39;
+        proc_control_B.y_m[160] = proc_control_B.rtb_sincos_o1_idx_0;
+        proc_control_B.y_m[161] = -proc_control_B.rtb_sincos_o1_idx_1;
         proc_control_B.y_m[162] = proc_control_B.t42;
         proc_control_B.y_m[163] = proc_control_B.t10;
         proc_control_B.y_m[164] = proc_control_B.d30;
@@ -54783,7 +54970,7 @@ void proc_control::step()
 
         for (proc_control_B.nz = 0; proc_control_B.nz < proc_control_B.b_j;
              proc_control_B.nz++) {
-          proc_control_B.i = proc_control_P.Constant_Value_ce /
+          proc_control_B.Product1_fr = proc_control_P.Constant_Value_ce /
             proc_control_P.Constant1_Value_gt;
           proc_control_AUV8QuatSimFcn(proc_control_B.imvec,
             proc_control_B.u_scale, proc_control_B.DataStoreRead);
@@ -54799,7 +54986,8 @@ void proc_control::step()
           for (proc_control_B.Ns = 12; proc_control_B.Ns < 13; proc_control_B.Ns
                ++) {
             proc_control_B.imvec[proc_control_B.Ns] +=
-              proc_control_B.DataStoreRead[proc_control_B.Ns] * proc_control_B.i;
+              proc_control_B.imvec_c[proc_control_B.Ns] *
+              proc_control_B.Product1_fr;
           }
 
           proc_control_B.d_oi = proc_control_norm_nti(&proc_control_B.imvec[3]);
@@ -54840,21 +55028,21 @@ void proc_control::step()
         }
       }
 
-      // End of MATLAB Function: '<S72>/MATLAB Function'
+      // End of MATLAB Function: '<S141>/MATLAB Function'
 
-      // MATLAB Function: '<S143>/FixedHorizonOptimizer'
+      // MATLAB Function: '<S212>/FixedHorizonOptimizer'
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 3003; proc_control_B.Ns++)
       {
         proc_control_B.b_C[proc_control_B.Ns] = c_0[proc_control_B.Ns];
       }
 
-      memcpy(&proc_control_B.b_A[0], &d_1[0], 4851U * sizeof(real_T));
-      memset(&proc_control_B.Bu_o[0], 0, 1848U * sizeof(real_T));
-      memset(&proc_control_B.Bv_m[0], 0, 231U * sizeof(real_T));
-      memset(&proc_control_B.Dv_e[0], 0, 143U * sizeof(real_T));
+      std::memcpy(&proc_control_B.b_A[0], &d_1[0], 4851U * sizeof(real_T));
+      std::memset(&proc_control_B.Bu_o[0], 0, 1848U * sizeof(real_T));
+      std::memset(&proc_control_B.Bv_m[0], 0, 231U * sizeof(real_T));
+      std::memset(&proc_control_B.Dv_e[0], 0, 143U * sizeof(real_T));
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 21; proc_control_B.Ns++) {
-        memcpy(&proc_control_B.b_A[proc_control_B.Ns * 21], &b[proc_control_B.Ns
-               * 21], 21U * sizeof(real_T));
+        std::memcpy(&proc_control_B.b_A[proc_control_B.Ns * 21],
+                    &b[proc_control_B.Ns * 21], 21U * sizeof(real_T));
         for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++)
         {
           proc_control_B.Ns_i = 13 * proc_control_B.Ns + proc_control_B.nz;
@@ -54934,7 +55122,7 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
-        proc_control_B.DataStoreRead[proc_control_B.Ns] = 1.0;
+        proc_control_B.imvec_c[proc_control_B.Ns] = 1.0;
       }
 
       proc_control_B.base_index = 0;
@@ -55023,9 +55211,10 @@ void proc_control::step()
         }
       }
 
-      memcpy(&proc_control_B.b_xoff[0], &proc_control_B.X[0], 13U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.Bv_m[0], &proc_control_B.DX[0], 13U * sizeof(real_T));
+      std::memcpy(&proc_control_B.b_xoff[0], &proc_control_B.X[0], 13U * sizeof
+                  (real_T));
+      std::memcpy(&proc_control_B.Bv_m[0], &proc_control_B.DX[0], 13U * sizeof
+                  (real_T));
       for (proc_control_B.base_index = 0; proc_control_B.base_index < 10;
            proc_control_B.base_index++) {
         for (proc_control_B.Ns = 0; proc_control_B.Ns <= 10; proc_control_B.Ns +=
@@ -55063,10 +55252,10 @@ void proc_control::step()
               proc_control_B.imvec[proc_control_B.nz];
           }
 
-          proc_control_B.residue = 0.0;
+          proc_control_B.Product2_al = 0.0;
           for (proc_control_B.nz = 0; proc_control_B.nz < 8; proc_control_B.nz++)
           {
-            proc_control_B.residue += proc_control_B.Bu_o[(21 *
+            proc_control_B.Product2_al += proc_control_B.Bu_o[(21 *
               proc_control_B.nz + proc_control_B.Ns) +
               (proc_control_B.base_index + 1) * 168] *
               proc_control_B.U_f1[proc_control_B.nz];
@@ -55107,18 +55296,18 @@ void proc_control::step()
 
         proc_control_B.Ns = 0;
 
-        // End of Outputs for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+        // End of Outputs for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
         for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++)
         {
-          // Outputs for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' incorporates:
-          //   ActionPort: '<S238>/Action Port'
+          // Outputs for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' incorporates:
+          //   ActionPort: '<S307>/Action Port'
 
           proc_control_B.rseq_m[proc_control_B.nz + proc_control_B.base_index] =
             proc_control_B.CostFcn_workspace_runtimedata.ref[proc_control_B.Ns +
             proc_control_B.Ns_i] - proc_control_B.z_c[proc_control_B.nz];
           proc_control_B.Ns += 10;
 
-          // End of Outputs for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+          // End of Outputs for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
         }
 
         proc_control_B.base_index += 13;
@@ -55247,25 +55436,25 @@ void proc_control::step()
 
         tmp_2 = _mm_loadu_pd(&proc_control_B.U_f1[proc_control_B.Ns_i]);
 
-        // Math: '<S70>/Transpose' incorporates:
-        //   Gain: '<S115>/u_scale'
-        //   Merge generated from: '<S68>/Merge'
+        // Math: '<S139>/Transpose' incorporates:
+        //   Gain: '<S184>/u_scale'
+        //   Merge generated from: '<S137>/Merge'
 
         _mm_storeu_pd(&proc_control_B.Transpose_n[proc_control_B.Ns_i],
                       _mm_mul_pd(_mm_loadu_pd
           (&proc_control_P.u_scale_Gain_o[proc_control_B.Ns_i]), tmp_2));
 
-        // Update for UnitDelay: '<S115>/last_mv' incorporates:
-        //   Gain: '<S115>/u_scale'
-        //   Math: '<S70>/Transpose'
-        //   Merge generated from: '<S68>/Merge'
+        // Update for UnitDelay: '<S184>/last_mv' incorporates:
+        //   Gain: '<S184>/u_scale'
+        //   Math: '<S139>/Transpose'
+        //   Merge generated from: '<S137>/Merge'
 
         _mm_storeu_pd(&proc_control_DW.last_mv_DSTATE[proc_control_B.Ns_i],
                       tmp_2);
       }
 
-      // Update for Delay: '<S72>/Delay1' incorporates:
-      //   Gain: '<S115>/useq_scale'
+      // Update for Delay: '<S141>/Delay1' incorporates:
+      //   Gain: '<S184>/useq_scale'
 
       for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i <= 86;
            proc_control_B.Ns_i += 2) {
@@ -55276,8 +55465,8 @@ void proc_control::step()
           (&proc_control_P.useq_scale_Gain[proc_control_B.Ns_i]), tmp_2));
       }
 
-      // End of Update for Delay: '<S72>/Delay1'
-      // End of Outputs for SubSystem: '<S68>/If Action Subsystem1'
+      // End of Update for Delay: '<S141>/Delay1'
+      // End of Outputs for SubSystem: '<S137>/If Action Subsystem1'
       break;
 
      case 3:
@@ -55299,40 +55488,40 @@ void proc_control::step()
         proc_control_DW.icLoad_o = true;
         proc_control_DW.clockTickCounter = 0;
 
-        // End of InitializeConditions for SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' 
+        // End of InitializeConditions for SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' 
       }
 
-      // Outputs for IfAction SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' incorporates:
-      //   ActionPort: '<S75>/Action Port'
+      // Outputs for IfAction SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' incorporates:
+      //   ActionPort: '<S144>/Action Port'
 
-      // Reshape: '<S148>/Reshape'
+      // Reshape: '<S217>/Reshape'
       proc_control_B.CostFcn_workspace_runtimedata.x[0] =
-        proc_control_B.WorldPosition[0];
+        proc_control_B.WorldPosition_f[0];
       proc_control_B.CostFcn_workspace_runtimedata.x[1] =
-        proc_control_B.WorldPosition[1];
+        proc_control_B.WorldPosition_f[1];
       proc_control_B.CostFcn_workspace_runtimedata.x[2] =
-        proc_control_B.WorldPosition[2];
+        proc_control_B.WorldPosition_f[2];
       proc_control_B.CostFcn_workspace_runtimedata.x[3] = proc_control_B.qS2W[0];
       proc_control_B.CostFcn_workspace_runtimedata.x[4] = proc_control_B.qS2W[1];
       proc_control_B.CostFcn_workspace_runtimedata.x[5] = proc_control_B.qS2W[2];
       proc_control_B.CostFcn_workspace_runtimedata.x[6] = proc_control_B.qS2W[3];
       proc_control_B.CostFcn_workspace_runtimedata.x[7] =
-        proc_control_B.BodyVelocity[0];
+        proc_control_B.BodyVelocity_b[0];
       proc_control_B.CostFcn_workspace_runtimedata.x[10] =
-        proc_control_B.AngularRate[0];
+        proc_control_B.AngularRate_m[0];
       proc_control_B.CostFcn_workspace_runtimedata.x[8] =
-        proc_control_B.BodyVelocity[1];
+        proc_control_B.BodyVelocity_b[1];
       proc_control_B.CostFcn_workspace_runtimedata.x[11] =
-        proc_control_B.AngularRate[1];
+        proc_control_B.AngularRate_m[1];
       proc_control_B.CostFcn_workspace_runtimedata.x[9] =
-        proc_control_B.BodyVelocity[2];
+        proc_control_B.BodyVelocity_b[2];
       proc_control_B.CostFcn_workspace_runtimedata.x[12] =
-        proc_control_B.AngularRate[2];
+        proc_control_B.AngularRate_m[2];
 
-      // Delay: '<S149>/mv_Delay' incorporates:
-      //   Constant: '<S149>/ones'
-      //   Delay: '<S75>/Delay'
-      //   Product: '<S149>/Product'
+      // Delay: '<S218>/mv_Delay' incorporates:
+      //   Constant: '<S218>/ones'
+      //   Delay: '<S144>/Delay'
+      //   Product: '<S218>/Product'
 
       if (proc_control_DW.icLoad) {
         proc_control_B.Ns = 0;
@@ -55357,9 +55546,9 @@ void proc_control::step()
         }
       }
 
-      // Selector: '<S149>/Selector1' incorporates:
-      //   Constant: '<S149>/Constant1'
-      //   Delay: '<S149>/mv_Delay'
+      // Selector: '<S218>/Selector1' incorporates:
+      //   Constant: '<S218>/Constant1'
+      //   Delay: '<S218>/mv_Delay'
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 8; proc_control_B.Ns++) {
         for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++)
@@ -55371,29 +55560,29 @@ void proc_control::step()
         }
       }
 
-      // End of Selector: '<S149>/Selector1'
+      // End of Selector: '<S218>/Selector1'
 
-      // Delay: '<S149>/x_Delay' incorporates:
-      //   Constant: '<S149>/ones'
-      //   Product: '<S149>/Product1'
+      // Delay: '<S218>/x_Delay' incorporates:
+      //   Constant: '<S218>/ones'
+      //   Product: '<S218>/Product1'
 
       if (proc_control_DW.icLoad_g) {
-        // Product: '<S149>/Product1' incorporates:
-        //   Reshape: '<S149>/reshape_x'
+        // Product: '<S218>/Product1' incorporates:
+        //   Reshape: '<S218>/reshape_x'
 
-        proc_control_B.DataStoreRead[0] = proc_control_B.WorldPosition[0];
-        proc_control_B.DataStoreRead[1] = proc_control_B.WorldPosition[1];
-        proc_control_B.DataStoreRead[2] = proc_control_B.WorldPosition[2];
-        proc_control_B.DataStoreRead[3] = proc_control_B.qS2W[0];
-        proc_control_B.DataStoreRead[4] = proc_control_B.qS2W[1];
-        proc_control_B.DataStoreRead[5] = proc_control_B.qS2W[2];
-        proc_control_B.DataStoreRead[6] = proc_control_B.qS2W[3];
-        proc_control_B.DataStoreRead[7] = proc_control_B.BodyVelocity[0];
-        proc_control_B.DataStoreRead[10] = proc_control_B.AngularRate[0];
-        proc_control_B.DataStoreRead[8] = proc_control_B.BodyVelocity[1];
-        proc_control_B.DataStoreRead[11] = proc_control_B.AngularRate[1];
-        proc_control_B.DataStoreRead[9] = proc_control_B.BodyVelocity[2];
-        proc_control_B.DataStoreRead[12] = proc_control_B.AngularRate[2];
+        proc_control_B.imvec_c[0] = proc_control_B.WorldPosition_f[0];
+        proc_control_B.imvec_c[1] = proc_control_B.WorldPosition_f[1];
+        proc_control_B.imvec_c[2] = proc_control_B.WorldPosition_f[2];
+        proc_control_B.imvec_c[3] = proc_control_B.qS2W[0];
+        proc_control_B.imvec_c[4] = proc_control_B.qS2W[1];
+        proc_control_B.imvec_c[5] = proc_control_B.qS2W[2];
+        proc_control_B.imvec_c[6] = proc_control_B.qS2W[3];
+        proc_control_B.imvec_c[7] = proc_control_B.BodyVelocity_b[0];
+        proc_control_B.imvec_c[10] = proc_control_B.AngularRate_m[0];
+        proc_control_B.imvec_c[8] = proc_control_B.BodyVelocity_b[1];
+        proc_control_B.imvec_c[11] = proc_control_B.AngularRate_m[1];
+        proc_control_B.imvec_c[9] = proc_control_B.BodyVelocity_b[2];
+        proc_control_B.imvec_c[12] = proc_control_B.AngularRate_m[2];
         proc_control_B.Ns = 0;
         for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++)
         {
@@ -55409,16 +55598,16 @@ void proc_control::step()
                proc_control_B.b_k++) {
             proc_control_DW.x_Delay_DSTATE[proc_control_B.b_k +
               proc_control_B.Ns] = proc_control_P.ones_Value[proc_control_B.b_k]
-              * proc_control_B.DataStoreRead[proc_control_B.nz];
+              * proc_control_B.imvec_c[proc_control_B.nz];
           }
 
           proc_control_B.Ns += 11;
         }
       }
 
-      // Selector: '<S149>/Selector' incorporates:
-      //   Constant: '<S149>/Constant'
-      //   Delay: '<S149>/x_Delay'
+      // Selector: '<S218>/Selector' incorporates:
+      //   Constant: '<S218>/Constant'
+      //   Delay: '<S218>/x_Delay'
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 13; proc_control_B.Ns++) {
         for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++)
@@ -55430,30 +55619,30 @@ void proc_control::step()
         }
       }
 
-      // End of Selector: '<S149>/Selector'
+      // End of Selector: '<S218>/Selector'
 
-      // Delay: '<S149>/slack_delay' incorporates:
-      //   Constant: '<S147>/e.init_zero'
+      // Delay: '<S218>/slack_delay' incorporates:
+      //   Constant: '<S216>/e.init_zero'
 
       if (proc_control_DW.icLoad_o) {
         proc_control_DW.slack_delay_DSTATE = proc_control_P.einit_zero_Value;
       }
 
-      // MATLAB Function: '<S148>/NLMPC' incorporates:
-      //   DataTypeConversion: '<S148>/mo or x Conversion1'
-      //   DataTypeConversion: '<S148>/mo or x Conversion13'
-      //   DataTypeConversion: '<S148>/mo or x Conversion14'
-      //   DataTypeConversion: '<S148>/mo or x Conversion15'
-      //   DataTypeConversion: '<S148>/mo or x Conversion5'
-      //   DataTypeConversion: '<S148>/mo or x Conversion6'
-      //   Delay: '<S149>/slack_delay'
-      //   Delay: '<S75>/Delay'
-      //   MATLABSystem: '<S69>/MATLAB System'
-      //   Merge generated from: '<S7>/Merge'
-      //   Reshape: '<S148>/Reshape'
-      //   Selector: '<S149>/Selector'
-      //   Selector: '<S149>/Selector1'
-      //   SignalConversion generated from: '<S69>/MATLAB System'
+      // MATLAB Function: '<S217>/NLMPC' incorporates:
+      //   DataTypeConversion: '<S217>/mo or x Conversion1'
+      //   DataTypeConversion: '<S217>/mo or x Conversion13'
+      //   DataTypeConversion: '<S217>/mo or x Conversion14'
+      //   DataTypeConversion: '<S217>/mo or x Conversion15'
+      //   DataTypeConversion: '<S217>/mo or x Conversion5'
+      //   DataTypeConversion: '<S217>/mo or x Conversion6'
+      //   Delay: '<S144>/Delay'
+      //   Delay: '<S218>/slack_delay'
+      //   MATLABSystem: '<S138>/MATLAB System'
+      //   Merge generated from: '<S10>/Merge'
+      //   Reshape: '<S217>/Reshape'
+      //   Selector: '<S218>/Selector'
+      //   Selector: '<S218>/Selector1'
+      //   SignalConversion generated from: '<S138>/MATLAB System'
       //
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 13; proc_control_B.nz++) {
@@ -55505,8 +55694,8 @@ void proc_control::step()
         proc_control_B.CostFcn_workspace_runtimedata.MVMax,
         proc_control_B.b_utarget, proc_control_B.dv6, proc_control_B.A_data,
         proc_control_B.A_size, proc_control_B.B_data_i, proc_control_B.g_size);
-      memcpy(&proc_control_B.CostFcn_workspace_runtimedata.lastMV[0],
-             &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_B.CostFcn_workspace_runtimedata.lastMV[0],
+                  &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
       proc_control_B.CostFcn_workspace_runtimedata.ECRWeight = 100000.0;
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 130; proc_control_B.Ns++)
       {
@@ -55529,23 +55718,23 @@ void proc_control::step()
           = 0.0;
       }
 
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.x[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.lastMV[0],
-             &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.ref[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.OutputWeights[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.OutputWeights[0],
-             130U * sizeof(real_T));
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.MVWeights[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.MVWeights[0], 80U *
-             sizeof(real_T));
-      memcpy(&proc_control_B.ConFcn_workspace_runtimedata.MVRateWeights[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.MVRateWeights[0], 80U
-             * sizeof(real_T));
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.x[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U *
+                  sizeof(real_T));
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.lastMV[0],
+                  &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.ref[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U *
+                  sizeof(real_T));
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.OutputWeights[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.OutputWeights[0],
+                  130U * sizeof(real_T));
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.MVWeights[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.MVWeights[0],
+                  80U * sizeof(real_T));
+      std::memcpy(&proc_control_B.ConFcn_workspace_runtimedata.MVRateWeights[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.MVRateWeights[0],
+                  80U * sizeof(real_T));
       proc_control_B.ConFcn_workspace_runtimedata.ECRWeight = 100000.0;
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 130; proc_control_B.Ns++)
       {
@@ -55584,15 +55773,15 @@ void proc_control::step()
       proc_control_B.expl_temp.NumOfOutputs = 13.0;
       proc_control_B.expl_temp.NumOfStates = 13.0;
       proc_control_B.expl_temp.PredictionHorizon = 10.0;
-      memset(&proc_control_B.expl_temp.MVTarget[0], 0, 80U * sizeof(real_T));
-      memcpy(&proc_control_B.expl_temp.References[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.expl_temp.LastMV[0],
-             &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
-      memcpy(&proc_control_B.expl_temp.CurrentStates[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U * sizeof
-             (real_T));
+      std::memset(&proc_control_B.expl_temp.MVTarget[0], 0, 80U * sizeof(real_T));
+      std::memcpy(&proc_control_B.expl_temp.References[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U *
+                  sizeof(real_T));
+      std::memcpy(&proc_control_B.expl_temp.LastMV[0],
+                  &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_B.expl_temp.CurrentStates[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U *
+                  sizeof(real_T));
       proc_control_B.expl_temp.Ts = 0.1;
       proc_control_B.expl_temp_l.PassivityUsePredictedX = true;
       proc_control_B.expl_temp_l.OutputPassivityIndex = 0.1;
@@ -55606,15 +55795,16 @@ void proc_control::step()
       proc_control_B.expl_temp_l.NumOfOutputs = 13.0;
       proc_control_B.expl_temp_l.NumOfStates = 13.0;
       proc_control_B.expl_temp_l.PredictionHorizon = 10.0;
-      memset(&proc_control_B.expl_temp_l.MVTarget[0], 0, 80U * sizeof(real_T));
-      memcpy(&proc_control_B.expl_temp_l.References[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U * sizeof
-             (real_T));
-      memcpy(&proc_control_B.expl_temp_l.LastMV[0],
-             &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
-      memcpy(&proc_control_B.expl_temp_l.CurrentStates[0],
-             &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U * sizeof
-             (real_T));
+      std::memset(&proc_control_B.expl_temp_l.MVTarget[0], 0, 80U * sizeof
+                  (real_T));
+      std::memcpy(&proc_control_B.expl_temp_l.References[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.ref[0], 130U *
+                  sizeof(real_T));
+      std::memcpy(&proc_control_B.expl_temp_l.LastMV[0],
+                  &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_B.expl_temp_l.CurrentStates[0],
+                  &proc_control_B.CostFcn_workspace_runtimedata.x[0], 13U *
+                  sizeof(real_T));
       proc_control_B.expl_temp_l.Ts = 0.1;
       proc_control_B.Ns = 0;
       for (proc_control_B.nz = 0; proc_control_B.nz < 9; proc_control_B.nz++) {
@@ -55657,16 +55847,16 @@ void proc_control::step()
       }
 
       for (proc_control_B.Ns = 0; proc_control_B.Ns < 8; proc_control_B.Ns++) {
-        proc_control_B.residue = 0.0;
+        proc_control_B.Product2_al = 0.0;
         proc_control_B.nz = 0;
         for (proc_control_B.b_k = 0; proc_control_B.b_k < 80; proc_control_B.b_k
              ++) {
-          proc_control_B.residue += static_cast<real_T>(a[proc_control_B.nz +
-            proc_control_B.Ns]) * proc_control_B.b_utarget[proc_control_B.b_k];
+          proc_control_B.Product2_al += static_cast<real_T>(a[proc_control_B.nz
+            + proc_control_B.Ns]) * proc_control_B.b_utarget[proc_control_B.b_k];
           proc_control_B.nz += 8;
         }
 
-        proc_control_B.u_scale[proc_control_B.Ns] = proc_control_B.residue;
+        proc_control_B.u_scale[proc_control_B.Ns] = proc_control_B.Product2_al;
       }
 
       memcpy(&proc_control_B.rtb_Selector_m_p[0], &proc_control_B.rseq_m[0],
@@ -55701,17 +55891,17 @@ void proc_control::step()
         proc_control_B.oc = -2.0;
       }
 
-      // Update for Delay: '<S149>/slack_delay' incorporates:
-      //   MATLAB Function: '<S148>/NLMPC'
-      //   Reshape: '<S148>/Reshape'
+      // Update for Delay: '<S218>/slack_delay' incorporates:
+      //   MATLAB Function: '<S217>/NLMPC'
+      //   Reshape: '<S217>/Reshape'
 
       proc_control_getXUe(proc_control_B.z,
                           proc_control_B.CostFcn_workspace_runtimedata.x,
                           proc_control_B.Y, proc_control_B.U,
                           &proc_control_DW.slack_delay_DSTATE);
 
-      // MATLAB Function: '<S148>/NLMPC' incorporates:
-      //   Delay: '<S75>/Delay'
+      // MATLAB Function: '<S217>/NLMPC' incorporates:
+      //   Delay: '<S144>/Delay'
 
       if (proc_control_B.oc > 0.0) {
         proc_control_B.Ns = 0;
@@ -55722,12 +55912,12 @@ void proc_control::step()
           proc_control_B.Ns += 11;
         }
       } else {
-        memcpy(&proc_control_B.u_scale[0], &proc_control_DW.Delay_DSTATE_pp[0],
-               sizeof(real_T) << 3U);
+        std::memcpy(&proc_control_B.u_scale[0],
+                    &proc_control_DW.Delay_DSTATE_pp[0], sizeof(real_T) << 3U);
       }
 
-      // DataTypeConversion: '<S75>/Data Type Conversion' incorporates:
-      //   MATLAB Function: '<S148>/NLMPC'
+      // DataTypeConversion: '<S144>/Data Type Conversion' incorporates:
+      //   MATLAB Function: '<S217>/NLMPC'
 
       proc_control_B.n_c = floor(proc_control_B.oc);
       if (rtIsNaN(proc_control_B.n_c) || rtIsInf(proc_control_B.n_c)) {
@@ -55776,70 +55966,74 @@ void proc_control::step()
       //   Merge generated from: '<S68>/Merge'
       //   SignalConversion generated from: '<S75>/Out'
 
-      memcpy(&proc_control_B.Transpose_n[0], &proc_control_B.u_scale[0], sizeof
-             (real_T) << 3U);
+      // Math: '<S139>/Transpose' incorporates:
+      //   Merge generated from: '<S137>/Merge'
+      //   SignalConversion generated from: '<S144>/Out'
 
-      // Update for Delay: '<S75>/Delay' incorporates:
-      //   Math: '<S70>/Transpose'
-      //   Merge generated from: '<S68>/Merge'
-      //   SignalConversion generated from: '<S75>/Out'
+      std::memcpy(&proc_control_B.Transpose_n[0], &proc_control_B.u_scale[0],
+                  sizeof(real_T) << 3U);
 
-      memcpy(&proc_control_DW.Delay_DSTATE_pp[0], &proc_control_B.u_scale[0],
-             sizeof(real_T) << 3U);
+      // Update for Delay: '<S144>/Delay' incorporates:
+      //   Math: '<S139>/Transpose'
+      //   Merge generated from: '<S137>/Merge'
+      //   SignalConversion generated from: '<S144>/Out'
 
-      // Update for Delay: '<S149>/mv_Delay' incorporates:
-      //   MATLAB Function: '<S148>/NLMPC'
+      std::memcpy(&proc_control_DW.Delay_DSTATE_pp[0], &proc_control_B.u_scale[0],
+                  sizeof(real_T) << 3U);
+
+      // Update for Delay: '<S218>/mv_Delay' incorporates:
+      //   MATLAB Function: '<S217>/NLMPC'
 
       proc_control_DW.icLoad = false;
-      memcpy(&proc_control_DW.mv_Delay_DSTATE[0], &proc_control_B.U[0], 88U *
-             sizeof(real_T));
+      std::memcpy(&proc_control_DW.mv_Delay_DSTATE[0], &proc_control_B.U[0], 88U
+                  * sizeof(real_T));
 
-      // Update for Delay: '<S149>/x_Delay' incorporates:
-      //   MATLAB Function: '<S148>/NLMPC'
+      // Update for Delay: '<S218>/x_Delay' incorporates:
+      //   MATLAB Function: '<S217>/NLMPC'
 
       proc_control_DW.icLoad_g = false;
-      memcpy(&proc_control_DW.x_Delay_DSTATE[0], &proc_control_B.Y[0], 143U *
-             sizeof(real_T));
+      std::memcpy(&proc_control_DW.x_Delay_DSTATE[0], &proc_control_B.Y[0], 143U
+                  * sizeof(real_T));
 
-      // Update for Delay: '<S149>/slack_delay'
+      // Update for Delay: '<S218>/slack_delay'
       proc_control_DW.icLoad_o = false;
 
-      // End of Outputs for SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' 
+      // End of Outputs for SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' 
       break;
 
      default:
-      // Outputs for IfAction SubSystem: '<S68>/If Action Subsystem3' incorporates:
-      //   ActionPort: '<S74>/Action Port'
+      // Outputs for IfAction SubSystem: '<S137>/If Action Subsystem3' incorporates:
+      //   ActionPort: '<S143>/Action Port'
 
-      // Merge generated from: '<S68>/Merge' incorporates:
-      //   Constant: '<S74>/Constant1'
-      //   SignalConversion generated from: '<S74>/Constant1'
+      // Merge generated from: '<S137>/Merge' incorporates:
+      //   Constant: '<S143>/Constant1'
+      //   SignalConversion generated from: '<S143>/Constant1'
 
       proc_control_B.MpcStatus = proc_control_P.Constant1_Value_j;
 
-      // Merge generated from: '<S68>/Merge' incorporates:
-      //   Constant: '<S74>/Constant2'
-      //   SignalConversion generated from: '<S74>/Constant2'
+      // Merge generated from: '<S137>/Merge' incorporates:
+      //   Constant: '<S143>/Constant2'
+      //   SignalConversion generated from: '<S143>/Constant2'
 
       proc_control_B.alive = proc_control_P.Constant2_Value_n;
 
-      // Math: '<S70>/Transpose' incorporates:
-      //   Constant: '<S74>/Constant'
-      //   Merge generated from: '<S68>/Merge'
-      //   SignalConversion generated from: '<S74>/Constant'
+      // Math: '<S139>/Transpose' incorporates:
+      //   Constant: '<S143>/Constant'
+      //   Merge generated from: '<S137>/Merge'
+      //   SignalConversion generated from: '<S143>/Constant'
 
-      memcpy(&proc_control_B.Transpose_n[0], &proc_control_P.Constant_Value_g3b
-             [0], sizeof(real_T) << 3U);
+      std::memcpy(&proc_control_B.Transpose_n[0],
+                  &proc_control_P.Constant_Value_g3b[0], sizeof(real_T) << 3U);
 
-      // End of Outputs for SubSystem: '<S68>/If Action Subsystem3'
+      // End of Outputs for SubSystem: '<S137>/If Action Subsystem3'
       break;
     }
   }
 
-  // Switch: '<S175>/Switch2' incorporates:
-  //   MATLABSystem: '<S69>/MATLAB System'
-  //   Math: '<S70>/Transpose'
-  //   RelationalOperator: '<S175>/LowerRelop1'
+  // Switch: '<S244>/Switch2' incorporates:
+  //   MATLABSystem: '<S138>/MATLAB System'
+  //   Math: '<S139>/Transpose'
+  //   RelationalOperator: '<S244>/LowerRelop1'
 
   for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i++)
   {
@@ -55852,15 +56046,15 @@ void proc_control::step()
     if (proc_control_B.residue > proc_control_B.linearScaling) {
       proc_control_B.u_scale[proc_control_B.Ns_i] = proc_control_B.linearScaling;
     } else {
-      // RelationalOperator: '<S175>/UpperRelop' incorporates:
-      //   MATLABSystem: '<S69>/MATLAB System'
+      // RelationalOperator: '<S244>/UpperRelop' incorporates:
+      //   MATLABSystem: '<S138>/MATLAB System'
 
       proc_control_B.linearScaling = proc_control_B.mvmin[proc_control_B.Ns_i];
 
-      // Switch: '<S175>/Switch' incorporates:
-      //   MATLABSystem: '<S69>/MATLAB System'
-      //   RelationalOperator: '<S175>/UpperRelop'
-      //   Switch: '<S175>/Switch2'
+      // Switch: '<S244>/Switch' incorporates:
+      //   MATLABSystem: '<S138>/MATLAB System'
+      //   RelationalOperator: '<S244>/UpperRelop'
+      //   Switch: '<S244>/Switch2'
 
       if (proc_control_B.residue < proc_control_B.linearScaling) {
         proc_control_B.u_scale[proc_control_B.Ns_i] =
@@ -55869,14 +56063,14 @@ void proc_control::step()
         proc_control_B.u_scale[proc_control_B.Ns_i] = proc_control_B.residue;
       }
 
-      // End of Switch: '<S175>/Switch'
+      // End of Switch: '<S244>/Switch'
     }
   }
 
-  // End of Switch: '<S175>/Switch2'
+  // End of Switch: '<S244>/Switch2'
 
-  // Lookup_n-D: '<S70>/n-D Lookup Table1' incorporates:
-  //   Switch: '<S175>/Switch2'
+  // Lookup_n-D: '<S139>/n-D Lookup Table1' incorporates:
+  //   Switch: '<S244>/Switch2'
 
   for (proc_control_B.base_index = 0; proc_control_B.base_index < 8;
        proc_control_B.base_index++) {
@@ -55888,9 +56082,9 @@ void proc_control::step()
   }
 
   if ((&proc_control_M)->Timing.TaskCounters.TID[2] == 0) {
-    // DataTypeConversion: '<S70>/Data Type Conversion' incorporates:
-    //   Delay: '<S70>/Delay'
-    //   Sum: '<S70>/Sum'
+    // DataTypeConversion: '<S139>/Data Type Conversion' incorporates:
+    //   Delay: '<S139>/Delay'
+    //   Sum: '<S139>/Sum'
 
     proc_control_B.isMpcAlive = (proc_control_DW.Delay_DSTATE_p -
       proc_control_B.alive != 0.0);
@@ -55899,27 +56093,104 @@ void proc_control::step()
   // Outputs for Enabled SubSystem: '<Root>/Enabled Subsystem1' incorporates:
   //   EnablePort: '<S2>/Enable'
 
-  // Start for MATLABSystem: '<S45>/MATLAB System' incorporates:
-  //   Constant: '<S21>/Constant'
-  //   Constant: '<S21>/Constant1'
-  //   Constant: '<S21>/Constant3'
-  //   Constant: '<S21>/Constant4'
-
+  // Start for MATLABSystem: '<S114>/MATLAB System' incorporates:
+  //   Constant: '<S23>/Constant'
+  //   Constant: '<S23>/Constant1'
+  //   Constant: '<S23>/Constant3'
+  //   Constant: '<S23>/Constant4'
+  //   Constant: '<S29>/Constant'
+  //   Constant: '<S32>/Constant1'
+  //   Constant: '<S75>/Constant'
+  //   Constant: '<S76>/Constant'
+  //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+  //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+  //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator3'
+  //   DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+  //   DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+  //   Fcn: '<S55>/q0'
+  //   Fcn: '<S55>/q2'
+  //   Gain: '<S29>/Gain1'
+  //   Gain: '<S44>/Output'
+  //   Gain: '<S75>/Gain'
+  //   Gain: '<S75>/Gain1'
+  //   Gain: '<S75>/Gain2'
+  //   Gain: '<S76>/Gain'
+  //   Gain: '<S76>/Gain1'
+  //   Gain: '<S76>/Gain2'
+  //   MATLAB Function: '<S29>/MATLAB Function'
+  //   MATLAB Function: '<S3>/Quaternion Normalise'
+  //   MATLABSystem: '<S29>/Divide by Constant and Round1'
+  //   MATLABSystem: '<S3>/MATLAB System'
+  //   MATLABSystem: '<S58>/SourceBlock'
+  //   Product: '<S51>/Divide'
+  //   Product: '<S61>/Product1'
+  //   Product: '<S61>/Product2'
+  //   Product: '<S61>/Product3'
+  //   Product: '<S62>/Product'
+  //   Product: '<S62>/Product1'
+  //   Product: '<S62>/Product2'
+  //   Product: '<S62>/Product3'
+  //   Product: '<S69>/Product4'
+  //   Product: '<S69>/Product5'
+  //   Product: '<S69>/Product8'
+  //   Product: '<S70>/Product4'
+  //   Product: '<S70>/Product5'
+  //   Product: '<S70>/Product8'
+  //   Product: '<S74>/Product'
+  //   Product: '<S74>/Product1'
+  //   Product: '<S74>/Product2'
+  //   Product: '<S75>/Product'
+  //   Product: '<S75>/Product1'
+  //   Product: '<S75>/Product2'
+  //   Product: '<S75>/Product3'
+  //   Product: '<S75>/Product4'
+  //   Product: '<S75>/Product5'
+  //   Product: '<S75>/Product8'
+  //   Product: '<S76>/Product2'
+  //   Product: '<S76>/Product4'
+  //   Product: '<S76>/Product6'
+  //   RandomNumber: '<S44>/White Noise'
+  //   SignalConversion generated from: '<S3>/MATLAB System'
+  //   Sqrt: '<S66>/sqrt'
+  //   Sum: '<S29>/Sum2'
+  //   Sum: '<S29>/Sum3'
+  //   Sum: '<S29>/Sum4'
+  //   Sum: '<S29>/Sum6'
+  //   Sum: '<S61>/Sum'
+  //   Sum: '<S69>/Sum'
+  //   Sum: '<S70>/Sum'
+  //   Trigonometry: '<S55>/sincos'
+  //   UnaryMinus: '<S50>/Unary Minus'
+  //   UnaryMinus: '<S50>/Unary Minus1'
+  //   UnaryMinus: '<S50>/Unary Minus2'
+  //
   if (proc_control_DW.obj_i.m_notDryRun > 0.0) {
-    // BusCreator: '<S2>/Bus Creator' incorporates:
-    //   MATLAB Function: '<S2>/MATLAB Function'
+    // BusAssignment: '<S23>/Bus Assignment' incorporates:
+    //   Constant: '<S24>/Constant'
 
-    proc_control_MATLABFunction(proc_control_B.pwm,
-      &proc_control_B.BusCreator_g.motor1, &proc_control_B.BusCreator_g.motor2,
-      &proc_control_B.BusCreator_g.motor3, &proc_control_B.BusCreator_g.motor4,
-      &proc_control_B.BusCreator_g.motor5, &proc_control_B.BusCreator_g.motor6,
-      &proc_control_B.BusCreator_g.motor7, &proc_control_B.BusCreator_g.motor8);
+    proc_control_B.BusAssignment = proc_control_P.Constant_Value_k;
 
-    // MATLABSystem: '<S19>/SinkBlock'
-    Pub_proc_control_1380.publish(&proc_control_B.BusCreator_g);
+    // BusAssignment: '<S2>/Bus Assignment'
+    proc_control_B.BusAssignment_p.motor1 = proc_control_B.pwm[0];
+    proc_control_B.BusAssignment_p.motor2 = proc_control_B.pwm[1];
+    proc_control_B.BusAssignment_p.motor3 = proc_control_B.pwm[2];
+    proc_control_B.BusAssignment_p.motor4 = proc_control_B.pwm[3];
+    proc_control_B.BusAssignment_p.motor5 = proc_control_B.pwm[4];
+    proc_control_B.BusAssignment_p.motor6 = proc_control_B.pwm[5];
+    proc_control_B.BusAssignment_p.motor7 = proc_control_B.pwm[6];
+    proc_control_B.BusAssignment_p.motor8 = proc_control_B.pwm[7];
+
+    // MATLABSystem: '<S21>/SinkBlock'
+    Pub_proc_control_1380.publish(&proc_control_B.BusAssignment_p);
 
     // DataTypeConversion: '<S2>/Data Type Conversion' incorporates:
-    //   Switch: '<S175>/Switch2'
+    //   Switch: '<S244>/Switch2'
 
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i++)
     {
@@ -55941,25 +56212,21 @@ void proc_control::step()
 
     // End of DataTypeConversion: '<S2>/Data Type Conversion'
 
-    // BusCreator: '<S2>/Bus Creator1' incorporates:
-    //   MATLAB Function: '<S2>/MATLAB Function1'
+    // BusAssignment: '<S2>/Bus Assignment1'
+    proc_control_B.BusAssignment1.motor1 = proc_control_B.DataTypeConversion_o[0];
+    proc_control_B.BusAssignment1.motor2 = proc_control_B.DataTypeConversion_o[1];
+    proc_control_B.BusAssignment1.motor3 = proc_control_B.DataTypeConversion_o[2];
+    proc_control_B.BusAssignment1.motor4 = proc_control_B.DataTypeConversion_o[3];
+    proc_control_B.BusAssignment1.motor5 = proc_control_B.DataTypeConversion_o[4];
+    proc_control_B.BusAssignment1.motor6 = proc_control_B.DataTypeConversion_o[5];
+    proc_control_B.BusAssignment1.motor7 = proc_control_B.DataTypeConversion_o[6];
+    proc_control_B.BusAssignment1.motor8 = proc_control_B.DataTypeConversion_o[7];
 
-    proc_control_MATLABFunction(proc_control_B.pwm,
-      &proc_control_B.BusCreator1_g.motor1, &proc_control_B.BusCreator1_g.motor2,
-      &proc_control_B.BusCreator1_g.motor3, &proc_control_B.BusCreator1_g.motor4,
-      &proc_control_B.BusCreator1_g.motor5, &proc_control_B.BusCreator1_g.motor6,
-      &proc_control_B.BusCreator1_g.motor7, &proc_control_B.BusCreator1_g.motor8);
+    // MATLABSystem: '<S22>/SinkBlock'
+    Pub_proc_control_1386.publish(&proc_control_B.BusAssignment1);
 
-    // MATLABSystem: '<S20>/SinkBlock'
-    Pub_proc_control_1386.publish(&proc_control_B.BusCreator1_g);
-
-    // BusAssignment: '<S21>/Bus Assignment' incorporates:
-    //   Constant: '<S22>/Constant'
-
-    proc_control_B.BusAssignment = proc_control_P.Constant_Value_k;
-
-    // DataTypeConversion: '<S21>/Data Type Conversion2' incorporates:
-    //   SignalConversion generated from: '<S69>/MATLAB System'
+    // DataTypeConversion: '<S23>/Data Type Conversion2' incorporates:
+    //   SignalConversion generated from: '<S138>/MATLAB System'
 
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i++)
     {
@@ -56033,20 +56300,1520 @@ void proc_control::step()
     proc_control_B.BusAssignment.current_gains.mvr_SL_Info.CurrentLength =
       proc_control_P.Constant7_Value;
 
-    // MATLABSystem: '<S23>/SinkBlock'
+    // MATLABSystem: '<S25>/SinkBlock'
     Pub_proc_control_1430.publish(&proc_control_B.BusAssignment);
 
     // SignalConversion generated from: '<S2>/thrust' incorporates:
-    //   Switch: '<S175>/Switch2'
+    //   SignalConversion generated from: '<S2>/mv'
+    //   Switch: '<S244>/Switch2'
 
-    memcpy(&proc_control_B.BufferToMakeInportVirtual_Inser[0],
-           &proc_control_B.u_scale[0], sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.BufferToMakeInportVirtual_Inser[0],
+                &proc_control_B.u_scale[0], sizeof(real_T) << 3U);
+    for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 8; proc_control_B.Ns_h++)
+    {
+      // SignalConversion generated from: '<S2>/mv' incorporates:
+      //   Lookup_n-D: '<S139>/n-D Lookup Table1'
+
+      proc_control_B.BufferToMakeInportVirtual_Ins_e[proc_control_B.Ns_h] =
+        proc_control_B.pwm[proc_control_B.Ns_h];
+    }
   }
 
   // End of Outputs for SubSystem: '<Root>/Enabled Subsystem1'
 
-  // Lookup_n-D: '<S70>/N to A' incorporates:
-  //   Switch: '<S175>/Switch2'
+  // Outputs for Enabled SubSystem: '<Root>/Model System' incorporates:
+  //   EnablePort: '<S3>/Enable'
+
+  if (proc_control_DW.obj_i.m_simulation > 0.0) {
+    // MATLAB Function: '<S26>/MATLAB Function' incorporates:
+    //   SignalConversion generated from: '<S2>/mv'
+
+    for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 8; proc_control_B.Ns_h++)
+    {
+      proc_control_B.pwm[proc_control_B.Ns_h] =
+        proc_control_B.BufferToMakeInportVirtual_Ins_e[proc_control_B.Ns_h];
+    }
+
+    if (proc_control_B.BufferToMakeInportVirtual_Ins_e[0] < 1100) {
+      proc_control_B.pwm[0] = 1500U;
+    } else if (proc_control_B.BufferToMakeInportVirtual_Ins_e[0] > 1900) {
+      proc_control_B.pwm[0] = 1500U;
+    }
+
+    // End of MATLAB Function: '<S26>/MATLAB Function'
+
+    // Lookup_n-D: '<S26>/PWN to N'
+    for (proc_control_B.base_index = 0; proc_control_B.base_index < 8;
+         proc_control_B.base_index++) {
+      proc_control_B.U_l[proc_control_B.base_index] =
+        proc_control_P.N[plook_u32u16_binckan
+        (proc_control_B.pwm[proc_control_B.base_index], proc_control_P.PWM, 200U)];
+    }
+
+    tmp_2 = _mm_set_pd(proc_control_DW.DiscreteTransferFcn_states_k,
+                       proc_control_DW.DiscreteTransferFcn_states);
+    tmp_1 = _mm_div_pd(_mm_sub_pd(_mm_loadu_pd(&proc_control_B.U_l[0]),
+      _mm_mul_pd(_mm_set_pd(proc_control_P.DiscreteTransferFcn_DenCoef_n[1],
+      proc_control_P.DiscreteTransferFcn_DenCoef[1]), tmp_2)), _mm_set_pd
+                       (proc_control_P.DiscreteTransferFcn_DenCoef_n[0],
+                        proc_control_P.DiscreteTransferFcn_DenCoef[0]));
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp_1);
+    proc_control_B.b_norm = proc_control_B.dv25[0];
+    proc_control_B.t6 = proc_control_B.dv25[1];
+    tmp_1 = _mm_set_pd(proc_control_DW.DiscreteTransferFcn_states_f,
+                       proc_control_DW.DiscreteTransferFcn_states_p);
+    tmp = _mm_div_pd(_mm_sub_pd(_mm_loadu_pd(&proc_control_B.U_l[2]), _mm_mul_pd
+      (_mm_set_pd(proc_control_P.DiscreteTransferFcn_DenCoef_i[1],
+                  proc_control_P.DiscreteTransferFcn_DenCoef_j[1]), tmp_1)),
+                     _mm_set_pd(proc_control_P.DiscreteTransferFcn_DenCoef_i[0],
+      proc_control_P.DiscreteTransferFcn_DenCoef_j[0]));
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp);
+    proc_control_B.oa = proc_control_B.dv25[0];
+    proc_control_B.oc = proc_control_B.dv25[1];
+    tmp = _mm_set_pd(proc_control_DW.DiscreteTransferFcn_states_m,
+                     proc_control_DW.DiscreteTransferFcn_states_e);
+    tmp_0 = _mm_div_pd(_mm_sub_pd(_mm_loadu_pd(&proc_control_B.U_l[4]),
+      _mm_mul_pd(_mm_set_pd(proc_control_P.DiscreteTransferFcn_DenCoef_b[1],
+      proc_control_P.DiscreteTransferFcn_DenCoef_g[1]), tmp)), _mm_set_pd
+                       (proc_control_P.DiscreteTransferFcn_DenCoef_b[0],
+                        proc_control_P.DiscreteTransferFcn_DenCoef_g[0]));
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp_0);
+    proc_control_B.t10 = proc_control_B.dv25[0];
+    proc_control_B.t11 = proc_control_B.dv25[1];
+    tmp_0 = _mm_set_pd(proc_control_DW.DiscreteTransferFcn_states_px,
+                       proc_control_DW.DiscreteTransferFcn_states_l);
+    tmp_3 = _mm_div_pd(_mm_sub_pd(_mm_loadu_pd(&proc_control_B.U_l[6]),
+      _mm_mul_pd(_mm_set_pd(proc_control_P.DiscreteTransferFcn_DenCoef_ig[1],
+      proc_control_P.DiscreteTransferFcn_DenCoef_c[1]), tmp_0)), _mm_set_pd
+                       (proc_control_P.DiscreteTransferFcn_DenCoef_ig[0],
+                        proc_control_P.DiscreteTransferFcn_DenCoef_c[0]));
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp_3);
+    proc_control_B.t12 = proc_control_B.dv25[0];
+    proc_control_B.t13 = proc_control_B.dv25[1];
+    _mm_storeu_pd(&proc_control_B.U_l[0], _mm_add_pd(_mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_e[0],
+       proc_control_P.DiscreteTransferFcn_NumCoef[0]), _mm_set_pd
+      (proc_control_B.t6, proc_control_B.b_norm)), _mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_e[1],
+       proc_control_P.DiscreteTransferFcn_NumCoef[1]), tmp_2)));
+    _mm_storeu_pd(&proc_control_B.U_l[2], _mm_add_pd(_mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_a[0],
+       proc_control_P.DiscreteTransferFcn_NumCoef_h[0]), _mm_set_pd
+      (proc_control_B.oc, proc_control_B.oa)), _mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_a[1],
+       proc_control_P.DiscreteTransferFcn_NumCoef_h[1]), tmp_1)));
+    _mm_storeu_pd(&proc_control_B.U_l[4], _mm_add_pd(_mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_kp[0],
+       proc_control_P.DiscreteTransferFcn_NumCoef_k[0]), _mm_set_pd
+      (proc_control_B.t11, proc_control_B.t10)), _mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_kp[1],
+       proc_control_P.DiscreteTransferFcn_NumCoef_k[1]), tmp)));
+    _mm_storeu_pd(&proc_control_B.U_l[6], _mm_add_pd(_mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_j[0],
+       proc_control_P.DiscreteTransferFcn_NumCoef_ke[0]), _mm_set_pd
+      (proc_control_B.dv25[1], proc_control_B.dv25[0])), _mm_mul_pd(_mm_set_pd
+      (proc_control_P.DiscreteTransferFcn_NumCoef_j[1],
+       proc_control_P.DiscreteTransferFcn_NumCoef_ke[1]), tmp_0)));
+    if ((&proc_control_M)->Timing.TaskCounters.TID[5] == 0) {
+      // UniformRandomNumber: '<S27>/Drift' incorporates:
+      //   DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+      //   Lookup_n-D: '<S139>/N to A'
+      //   Lookup_n-D: '<S139>/n-D Lookup Table1'
+      //   Lookup_n-D: '<S26>/PWN to N'
+      //   Lookup_n-D: '<S32>/N to RPM'
+      //   Trigonometry: '<S275>/sincos'
+      //   Trigonometry: '<S55>/sincos'
+
+      for (proc_control_B.base_index = 0; proc_control_B.base_index < 6;
+           proc_control_B.base_index++) {
+        // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+        //   EnablePort: '<S246>/Enable'
+
+        // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+        //   EnablePort: '<S274>/Enable'
+
+        proc_control_B.Drift[proc_control_B.base_index] =
+          proc_control_DW.Drift_NextOutput[proc_control_B.base_index];
+
+        // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+        // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+      }
+    }
+
+    // BusAssignment: '<S32>/Bus Assignment' incorporates:
+    //   Constant: '<S41>/Constant'
+    //   DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+    //   DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+    //   SignalConversion generated from: '<S3>/MATLAB System'
+
+    proc_control_B.BusAssignment_a = proc_control_P.Constant_Value_c;
+
+    // Switch: '<S27>/Switch' incorporates:
+    //   Constant: '<Root>/Constant'
+    //   Constant: '<S27>/Constant2'
+    //   Product: '<S27>/Product1'
+    //   Sin: '<S27>/Sine Wave'
+    //   Sum: '<S27>/Sum1'
+
+    if (proc_control_P.Constant_Value_pz > proc_control_P.Switch_Threshold) {
+      // Sum: '<S27>/Sum' incorporates:
+      //   Constant: '<S27>/Constant'
+      //   Constant: '<S27>/Constant1'
+      //   Product: '<S27>/Product'
+      //   UnitDelay: '<S3>/Unit Delay'
+
+      proc_control_B.Product2_al = proc_control_DW.UnitDelay_DSTATE[2] *
+        proc_control_P.Constant_Value_pr + proc_control_P.Constant1_Value_m;
+
+      // Saturate: '<S27>/Saturation'
+      if (proc_control_B.Product2_al > proc_control_P.Saturation_UpperSat) {
+        proc_control_B.Product2_al = proc_control_P.Saturation_UpperSat;
+      } else if (proc_control_B.Product2_al < proc_control_P.Saturation_LowerSat)
+      {
+        proc_control_B.Product2_al = proc_control_P.Saturation_LowerSat;
+      }
+
+      // End of Saturate: '<S27>/Saturation'
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h <= 4;
+           proc_control_B.Ns_h += 2) {
+        tmp_2 = _mm_add_pd(_mm_mul_pd(_mm_add_pd(_mm_mul_pd(_mm_set_pd(std::sin
+          ((static_cast<real_T>(proc_control_DW.counter[proc_control_B.Ns_h + 1])
+            + proc_control_P.SineWave_Offset[proc_control_B.Ns_h + 1]) * 2.0 *
+           3.1415926535897931 /
+           proc_control_P.waveDiscreteFrequency[proc_control_B.Ns_h + 1]), std::
+          sin((static_cast<real_T>(proc_control_DW.counter[proc_control_B.Ns_h])
+               + proc_control_P.SineWave_Offset[proc_control_B.Ns_h]) * 2.0 *
+              3.1415926535897931 /
+              proc_control_P.waveDiscreteFrequency[proc_control_B.Ns_h])),
+          _mm_loadu_pd(&proc_control_P.SineWave_Amp[proc_control_B.Ns_h])),
+          _mm_set1_pd(proc_control_P.SineWave_Bias)), _mm_set1_pd
+          (proc_control_B.Product2_al)), _mm_loadu_pd
+                           (&proc_control_B.Drift[proc_control_B.Ns_h]));
+        _mm_storeu_pd(&proc_control_B.TSamp[proc_control_B.Ns_h], tmp_2);
+      }
+    } else {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 6; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.TSamp[proc_control_B.Ns_h] =
+          proc_control_P.Constant2_Value[proc_control_B.Ns_h];
+      }
+    }
+
+    // End of Switch: '<S27>/Switch'
+
+    // MATLABSystem: '<S3>/MATLAB System' incorporates:
+    //   BusCreator: '<S116>/Bus Creator'
+    //   UnitDelay: '<S3>/Unit Delay'
+
+    //  Step fonction
+    // ------------------------------------------------------------------------------ 
+    //  Implement algorithm. Calculate y as a function of input u and
+    //  discrete states.
+    //  check if block need to be init
+    //  fonction qui initialise les constante mec
+    // ------------------------------------------------------------------------------ 
+    if (!proc_control_DW.obj_f.init) {
+      proc_control_DW.obj_f.constValues[0] = proc_control_B.BusCreator.mass;
+      proc_control_DW.obj_f.constValues[1] = proc_control_B.BusCreator.volume;
+      proc_control_DW.obj_f.constValues[2] =
+        proc_control_B.BusCreator.sub_height;
+      std::memcpy(&proc_control_DW.obj_f.constValues[3],
+                  &proc_control_B.BusCreator.I[0], 9U * sizeof(real_T));
+      proc_control_DW.obj_f.constValues[12] = proc_control_B.BusCreator.rg[0];
+      proc_control_DW.obj_f.constValues[15] = proc_control_B.BusCreator.rb[0];
+      proc_control_DW.obj_f.constValues[13] = proc_control_B.BusCreator.rg[1];
+      proc_control_DW.obj_f.constValues[16] = proc_control_B.BusCreator.rb[1];
+      proc_control_DW.obj_f.constValues[14] = proc_control_B.BusCreator.rg[2];
+      proc_control_DW.obj_f.constValues[17] = proc_control_B.BusCreator.rb[2];
+      for (proc_control_B.Ns = 0; proc_control_B.Ns < 6; proc_control_B.Ns++) {
+        proc_control_DW.obj_f.constValues[proc_control_B.Ns + 18] =
+          proc_control_B.BusCreator.cdl[proc_control_B.Ns];
+        proc_control_DW.obj_f.constValues[proc_control_B.Ns + 24] =
+          proc_control_B.BusCreator.cdq[proc_control_B.Ns];
+        proc_control_DW.obj_f.constValues[proc_control_B.Ns + 30] =
+          proc_control_B.BusCreator.added_mass[proc_control_B.Ns];
+      }
+
+      proc_control_DW.obj_f.constValues[36] = proc_control_B.BusCreator.rho;
+      proc_control_DW.obj_f.constValues[37] = proc_control_B.BusCreator.g;
+
+      //  Fonction qui genere la matrice B
+      // ------------------------------------------------------------------------------ 
+      //  Crée la matrice thrusters
+      //  prendre la matrice M
+      // AUVModelMatrices
+      //     [M,C,D,Gq] = AUVModelMatrices(IN1,IN2)
+      //     This function was generated by the Symbolic Math Toolbox version 9.1. 
+      //     12-Jul-2022 16:58:53
+      //  M inverse * Tm
+      proc_control_DW.obj_f.init = true;
+    }
+
+    proc_co_AUV8QuatPerturbedSimFcn(proc_control_DW.UnitDelay_DSTATE,
+      proc_control_B.TSamp, proc_control_B.U_l, proc_control_B.imvec);
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator' incorporates:
+    //   Constant: '<S30>/Constant'
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    //  legacy
+    if (proc_control_DW.DiscreteTimeIntegrator_IC_LOADI != 0) {
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[0] =
+        proc_control_P.Constant_Value_j2[0];
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[1] =
+        proc_control_P.Constant_Value_j2[1];
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[2] =
+        proc_control_DW.obj_i.m_initCond[2];
+    }
+
+    if ((proc_control_DW.obj_i.m_reset > 0.0) &&
+        (proc_control_DW.DiscreteTimeIntegrator_PrevRese <= 0)) {
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[0] =
+        proc_control_P.Constant_Value_j2[0];
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[1] =
+        proc_control_P.Constant_Value_j2[1];
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[2] =
+        proc_control_DW.obj_i.m_initCond[2];
+    }
+
+    proc_control_B.rtb_sincos_o1_idx_2 =
+      proc_control_P.DiscreteTimeIntegrator_gainval * proc_control_B.imvec[0];
+    proc_control_B.v[0] = proc_control_B.rtb_sincos_o1_idx_2;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_B.WorldPosition[0] =
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[0] +
+      proc_control_B.rtb_sincos_o1_idx_2;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.rtb_sincos_o1_idx_2 =
+      proc_control_P.DiscreteTimeIntegrator_gainval * proc_control_B.imvec[1];
+    proc_control_B.v[1] = proc_control_B.rtb_sincos_o1_idx_2;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_B.WorldPosition[1] =
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[1] +
+      proc_control_B.rtb_sincos_o1_idx_2;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.rtb_sincos_o1_idx_2 =
+      proc_control_P.DiscreteTimeIntegrator_gainval * proc_control_B.imvec[2];
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_B.WorldPosition[2] =
+      proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[2] +
+      proc_control_B.rtb_sincos_o1_idx_2;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    if (proc_control_DW.DiscreteTimeIntegrator1_IC_LOAD != 0) {
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[0] =
+        proc_control_DW.obj_i.m_initCond[3];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[1] =
+        proc_control_DW.obj_i.m_initCond[4];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[2] =
+        proc_control_DW.obj_i.m_initCond[5];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[3] =
+        proc_control_DW.obj_i.m_initCond[6];
+    }
+
+    if ((proc_control_DW.obj_i.m_reset > 0.0) &&
+        (proc_control_DW.DiscreteTimeIntegrator1_PrevRes <= 0)) {
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[0] =
+        proc_control_DW.obj_i.m_initCond[3];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[1] =
+        proc_control_DW.obj_i.m_initCond[4];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[2] =
+        proc_control_DW.obj_i.m_initCond[5];
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[3] =
+        proc_control_DW.obj_i.m_initCond[6];
+    }
+
+    proc_control_B.t62 = proc_control_P.DiscreteTimeIntegrator1_gainval *
+      proc_control_B.imvec[3];
+    proc_control_B.rtb_sincos_o1_idx_1 = proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    proc_control_B.TmpSignalConversionAtSFunct[0] =
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[0] + proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t62 = proc_control_P.DiscreteTimeIntegrator1_gainval *
+      proc_control_B.imvec[4];
+    proc_control_B.rtb_sincos_o1_idx_0 = proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    proc_control_B.TmpSignalConversionAtSFunct[1] =
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[1] + proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t62 = proc_control_P.DiscreteTimeIntegrator1_gainval *
+      proc_control_B.imvec[5];
+    proc_control_B.t41 = proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    proc_control_B.TmpSignalConversionAtSFunct[2] =
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[2] + proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t62 = proc_control_P.DiscreteTimeIntegrator1_gainval *
+      proc_control_B.imvec[6];
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    proc_control_B.TmpSignalConversionAtSFunct[3] =
+      proc_control_DW.DiscreteTimeIntegrator1_DSTATE[3] + proc_control_B.t62;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   Constant: '<S3>/Initial Body Velocity'
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    if ((proc_control_DW.obj_i.m_reset > 0.0) &&
+        (proc_control_DW.DiscreteTimeIntegrator2_PrevRes <= 0)) {
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] =
+        proc_control_P.InitialBodyVelocity_Value[0];
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1] =
+        proc_control_P.InitialBodyVelocity_Value[1];
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2] =
+        proc_control_P.InitialBodyVelocity_Value[2];
+    }
+
+    proc_control_B.t42 = proc_control_P.DiscreteTimeIntegrator2_gainval *
+      proc_control_B.imvec[7];
+    proc_control_B.c_idx_0 = proc_control_B.t42;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] += proc_control_B.t42;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t42 = proc_control_P.DiscreteTimeIntegrator2_gainval *
+      proc_control_B.imvec[8];
+    proc_control_B.c_idx_1 = proc_control_B.t42;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1] += proc_control_B.t42;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t42 = proc_control_P.DiscreteTimeIntegrator2_gainval *
+      proc_control_B.imvec[9];
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2] += proc_control_B.t42;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   Constant: '<S3>/Initial Angular Rates'
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    if ((proc_control_DW.obj_i.m_reset > 0.0) &&
+        (proc_control_DW.DiscreteTimeIntegrator3_PrevRes <= 0)) {
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0] =
+        proc_control_P.InitialAngularRates_Value[0];
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1] =
+        proc_control_P.InitialAngularRates_Value[1];
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2] =
+        proc_control_P.InitialAngularRates_Value[2];
+    }
+
+    proc_control_B.t43 = proc_control_P.DiscreteTimeIntegrator3_gainval *
+      proc_control_B.imvec[10];
+    proc_control_B.t44 = proc_control_B.t43;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3'
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0] += proc_control_B.t43;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t43 = proc_control_P.DiscreteTimeIntegrator3_gainval *
+      proc_control_B.imvec[11];
+    proc_control_B.t45 = proc_control_B.t43;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3'
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1] += proc_control_B.t43;
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //
+    proc_control_B.t43 = proc_control_P.DiscreteTimeIntegrator3_gainval *
+      proc_control_B.imvec[12];
+
+    // DiscreteIntegrator: '<S3>/Discrete-Time Integrator3'
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2] += proc_control_B.t43;
+
+    // Lookup_n-D: '<S32>/N to RPM'
+    for (proc_control_B.base_index = 0; proc_control_B.base_index < 8;
+         proc_control_B.base_index++) {
+      proc_control_B.len = plook_u32d_binckpan
+        (proc_control_B.U_l[proc_control_B.base_index], proc_control_P.N, 200U,
+         &proc_control_DW.m_bpIndex_o[proc_control_B.base_index]);
+      proc_control_B.Divide3_b = std::trunc
+        (proc_control_P.RPM[proc_control_B.len]);
+      if (std::isnan(proc_control_B.Divide3_b) || std::isinf
+          (proc_control_B.Divide3_b)) {
+        proc_control_B.Divide3_b = 0.0;
+      } else {
+        proc_control_B.Divide3_b = std::fmod(proc_control_B.Divide3_b, 65536.0);
+      }
+
+      if (proc_control_B.Divide3_b < 0.0) {
+        proc_control_B.NtoRPM[proc_control_B.base_index] = static_cast<int16_T>(
+          -static_cast<int16_T>(static_cast<uint16_T>(-proc_control_B.Divide3_b)));
+      } else {
+        proc_control_B.NtoRPM[proc_control_B.base_index] = static_cast<int16_T>(
+          static_cast<uint16_T>(proc_control_B.Divide3_b));
+      }
+    }
+
+    // Product: '<S32>/Product' incorporates:
+    //   Signum: '<S32>/Sign'
+
+    for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 8; proc_control_B.Ns_h++)
+    {
+      // Signum: '<S32>/Sign'
+      proc_control_B.Product2_al = proc_control_B.U_l[proc_control_B.Ns_h];
+      if (std::isnan(proc_control_B.Product2_al)) {
+        proc_control_B.Divide3_b = (rtNaN);
+      } else if (proc_control_B.Product2_al < 0.0) {
+        proc_control_B.Divide3_b = -1.0;
+      } else {
+        proc_control_B.Divide3_b = (proc_control_B.Product2_al > 0.0);
+      }
+
+      proc_control_B.Divide3_b *= static_cast<real_T>
+        (proc_control_B.NtoRPM[proc_control_B.Ns_h]);
+      if (std::isnan(proc_control_B.Divide3_b)) {
+        proc_control_B.Ns = 0;
+      } else {
+        proc_control_B.Ns = static_cast<int32_T>(std::fmod
+          (proc_control_B.Divide3_b, 65536.0));
+      }
+
+      if (proc_control_B.Ns < 0) {
+        proc_control_B.VectorConcatenate_g[proc_control_B.Ns_h] =
+          static_cast<int16_T>(-static_cast<int16_T>(static_cast<uint16_T>(-
+          static_cast<real_T>(proc_control_B.Ns))));
+      } else {
+        proc_control_B.VectorConcatenate_g[proc_control_B.Ns_h] =
+          static_cast<int16_T>(proc_control_B.Ns);
+      }
+    }
+
+    // End of Product: '<S32>/Product'
+    std::memcpy(&proc_control_B.VectorConcatenate_g[8],
+                &proc_control_P.Constant1_Value_b[0], 120U * sizeof(int16_T));
+
+    // BusAssignment: '<S32>/Bus Assignment' incorporates:
+    //   Constant: '<S32>/Constant'
+    //   Constant: '<S32>/Constant1'
+
+    std::memcpy(&proc_control_B.BusAssignment_a.data[0],
+                &proc_control_B.VectorConcatenate_g[0], sizeof(int16_T) << 7U);
+    proc_control_B.BusAssignment_a.data_SL_Info.CurrentLength =
+      proc_control_P.Constant_Value_of;
+
+    // MATLABSystem: '<S42>/SinkBlock'
+    Pub_proc_control_1184.publish(&proc_control_B.BusAssignment_a);
+
+    // MATLAB Function: '<S3>/Quaternion Normalise' incorporates:
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+
+    proc_control_B.scale = 3.3121686421112381E-170;
+    proc_control_B.absxk = std::abs(proc_control_B.TmpSignalConversionAtSFunct[0]);
+    if (proc_control_B.absxk > 3.3121686421112381E-170) {
+      proc_control_B.d_c = 1.0;
+      proc_control_B.scale = proc_control_B.absxk;
+    } else {
+      proc_control_B.t = proc_control_B.absxk / 3.3121686421112381E-170;
+      proc_control_B.d_c = proc_control_B.t * proc_control_B.t;
+    }
+
+    proc_control_B.absxk = std::abs(proc_control_B.TmpSignalConversionAtSFunct[1]);
+    if (proc_control_B.absxk > proc_control_B.scale) {
+      proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
+      proc_control_B.d_c = proc_control_B.d_c * proc_control_B.t *
+        proc_control_B.t + 1.0;
+      proc_control_B.scale = proc_control_B.absxk;
+    } else {
+      proc_control_B.t = proc_control_B.absxk / proc_control_B.scale;
+      proc_control_B.d_c += proc_control_B.t * proc_control_B.t;
+    }
+
+    proc_control_B.absxk = std::abs(proc_control_B.TmpSignalConversionAtSFunct[2]);
+    if (proc_control_B.absxk > proc_control_B.scale) {
+      proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
+      proc_control_B.d_c = proc_control_B.d_c * proc_control_B.t *
+        proc_control_B.t + 1.0;
+      proc_control_B.scale = proc_control_B.absxk;
+    } else {
+      proc_control_B.t = proc_control_B.absxk / proc_control_B.scale;
+      proc_control_B.d_c += proc_control_B.t * proc_control_B.t;
+    }
+
+    proc_control_B.absxk = std::abs(proc_control_B.TmpSignalConversionAtSFunct[3]);
+    if (proc_control_B.absxk > proc_control_B.scale) {
+      proc_control_B.t = proc_control_B.scale / proc_control_B.absxk;
+      proc_control_B.d_c = proc_control_B.d_c * proc_control_B.t *
+        proc_control_B.t + 1.0;
+      proc_control_B.scale = proc_control_B.absxk;
+    } else {
+      proc_control_B.t = proc_control_B.absxk / proc_control_B.scale;
+      proc_control_B.d_c += proc_control_B.t * proc_control_B.t;
+    }
+
+    tmp_2 = _mm_set1_pd(proc_control_B.scale * std::sqrt(proc_control_B.d_c));
+    tmp_1 = _mm_div_pd(_mm_loadu_pd(&proc_control_B.TmpSignalConversionAtSFunct
+      [0]), tmp_2);
+    _mm_storeu_pd(&proc_control_B.y_o[0], tmp_1);
+    tmp_2 = _mm_div_pd(_mm_loadu_pd(&proc_control_B.TmpSignalConversionAtSFunct
+      [2]), tmp_2);
+    _mm_storeu_pd(&proc_control_B.y_o[2], tmp_2);
+
+    // Gain: '<S45>/Output' incorporates:
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    //   MATLAB Function: '<S3>/Quaternion Normalise'
+    //   RandomNumber: '<S45>/White Noise'
+
+    proc_control_B.Divide1_e = std::sqrt
+      (proc_control_P.BandLimitedWhiteNoise2_Cov) / 0.1414213562373095 *
+      proc_control_DW.NextOutput_g;
+
+    // Gain: '<S46>/Output' incorporates:
+    //   RandomNumber: '<S46>/White Noise'
+
+    proc_control_B.d_c = std::sqrt(proc_control_P.BandLimitedWhiteNoise3_Cov) /
+      0.1414213562373095 * proc_control_DW.NextOutput_i;
+
+    // Gain: '<S47>/Output' incorporates:
+    //   RandomNumber: '<S47>/White Noise'
+
+    proc_control_B.t19 = std::sqrt(proc_control_P.BandLimitedWhiteNoise4_Cov) /
+      0.1414213562373095 * proc_control_DW.NextOutput_f;
+
+    // Product: '<S67>/Product' incorporates:
+    //   Product: '<S61>/Product'
+
+    proc_control_B.absxk = proc_control_B.y_o[0] * proc_control_B.y_o[0];
+
+    // Sqrt: '<S66>/sqrt' incorporates:
+    //   MATLAB Function: '<S29>/MATLAB Function'
+    //   Product: '<S67>/Product'
+    //   Product: '<S67>/Product1'
+    //   Product: '<S67>/Product2'
+    //   Product: '<S67>/Product3'
+    //   Sum: '<S67>/Sum'
+
+    proc_control_B.d29 = std::sqrt(((proc_control_B.y_o[1] * proc_control_B.y_o
+      [1] + proc_control_B.absxk) + proc_control_B.y_o[2] * proc_control_B.y_o[2])
+      + proc_control_B.y_o[3] * proc_control_B.y_o[3]);
+    tmp_2 = _mm_set1_pd(proc_control_B.d29);
+    _mm_storeu_pd(&proc_control_B.dv25[0], _mm_div_pd(_mm_set_pd
+      (proc_control_B.y_o[3], proc_control_B.y_o[1]), tmp_2));
+    proc_control_B.Product3_bo = proc_control_B.dv25[0];
+    proc_control_B.Divide3_b = proc_control_B.dv25[1];
+    _mm_storeu_pd(&proc_control_B.dv25[0], _mm_div_pd(_mm_set_pd
+      (proc_control_B.y_o[2], proc_control_B.y_o[0]), tmp_2));
+    proc_control_B.Divide_a = proc_control_B.dv25[0];
+    proc_control_B.Divide2_j = proc_control_B.dv25[1];
+    if ((&proc_control_M)->Timing.TaskCounters.TID[4] == 0) {
+      // Gain: '<S55>/1//2' incorporates:
+      //   Trigonometry: '<S55>/sincos'
+
+      proc_control_B.Product2_al = proc_control_P.u2_Gain *
+        proc_control_B.BusCreator.dvl_rotation[0];
+
+      // Trigonometry: '<S55>/sincos'
+      proc_control_B.sincos_o2[0] = std::cos(proc_control_B.Product2_al);
+      proc_control_B.Product_al = std::sin(proc_control_B.Product2_al);
+
+      // Gain: '<S55>/1//2' incorporates:
+      //   Trigonometry: '<S55>/sincos'
+
+      proc_control_B.Product2_al = proc_control_P.u2_Gain *
+        proc_control_B.BusCreator.dvl_rotation[1];
+
+      // Trigonometry: '<S55>/sincos'
+      proc_control_B.sincos_o2[1] = std::cos(proc_control_B.Product2_al);
+      proc_control_B.Product1_fr = std::sin(proc_control_B.Product2_al);
+
+      // Gain: '<S55>/1//2' incorporates:
+      //   Trigonometry: '<S55>/sincos'
+
+      proc_control_B.Product2_al = proc_control_P.u2_Gain *
+        proc_control_B.BusCreator.dvl_rotation[2];
+      tmp_1 = _mm_mul_pd(_mm_set1_pd(proc_control_B.sincos_o2[0]), _mm_set_pd
+                         (proc_control_B.sincos_o2[1],
+                          proc_control_B.Product1_fr));
+      tmp = _mm_set1_pd(std::sin(proc_control_B.Product2_al));
+      tmp_0 = _mm_mul_pd(_mm_set1_pd(proc_control_B.Product_al), _mm_set_pd
+                         (proc_control_B.Product1_fr, proc_control_B.sincos_o2[1]));
+      tmp_3 = _mm_set1_pd(std::cos(proc_control_B.Product2_al));
+      _mm_storeu_pd(&proc_control_B.dv25[0], _mm_sub_pd(_mm_mul_pd(tmp_1, tmp_3),
+        _mm_mul_pd(tmp_0, tmp)));
+      proc_control_B.Product2_al = proc_control_B.dv25[0];
+      proc_control_B.Product_al = proc_control_B.dv25[1];
+      _mm_storeu_pd(&proc_control_B.dv25[0], _mm_add_pd(_mm_mul_pd(tmp_1, tmp),
+        _mm_mul_pd(tmp_0, tmp_3)));
+
+      // Sqrt: '<S72>/sqrt' incorporates:
+      //   Fcn: '<S55>/q0'
+      //   Fcn: '<S55>/q2'
+      //   Product: '<S73>/Product'
+      //   Product: '<S73>/Product1'
+      //   Product: '<S73>/Product2'
+      //   Product: '<S73>/Product3'
+      //   Sum: '<S73>/Sum'
+      //   Trigonometry: '<S55>/sincos'
+
+      proc_control_B.scale = std::sqrt(((proc_control_B.Product_al *
+        proc_control_B.Product_al + proc_control_B.dv25[0] *
+        proc_control_B.dv25[0]) + proc_control_B.Product2_al *
+        proc_control_B.Product2_al) + proc_control_B.dv25[1] *
+        proc_control_B.dv25[1]);
+
+      // Product: '<S68>/Product2'
+      proc_control_B.Product2_al /= proc_control_B.scale;
+
+      // Product: '<S68>/Product3'
+      proc_control_B.Product3_dy = proc_control_B.dv25[1] / proc_control_B.scale;
+
+      // Product: '<S69>/Product7' incorporates:
+      //   Product: '<S70>/Product7'
+
+      proc_control_B.Gain2_ld_tmp = proc_control_B.Product3_dy *
+        proc_control_B.Product3_dy;
+
+      // Product: '<S69>/Product6' incorporates:
+      //   Product: '<S71>/Product7'
+
+      proc_control_B.t60 = proc_control_B.Product2_al *
+        proc_control_B.Product2_al;
+
+      // Gain: '<S69>/Gain2' incorporates:
+      //   Constant: '<S69>/Constant'
+      //   Product: '<S69>/Product6'
+      //   Product: '<S69>/Product7'
+      //   Sum: '<S69>/Sum3'
+
+      proc_control_B.Gain2_ld = ((proc_control_P.Constant_Value_pj -
+        proc_control_B.t60) - proc_control_B.Gain2_ld_tmp) *
+        proc_control_P.Gain2_Gain_l;
+
+      // Product: '<S68>/Product1'
+      proc_control_B.Product1_fr = proc_control_B.dv25[0] / proc_control_B.scale;
+
+      // Product: '<S68>/Product'
+      proc_control_B.Product_al /= proc_control_B.scale;
+
+      // Product: '<S69>/Product' incorporates:
+      //   Product: '<S70>/Product'
+
+      proc_control_B.Gain_n_tmp = proc_control_B.Product1_fr *
+        proc_control_B.Product2_al;
+
+      // Product: '<S69>/Product1' incorporates:
+      //   Product: '<S70>/Product1'
+
+      proc_control_B.Gain_n_tmp_c = proc_control_B.Product_al *
+        proc_control_B.Product3_dy;
+
+      // Gain: '<S69>/Gain' incorporates:
+      //   Product: '<S69>/Product'
+      //   Product: '<S69>/Product1'
+      //   Sum: '<S69>/Sum1'
+
+      proc_control_B.Gain_n = (proc_control_B.Gain_n_tmp +
+        proc_control_B.Gain_n_tmp_c) * proc_control_P.Gain_Gain_k;
+
+      // Product: '<S69>/Product3' incorporates:
+      //   Product: '<S71>/Product'
+
+      proc_control_B.scale = proc_control_B.Product1_fr *
+        proc_control_B.Product3_dy;
+
+      // Product: '<S69>/Product2' incorporates:
+      //   Product: '<S71>/Product1'
+
+      proc_control_B.Gain1_l_tmp = proc_control_B.Product_al *
+        proc_control_B.Product2_al;
+
+      // Gain: '<S69>/Gain1' incorporates:
+      //   Product: '<S69>/Product2'
+      //   Product: '<S69>/Product3'
+      //   Sum: '<S69>/Sum2'
+
+      proc_control_B.Gain1_l = (proc_control_B.scale -
+        proc_control_B.Gain1_l_tmp) * proc_control_P.Gain1_Gain_f;
+
+      // Gain: '<S70>/Gain' incorporates:
+      //   Sum: '<S70>/Sum1'
+
+      proc_control_B.Gain_f = (proc_control_B.Gain_n_tmp -
+        proc_control_B.Gain_n_tmp_c) * proc_control_P.Gain_Gain_p;
+
+      // Product: '<S70>/Product6' incorporates:
+      //   Product: '<S71>/Product6'
+
+      proc_control_B.Gain_n_tmp = proc_control_B.Product1_fr *
+        proc_control_B.Product1_fr;
+
+      // Gain: '<S70>/Gain2' incorporates:
+      //   Constant: '<S70>/Constant'
+      //   Product: '<S70>/Product6'
+      //   Sum: '<S70>/Sum3'
+
+      proc_control_B.Gain2_f = ((proc_control_P.Constant_Value_oi -
+        proc_control_B.Gain_n_tmp) - proc_control_B.Gain2_ld_tmp) *
+        proc_control_P.Gain2_Gain_c;
+
+      // Product: '<S70>/Product3' incorporates:
+      //   Product: '<S71>/Product3'
+
+      proc_control_B.Product2_al *= proc_control_B.Product3_dy;
+
+      // Product: '<S70>/Product2' incorporates:
+      //   Product: '<S71>/Product2'
+
+      proc_control_B.Product_al *= proc_control_B.Product1_fr;
+
+      // Gain: '<S70>/Gain1' incorporates:
+      //   Product: '<S70>/Product2'
+      //   Product: '<S70>/Product3'
+      //   Sum: '<S70>/Sum2'
+
+      proc_control_B.Gain1_h = (proc_control_B.Product_al +
+        proc_control_B.Product2_al) * proc_control_P.Gain1_Gain_c;
+
+      // Gain: '<S71>/Gain' incorporates:
+      //   Sum: '<S71>/Sum1'
+
+      proc_control_B.Gain_c = (proc_control_B.scale + proc_control_B.Gain1_l_tmp)
+        * proc_control_P.Gain_Gain_o;
+
+      // Gain: '<S71>/Gain1' incorporates:
+      //   Sum: '<S71>/Sum2'
+
+      proc_control_B.Gain1_m = (proc_control_B.Product2_al -
+        proc_control_B.Product_al) * proc_control_P.Gain1_Gain_b;
+
+      // Gain: '<S71>/Gain2' incorporates:
+      //   Constant: '<S71>/Constant'
+      //   Sum: '<S71>/Sum3'
+
+      proc_control_B.Gain2_e = ((proc_control_P.Constant_Value_mg -
+        proc_control_B.Gain_n_tmp) - proc_control_B.t60) *
+        proc_control_P.Gain2_Gain_j;
+    }
+
+    // Gain: '<S29>/Gain' incorporates:
+    //   Constant: '<S65>/Constant'
+    //   Fcn: '<S55>/q0'
+    //   Fcn: '<S55>/q2'
+    //   Gain: '<S43>/Output'
+    //   Gain: '<S65>/Gain'
+    //   Gain: '<S65>/Gain1'
+    //   Gain: '<S65>/Gain2'
+    //   MATLABSystem: '<S29>/Divide by Constant and Round'
+    //   Product: '<S62>/Product'
+    //   Product: '<S62>/Product1'
+    //   Product: '<S62>/Product2'
+    //   Product: '<S62>/Product3'
+    //   Product: '<S65>/Product'
+    //   Product: '<S65>/Product1'
+    //   Product: '<S65>/Product2'
+    //   Product: '<S65>/Product3'
+    //   Product: '<S65>/Product4'
+    //   Product: '<S65>/Product5'
+    //   Product: '<S65>/Product6'
+    //   Product: '<S65>/Product7'
+    //   Product: '<S65>/Product8'
+    //   RandomNumber: '<S43>/White Noise'
+    //   Sqrt: '<S66>/sqrt'
+    //   Sum: '<S29>/Sum'
+    //   Sum: '<S29>/Sum1'
+    //   Sum: '<S65>/Sum'
+    //   Sum: '<S65>/Sum1'
+    //   Sum: '<S65>/Sum2'
+    //   Sum: '<S65>/Sum3'
+    //   Trigonometry: '<S55>/sincos'
+    //
+    proc_control_B.PressureDepth = std::floor((((((proc_control_B.Product3_bo *
+      proc_control_B.Divide3_b + proc_control_B.Divide_a *
+      proc_control_B.Divide2_j) * proc_control_P.Gain_Gain *
+      proc_control_B.BusCreator.depth_pose[0] + (proc_control_B.Divide2_j *
+      proc_control_B.Divide3_b - proc_control_B.Divide_a *
+      proc_control_B.Product3_bo) * proc_control_P.Gain1_Gain *
+      proc_control_B.BusCreator.depth_pose[1]) +
+      ((proc_control_P.Constant_Value_a5 - proc_control_B.Product3_bo *
+        proc_control_B.Product3_bo) - proc_control_B.Divide2_j *
+       proc_control_B.Divide2_j) * proc_control_P.Gain2_Gain *
+      proc_control_B.BusCreator.depth_pose[2]) + proc_control_B.WorldPosition[2])
+      + std::sqrt(proc_control_P.BandLimitedWhiteNoise_Cov) / 0.1414213562373095
+      * proc_control_DW.NextOutput) * 1000.0 + 0.5) * proc_control_P.Gain_Gain_h;
+
+    // MATLABSystem: '<S58>/SourceBlock'
+    proc_control_B.b_value_g = Sub_proc_control_1278.getLatestMessage
+      (&proc_control_B.rtb_SourceBlock_o2_d_p);
+
+    // Outputs for Enabled SubSystem: '<S58>/Enabled Subsystem' incorporates:
+    //   EnablePort: '<S59>/Enable'
+
+    if (proc_control_B.b_value_g) {
+      // SignalConversion generated from: '<S59>/In1'
+      proc_control_B.In1_k = proc_control_B.rtb_SourceBlock_o2_d_p;
+    } else {
+      // Outputs for IfAction SubSystem: '<S48>/If Action Subsystem' incorporates:
+      //   ActionPort: '<S56>/Action Port'
+
+      // If: '<S48>/If' incorporates:
+      //   SignalConversion generated from: '<S56>/In1'
+
+      proc_control_B.In1_g2 = proc_control_B.In1_k;
+
+      // End of Outputs for SubSystem: '<S48>/If Action Subsystem'
+    }
+
+    // End of Outputs for SubSystem: '<S58>/Enabled Subsystem'
+
+    // ZeroOrderHold: '<S48>/Zero-Order Hold' incorporates:
+    //   MATLABSystem: '<S58>/SourceBlock'
+    //
+    if ((&proc_control_M)->Timing.TaskCounters.TID[3] == 0) {
+      // MATLABSystem: '<S57>/SinkBlock'
+      Pub_proc_control_1280.publish(&proc_control_B.In1_g2);
+    }
+
+    // End of ZeroOrderHold: '<S48>/Zero-Order Hold'
+
+    // MATLABSystem: '<S48>/MATLAB System'
+    //  Ajout du bruit sur la position du pinger.
+    proc_control_rand(proc_control_B.unusedExpr_d);
+
+    //  Calculer les angles des hydros.
+    // pinger2hydroAngles
+    //     T__H_N = pinger2hydroAngles(IN1,IN2,IN3,IN4)
+    //     This function was generated by the Symbolic Math Toolbox version 9.0. 
+    //     02-Mar-2022 21:23:59
+    _mm_storeu_pd(&proc_control_B.y_p[0], _mm_mul_pd(_mm_set_pd(std::floor
+      ((((proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] *
+          proc_control_B.Gain_f + proc_control_B.Gain2_f *
+          proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1]) +
+         proc_control_B.Gain1_h *
+         proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2]) +
+        proc_control_B.Divide1_e) * 1000.0 + 0.5), std::floor
+      ((((proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] *
+          proc_control_B.Gain2_ld + proc_control_B.Gain_n *
+          proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1]) +
+         proc_control_B.Gain1_l *
+         proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2]) +
+        proc_control_B.Divide1_e) * 1000.0 + 0.5)), _mm_set1_pd
+      (proc_control_P.Gain1_Gain_h)));
+
+    // MATLAB Function: '<S29>/MATLAB Function' incorporates:
+    //   Gain: '<S29>/Gain1'
+    //   MATLABSystem: '<S29>/Divide by Constant and Round1'
+    //   Product: '<S69>/Product4'
+    //   Product: '<S69>/Product5'
+    //   Product: '<S69>/Product8'
+    //   Product: '<S70>/Product4'
+    //   Product: '<S70>/Product5'
+    //   Product: '<S70>/Product8'
+    //   Product: '<S71>/Product4'
+    //   Product: '<S71>/Product5'
+    //   Product: '<S71>/Product8'
+    //   Sum: '<S29>/Sum3'
+    //   Sum: '<S69>/Sum'
+    //   Sum: '<S70>/Sum'
+    //   Sum: '<S71>/Sum'
+    //
+    proc_control_B.y_p[2] = std::floor
+      ((((proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] *
+          proc_control_B.Gain_c + proc_control_B.Gain1_m *
+          proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1]) +
+         proc_control_B.Gain2_e *
+         proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2]) +
+        proc_control_B.Divide1_e) * 1000.0 + 0.5) * proc_control_P.Gain1_Gain_h;
+    tmp_1 = _mm_set1_pd(1.0 / proc_control_B.d29);
+    tmp = _mm_mul_pd(_mm_loadu_pd(&proc_control_B.y_o[0]), tmp_1);
+    _mm_storeu_pd(&proc_control_B.n[0], tmp);
+    tmp_1 = _mm_mul_pd(_mm_loadu_pd(&proc_control_B.y_o[2]), tmp_1);
+    _mm_storeu_pd(&proc_control_B.n[2], tmp_1);
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    proc_control_B.Product1_fr = (proc_control_B.n[1] * proc_control_B.n[3] -
+      proc_control_B.n[0] * proc_control_B.n[2]) * -2.0;
+    proc_control_B.NewDvlMsg = (proc_control_B.Product1_fr >=
+      0.99999999999999778);
+    proc_control_B.newPressureMsg = (proc_control_B.Product1_fr <=
+      -0.99999999999999778);
+    if (proc_control_B.NewDvlMsg) {
+      proc_control_B.Product1_fr = 1.0;
+    }
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    proc_control_B.Product3_dy = proc_control_B.Product1_fr;
+    if (proc_control_B.newPressureMsg) {
+      proc_control_B.Product3_dy = -1.0;
+    }
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    proc_control_B.NewDvlMsg = (proc_control_B.NewDvlMsg ||
+      proc_control_B.newPressureMsg);
+    proc_control_B.Product2_al = proc_control_B.n[0] * proc_control_B.n[0];
+    proc_control_B.Product_al = proc_control_B.n[1] * proc_control_B.n[1];
+    proc_control_B.Product1_fr = proc_control_B.n[2] * proc_control_B.n[2];
+    proc_control_B.Divide3_b = proc_control_B.n[3] * proc_control_B.n[3];
+    proc_control_B.sincos_o2[0] = rt_atan2d_snf((proc_control_B.n[1] *
+      proc_control_B.n[2] + proc_control_B.n[0] * proc_control_B.n[3]) * 2.0,
+      ((proc_control_B.Product2_al + proc_control_B.Product_al) -
+       proc_control_B.Product1_fr) - proc_control_B.Divide3_b);
+    proc_control_B.sincos_o2[1] = std::asin(proc_control_B.Product3_dy);
+    proc_control_B.sincos_o2[2] = rt_atan2d_snf((proc_control_B.n[2] *
+      proc_control_B.n[3] + proc_control_B.n[0] * proc_control_B.n[1]) * 2.0,
+      ((proc_control_B.Product2_al - proc_control_B.Product_al) -
+       proc_control_B.Product1_fr) + proc_control_B.Divide3_b);
+    proc_control_B.nz = 0;
+    if (proc_control_B.NewDvlMsg) {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 1; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.nz++;
+      }
+    }
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    if (proc_control_B.nz - 1 >= 0) {
+      proc_control_B.b_x_data = proc_control_B.Product3_dy;
+    }
+
+    proc_control_B.Ns = 0;
+    if (proc_control_B.NewDvlMsg) {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 1; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.Ns++;
+      }
+    }
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    for (proc_control_B.base_index = 0; proc_control_B.base_index <
+         proc_control_B.Ns; proc_control_B.base_index++) {
+      if (std::isnan(proc_control_B.b_x_data)) {
+        proc_control_B.b_x_data = (rtNaN);
+      } else if (proc_control_B.b_x_data < 0.0) {
+        proc_control_B.b_x_data = -1.0;
+      } else {
+        proc_control_B.b_x_data = (proc_control_B.b_x_data > 0.0);
+      }
+    }
+
+    proc_control_B.Ns = 0;
+    if (proc_control_B.NewDvlMsg) {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 1; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.Ns++;
+      }
+    }
+
+    proc_control_B.tmp_size[0] = 1;
+    proc_control_B.tmp_size[1] = proc_control_B.Ns;
+    proc_control_B.Ns = 0;
+    if (proc_control_B.NewDvlMsg) {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 1; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.Ns++;
+      }
+    }
+
+    if (proc_control_B.nz != proc_control_B.Ns) {
+      proc_control_binary_expand_op(proc_control_B.sincos_o2,
+        proc_control_B.tmp_size, &proc_control_B.b_x_data, proc_control_B.n);
+    }
+
+    proc_control_B.nz = 0;
+    if (proc_control_B.NewDvlMsg) {
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 1; proc_control_B.Ns_h
+           ++) {
+        proc_control_B.nz++;
+      }
+    }
+
+    // MATLAB Function: '<S29>/MATLAB Function'
+    if (proc_control_B.nz - 1 >= 0) {
+      proc_control_B.sincos_o2[2] = 0.0;
+    }
+
+    if (std::abs(proc_control_B.sincos_o2[1]) > 0.349066) {
+      proc_control_B.y_p[0] = 32.7675;
+      proc_control_B.y_p[1] = 32.7675;
+      proc_control_B.y_p[2] = 32.7675;
+    } else if (std::abs(proc_control_B.sincos_o2[2]) > 0.349066) {
+      proc_control_B.y_p[0] = 32.7675;
+      proc_control_B.y_p[1] = 32.7675;
+      proc_control_B.y_p[2] = 32.7675;
+    }
+
+    tmp_1 = _mm_div_pd(_mm_loadu_pd(&proc_control_B.y_o[0]), tmp_2);
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp_1);
+    proc_control_B.Divide2_j = proc_control_B.dv25[0];
+    proc_control_B.Product3_dy = proc_control_B.dv25[1];
+    tmp_2 = _mm_div_pd(_mm_loadu_pd(&proc_control_B.y_o[2]), tmp_2);
+    _mm_storeu_pd(&proc_control_B.dv25[0], tmp_2);
+    tmp_2 = _mm_set1_pd(((-proc_control_B.y_o[1] * -proc_control_B.y_o[1] +
+                          proc_control_B.absxk) + -proc_control_B.y_o[2] *
+                         -proc_control_B.y_o[2]) + -proc_control_B.y_o[3] *
+                        -proc_control_B.y_o[3]);
+    tmp_1 = _mm_set1_pd(std::sqrt(proc_control_P.BandLimitedWhiteNoise1_Cov) /
+                        0.1414213562373095 * proc_control_DW.NextOutput_c);
+    tmp = _mm_add_pd(_mm_div_pd(_mm_loadu_pd(&proc_control_B.y_o[0]), tmp_2),
+                     tmp_1);
+    _mm_storeu_pd(&proc_control_B.Quaternion[0], tmp);
+    tmp_2 = _mm_add_pd(_mm_div_pd(_mm_loadu_pd(&proc_control_B.y_o[2]), tmp_2),
+                       tmp_1);
+    _mm_storeu_pd(&proc_control_B.Quaternion[2], tmp_2);
+    tmp_2 = _mm_add_pd(_mm_set1_pd(proc_control_B.d_c), _mm_loadu_pd
+                       (&proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0]));
+    _mm_storeu_pd(&proc_control_B.AngularRate_j[0], tmp_2);
+
+    // Sum: '<S29>/Sum4' incorporates:
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator3'
+    //   Gain: '<S44>/Output'
+    //   Product: '<S51>/Divide'
+    //   Product: '<S61>/Product1'
+    //   Product: '<S61>/Product2'
+    //   Product: '<S61>/Product3'
+    //   Product: '<S74>/Product'
+    //   Product: '<S74>/Product1'
+    //   Product: '<S74>/Product2'
+    //   RandomNumber: '<S44>/White Noise'
+    //   Sum: '<S29>/Sum2'
+    //   Sum: '<S61>/Sum'
+    //   UnaryMinus: '<S50>/Unary Minus'
+    //   UnaryMinus: '<S50>/Unary Minus1'
+    //   UnaryMinus: '<S50>/Unary Minus2'
+
+    proc_control_B.AngularRate_j[2] = proc_control_B.d_c +
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2];
+    tmp_2 = _mm_set_pd(proc_control_B.Product3_dy, proc_control_B.dv25[0]);
+    tmp_1 = _mm_set1_pd(proc_control_B.dv25[1]);
+    tmp_2 = _mm_add_pd(_mm_add_pd(_mm_add_pd(_mm_add_pd(_mm_mul_pd(_mm_mul_pd
+      (_mm_sub_pd(_mm_sub_pd(_mm_set_pd(proc_control_P.Constant_Value_jx,
+      proc_control_P.Constant_Value_i2), _mm_mul_pd(tmp_2, tmp_2)), _mm_mul_pd
+                  (tmp_1, tmp_1)), _mm_set_pd(proc_control_P.Gain2_Gain_n,
+      proc_control_P.Gain2_Gain_lf)), _mm_loadu_pd
+      (&proc_control_P.Constant_Value_a[0])), _mm_mul_pd(_mm_mul_pd(_mm_add_pd
+      (_mm_mul_pd(_mm_set1_pd(proc_control_B.Product3_dy), _mm_set1_pd
+                  (proc_control_B.dv25[0])), _mm_mul_pd(_mm_mul_pd(_mm_set1_pd
+      (proc_control_B.Divide2_j), tmp_1), _mm_set_pd(-1.0, 1.0))), _mm_set_pd
+      (proc_control_P.Gain_Gain_hw, proc_control_P.Gain_Gain_n)), _mm_set_pd
+      (proc_control_P.Constant_Value_a[0], proc_control_P.Constant_Value_a[1]))),
+      _mm_mul_pd(_mm_mul_pd(_mm_add_pd(_mm_mul_pd(_mm_set_pd
+      (proc_control_B.Divide2_j, proc_control_B.Product3_dy), _mm_set_pd
+      (proc_control_B.Product3_dy, proc_control_B.dv25[1])), _mm_mul_pd
+      (_mm_mul_pd(_mm_set_pd(proc_control_B.dv25[0], proc_control_B.Divide2_j),
+                  _mm_set_pd(proc_control_B.dv25[1], proc_control_B.dv25[0])),
+       _mm_set_pd(1.0, -1.0))), _mm_set_pd(proc_control_P.Gain1_Gain_p,
+      proc_control_P.Gain1_Gain_i)), _mm_set1_pd
+                 (proc_control_P.Constant_Value_a[2]))), _mm_loadu_pd
+      (&proc_control_B.imvec[7])), _mm_set1_pd(proc_control_B.t19));
+    _mm_storeu_pd(&proc_control_B.LinearAcceleration[0], tmp_2);
+
+    // Sum: '<S29>/Sum6' incorporates:
+    //   Constant: '<S29>/Constant'
+    //   Constant: '<S75>/Constant'
+    //   Constant: '<S76>/Constant'
+    //   Constant: '<S77>/Constant'
+    //   Gain: '<S75>/Gain'
+    //   Gain: '<S75>/Gain1'
+    //   Gain: '<S75>/Gain2'
+    //   Gain: '<S76>/Gain'
+    //   Gain: '<S76>/Gain1'
+    //   Gain: '<S76>/Gain2'
+    //   Gain: '<S77>/Gain'
+    //   Gain: '<S77>/Gain1'
+    //   Gain: '<S77>/Gain2'
+    //   MATLABSystem: '<S3>/MATLAB System'
+    //   Product: '<S75>/Product'
+    //   Product: '<S75>/Product1'
+    //   Product: '<S75>/Product2'
+    //   Product: '<S75>/Product3'
+    //   Product: '<S75>/Product4'
+    //   Product: '<S75>/Product5'
+    //   Product: '<S75>/Product8'
+    //   Product: '<S76>/Product2'
+    //   Product: '<S76>/Product4'
+    //   Product: '<S76>/Product6'
+    //   Product: '<S77>/Product'
+    //   Product: '<S77>/Product1'
+    //   Product: '<S77>/Product2'
+    //   Product: '<S77>/Product3'
+    //   Product: '<S77>/Product4'
+    //   Product: '<S77>/Product5'
+    //   Product: '<S77>/Product6'
+    //   Product: '<S77>/Product7'
+    //   Product: '<S77>/Product8'
+    //   Sum: '<S29>/Sum5'
+    //   Sum: '<S77>/Sum'
+    //   Sum: '<S77>/Sum1'
+    //   Sum: '<S77>/Sum2'
+    //   Sum: '<S77>/Sum3'
+    //
+    proc_control_B.LinearAcceleration[2] = ((((proc_control_B.Product3_dy *
+      proc_control_B.dv25[1] + proc_control_B.Divide2_j * proc_control_B.dv25[0])
+      * proc_control_P.Gain_Gain_d * proc_control_P.Constant_Value_a[0] +
+      (proc_control_B.dv25[0] * proc_control_B.dv25[1] -
+       proc_control_B.Divide2_j * proc_control_B.Product3_dy) *
+      proc_control_P.Gain1_Gain_j * proc_control_P.Constant_Value_a[1]) +
+      ((proc_control_P.Constant_Value_iu - proc_control_B.Product3_dy *
+        proc_control_B.Product3_dy) - proc_control_B.dv25[0] *
+       proc_control_B.dv25[0]) * proc_control_P.Gain2_Gain_b *
+      proc_control_P.Constant_Value_a[2]) + proc_control_B.imvec[9]) +
+      proc_control_B.t19;
+
+    // Update for DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states = proc_control_B.b_norm;
+
+    // Update for DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_k = proc_control_B.t6;
+
+    // Update for DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_p = proc_control_B.oa;
+
+    // Update for DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_f = proc_control_B.oc;
+
+    // Update for DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_e = proc_control_B.t10;
+
+    // Update for DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_m = proc_control_B.t11;
+
+    // Update for DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_l = proc_control_B.t12;
+
+    // Update for DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+    proc_control_DW.DiscreteTransferFcn_states_px = proc_control_B.t13;
+    if ((&proc_control_M)->Timing.TaskCounters.TID[5] == 0) {
+      // Update for UniformRandomNumber: '<S27>/Drift' incorporates:
+      //   DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn'
+      //   DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn'
+      //   Lookup_n-D: '<S139>/N to A'
+      //   Lookup_n-D: '<S139>/n-D Lookup Table1'
+      //   Lookup_n-D: '<S26>/PWN to N'
+      //   Lookup_n-D: '<S32>/N to RPM'
+      //   Trigonometry: '<S275>/sincos'
+      //   Trigonometry: '<S55>/sincos'
+      //
+      for (proc_control_B.base_index = 0; proc_control_B.base_index < 6;
+           proc_control_B.base_index++) {
+        // Outputs for Enabled SubSystem: '<S9>/DVL Measurements' incorporates:
+        //   EnablePort: '<S246>/Enable'
+
+        // Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' incorporates:
+        //   EnablePort: '<S274>/Enable'
+
+        proc_control_B.Product2_al =
+          proc_control_P.dmin[proc_control_B.base_index];
+        proc_control_DW.Drift_NextOutput[proc_control_B.base_index] =
+          (proc_control_P.dmax[proc_control_B.base_index] -
+           proc_control_B.Product2_al) * rt_urand_Upu32_Yd_f_pw_snf
+          (&proc_control_DW.RandSeed[proc_control_B.base_index]) +
+          proc_control_B.Product2_al;
+
+        // End of Outputs for SubSystem: '<S271>/Enabled Subsystem'
+        // End of Outputs for SubSystem: '<S9>/DVL Measurements'
+      }
+    }
+
+    // Update for Sin: '<S27>/Sine Wave'
+    for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 6; proc_control_B.Ns_h++)
+    {
+      proc_control_B.Ns = proc_control_DW.counter[proc_control_B.Ns_h] + 1;
+      proc_control_DW.counter[proc_control_B.Ns_h] = proc_control_B.Ns;
+      if (proc_control_B.Ns ==
+          proc_control_P.waveDiscreteFrequency[proc_control_B.Ns_h]) {
+        proc_control_DW.counter[proc_control_B.Ns_h] = 0;
+      }
+    }
+
+    // End of Update for Sin: '<S27>/Sine Wave'
+
+    // Update for UnitDelay: '<S3>/Unit Delay'
+    proc_control_DW.UnitDelay_DSTATE[0] = proc_control_B.WorldPosition[0];
+    proc_control_DW.UnitDelay_DSTATE[1] = proc_control_B.WorldPosition[1];
+    proc_control_DW.UnitDelay_DSTATE[2] = proc_control_B.WorldPosition[2];
+    proc_control_DW.UnitDelay_DSTATE[3] = proc_control_B.y_o[0];
+    proc_control_DW.UnitDelay_DSTATE[4] = proc_control_B.y_o[1];
+    proc_control_DW.UnitDelay_DSTATE[5] = proc_control_B.y_o[2];
+    proc_control_DW.UnitDelay_DSTATE[6] = proc_control_B.y_o[3];
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_DW.DiscreteTimeIntegrator_IC_LOADI = 0U;
+
+    // Update for UnitDelay: '<S3>/Unit Delay'
+    proc_control_DW.UnitDelay_DSTATE[7] =
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0];
+    proc_control_DW.UnitDelay_DSTATE[10] =
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0];
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[0] =
+      proc_control_B.WorldPosition[0] + proc_control_B.v[0];
+
+    // Update for UnitDelay: '<S3>/Unit Delay'
+    proc_control_DW.UnitDelay_DSTATE[8] =
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1];
+    proc_control_DW.UnitDelay_DSTATE[11] =
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1];
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator'
+    proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[1] =
+      proc_control_B.WorldPosition[1] + proc_control_B.v[1];
+
+    // Update for UnitDelay: '<S3>/Unit Delay'
+    proc_control_DW.UnitDelay_DSTATE[9] =
+      proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2];
+    proc_control_DW.UnitDelay_DSTATE[12] =
+      proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2];
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator' incorporates:
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+
+    proc_control_DW.DiscreteTimeIntegrator_DSTATE_e[2] =
+      proc_control_B.WorldPosition[2] + proc_control_B.rtb_sincos_o1_idx_2;
+    if (proc_control_DW.obj_i.m_reset > 0.0) {
+      proc_control_DW.DiscreteTimeIntegrator_PrevRese = 1;
+      proc_control_DW.DiscreteTimeIntegrator1_PrevRes = 1;
+
+      // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+      proc_control_DW.DiscreteTimeIntegrator2_PrevRes = 1;
+    } else {
+      proc_control_DW.DiscreteTimeIntegrator_PrevRese = 0;
+      proc_control_DW.DiscreteTimeIntegrator1_PrevRes = 0;
+
+      // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+      proc_control_DW.DiscreteTimeIntegrator2_PrevRes = 0;
+    }
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    proc_control_DW.DiscreteTimeIntegrator1_IC_LOAD = 0U;
+    tmp_2 = _mm_add_pd(_mm_loadu_pd(&proc_control_B.TmpSignalConversionAtSFunct
+      [0]), _mm_set_pd(proc_control_B.rtb_sincos_o1_idx_0,
+                       proc_control_B.rtb_sincos_o1_idx_1));
+    _mm_storeu_pd(&proc_control_DW.DiscreteTimeIntegrator1_DSTATE[0], tmp_2);
+    tmp_2 = _mm_add_pd(_mm_loadu_pd(&proc_control_B.TmpSignalConversionAtSFunct
+      [2]), _mm_set_pd(proc_control_B.t62, proc_control_B.t41));
+    _mm_storeu_pd(&proc_control_DW.DiscreteTimeIntegrator1_DSTATE[2], tmp_2);
+    _mm_storeu_pd(&proc_control_B.dv25[0], _mm_add_pd(_mm_set_pd
+      (proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0],
+       proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0]), _mm_set_pd
+      (proc_control_B.t44, proc_control_B.c_idx_0)));
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] = proc_control_B.dv25[0];
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0] = proc_control_B.dv25[1];
+    _mm_storeu_pd(&proc_control_B.dv25[0], _mm_add_pd(_mm_set_pd
+      (proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1],
+       proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1]), _mm_set_pd
+      (proc_control_B.t45, proc_control_B.c_idx_1)));
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1] = proc_control_B.dv25[0];
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1] = proc_control_B.dv25[1];
+    _mm_storeu_pd(&proc_control_B.dv25[0], _mm_add_pd(_mm_set_pd
+      (proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2],
+       proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2]), _mm_set_pd
+      (proc_control_B.t43, proc_control_B.t42)));
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2] = proc_control_B.dv25[0];
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2] = proc_control_B.dv25[1];
+
+    // Update for DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator1'
+    //   DiscreteIntegrator: '<S3>/Discrete-Time Integrator2'
+
+    if (proc_control_DW.obj_i.m_reset > 0.0) {
+      proc_control_DW.DiscreteTimeIntegrator3_PrevRes = 1;
+    } else {
+      proc_control_DW.DiscreteTimeIntegrator3_PrevRes = 0;
+    }
+
+    // Update for RandomNumber: '<S43>/White Noise'
+    proc_control_DW.NextOutput = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_o) * proc_control_P.WhiteNoise_StdDev +
+      proc_control_P.WhiteNoise_Mean;
+
+    // Update for RandomNumber: '<S44>/White Noise'
+    proc_control_DW.NextOutput_c = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_n) * proc_control_P.WhiteNoise_StdDev_i +
+      proc_control_P.WhiteNoise_Mean_j;
+
+    // Update for RandomNumber: '<S45>/White Noise'
+    proc_control_DW.NextOutput_g = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_h) * proc_control_P.WhiteNoise_StdDev_a +
+      proc_control_P.WhiteNoise_Mean_n;
+
+    // Update for RandomNumber: '<S46>/White Noise'
+    proc_control_DW.NextOutput_i = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_d) * proc_control_P.WhiteNoise_StdDev_e +
+      proc_control_P.WhiteNoise_Mean_g;
+
+    // Update for RandomNumber: '<S47>/White Noise'
+    proc_control_DW.NextOutput_f = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_e) * proc_control_P.WhiteNoise_StdDev_l +
+      proc_control_P.WhiteNoise_Mean_p;
+
+    // Outputs for Enabled SubSystem: '<Root>/ROS Output' incorporates:
+    //   EnablePort: '<S6>/Enable'
+
+    // BusAssignment: '<S103>/Bus Assignment'
+    proc_control_B.BusAssignment_c.position.x = proc_control_B.WorldPosition[0];
+    proc_control_B.BusAssignment_c.position.y = proc_control_B.WorldPosition[1];
+    proc_control_B.BusAssignment_c.position.z = proc_control_B.WorldPosition[2];
+    proc_control_B.BusAssignment_c.orientation.x = proc_control_B.y_o[0];
+    proc_control_B.BusAssignment_c.orientation.y = proc_control_B.y_o[1];
+    proc_control_B.BusAssignment_c.orientation.z = proc_control_B.y_o[2];
+    proc_control_B.BusAssignment_c.orientation.w = proc_control_B.y_o[3];
+
+    // MATLABSystem: '<S112>/SinkBlock'
+    Pub_proc_control_1321.publish(&proc_control_B.BusAssignment_c);
+
+    // BusAssignment: '<S100>/Bus Assignment'
+    proc_control_B.BusAssignment_aa.x = proc_control_B.y_p[0];
+    proc_control_B.BusAssignment_aa.y = proc_control_B.y_p[1];
+    proc_control_B.BusAssignment_aa.z = proc_control_B.y_p[2];
+
+    // MATLABSystem: '<S105>/SinkBlock'
+    Pub_proc_control_1347.publish(&proc_control_B.BusAssignment_aa);
+
+    // BusAssignment: '<S101>/Bus Assignment' incorporates:
+    //   DataTypeConversion: '<S101>/Data Type Conversion'
+
+    proc_control_B.BusAssignment_ak.data = static_cast<real32_T>
+      (proc_control_B.PressureDepth);
+
+    // MATLABSystem: '<S107>/SinkBlock'
+    Pub_proc_control_1353.publish(&proc_control_B.BusAssignment_ak);
+
+    // Outputs for Atomic SubSystem: '<S102>/Header Assignment'
+    proc_control_CurrentTime(&proc_control_B.CurrentTime_n);
+
+    // Switch: '<S109>/Switch1' incorporates:
+    //   Constant: '<S109>/Constant1'
+    //   StringConstant: '<S109>/String Constant1'
+
+    if (proc_control_P.Constant1_Value_e != 0.0) {
+      proc_control_B.Switch1_j = proc_control_P.StringConstant1_String_f;
+    } else {
+      // ASCIIToString: '<S109>/ASCII to String' incorporates:
+      //   Constant: '<S108>/Constant'
+
+      for (proc_control_B.Ns_h = 0; proc_control_B.Ns_h < 128;
+           proc_control_B.Ns_h++) {
+        proc_control_B.cv[proc_control_B.Ns_h] = static_cast<int8_T>
+          (proc_control_P.Constant_Value_e.header.frame_id[proc_control_B.Ns_h]);
+      }
+
+      proc_control_B.Switch1_j.assign(&proc_control_B.cv[0], 128U);
+
+      // End of ASCIIToString: '<S109>/ASCII to String'
+    }
+
+    // End of Switch: '<S109>/Switch1'
+
+    // StringToASCII: '<S109>/String To ASCII'
+    std::strncpy((char_T *)&proc_control_B.BusAssignment_i.header.frame_id[0],
+                 proc_control_B.Switch1_j.c_str(), 128U);
+
+    // Switch: '<S109>/Switch' incorporates:
+    //   Constant: '<S109>/Constant'
+
+    if (proc_control_P.Constant_Value_dg != 0.0) {
+      // BusAssignment: '<S102>/Bus Assignment'
+      proc_control_B.BusAssignment_i.header.stamp =
+        proc_control_B.CurrentTime_n.CurrentTime;
+    } else {
+      // BusAssignment: '<S102>/Bus Assignment' incorporates:
+      //   Constant: '<S108>/Constant'
+
+      proc_control_B.BusAssignment_i.header.stamp =
+        proc_control_P.Constant_Value_e.header.stamp;
+    }
+
+    // End of Switch: '<S109>/Switch'
+
+    // BusAssignment: '<S102>/Bus Assignment' incorporates:
+    //   Constant: '<S108>/Constant'
+    //   SignalConversion generated from: '<S109>/HeaderAssign'
+    //   StringLength: '<S109>/String Length'
+
+    proc_control_B.BusAssignment_i.header.frame_id_SL_Info.CurrentLength =
+      proc_control_B.Switch1_j.length();
+    proc_control_B.BusAssignment_i.header.frame_id_SL_Info.ReceivedLength =
+      proc_control_P.Constant_Value_e.header.frame_id_SL_Info.ReceivedLength;
+    std::memcpy(&proc_control_B.BusAssignment_i.orientation_covariance[0],
+                &proc_control_P.Constant_Value_e.orientation_covariance[0], 9U *
+                sizeof(real_T));
+    std::memcpy(&proc_control_B.BusAssignment_i.angular_velocity_covariance[0],
+                &proc_control_P.Constant_Value_e.angular_velocity_covariance[0],
+                9U * sizeof(real_T));
+    std::memcpy(&proc_control_B.BusAssignment_i.linear_acceleration_covariance[0],
+                &proc_control_P.Constant_Value_e.linear_acceleration_covariance
+                [0], 9U * sizeof(real_T));
+
+    // End of Outputs for SubSystem: '<S102>/Header Assignment'
+    proc_control_B.BusAssignment_i.angular_velocity.x =
+      proc_control_B.AngularRate_j[0];
+    proc_control_B.BusAssignment_i.angular_velocity.y =
+      proc_control_B.AngularRate_j[1];
+    proc_control_B.BusAssignment_i.angular_velocity.z =
+      proc_control_B.AngularRate_j[2];
+    proc_control_B.BusAssignment_i.orientation.w = proc_control_B.Quaternion[0];
+    proc_control_B.BusAssignment_i.orientation.x = proc_control_B.Quaternion[1];
+    proc_control_B.BusAssignment_i.orientation.y = proc_control_B.Quaternion[2];
+    proc_control_B.BusAssignment_i.orientation.z = proc_control_B.Quaternion[3];
+    proc_control_B.BusAssignment_i.linear_acceleration.x =
+      proc_control_B.LinearAcceleration[0];
+    proc_control_B.BusAssignment_i.linear_acceleration.y =
+      proc_control_B.LinearAcceleration[1];
+    proc_control_B.BusAssignment_i.linear_acceleration.z =
+      proc_control_B.LinearAcceleration[2];
+
+    // MATLABSystem: '<S110>/SinkBlock'
+    Pub_proc_control_1342.publish(&proc_control_B.BusAssignment_i);
+
+    // End of Outputs for SubSystem: '<Root>/ROS Output'
+  }
+
+  // End of Outputs for SubSystem: '<Root>/Model System'
+
+  // Lookup_n-D: '<S139>/N to A' incorporates:
+  //   Switch: '<S244>/Switch2'
 
   for (proc_control_B.base_index = 0; proc_control_B.base_index < 8;
        proc_control_B.base_index++) {
@@ -56057,47 +57824,45 @@ void proc_control::step()
       proc_control_P.A[proc_control_B.len];
   }
 
-  // MATLAB Function: '<S234>/MATLAB Function' incorporates:
-  //   Merge generated from: '<S7>/Merge'
-
-  proc_control_B.BusCreator_i.position.x =
+  // BusAssignment: '<S303>/Bus Assignment'
+  proc_control_B.BusAssignment_n.position.x =
     proc_control_B.TmpSignalConversionAtMATLAB[0];
-  proc_control_B.BusCreator_i.position.y =
+  proc_control_B.BusAssignment_n.position.y =
     proc_control_B.TmpSignalConversionAtMATLAB[1];
-  proc_control_B.BusCreator_i.position.z =
+  proc_control_B.BusAssignment_n.position.z =
     proc_control_B.TmpSignalConversionAtMATLAB[2];
-  proc_control_B.BusCreator_i.orientation.x =
-    proc_control_B.TmpSignalConversionAtMATLAB[4];
-  proc_control_B.BusCreator_i.orientation.y =
-    proc_control_B.TmpSignalConversionAtMATLAB[5];
-  proc_control_B.BusCreator_i.orientation.z =
-    proc_control_B.TmpSignalConversionAtMATLAB[6];
-  proc_control_B.BusCreator_i.orientation.w =
+  proc_control_B.BusAssignment_n.orientation.w =
     proc_control_B.TmpSignalConversionAtMATLAB[3];
+  proc_control_B.BusAssignment_n.orientation.x =
+    proc_control_B.TmpSignalConversionAtMATLAB[4];
+  proc_control_B.BusAssignment_n.orientation.y =
+    proc_control_B.TmpSignalConversionAtMATLAB[5];
+  proc_control_B.BusAssignment_n.orientation.z =
+    proc_control_B.TmpSignalConversionAtMATLAB[6];
 
-  // ZeroOrderHold: '<S234>/Zero-Order Hold'
+  // ZeroOrderHold: '<S303>/Zero-Order Hold'
   if ((&proc_control_M)->Timing.TaskCounters.TID[3] == 0) {
-    // MATLABSystem: '<S243>/SinkBlock'
-    Pub_proc_control_671.publish(&proc_control_B.BusCreator_i);
+    // MATLABSystem: '<S312>/SinkBlock'
+    Pub_proc_control_671.publish(&proc_control_B.BusAssignment_n);
   }
 
-  // End of ZeroOrderHold: '<S234>/Zero-Order Hold'
+  // End of ZeroOrderHold: '<S303>/Zero-Order Hold'
 
-  // Update for Delay: '<S181>/Delay' incorporates:
+  // Update for Delay: '<S114>/Delay'
+  proc_control_DW.Delay_DSTATE = proc_control_B.y;
+
+  // Update for Delay: '<S250>/Delay' incorporates:
   //   SignalConversion generated from: '<S2>/thrust'
 
-  memcpy(&proc_control_DW.Delay_DSTATE[0],
-         &proc_control_B.BufferToMakeInportVirtual_Inser[0], sizeof(real_T) <<
-         3U);
+  std::memcpy(&proc_control_DW.Delay_DSTATE_c[0],
+              &proc_control_B.BufferToMakeInportVirtual_Inser[0], sizeof(real_T)
+              << 3U);
 
-  // Update for Delay: '<S45>/Delay'
-  proc_control_DW.Delay_DSTATE_j = proc_control_B.y;
-
-  // Update for Delay: '<S3>/Delay'
+  // Update for Delay: '<S5>/Delay'
   proc_control_DW.Delay_DSTATE_m = proc_control_B.y;
   if ((&proc_control_M)->Timing.TaskCounters.TID[2] == 0) {
-    // Update for Delay: '<S5>/Delay' incorporates:
-    //   Lookup_n-D: '<S70>/N to A'
+    // Update for Delay: '<S8>/Delay' incorporates:
+    //   Lookup_n-D: '<S139>/N to A'
 
     for (proc_control_B.Ns_i = 0; proc_control_B.Ns_i < 8; proc_control_B.Ns_i++)
     {
@@ -56105,9 +57870,9 @@ void proc_control::step()
         proc_control_B.current[proc_control_B.Ns_i];
     }
 
-    // End of Update for Delay: '<S5>/Delay'
+    // End of Update for Delay: '<S8>/Delay'
 
-    // Update for Delay: '<S70>/Delay'
+    // Update for Delay: '<S139>/Delay'
     proc_control_DW.Delay_DSTATE_p = proc_control_B.alive;
   }
 
@@ -56117,65 +57882,117 @@ void proc_control::step()
 // Model initialize function
 void proc_control::initialize()
 {
-  // Registration code
-
-  // initialize non-finites
-  rt_InitInfAndNaN(sizeof(real_T));
-
   {
-    static const char_T prmName[19] = "proc_control.mpc.p";
-    static const char_T prmName_0[19] = "proc_control.mpc.m";
-    static const char_T prmName_1[34] = "proc_control.mpc.gains.default.ov";
-    static const real_T varargin_1[13] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_2[35]{ "proc_control.mpc.gains.default.mvr" };
+
+    static const char_T prmName_1[34]{ "proc_control.mpc.gains.default.mv" };
+
+    static const char_T prmName_3[34]{ "proc_control.mpc.gains.default.ov" };
+
+    static const char_T prmName[19]{ "proc_control.mpc.p" };
+
+    static const char_T prmName_0[19]{ "proc_control.mpc.m" };
+
+    real_T varargin_1[8];
+    static const real_T varargin_1_0[13]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    static const char_T prmName_2[34] = "proc_control.mpc.gains.default.mv";
-    static const real_T varargin_1_0[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
-      45.0, 0.0 };
+    static const char_T prmName_5[31]{ "proc_control.mpc.gains.c10.mvr" };
 
-    static const char_T prmName_3[35] = "proc_control.mpc.gains.default.mvr";
-    static const real_T varargin_1_1[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
-      45.0, 0.0 };
+    static const char_T prmName_4[30]{ "proc_control.mpc.gains.c10.mv" };
 
-    static const char_T prmName_4[30] = "proc_control.mpc.gains.c10.ov";
-    static const real_T varargin_1_2[13] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const real_T varargin_1_1[8]{ 0.1, 0.1, 0.1, 0.1, 0.3, 0.3, 0.3, 0.3
+    };
+
+    static const char_T prmName_6[30]{ "proc_control.mpc.gains.c10.ov" };
+
+    static const real_T varargin_1_2[13]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    static const char_T prmName_5[30] = "proc_control.mpc.gains.c10.mv";
-    static const real_T varargin_1_3[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_7[30]{ "proc_control.mpc.gains.c11.mv" };
+
+    static const real_T varargin_1_3[8]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0 };
 
-    static const char_T prmName_6[31] = "proc_control.mpc.gains.c10.mvr";
-    static const real_T varargin_1_4[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_8[31]{ "proc_control.mpc.gains.c11.mvr" };
+
+    static const real_T varargin_1_4[8]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0 };
 
-    static const char_T prmName_7[30] = "proc_control.mpc.gains.c11.ov";
-    static const real_T varargin_1_5[13] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_9[30]{ "proc_control.mpc.gains.c11.ov" };
+
+    static const real_T varargin_1_5[13]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    static const char_T prmName_8[30] = "proc_control.mpc.gains.c11.mv";
-    static const real_T varargin_1_6[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_a[30]{ "proc_control.mpc.gains.c19.mv" };
+
+    static const real_T varargin_1_6[8]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0 };
 
-    static const char_T prmName_9[31] = "proc_control.mpc.gains.c11.mvr";
-    static const real_T varargin_1_7[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_b[31]{ "proc_control.mpc.gains.c19.mvr" };
+
+    static const real_T varargin_1_7[8]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0 };
 
-    static const char_T prmName_a[30] = "proc_control.mpc.gains.c19.ov";
-    static const real_T varargin_1_8[13] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_c[30]{ "proc_control.mpc.gains.c19.ov" };
+
+    static const real_T varargin_1_8[13]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-    static const char_T prmName_b[30] = "proc_control.mpc.gains.c19.mv";
-    static const real_T varargin_1_9[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
+    static const char_T prmName_d[32]{ "proc_control.mpc.gains.noDvl.mv" };
+
+    static const real_T varargin_1_9[8]{ 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
       45.0, 0.0 };
 
-    static const char_T prmName_c[31] = "proc_control.mpc.gains.c19.mvr";
-    static const real_T varargin_1_a[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
-      45.0, 0.0 };
+    static const char_T prmName_g[46]{
+      "proc_control.target_reached.angular_tolerance" };
 
-    static const char_T prmName_d[32] = "proc_control.mpc.gains.noDvl.mv";
-    static const real_T varargin_1_b[8] = { 30.0, 30.0, 30.0, 45.0, 45.0, 45.0,
-      45.0, 0.0 };
+    static const char_T prmName_i[46]{
+      "proc_control.target_reached.time_in_tolerance" };
+
+    static const char_T prmName_h[45]{
+      "proc_control.target_reached.linear_tolerance" };
+
+    static const char_T prmName_z[39]{ "proc_control.physics.dvl_lost_override"
+    };
+
+    static const char_T prmName_x[34]{ "proc_control.physics.dvl_rotation" };
+
+    static const char_T prmName_n[32]{ "proc_control.physics.sub_height" };
+
+    static const char_T prmName_s[32]{ "proc_control.physics.added_mass" };
+
+    static const char_T prmName_u[32]{ "proc_control.physics.depth_pose" };
+
+    static const char_T prmName_v[32]{ "proc_control.physics.hydro_pose" };
+
+    static const char_T prmName_w[32]{ "proc_control.physics.sonar_pose" };
+
+    static const char_T prmName_y[31]{ "proc_control.physics.thrusters" };
+
+    static const char_T prmName_m[28]{ "proc_control.physics.volume" };
+
+    static const char_T prmName_l[26]{ "proc_control.physics.mass" };
+
+    static const char_T prmName_j[25]{ "proc_control.physics.rho" };
+
+    static const char_T prmName_q[25]{ "proc_control.physics.cdl" };
+
+    static const char_T prmName_r[25]{ "proc_control.physics.cdq" };
+
+    static const char_T prmName_o[24]{ "proc_control.physics.rg" };
+
+    static const char_T prmName_p[24]{ "proc_control.physics.rb" };
+
+    static const char_T prmName_k[23]{ "proc_control.physics.g" };
+
+    static const char_T prmName_t[23]{ "proc_control.physics.I" };
+
+    static const char_T prmName_e[22]{ "proc_control.mpc.tmax" };
+
+    static const char_T prmName_f[22]{ "proc_control.mpc.tmin" };
+
+    static const char_T b_zeroDelimTopic_1[21]{ "/proc_nav/auv_states" };
 
     static const char_T prmName_e[22] = "proc_control.mpc.tmax";
     static const char_T prmName_f[22] = "proc_control.mpc.tmin";
@@ -56242,196 +58059,207 @@ void proc_control::initialize()
       0.30000000000000004, 1.0, 0.0, 0.4, 1.0, 0.0, 0.5, 1.0, 0.0, 0.6, 1.0, 0.0,
       0.7, 1.0, 0.0, 0.8, 1.0, 0.0, 0.9, 1.0, 0.0, 1.0, 1.0, 0.0 };
 
-    static const int8_T tmp_0[9] = { 0, 0, 0, 1, 0, 0, 0, 0, 0 };
+    static const int8_T tmp_1[9]{ 0, 0, 0, 1, 0, 0, 0, 0, 0 };
 
-    static const int8_T tmp_1[7] = { 0, 0, 0, 1, 0, 0, 0 };
+    static const int8_T tmp_2[7]{ 0, 0, 0, 1, 0, 0, 0 };
 
     static const char_T b_zeroDelimTopic_2[34] =
       "/proc_control/measurment_residual";
 
-    // Start for Probe: '<S181>/Probe'
+    // Start for Probe: '<S250>/Probe'
     proc_control_B.Probe_o1 = 8.0;
 
-    // Start for If: '<S5>/If'
+    // Start for If: '<S8>/If'
     proc_control_DW.If_ActiveSubsystem_b = -1;
 
-    // Start for SwitchCase: '<S7>/Switch Case'
+    // Start for SwitchCase: '<S10>/Switch Case'
     proc_control_DW.SwitchCase_ActiveSubsystem = -1;
 
-    // Start for SwitchCase: '<S68>/Switch Case'
+    // Start for SwitchCase: '<S137>/Switch Case'
     proc_control_DW.SwitchCase_ActiveSubsystem_p = -1;
     proc_control_PrevZCX.ResettableSubsystem_Reset_ZCE = POS_ZCSIG;
 
-    // InitializeConditions for Delay: '<S45>/Delay'
-    proc_control_DW.Delay_DSTATE_j = proc_control_P.Delay_InitialCondition_at;
+    // InitializeConditions for Delay: '<S114>/Delay'
+    proc_control_DW.Delay_DSTATE = proc_control_P.Delay_InitialCondition_at;
 
-    // InitializeConditions for Delay: '<S3>/Delay'
+    // InitializeConditions for Delay: '<S5>/Delay'
     proc_control_DW.Delay_DSTATE_m = proc_control_P.Delay_InitialCondition_fl;
 
-    // InitializeConditions for Delay: '<S181>/Delay'
-    memcpy(&proc_control_DW.Delay_DSTATE[0],
-           &proc_control_P.Delay_InitialCondition_fy[0], sizeof(real_T) << 3U);
+    // InitializeConditions for Delay: '<S250>/Delay'
+    std::memcpy(&proc_control_DW.Delay_DSTATE_c[0],
+                &proc_control_P.Delay_InitialCondition_fy[0], sizeof(real_T) <<
+                3U);
     for (i = 0; i < 8; i++) {
-      // InitializeConditions for Delay: '<S5>/Delay'
+      // InitializeConditions for Delay: '<S8>/Delay'
       proc_control_DW.Delay_DSTATE_m0[i] =
         proc_control_P.Delay_InitialCondition_e[i];
     }
 
-    // End of InitializeConditions for Delay: '<S181>/Delay'
+    // End of InitializeConditions for Delay: '<S250>/Delay'
 
-    // InitializeConditions for Delay: '<S70>/Delay'
+    // InitializeConditions for Delay: '<S139>/Delay'
     proc_control_DW.Delay_DSTATE_p = proc_control_P.Delay_InitialCondition_c;
 
-    // SystemInitialize for Enabled SubSystem: '<S56>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S62>/In1' incorporates:
-    //   Outport: '<S62>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S125>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S131>/In1' incorporates:
+    //   Outport: '<S131>/Out1'
 
     proc_control_B.In1_me = proc_control_P.Out1_Y0_fy;
 
-    // End of SystemInitialize for SubSystem: '<S56>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S125>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S57>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S63>/In1' incorporates:
-    //   Outport: '<S63>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S129>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S135>/In1' incorporates:
+    //   Outport: '<S135>/Out1'
 
     proc_control_B.In1_lz = proc_control_P.Out1_Y0_o;
 
-    // End of SystemInitialize for SubSystem: '<S57>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S129>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S58>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S64>/In1' incorporates:
-    //   Outport: '<S64>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S128>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S134>/In1' incorporates:
+    //   Outport: '<S134>/Out1'
 
     proc_control_B.In1_gs = proc_control_P.Out1_Y0_a;
 
-    // End of SystemInitialize for SubSystem: '<S58>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S128>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S59>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S65>/In1' incorporates:
-    //   Outport: '<S65>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S130>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S136>/In1' incorporates:
+    //   Outport: '<S136>/Out1'
 
     proc_control_B.In1_gf = proc_control_P.Out1_Y0_e;
 
-    // End of SystemInitialize for SubSystem: '<S59>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S130>/Enabled Subsystem'
 
-    // SystemInitialize for IfAction SubSystem: '<S4>/Get_ROS_param'
-    // Start for MATLABSystem: '<S48>/Get Parameter'
+    // SystemInitialize for IfAction SubSystem: '<S7>/Get_ROS_param'
+    // Start for MATLABSystem: '<S117>/MPC.P'
     proc_control_DW.obj_f0.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_f0.isInitialized = 1;
     ParamGet_proc_control_140.initParam(&prmName[0]);
     ParamGet_proc_control_140.setInitialValue(10L);
     proc_control_DW.obj_f0.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S48>/Get Parameter1'
+    // Start for MATLABSystem: '<S117>/MPC.M'
     proc_control_DW.obj_dx.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_dx.isInitialized = 1;
     ParamGet_proc_control_143.initParam(&prmName_0[0]);
     ParamGet_proc_control_143.setInitialValue(1L);
     proc_control_DW.obj_dx.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S50>/Get Parameter'
-    proc_control_DW.obj_fk.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_fk.isInitialized = 1;
-    ParamGet_proc_control_66.initParam(&prmName_1[0]);
-    ParamGet_proc_control_66.setInitialValue(&varargin_1[0], 13U);
-    proc_control_DW.obj_fk.isSetupComplete = true;
-
-    // Start for MATLABSystem: '<S50>/Get Parameter1'
+    // Start for MATLABSystem: '<S119>/Default MV'
     proc_control_DW.obj_iw.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_iw.isInitialized = 1;
-    ParamGet_proc_control_72.initParam(&prmName_2[0]);
-    ParamGet_proc_control_72.setInitialValue(&varargin_1_0[0], 8U);
+    for (i = 0; i < 8; i++) {
+      varargin_1[i] = 0.2;
+    }
+
+    ParamGet_proc_control_72.initParam(&prmName_1[0]);
+    ParamGet_proc_control_72.setInitialValue(&varargin_1[0], 8U);
     proc_control_DW.obj_iw.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S50>/Get Parameter2'
+    // End of Start for MATLABSystem: '<S119>/Default MV'
+
+    // Start for MATLABSystem: '<S119>/Default MVR'
     proc_control_DW.obj_bn.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_bn.isInitialized = 1;
-    ParamGet_proc_control_74.initParam(&prmName_3[0]);
-    ParamGet_proc_control_74.setInitialValue(&varargin_1_1[0], 8U);
+    std::memset(&varargin_1[0], 0, sizeof(real_T) << 3U);
+    ParamGet_proc_control_74.initParam(&prmName_2[0]);
+    ParamGet_proc_control_74.setInitialValue(&varargin_1[0], 8U);
     proc_control_DW.obj_bn.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S51>/Get Parameter'
+    // Start for MATLABSystem: '<S119>/Default OV'
+    proc_control_DW.obj_fk.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_fk.isInitialized = 1;
+    ParamGet_proc_control_66.initParam(&prmName_3[0]);
+    ParamGet_proc_control_66.setInitialValue(&varargin_1_0[0], 13U);
+    proc_control_DW.obj_fk.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S120>/C10 MV' incorporates:
+    //   MATLABSystem: '<S119>/MATLAB System4'
+    //
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
+    proc_control_DW.obj_f2.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_f2.isInitialized = 1;
+    std::memset(&varargin_1[0], 0, sizeof(real_T) << 3U);
+    ParamGet_proc_control_98.initParam(&prmName_4[0]);
+    ParamGet_proc_control_98.setInitialValue(&varargin_1[0], 8U);
+    proc_control_DW.obj_f2.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S120>/C10 MVR'
+    proc_control_DW.obj_pzf.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_pzf.isInitialized = 1;
+    ParamGet_proc_control_99.initParam(&prmName_5[0]);
+    ParamGet_proc_control_99.setInitialValue(&varargin_1_1[0], 8U);
+    proc_control_DW.obj_pzf.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S120>/C10 OV'
     proc_control_DW.obj_j1.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_j1.isInitialized = 1;
-    ParamGet_proc_control_97.initParam(&prmName_4[0]);
+    ParamGet_proc_control_97.initParam(&prmName_6[0]);
     ParamGet_proc_control_97.setInitialValue(&varargin_1_2[0], 13U);
     proc_control_DW.obj_j1.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S51>/Get Parameter1'
-    proc_control_DW.obj_f2.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_f2.isInitialized = 1;
-    ParamGet_proc_control_98.initParam(&prmName_5[0]);
-    ParamGet_proc_control_98.setInitialValue(&varargin_1_3[0], 8U);
-    proc_control_DW.obj_f2.isSetupComplete = true;
+    // Start for MATLABSystem: '<S121>/C11 MV'
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    proc_control_DW.obj_nr.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_nr.isInitialized = 1;
+    ParamGet_proc_control_107.initParam(&prmName_7[0]);
+    ParamGet_proc_control_107.setInitialValue(&varargin_1_3[0], 8U);
+    proc_control_DW.obj_nr.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S51>/Get Parameter2'
-    proc_control_DW.obj_pzf.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_pzf.isInitialized = 1;
-    ParamGet_proc_control_99.initParam(&prmName_6[0]);
-    ParamGet_proc_control_99.setInitialValue(&varargin_1_4[0], 8U);
-    proc_control_DW.obj_pzf.isSetupComplete = true;
+    // Start for MATLABSystem: '<S121>/C11 MVR'
+    proc_control_DW.obj_as.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_as.isInitialized = 1;
+    ParamGet_proc_control_108.initParam(&prmName_8[0]);
+    ParamGet_proc_control_108.setInitialValue(&varargin_1_4[0], 8U);
+    proc_control_DW.obj_as.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S52>/Get Parameter'
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
+    // Start for MATLABSystem: '<S121>/C11 OV'
     proc_control_DW.obj_nl.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_nl.isInitialized = 1;
-    ParamGet_proc_control_106.initParam(&prmName_7[0]);
+    ParamGet_proc_control_106.initParam(&prmName_9[0]);
     ParamGet_proc_control_106.setInitialValue(&varargin_1_5[0], 13U);
     proc_control_DW.obj_nl.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S52>/Get Parameter1'
-    proc_control_DW.obj_nr.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_nr.isInitialized = 1;
-    ParamGet_proc_control_107.initParam(&prmName_8[0]);
-    ParamGet_proc_control_107.setInitialValue(&varargin_1_6[0], 8U);
-    proc_control_DW.obj_nr.isSetupComplete = true;
+    // Start for MATLABSystem: '<S122>/C19 MV'
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    proc_control_DW.obj_pz.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_pz.isInitialized = 1;
+    ParamGet_proc_control_116.initParam(&prmName_a[0]);
+    ParamGet_proc_control_116.setInitialValue(&varargin_1_6[0], 8U);
+    proc_control_DW.obj_pz.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S52>/Get Parameter2'
-    proc_control_DW.obj_as.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_as.isInitialized = 1;
-    ParamGet_proc_control_108.initParam(&prmName_9[0]);
-    ParamGet_proc_control_108.setInitialValue(&varargin_1_7[0], 8U);
-    proc_control_DW.obj_as.isSetupComplete = true;
+    // Start for MATLABSystem: '<S122>/C19 MVR'
+    proc_control_DW.obj_hq.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_hq.isInitialized = 1;
+    ParamGet_proc_control_117.initParam(&prmName_b[0]);
+    ParamGet_proc_control_117.setInitialValue(&varargin_1_7[0], 8U);
+    proc_control_DW.obj_hq.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S53>/Get Parameter'
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
-    //  Perform one-time calculations, such as computing constants
-    //  Initialize / reset discrete-state properties
+    // Start for MATLABSystem: '<S122>/C19 OV'
     proc_control_DW.obj_fs.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_fs.isInitialized = 1;
-    ParamGet_proc_control_115.initParam(&prmName_a[0]);
+    ParamGet_proc_control_115.initParam(&prmName_c[0]);
     ParamGet_proc_control_115.setInitialValue(&varargin_1_8[0], 13U);
     proc_control_DW.obj_fs.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S53>/Get Parameter1'
-    proc_control_DW.obj_pz.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_pz.isInitialized = 1;
-    ParamGet_proc_control_116.initParam(&prmName_b[0]);
-    ParamGet_proc_control_116.setInitialValue(&varargin_1_9[0], 8U);
-    proc_control_DW.obj_pz.isSetupComplete = true;
-
-    // Start for MATLABSystem: '<S53>/Get Parameter2'
-    proc_control_DW.obj_hq.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_hq.isInitialized = 1;
-    ParamGet_proc_control_117.initParam(&prmName_c[0]);
-    ParamGet_proc_control_117.setInitialValue(&varargin_1_a[0], 8U);
-    proc_control_DW.obj_hq.isSetupComplete = true;
-
-    // Start for MATLABSystem: '<S54>/Get Parameter'
+    // Start for MATLABSystem: '<S123>/NoDVL MV'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     //  Perform one-time calculations, such as computing constants
@@ -56441,10 +58269,10 @@ void proc_control::initialize()
     proc_control_DW.obj_nb.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_nb.isInitialized = 1;
     ParamGet_proc_control_133.initParam(&prmName_d[0]);
-    ParamGet_proc_control_133.setInitialValue(&varargin_1_b[0], 8U);
+    ParamGet_proc_control_133.setInitialValue(&varargin_1_9[0], 8U);
     proc_control_DW.obj_nb.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S48>/Get Parameter2'
+    // Start for MATLABSystem: '<S117>/MPC.TMAX'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_cm.matlabCodegenIsDeleted = false;
@@ -56453,77 +58281,77 @@ void proc_control::initialize()
     ParamGet_proc_control_144.setInitialValue(20.0);
     proc_control_DW.obj_cm.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S48>/Get Parameter3'
+    // Start for MATLABSystem: '<S117>/MPC.TMIN'
     proc_control_DW.obj_pu.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_pu.isInitialized = 1;
     ParamGet_proc_control_145.initParam(&prmName_f[0]);
     ParamGet_proc_control_145.setInitialValue(-15.0);
     proc_control_DW.obj_pu.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S49>/Get Parameter'
-    proc_control_DW.obj_dc.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_dc.isInitialized = 1;
-    ParamGet_proc_control_150.initParam(&prmName_g[0]);
-    ParamGet_proc_control_150.setInitialValue(0.2);
-    proc_control_DW.obj_dc.isSetupComplete = true;
-
-    // Start for MATLABSystem: '<S49>/Get Parameter1'
+    // Start for MATLABSystem: '<S118>/Angular Tolerance'
     proc_control_DW.obj_eug.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_eug.isInitialized = 1;
-    ParamGet_proc_control_151.initParam(&prmName_h[0]);
+    ParamGet_proc_control_151.initParam(&prmName_g[0]);
     ParamGet_proc_control_151.setInitialValue(0.1);
     proc_control_DW.obj_eug.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S49>/Get Parameter2'
+    // Start for MATLABSystem: '<S118>/Linear Tolerance'
+    proc_control_DW.obj_dc.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_dc.isInitialized = 1;
+    ParamGet_proc_control_150.initParam(&prmName_h[0]);
+    ParamGet_proc_control_150.setInitialValue(0.2);
+    proc_control_DW.obj_dc.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S118>/Time in Tolerance'
     proc_control_DW.obj_do.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_do.isInitialized = 1;
     ParamGet_proc_control_152.initParam(&prmName_i[0]);
     ParamGet_proc_control_152.setInitialValue(3.0);
     proc_control_DW.obj_do.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/Rho'
+    // Start for MATLABSystem: '<S116>/Physics Rho'
     proc_control_DW.obj_pp.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_pp.isInitialized = 1;
     ParamGet_proc_control_166.initParam(&prmName_j[0]);
     ParamGet_proc_control_166.setInitialValue(998.0);
     proc_control_DW.obj_pp.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/g'
+    // Start for MATLABSystem: '<S116>/Physics G'
     proc_control_DW.obj_axm.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_axm.isInitialized = 1;
     ParamGet_proc_control_167.initParam(&prmName_k[0]);
     ParamGet_proc_control_167.setInitialValue(9.81);
     proc_control_DW.obj_axm.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/mass'
+    // Start for MATLABSystem: '<S116>/Physics Mass'
     proc_control_DW.obj_jq.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_jq.isInitialized = 1;
     ParamGet_proc_control_168.initParam(&prmName_l[0]);
-    ParamGet_proc_control_168.setInitialValue(35.42);
+    ParamGet_proc_control_168.setInitialValue(31.0);
     proc_control_DW.obj_jq.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/volume'
+    // Start for MATLABSystem: '<S116>/Physics Volume'
     proc_control_DW.obj_ju.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ju.isInitialized = 1;
     ParamGet_proc_control_169.initParam(&prmName_m[0]);
-    ParamGet_proc_control_169.setInitialValue(0.0365);
+    ParamGet_proc_control_169.setInitialValue(0.0315);
     proc_control_DW.obj_ju.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/sub height'
+    // Start for MATLABSystem: '<S116>/Physics Sub Height'
     proc_control_DW.obj_e5.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_e5.isInitialized = 1;
     ParamGet_proc_control_170.initParam(&prmName_n[0]);
-    ParamGet_proc_control_170.setInitialValue(0.3);
+    ParamGet_proc_control_170.setInitialValue(0.15);
     proc_control_DW.obj_e5.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/rg'
+    // Start for MATLABSystem: '<S116>/Physics RG'
     proc_control_DW.obj_e1.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_e1.isInitialized = 1;
     ParamGet_proc_control_171.initParam(&prmName_o[0]);
     ParamGet_proc_control_171.setInitialValue(&varargin_1_c[0], 3U);
     proc_control_DW.obj_e1.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/rb'
+    // Start for MATLABSystem: '<S116>/Physics RB'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_h.matlabCodegenIsDeleted = false;
@@ -56532,7 +58360,7 @@ void proc_control::initialize()
     ParamGet_proc_control_173.setInitialValue(&varargin_1_d[0], 3U);
     proc_control_DW.obj_h.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/cdl'
+    // Start for MATLABSystem: '<S116>/Physics CDL'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_fg.matlabCodegenIsDeleted = false;
@@ -56550,7 +58378,7 @@ void proc_control::initialize()
     ParamGet_proc_control_177.setInitialValue(&varargin_1_f[0], 6U);
     proc_control_DW.obj_kb.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/added mass'
+    // Start for MATLABSystem: '<S116>/Physics Added Mass'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_ps.matlabCodegenIsDeleted = false;
@@ -56559,7 +58387,7 @@ void proc_control::initialize()
     ParamGet_proc_control_180.setInitialValue(&varargin_1_g[0], 6U);
     proc_control_DW.obj_ps.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/I'
+    // Start for MATLABSystem: '<S116>/Physics I'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_hn.matlabCodegenIsDeleted = false;
@@ -56568,7 +58396,7 @@ void proc_control::initialize()
     ParamGet_proc_control_182.setInitialValue(&varargin_1_h[0], 9U);
     proc_control_DW.obj_hn.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/depth pose'
+    // Start for MATLABSystem: '<S116>/Physics Depth Pose'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_lq.matlabCodegenIsDeleted = false;
@@ -56577,7 +58405,7 @@ void proc_control::initialize()
     ParamGet_proc_control_184.setInitialValue(&varargin_1_i[0], 3U);
     proc_control_DW.obj_lq.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/hydro pose'
+    // Start for MATLABSystem: '<S116>/Physics Hydro Pose'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_c4.matlabCodegenIsDeleted = false;
@@ -56586,7 +58414,7 @@ void proc_control::initialize()
     ParamGet_proc_control_186.setInitialValue(&varargin_1_j[0], 3U);
     proc_control_DW.obj_c4.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/sonar pose'
+    // Start for MATLABSystem: '<S116>/Physics Sonar Pose'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_eu.matlabCodegenIsDeleted = false;
@@ -56595,7 +58423,7 @@ void proc_control::initialize()
     ParamGet_proc_control_190.setInitialValue(&varargin_1_k[0], 3U);
     proc_control_DW.obj_eu.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/dvl rotation'
+    // Start for MATLABSystem: '<S116>/Physics DVL Rotation'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_mh.matlabCodegenIsDeleted = false;
@@ -56604,7 +58432,7 @@ void proc_control::initialize()
     ParamGet_proc_control_192.setInitialValue(&varargin_1_l[0], 3U);
     proc_control_DW.obj_mh.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/thrusters'
+    // Start for MATLABSystem: '<S116>/Physics Thrusters'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     proc_control_DW.obj_l4.matlabCodegenIsDeleted = false;
@@ -56613,328 +58441,343 @@ void proc_control::initialize()
     ParamGet_proc_control_194.setInitialValue(&varargin_1_m[0], 48U);
     proc_control_DW.obj_l4.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S47>/dvl lost override'
+    // Start for MATLABSystem: '<S116>/DVL Lost Override'
     proc_control_DW.obj_jk.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_jk.isInitialized = 1;
     ParamGet_proc_control_196.initParam(&prmName_z[0]);
     ParamGet_proc_control_196.setInitialValue(true);
     proc_control_DW.obj_jk.isSetupComplete = true;
 
-    // SystemInitialize for MATLABSystem: '<S50>/MATLAB System3' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S119>/MATLAB System3' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.OV_d[0],
-           &proc_control_P.mpcParams_Y0.gains.predefined.OV[0], 13U * sizeof
-           (real_T));
+    std::memcpy(&proc_control_B.OV_d[0],
+                &proc_control_P.mpcParams_Y0.gains.predefined.OV[0], 13U *
+                sizeof(real_T));
 
-    // SystemInitialize for MATLABSystem: '<S50>/MATLAB System4' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S119>/MATLAB System4' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MV_p[0],
-           &proc_control_P.mpcParams_Y0.gains.predefined.MV[0], sizeof(real_T) <<
-           3U);
+    std::memcpy(&proc_control_B.MV_p[0],
+                &proc_control_P.mpcParams_Y0.gains.predefined.MV[0], sizeof
+                (real_T) << 3U);
 
-    // SystemInitialize for MATLABSystem: '<S50>/MATLAB System1' incorporates:
-    //   MATLABSystem: '<S50>/MATLAB System4'
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S119>/MATLAB System1' incorporates:
+    //   MATLABSystem: '<S119>/MATLAB System4'
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MVR_cn[0],
-           &proc_control_P.mpcParams_Y0.gains.predefined.MVR[0], sizeof(real_T) <<
-           3U);
+    std::memcpy(&proc_control_B.MVR_cn[0],
+                &proc_control_P.mpcParams_Y0.gains.predefined.MVR[0], sizeof
+                (real_T) << 3U);
 
-    // SystemInitialize for MATLABSystem: '<S51>/MATLAB System4' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S120>/MATLAB System4' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.OV_c[0], &proc_control_P.mpcParams_Y0.gains.c10.OV[0],
-           13U * sizeof(real_T));
+    std::memcpy(&proc_control_B.OV_c[0],
+                &proc_control_P.mpcParams_Y0.gains.c10.OV[0], 13U * sizeof
+                (real_T));
 
-    // SystemInitialize for MATLABSystem: '<S51>/MATLAB System5' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S120>/MATLAB System5' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MV_j[0], &proc_control_P.mpcParams_Y0.gains.c10.MV[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MV_j[0],
+                &proc_control_P.mpcParams_Y0.gains.c10.MV[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S51>/MATLAB System3' incorporates:
-    //   MATLABSystem: '<S51>/MATLAB System5'
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S120>/MATLAB System3' incorporates:
+    //   MATLABSystem: '<S120>/MATLAB System5'
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MVR_a[0], &proc_control_P.mpcParams_Y0.gains.c10.MVR
-           [0], sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MVR_a[0],
+                &proc_control_P.mpcParams_Y0.gains.c10.MVR[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S52>/MATLAB System4' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S121>/MATLAB System4' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.OV_l[0], &proc_control_P.mpcParams_Y0.gains.c11.OV[0],
-           13U * sizeof(real_T));
+    std::memcpy(&proc_control_B.OV_l[0],
+                &proc_control_P.mpcParams_Y0.gains.c11.OV[0], 13U * sizeof
+                (real_T));
 
-    // SystemInitialize for MATLABSystem: '<S52>/MATLAB System5' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S121>/MATLAB System5' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MV_l[0], &proc_control_P.mpcParams_Y0.gains.c11.MV[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MV_l[0],
+                &proc_control_P.mpcParams_Y0.gains.c11.MV[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S52>/MATLAB System3' incorporates:
-    //   MATLABSystem: '<S52>/MATLAB System5'
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S121>/MATLAB System3' incorporates:
+    //   MATLABSystem: '<S121>/MATLAB System5'
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MVR_c[0], &proc_control_P.mpcParams_Y0.gains.c11.MVR
-           [0], sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MVR_c[0],
+                &proc_control_P.mpcParams_Y0.gains.c11.MVR[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S53>/MATLAB System4' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S122>/MATLAB System4' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.OV[0], &proc_control_P.mpcParams_Y0.gains.c19.OV[0],
-           13U * sizeof(real_T));
+    std::memcpy(&proc_control_B.OV[0],
+                &proc_control_P.mpcParams_Y0.gains.c19.OV[0], 13U * sizeof
+                (real_T));
 
-    // SystemInitialize for MATLABSystem: '<S53>/MATLAB System5' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S122>/MATLAB System5' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MV_c[0], &proc_control_P.mpcParams_Y0.gains.c19.MV[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MV_c[0],
+                &proc_control_P.mpcParams_Y0.gains.c19.MV[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S53>/MATLAB System3' incorporates:
-    //   MATLABSystem: '<S53>/MATLAB System5'
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S122>/MATLAB System3' incorporates:
+    //   MATLABSystem: '<S122>/MATLAB System5'
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MVR[0], &proc_control_P.mpcParams_Y0.gains.c19.MVR[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MVR[0],
+                &proc_control_P.mpcParams_Y0.gains.c19.MVR[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for MATLABSystem: '<S54>/MATLAB System5' incorporates:
-    //   MATLABSystem: '<S53>/MATLAB System5'
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S123>/MATLAB System5' incorporates:
+    //   MATLABSystem: '<S122>/MATLAB System5'
+    //   Outport: '<S113>/mpcParams'
 
-    memcpy(&proc_control_B.MV[0], &proc_control_P.mpcParams_Y0.gains.noDvl.MV[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.MV[0],
+                &proc_control_P.mpcParams_Y0.gains.noDvl.MV[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for DataTypeConversion: '<S48>/Data Type Conversion' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for DataTypeConversion: '<S117>/Data Type Conversion' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.p_h = proc_control_P.mpcParams_Y0.gains.p;
 
-    // SystemInitialize for DataTypeConversion: '<S48>/Data Type Conversion1' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for DataTypeConversion: '<S117>/Data Type Conversion1' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.m_a = proc_control_P.mpcParams_Y0.gains.m;
 
-    // SystemInitialize for MATLABSystem: '<S48>/Get Parameter2' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S117>/MPC.TMAX' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.tmax = proc_control_P.mpcParams_Y0.gains.tmax;
 
-    // SystemInitialize for MATLABSystem: '<S48>/Get Parameter3' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S117>/MPC.TMIN' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.tmin = proc_control_P.mpcParams_Y0.gains.tmin;
 
-    // SystemInitialize for MATLABSystem: '<S49>/Get Parameter' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S118>/Linear Tolerance' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.linearTol =
       proc_control_P.mpcParams_Y0.targetReached.linearTol;
 
-    // SystemInitialize for MATLABSystem: '<S49>/Get Parameter1' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S118>/Angular Tolerance' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.angularTol =
       proc_control_P.mpcParams_Y0.targetReached.angularTol;
 
-    // SystemInitialize for MATLABSystem: '<S49>/Get Parameter2' incorporates:
-    //   Outport: '<S44>/mpcParams'
+    // SystemInitialize for MATLABSystem: '<S118>/Time in Tolerance' incorporates:
+    //   Outport: '<S113>/mpcParams'
 
     proc_control_B.timeInTol =
       proc_control_P.mpcParams_Y0.targetReached.timeInTol;
 
-    // SystemInitialize for BusCreator: '<S47>/Bus Creator' incorporates:
-    //   Outport: '<S44>/physicsConstants'
+    // SystemInitialize for BusCreator: '<S116>/Bus Creator' incorporates:
+    //   Outport: '<S113>/physicsConstants'
 
     proc_control_B.BusCreator = proc_control_P.physicsConstants_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S4>/Get_ROS_param'
+    // End of SystemInitialize for SubSystem: '<S7>/Get_ROS_param'
 
-    // SystemInitialize for IfAction SubSystem: '<S3>/Simulation'
-    // SystemInitialize for Enabled SubSystem: '<S38>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S41>/In1' incorporates:
-    //   Outport: '<S41>/Out1'
+    // SystemInitialize for IfAction SubSystem: '<S5>/Simulation'
+    // SystemInitialize for Enabled SubSystem: '<S96>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S99>/In1' incorporates:
+    //   Outport: '<S99>/Out1'
 
     proc_control_B.In1_g = proc_control_P.Out1_Y0_no;
 
-    // End of SystemInitialize for SubSystem: '<S38>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S96>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S39>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S42>/In1' incorporates:
-    //   Outport: '<S42>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S95>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S98>/In1' incorporates:
+    //   Outport: '<S98>/Out1'
 
     proc_control_B.In1_iq = proc_control_P.Out1_Y0_p;
 
-    // End of SystemInitialize for SubSystem: '<S39>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S95>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S40>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S43>/In1' incorporates:
-    //   Outport: '<S43>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S94>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S97>/In1' incorporates:
+    //   Outport: '<S97>/Out1'
 
     proc_control_B.In1_hb = proc_control_P.Out1_Y0_oo;
 
-    // End of SystemInitialize for SubSystem: '<S40>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S94>/Enabled Subsystem'
 
-    // Start for MATLABSystem: '<S38>/SourceBlock'
+    // Start for MATLABSystem: '<S96>/SourceBlock'
     proc_control_DW.obj_fe.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_fe.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_fe.isSetupComplete = false;
     proc_control_DW.obj_fe.isInitialized = 1;
-    proc_contr_Subscriber_setupImpl(&proc_control_DW.obj_fe);
+    proc_c_Subscriber_setupImpl_pr3(&proc_control_DW.obj_fe);
     proc_control_DW.obj_fe.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S39>/SourceBlock'
+    // Start for MATLABSystem: '<S95>/SourceBlock'
     proc_control_DW.obj_fka.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_fka.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_fka.isSetupComplete = false;
     proc_control_DW.obj_fka.isInitialized = 1;
-    proc_con_Subscriber_setupImpl_p(&proc_control_DW.obj_fka);
+    proc_co_Subscriber_setupImpl_pr(&proc_control_DW.obj_fka);
     proc_control_DW.obj_fka.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S40>/SourceBlock'
+    // Start for MATLABSystem: '<S94>/SourceBlock'
     proc_control_DW.obj_na.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_na.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_na.isSetupComplete = false;
     proc_control_DW.obj_na.isInitialized = 1;
-    proc_co_Subscriber_setupImpl_pr(&proc_control_DW.obj_na);
+    proc_con_Subscriber_setupImpl_p(&proc_control_DW.obj_na);
     proc_control_DW.obj_na.isSetupComplete = true;
 
-    // End of SystemInitialize for SubSystem: '<S3>/Simulation'
+    // End of SystemInitialize for SubSystem: '<S5>/Simulation'
 
-    // SystemInitialize for IfAction SubSystem: '<S3>/AUV'
-    // SystemInitialize for Enabled SubSystem: '<S27>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S30>/In1' incorporates:
-    //   Outport: '<S30>/Out1'
+    // SystemInitialize for IfAction SubSystem: '<S5>/AUV'
+    // SystemInitialize for Enabled SubSystem: '<S85>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S88>/In1' incorporates:
+    //   Outport: '<S88>/Out1'
 
     proc_control_B.In1_e = proc_control_P.Out1_Y0_c;
 
-    // End of SystemInitialize for SubSystem: '<S27>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S85>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S28>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S31>/In1' incorporates:
-    //   Outport: '<S31>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S84>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S87>/In1' incorporates:
+    //   Outport: '<S87>/Out1'
 
     proc_control_B.In1_m = proc_control_P.Out1_Y0_g;
 
-    // End of SystemInitialize for SubSystem: '<S28>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S84>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S29>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S32>/In1' incorporates:
-    //   Outport: '<S32>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S83>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S86>/In1' incorporates:
+    //   Outport: '<S86>/Out1'
 
     proc_control_B.In1_b = proc_control_P.Out1_Y0_bc;
 
-    // End of SystemInitialize for SubSystem: '<S29>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S83>/Enabled Subsystem'
 
-    // Start for MATLABSystem: '<S27>/SourceBlock'
+    // Start for MATLABSystem: '<S85>/SourceBlock'
     proc_control_DW.obj_du.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_du.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_du.isSetupComplete = false;
     proc_control_DW.obj_du.isInitialized = 1;
-    proc_c_Subscriber_setupImpl_pr3(&proc_control_DW.obj_du);
+    pro_Subscriber_setupImpl_pr351e(&proc_control_DW.obj_du);
     proc_control_DW.obj_du.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S28>/SourceBlock'
+    // Start for MATLABSystem: '<S84>/SourceBlock'
     proc_control_DW.obj_n5.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_n5.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_n5.isSetupComplete = false;
     proc_control_DW.obj_n5.isInitialized = 1;
-    proc__Subscriber_setupImpl_pr35(&proc_control_DW.obj_n5);
+    proc_Subscriber_setupImpl_pr351(&proc_control_DW.obj_n5);
     proc_control_DW.obj_n5.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S29>/SourceBlock'
+    // Start for MATLABSystem: '<S83>/SourceBlock'
     proc_control_DW.obj_ak.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_ak.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ak.isSetupComplete = false;
     proc_control_DW.obj_ak.isInitialized = 1;
-    proc_Subscriber_setupImpl_pr351(&proc_control_DW.obj_ak);
+    proc__Subscriber_setupImpl_pr35(&proc_control_DW.obj_ak);
     proc_control_DW.obj_ak.isSetupComplete = true;
 
-    // End of SystemInitialize for SubSystem: '<S3>/AUV'
+    // End of SystemInitialize for SubSystem: '<S5>/AUV'
 
-    // SystemInitialize for Enabled SubSystem: '<S6>/DVL Measurements'
-    // InitializeConditions for Delay: '<S202>/Delay'
+    // SystemInitialize for Enabled SubSystem: '<S9>/DVL Measurements'
+    // InitializeConditions for Delay: '<S271>/Delay'
     proc_control_DW.Delay_DSTATE_i = proc_control_P.Delay_InitialCondition_f;
 
-    // SystemInitialize for Enabled SubSystem: '<S202>/Enabled Subsystem'
-    // SystemInitialize for Fcn: '<S206>/q0' incorporates:
-    //   Outport: '<S205>/Quat'
+    // SystemInitialize for Enabled SubSystem: '<S271>/Enabled Subsystem'
+    // SystemInitialize for Fcn: '<S275>/q0' incorporates:
+    //   Outport: '<S274>/Quat'
 
     proc_control_B.q0 = proc_control_P.Quat_Y0;
 
-    // SystemInitialize for Fcn: '<S206>/q1' incorporates:
-    //   Outport: '<S205>/Quat'
+    // SystemInitialize for Fcn: '<S275>/q1' incorporates:
+    //   Outport: '<S274>/Quat'
 
     proc_control_B.q1 = proc_control_P.Quat_Y0;
 
-    // SystemInitialize for Fcn: '<S206>/q2' incorporates:
-    //   Outport: '<S205>/Quat'
+    // SystemInitialize for Fcn: '<S275>/q2' incorporates:
+    //   Outport: '<S274>/Quat'
 
     proc_control_B.q2 = proc_control_P.Quat_Y0;
 
-    // SystemInitialize for Fcn: '<S206>/q3' incorporates:
-    //   Outport: '<S205>/Quat'
+    // SystemInitialize for Fcn: '<S275>/q3' incorporates:
+    //   Outport: '<S274>/Quat'
 
     proc_control_B.q3 = proc_control_P.Quat_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S202>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S271>/Enabled Subsystem'
 
-    // SystemInitialize for Outport: '<S177>/DVL Measurements'
+    // SystemInitialize for Outport: '<S246>/DVL Measurements'
     proc_control_B.enable_i = proc_control_P.DVLMeasurements_Y0.enable;
 
-    // End of SystemInitialize for SubSystem: '<S6>/DVL Measurements'
+    // End of SystemInitialize for SubSystem: '<S9>/DVL Measurements'
 
-    // SystemInitialize for Enabled SubSystem: '<S6>/Depth Measurements'
-    // SystemInitialize for Sum: '<S178>/Sum' incorporates:
-    //   Outport: '<S178>/Depth Measurements'
+    // SystemInitialize for Enabled SubSystem: '<S9>/Depth Measurements'
+    // SystemInitialize for Sum: '<S247>/Sum' incorporates:
+    //   Outport: '<S247>/Depth Measurements'
 
     proc_control_B.zposition = proc_control_P.DepthMeasurements_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S6>/Depth Measurements'
+    // End of SystemInitialize for SubSystem: '<S9>/Depth Measurements'
 
-    // SystemInitialize for Enabled SubSystem: '<S3>/Enabled Subsystem'
-    // InitializeConditions for Memory: '<S36>/Memory'
+    // SystemInitialize for Enabled SubSystem: '<S5>/Enabled Subsystem'
+    // InitializeConditions for Memory: '<S92>/Memory'
     proc_control_DW.Memory_PreviousInput_e =
       proc_control_P.MinMaxRunningResettable_vinit;
 
-    // InitializeConditions for Memory: '<S37>/Memory'
+    // InitializeConditions for Memory: '<S93>/Memory'
     proc_control_DW.Memory_PreviousInput_n =
       proc_control_P.MinMaxRunningResettable1_vinit;
 
-    // SystemInitialize for Outport: '<S25>/y'
+    // SystemInitialize for Outport: '<S81>/y'
     proc_control_B.y = proc_control_P.y_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S3>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S5>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S6>/Enabled Subsystem'
-    // Start for DataStoreMemory: '<S221>/DataStoreMemory - P'
-    memcpy(&proc_control_DW.P[0], &proc_control_P.DataStoreMemoryP_InitialValue
-           [0], 169U * sizeof(real_T));
+    // SystemInitialize for Enabled SubSystem: '<S9>/Enabled Subsystem'
+    // Start for DataStoreMemory: '<S290>/DataStoreMemory - P'
+    std::memcpy(&proc_control_DW.P[0],
+                &proc_control_P.DataStoreMemoryP_InitialValue[0], 169U * sizeof
+                (real_T));
 
-    // SystemInitialize for Enabled SubSystem: '<S221>/Correct1'
-    // SystemInitialize for MATLABSystem: '<S222>/MATLAB System' incorporates:
-    //   Outport: '<S222>/yBlockOrdering'
+    // SystemInitialize for Enabled SubSystem: '<S290>/Correct1'
+    // SystemInitialize for MATLABSystem: '<S291>/MATLAB System' incorporates:
+    //   Outport: '<S291>/yBlockOrdering'
 
     proc_control_B.MATLABSystem_o3_k = proc_control_P.yBlockOrdering_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S221>/Correct1'
+    // End of SystemInitialize for SubSystem: '<S290>/Correct1'
+    for (i = 0; i < 13; i++) {
+      // Start for DataStoreMemory: '<S290>/DataStoreMemory - x'
+      proc_control_DW.x[i] = proc_control_P.DataStoreMemoryx_InitialValue[i];
 
-    // Start for DataStoreMemory: '<S221>/DataStoreMemory - x'
-    memcpy(&proc_control_DW.x[0], &proc_control_P.DataStoreMemoryx_InitialValue
-           [0], 13U * sizeof(real_T));
+      // SystemInitialize for DataStoreRead: '<S294>/Data Store Read' incorporates:
+      //   DataStoreMemory: '<S290>/DataStoreMemory - x'
+      //   Outport: '<S248>/xhat'
 
-    // End of SystemInitialize for SubSystem: '<S6>/Enabled Subsystem'
+      proc_control_B.DataStoreRead[i] = proc_control_P.xhat_Y0;
+    }
+
+    // End of SystemInitialize for SubSystem: '<S9>/Enabled Subsystem'
 
     // SystemInitialize for Enabled SubSystem: '<Root>/Enabled Subsystem'
-    // SystemInitialize for Atomic SubSystem: '<S9>/Header Assignment'
-    // Start for MATLABSystem: '<S13>/Current Time'
-    proc_control_DW.obj_haq.matlabCodegenIsDeleted = false;
-    proc_control_DW.obj_haq.isSetupComplete = true;
+    // SystemInitialize for Atomic SubSystem: '<S12>/Header Assignment'
+    proc_control_CurrentTime_Init(&proc_control_DW.CurrentTime);
 
-    // End of SystemInitialize for SubSystem: '<S9>/Header Assignment'
+    // End of SystemInitialize for SubSystem: '<S12>/Header Assignment'
 
-    // Start for MATLABSystem: '<S15>/SinkBlock'
+    // Start for MATLABSystem: '<S17>/SinkBlock'
     proc_control_DW.obj_ez.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_ez.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ez.isInitialized = 1;
@@ -56947,9 +58790,9 @@ void proc_control::initialize()
     Pub_proc_control_478.createPublisher(&b_zeroDelimTopic[0], qos_profile);
     proc_control_DW.obj_ez.isSetupComplete = true;
 
-    // End of Start for MATLABSystem: '<S15>/SinkBlock'
+    // End of Start for MATLABSystem: '<S17>/SinkBlock'
 
-    // Start for MATLABSystem: '<S11>/SinkBlock'
+    // Start for MATLABSystem: '<S14>/SinkBlock'
     proc_control_DW.obj_dv.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_dv.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_dv.isSetupComplete = false;
@@ -56960,9 +58803,9 @@ void proc_control::initialize()
     // SystemInitialize for SignalConversion generated from: '<S1>/Output' incorporates:
     //   Outport: '<S1>/Output'
 
-    proc_control_B.WorldPosition[0] = proc_control_P.Output_Y0.WorldPosition[0];
-    proc_control_B.WorldPosition[1] = proc_control_P.Output_Y0.WorldPosition[1];
-    proc_control_B.WorldPosition[2] = proc_control_P.Output_Y0.WorldPosition[2];
+    proc_control_B.WorldPosition_f[0] = proc_control_P.Output_Y0.WorldPosition[0];
+    proc_control_B.WorldPosition_f[1] = proc_control_P.Output_Y0.WorldPosition[1];
+    proc_control_B.WorldPosition_f[2] = proc_control_P.Output_Y0.WorldPosition[2];
 
     // SystemInitialize for SignalConversion generated from: '<S1>/Output' incorporates:
     //   Outport: '<S1>/Output'
@@ -56974,125 +58817,125 @@ void proc_control::initialize()
 
     // End of SystemInitialize for SubSystem: '<Root>/Enabled Subsystem'
 
-    // SystemInitialize for IfAction SubSystem: '<S5>/If Action Subsystem'
-    // SystemInitialize for Enabled SubSystem: '<S171>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S173>/In1' incorporates:
-    //   Outport: '<S173>/Out1'
+    // SystemInitialize for IfAction SubSystem: '<S8>/If Action Subsystem'
+    // SystemInitialize for Enabled SubSystem: '<S240>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S242>/In1' incorporates:
+    //   Outport: '<S242>/Out1'
 
     proc_control_B.In1_j = proc_control_P.Out1_Y0_b;
 
-    // End of SystemInitialize for SubSystem: '<S171>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S240>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S172>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S174>/In1' incorporates:
-    //   Outport: '<S174>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S241>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S243>/In1' incorporates:
+    //   Outport: '<S243>/Out1'
 
     proc_control_B.In1 = proc_control_P.Out1_Y0;
 
-    // End of SystemInitialize for SubSystem: '<S172>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S241>/Enabled Subsystem'
 
-    // Start for MATLABSystem: '<S171>/SourceBlock'
+    // Start for MATLABSystem: '<S240>/SourceBlock'
     proc_control_DW.obj_no.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_no.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_no.isSetupComplete = false;
     proc_control_DW.obj_no.isInitialized = 1;
-    Subscriber_setupIm_pr351ewpk3k4(&proc_control_DW.obj_no);
+    Subscriber_setupI_pr351ewpk3k4u(&proc_control_DW.obj_no);
     proc_control_DW.obj_no.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S172>/SourceBlock'
+    // Start for MATLABSystem: '<S241>/SourceBlock'
     proc_control_DW.obj_if.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_if.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_if.isSetupComplete = false;
     proc_control_DW.obj_if.isInitialized = 1;
-    Subscriber_setupI_pr351ewpk3k4u(&proc_control_DW.obj_if);
+    Subscriber_setup_pr351ewpk3k4u0(&proc_control_DW.obj_if);
     proc_control_DW.obj_if.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S69>/MATLAB System'
+    // Start for MATLABSystem: '<S138>/MATLAB System'
     proc_control_DW.obj_k.isInitialized = 1;
 
-    // InitializeConditions for MATLABSystem: '<S69>/MATLAB System'
+    // InitializeConditions for MATLABSystem: '<S138>/MATLAB System'
     //         %% Fonction execute a chaque iteration
     //  Perform one-time calculations, such as computing constants
     proc_contr_mpcManager_resetImpl(&proc_control_DW.obj_k);
 
-    // SystemInitialize for MATLABSystem: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for MATLABSystem: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
-    memcpy(&proc_control_B.mvmin[0], &proc_control_P.MPCparam_Y0.mvmin[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.mvmin[0], &proc_control_P.MPCparam_Y0.mvmin[0],
+                sizeof(real_T) << 3U);
 
-    // SystemInitialize for MATLABSystem: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for MATLABSystem: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
-    memcpy(&proc_control_B.mvmax[0], &proc_control_P.MPCparam_Y0.mvmax[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.mvmax[0], &proc_control_P.MPCparam_Y0.mvmax[0],
+                sizeof(real_T) << 3U);
 
-    // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
-    memcpy(&proc_control_B.ywt[0], &proc_control_P.MPCparam_Y0.ywt[0], 13U *
-           sizeof(real_T));
+    std::memcpy(&proc_control_B.ywt[0], &proc_control_P.MPCparam_Y0.ywt[0], 13U *
+                sizeof(real_T));
 
-    // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
-    memcpy(&proc_control_B.mvwt[0], &proc_control_P.MPCparam_Y0.mvwt[0], sizeof
-           (real_T) << 3U);
+    std::memcpy(&proc_control_B.mvwt[0], &proc_control_P.MPCparam_Y0.mvwt[0],
+                sizeof(real_T) << 3U);
 
-    // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
-    memcpy(&proc_control_B.dmwwt[0], &proc_control_P.MPCparam_Y0.dmwwt[0],
-           sizeof(real_T) << 3U);
+    std::memcpy(&proc_control_B.dmwwt[0], &proc_control_P.MPCparam_Y0.dmwwt[0],
+                sizeof(real_T) << 3U);
     for (i = 0; i < 8; i++) {
-      // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-      //   Outport: '<S69>/MPC param'
+      // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+      //   Outport: '<S138>/MPC param'
 
       proc_control_B.thrustersStatus[i] =
         proc_control_P.MPCparam_Y0.thrustersStatus[i];
     }
 
-    // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
     proc_control_B.p = proc_control_P.MPCparam_Y0.p;
 
-    // SystemInitialize for SignalConversion generated from: '<S69>/MATLAB System' incorporates:
-    //   Outport: '<S69>/MPC param'
+    // SystemInitialize for SignalConversion generated from: '<S138>/MATLAB System' incorporates:
+    //   Outport: '<S138>/MPC param'
 
     proc_control_B.m = proc_control_P.MPCparam_Y0.m;
 
-    // End of SystemInitialize for SubSystem: '<S5>/If Action Subsystem'
+    // End of SystemInitialize for SubSystem: '<S8>/If Action Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S245>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S246>/In1' incorporates:
-    //   Outport: '<S246>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S314>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S315>/In1' incorporates:
+    //   Outport: '<S315>/Out1'
 
     proc_control_B.In1_l = proc_control_P.Out1_Y0_f;
 
-    // End of SystemInitialize for SubSystem: '<S245>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S314>/Enabled Subsystem'
 
-    // SystemInitialize for Enabled SubSystem: '<S247>/Enabled Subsystem'
-    // SystemInitialize for SignalConversion generated from: '<S248>/In1' incorporates:
-    //   Outport: '<S248>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S316>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S317>/In1' incorporates:
+    //   Outport: '<S317>/Out1'
 
     proc_control_B.In1_i = proc_control_P.Out1_Y0_n;
 
-    // End of SystemInitialize for SubSystem: '<S247>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S316>/Enabled Subsystem'
 
-    // SystemInitialize for IfAction SubSystem: '<S7>/ProcPlanner Trajectory'
-    // InitializeConditions for UnitDelay: '<S240>/Delay Input1'
+    // SystemInitialize for IfAction SubSystem: '<S10>/ProcPlanner Trajectory'
+    // InitializeConditions for UnitDelay: '<S309>/Delay Input1'
     //
-    //  Block description for '<S240>/Delay Input1':
+    //  Block description for '<S309>/Delay Input1':
     //
     //   Store in Global RAM
 
     proc_control_DW.DelayInput1_DSTATE = proc_control_P.DetectRisePositive_vinit;
 
-    // Start for MATLABSystem: '<S233>/MATLAB System'
+    // Start for MATLABSystem: '<S302>/MATLAB System'
     proc_control_DW.obj_l.isInitialized = 1;
 
-    // InitializeConditions for MATLABSystem: '<S233>/MATLAB System'
+    // InitializeConditions for MATLABSystem: '<S302>/MATLAB System'
     //  Perform one-time calculations, such as computing constants
     proc_control_DW.obj_l.dummy = 999.0;
 
@@ -57116,75 +58959,76 @@ void proc_control::initialize()
     proc_control_DW.obj_l.done = false;
     proc_control_DW.obj_l.init = false;
 
-    // End of InitializeConditions for MATLABSystem: '<S233>/MATLAB System'
-    // End of SystemInitialize for SubSystem: '<S7>/ProcPlanner Trajectory'
+    // End of InitializeConditions for MATLABSystem: '<S302>/MATLAB System'
+    // End of SystemInitialize for SubSystem: '<S10>/ProcPlanner Trajectory'
 
-    // SystemInitialize for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
-    // InitializeConditions for Delay: '<S238>/Delay'
+    // SystemInitialize for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
+    // InitializeConditions for Delay: '<S307>/Delay'
     proc_control_DW.Delay_DSTATE_g = proc_control_P.Delay_InitialCondition_az;
 
-    // SystemInitialize for Enabled SubSystem: '<S238>/Enabled Subsystem'
-    // SystemInitialize for DataTypeConversion: '<S249>/Data Type Conversion1' incorporates:
-    //   Outport: '<S249>/Out1'
+    // SystemInitialize for Enabled SubSystem: '<S307>/Enabled Subsystem'
+    // SystemInitialize for DataTypeConversion: '<S318>/Data Type Conversion1' incorporates:
+    //   Outport: '<S318>/Out1'
 
     proc_control_B.DataTypeConversion1[0] = proc_control_P.Out1_Y0_j3;
     proc_control_B.DataTypeConversion1[1] = proc_control_P.Out1_Y0_j3;
 
-    // SystemInitialize for DataTypeConversion: '<S249>/Data Type Conversion2' incorporates:
-    //   Outport: '<S249>/Out1'
+    // SystemInitialize for DataTypeConversion: '<S318>/Data Type Conversion2' incorporates:
+    //   Outport: '<S318>/Out1'
 
     proc_control_B.DataTypeConversion2 = proc_control_P.Out1_Y0_j3;
 
-    // SystemInitialize for Enabled SubSystem: '<S238>/Pre-traitement'
+    // SystemInitialize for Enabled SubSystem: '<S307>/Pre-traitement'
     for (i = 0; i < 6; i++) {
-      // SystemInitialize for DataTypeConversion: '<S249>/Data Type Conversion' incorporates:
-      //   Outport: '<S249>/Out1'
+      // SystemInitialize for DataTypeConversion: '<S318>/Data Type Conversion' incorporates:
+      //   Outport: '<S318>/Out1'
 
       proc_control_B.DataTypeConversion[i] = proc_control_P.Out1_Y0_j3;
 
-      // SystemInitialize for Selector: '<S250>/Selector' incorporates:
-      //   DataTypeConversion: '<S249>/Data Type Conversion'
-      //   Outport: '<S249>/Out1'
-      //   Outport: '<S250>/linWpts'
+      // SystemInitialize for Selector: '<S319>/Selector' incorporates:
+      //   DataTypeConversion: '<S318>/Data Type Conversion'
+      //   Outport: '<S318>/Out1'
+      //   Outport: '<S319>/linWpts'
 
       proc_control_B.Selector[i] = proc_control_P.linWpts_Y0;
     }
 
-    // End of SystemInitialize for SubSystem: '<S238>/Enabled Subsystem'
+    // End of SystemInitialize for SubSystem: '<S307>/Enabled Subsystem'
     for (i = 0; i < 8; i++) {
-      // SystemInitialize for Selector: '<S250>/Selector1' incorporates:
-      //   Outport: '<S250>/RotWpts'
+      // SystemInitialize for Selector: '<S319>/Selector1' incorporates:
+      //   Outport: '<S319>/RotWpts'
 
       proc_control_B.Selector1[i] = proc_control_P.RotWpts_Y0;
     }
 
-    // SystemInitialize for Concatenate: '<S250>/Matrix Concatenate' incorporates:
-    //   Outport: '<S250>/time'
+    // SystemInitialize for Concatenate: '<S319>/Matrix Concatenate' incorporates:
+    //   Outport: '<S319>/time'
 
     proc_control_B.MatrixConcatenate[0] = proc_control_P.time_Y0;
     proc_control_B.MatrixConcatenate[1] = proc_control_P.time_Y0;
     for (i = 0; i < 7; i++) {
-      // SystemInitialize for Selector: '<S250>/Selector4' incorporates:
-      //   Outport: '<S250>/target'
+      // SystemInitialize for Selector: '<S319>/Selector4' incorporates:
+      //   Outport: '<S319>/target'
 
       proc_control_B.Selector4[i] = proc_control_P.target_Y0;
     }
 
-    // End of SystemInitialize for SubSystem: '<S238>/Pre-traitement'
+    // End of SystemInitialize for SubSystem: '<S307>/Pre-traitement'
 
-    // SystemInitialize for Resettable SubSystem: '<S238>/Resettable Subsystem'
-    // InitializeConditions for DiscreteIntegrator: '<S251>/Discrete-Time Integrator' 
+    // SystemInitialize for Resettable SubSystem: '<S307>/Resettable Subsystem'
+    // InitializeConditions for DiscreteIntegrator: '<S320>/Discrete-Time Integrator' 
     proc_control_DW.DiscreteTimeIntegrator_DSTATE =
       proc_control_P.DiscreteTimeIntegrator_IC;
 
-    // Start for MATLABSystem: '<S251>/Rotation Trajectory'
-    memcpy(&proc_control_DW.obj_p3.TimeScaling[0], &tmp[0], 33U * sizeof(real_T));
+    // Start for MATLABSystem: '<S320>/Rotation Trajectory'
+    std::memcpy(&proc_control_DW.obj_p3.TimeScaling[0], &tmp_0[0], 33U * sizeof
+                (real_T));
     proc_control_DW.obj_p3.isInitialized = 1;
     proc_control_DW.obj_p3.TunablePropsChanged = false;
 
-    // Start for MATLABSystem: '<S254>/Polynomial Trajectory'
-    memset(&proc_control_DW.obj_m.AccelerationBoundaryCondition[0], 0, 10U *
-           sizeof(real_T));
+    // Start for MATLABSystem: '<S322>/Polynomial Trajectory'
+    std::memset(&proc_control_DW.obj_m.AccelerationBoundaryCondition[0], 0, 10U *
+                sizeof(real_T));
     for (i = 0; i < 5; i++) {
       proc_control_DW.obj_m.tunablePropertyChanged[i] = false;
     }
@@ -57198,18 +59042,18 @@ void proc_control::initialize()
     proc_cont_PolyTrajSys_setupImpl(&proc_control_DW.obj_m);
     proc_control_DW.obj_m.TunablePropsChanged = false;
 
-    // End of Start for MATLABSystem: '<S254>/Polynomial Trajectory'
-    // End of SystemInitialize for SubSystem: '<S238>/Resettable Subsystem'
+    // End of Start for MATLABSystem: '<S322>/Polynomial Trajectory'
+    // End of SystemInitialize for SubSystem: '<S307>/Resettable Subsystem'
 
-    // Start for MATLABSystem: '<S252>/SourceBlock'
+    // Start for MATLABSystem: '<S321>/SourceBlock'
     proc_control_DW.obj_ha.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_ha.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ha.isSetupComplete = false;
     proc_control_DW.obj_ha.isInitialized = 1;
-    proc_con_Subscriber_setupImpl_n(&proc_control_DW.obj_ha);
+    proc_con_Subscriber_setupImpl_g(&proc_control_DW.obj_ha);
     proc_control_DW.obj_ha.isSetupComplete = true;
 
-    // InitializeConditions for MATLABSystem: '<S238>/MATLAB System'
+    // InitializeConditions for MATLABSystem: '<S307>/MATLAB System'
     // ========================================================================== 
     //  Fonctions Principales
     // ========================================================================== 
@@ -57218,25 +59062,25 @@ void proc_control::initialize()
     //  Fonction Reset
     //  Initialize / reset discrete-state properties
     for (i = 0; i < 18; i++) {
-      proc_control_DW.obj_f.poseList[i] = 999.0;
+      proc_control_DW.obj_fo.poseList[i] = 999.0;
     }
 
     i = 0;
-    for (i_0 = 0; i_0 < 9; i_0++) {
-      proc_control_DW.obj_f.poseList[i] = tmp_0[i_0];
+    for (r = 0; r < 9; r++) {
+      proc_control_DW.obj_fo.poseList[i] = tmp_1[r];
       i += 2;
     }
 
     // initCond(1,1:7);
     for (i = 0; i < 7; i++) {
-      proc_control_DW.obj_f.initcond[i] = tmp_1[i];
+      proc_control_DW.obj_fo.initcond[i] = tmp_2[i];
     }
 
-    proc_control_DW.obj_f.i = 2.0;
+    proc_control_DW.obj_fo.i = 2.0;
 
-    // End of InitializeConditions for MATLABSystem: '<S238>/MATLAB System'
+    // End of InitializeConditions for MATLABSystem: '<S307>/MATLAB System'
 
-    // Start for MATLABSystem: '<S238>/MATLAB System1'
+    // Start for MATLABSystem: '<S307>/MATLAB System1'
     proc_control_DW.obj.linearConvergence =
       proc_control_P.MATLABSystem1_linearConvergence;
     proc_control_DW.obj.quaternionConvergence =
@@ -57266,37 +59110,39 @@ void proc_control::initialize()
     proc_control_DW.obj.done = false;
     proc_control_DW.obj.init = 0.0;
 
-    // End of Start for MATLABSystem: '<S238>/MATLAB System1'
-    // End of SystemInitialize for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+    // End of Start for MATLABSystem: '<S307>/MATLAB System1'
+    // End of SystemInitialize for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
 
-    // SystemInitialize for IfAction SubSystem: '<S68>/If Action Subsystem'
-    // InitializeConditions for Delay: '<S71>/Delay'
-    memcpy(&proc_control_DW.Delay_DSTATE_a[0],
-           &proc_control_P.Delay_InitialCondition[0], sizeof(real_T) << 3U);
+    // SystemInitialize for IfAction SubSystem: '<S137>/If Action Subsystem'
+    // InitializeConditions for Delay: '<S140>/Delay'
+    std::memcpy(&proc_control_DW.Delay_DSTATE_a[0],
+                &proc_control_P.Delay_InitialCondition[0], sizeof(real_T) << 3U);
 
-    // InitializeConditions for Memory: '<S79>/Memory'
-    memcpy(&proc_control_DW.Memory_PreviousInput_l[0],
-           &proc_control_P.Memory_InitialCondition[0], 226U * sizeof(boolean_T));
+    // InitializeConditions for Memory: '<S148>/Memory'
+    std::memcpy(&proc_control_DW.Memory_PreviousInput_l[0],
+                &proc_control_P.Memory_InitialCondition[0], 226U * sizeof
+                (boolean_T));
 
-    // InitializeConditions for UnitDelay: '<S79>/last_mv'
-    memcpy(&proc_control_DW.last_mv_DSTATE_j[0],
-           &proc_control_P.last_mv_InitialCondition[0], sizeof(real_T) << 3U);
+    // InitializeConditions for UnitDelay: '<S148>/last_mv'
+    std::memcpy(&proc_control_DW.last_mv_DSTATE_j[0],
+                &proc_control_P.last_mv_InitialCondition[0], sizeof(real_T) <<
+                3U);
 
-    // SystemInitialize for Atomic SubSystem: '<S78>/Header Assignment'
-    // Start for MATLABSystem: '<S110>/Current Time'
+    // SystemInitialize for Atomic SubSystem: '<S147>/Header Assignment'
+    // Start for MATLABSystem: '<S179>/Current Time'
     proc_control_DW.obj_o3.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_o3.isSetupComplete = true;
 
-    // End of SystemInitialize for SubSystem: '<S78>/Header Assignment'
+    // End of SystemInitialize for SubSystem: '<S147>/Header Assignment'
 
-    // Start for MATLABSystem: '<S71>/MATLAB System'
+    // Start for MATLABSystem: '<S140>/MATLAB System'
     proc_control_DW.obj_b.isInitialized = 1;
 
-    // InitializeConditions for MATLABSystem: '<S71>/MATLAB System'
+    // InitializeConditions for MATLABSystem: '<S140>/MATLAB System'
     //  Perform one-time calculations, such as computing constants
     proc_contro_TrimPlant_resetImpl(&proc_control_DW.obj_b);
 
-    // Start for MATLABSystem: '<S111>/SinkBlock'
+    // Start for MATLABSystem: '<S180>/SinkBlock'
     proc_control_DW.obj_ni.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_ni.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ni.isInitialized = 1;
@@ -57310,13 +59156,13 @@ void proc_control::initialize()
     Pub_proc_control_913.createPublisher(&b_zeroDelimTopic_0[0], qos_profile);
     proc_control_DW.obj_ni.isSetupComplete = true;
 
-    // End of Start for MATLABSystem: '<S111>/SinkBlock'
-    // End of SystemInitialize for SubSystem: '<S68>/If Action Subsystem'
+    // End of Start for MATLABSystem: '<S180>/SinkBlock'
+    // End of SystemInitialize for SubSystem: '<S137>/If Action Subsystem'
 
-    // SystemInitialize for IfAction SubSystem: '<S68>/If Action Subsystem2'
-    // InitializeConditions for UnitDelay: '<S145>/UD'
+    // SystemInitialize for IfAction SubSystem: '<S137>/If Action Subsystem2'
+    // InitializeConditions for UnitDelay: '<S214>/UD'
     //
-    //  Block description for '<S145>/UD':
+    //  Block description for '<S214>/UD':
     //
     //   Store in Global RAM
 
@@ -57325,17 +59171,17 @@ void proc_control::initialize()
         proc_control_P.DiscreteDerivative_ICPrevScaled;
     }
 
-    // End of InitializeConditions for UnitDelay: '<S145>/UD'
+    // End of InitializeConditions for UnitDelay: '<S214>/UD'
 
-    // Start for MATLABSystem: '<S73>/MATLAB System'
+    // Start for MATLABSystem: '<S142>/MATLAB System'
     proc_control_DW.obj_p.k = proc_control_P.MATLABSystem_k;
-    memcpy(&proc_control_DW.obj_p.binv[0], &proc_control_P.binv[0], 48U * sizeof
-           (real_T));
+    std::memcpy(&proc_control_DW.obj_p.binv[0], &proc_control_P.binv[0], 48U *
+                sizeof(real_T));
     proc_control_DW.obj_p.mass = proc_control_P.physics.mass;
     proc_control_DW.obj_p.volume = proc_control_P.physics.volume;
     proc_control_DW.obj_p.height = proc_control_P.physics.height;
-    memcpy(&proc_control_DW.obj_p.I[0], &proc_control_P.physics.I[0], 9U *
-           sizeof(real_T));
+    std::memcpy(&proc_control_DW.obj_p.I[0], &proc_control_P.physics.I[0], 9U *
+                sizeof(real_T));
     proc_control_DW.obj_p.RG[0] = proc_control_P.physics.RG[0];
     proc_control_DW.obj_p.RB[0] = proc_control_P.physics.RB[0];
     proc_control_DW.obj_p.RG[1] = proc_control_P.physics.RG[1];
@@ -57355,50 +59201,53 @@ void proc_control::initialize()
     proc_control_DW.obj_p.rho = proc_control_P.physics.rho;
     proc_control_DW.obj_p.isInitialized = 1;
 
-    // End of Start for MATLABSystem: '<S73>/MATLAB System'
-    // End of SystemInitialize for SubSystem: '<S68>/If Action Subsystem2'
+    // End of Start for MATLABSystem: '<S142>/MATLAB System'
+    // End of SystemInitialize for SubSystem: '<S137>/If Action Subsystem2'
 
-    // SystemInitialize for IfAction SubSystem: '<S68>/If Action Subsystem1'
-    // InitializeConditions for Memory: '<S115>/Memory'
+    // SystemInitialize for IfAction SubSystem: '<S137>/If Action Subsystem1'
+    // InitializeConditions for Memory: '<S184>/Memory'
     //  Perform one-time calculations, such as computing constants
     // [M,C,D,Gq] = AUVModelMatrices(in1,in2)
-    memcpy(&proc_control_DW.Memory_PreviousInput[0],
-           &proc_control_P.Memory_InitialCondition_n[0], 226U * sizeof(boolean_T));
+    std::memcpy(&proc_control_DW.Memory_PreviousInput[0],
+                &proc_control_P.Memory_InitialCondition_n[0], 226U * sizeof
+                (boolean_T));
 
-    // InitializeConditions for UnitDelay: '<S115>/last_mv'
-    memcpy(&proc_control_DW.last_mv_DSTATE[0],
-           &proc_control_P.last_mv_InitialCondition_k[0], sizeof(real_T) << 3U);
+    // InitializeConditions for UnitDelay: '<S184>/last_mv'
+    std::memcpy(&proc_control_DW.last_mv_DSTATE[0],
+                &proc_control_P.last_mv_InitialCondition_k[0], sizeof(real_T) <<
+                3U);
 
-    // InitializeConditions for Delay: '<S72>/Delay1'
-    memcpy(&proc_control_DW.Delay1_DSTATE[0],
-           &proc_control_P.Delay1_InitialCondition[0], 88U * sizeof(real_T));
+    // InitializeConditions for Delay: '<S141>/Delay1'
+    std::memcpy(&proc_control_DW.Delay1_DSTATE[0],
+                &proc_control_P.Delay1_InitialCondition[0], 88U * sizeof(real_T));
 
-    // End of SystemInitialize for SubSystem: '<S68>/If Action Subsystem1'
+    // End of SystemInitialize for SubSystem: '<S137>/If Action Subsystem1'
 
-    // SystemInitialize for IfAction SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' 
-    // InitializeConditions for Delay: '<S75>/Delay'
-    memcpy(&proc_control_DW.Delay_DSTATE_pp[0],
-           &proc_control_P.Delay_InitialCondition_a[0], sizeof(real_T) << 3U);
+    // SystemInitialize for IfAction SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' 
+    // InitializeConditions for Delay: '<S144>/Delay'
+    std::memcpy(&proc_control_DW.Delay_DSTATE_pp[0],
+                &proc_control_P.Delay_InitialCondition_a[0], sizeof(real_T) <<
+                3U);
 
-    // InitializeConditions for Delay: '<S149>/mv_Delay'
+    // InitializeConditions for Delay: '<S218>/mv_Delay'
     proc_control_DW.icLoad = true;
 
-    // InitializeConditions for Delay: '<S149>/x_Delay'
+    // InitializeConditions for Delay: '<S218>/x_Delay'
     proc_control_DW.icLoad_g = true;
 
-    // InitializeConditions for Delay: '<S149>/slack_delay'
+    // InitializeConditions for Delay: '<S218>/slack_delay'
     proc_control_DW.icLoad_o = true;
 
-    // End of SystemInitialize for SubSystem: '<S68>/Quaternion Non linear MPC (Not for codegen)' 
+    // End of SystemInitialize for SubSystem: '<S137>/Quaternion Non linear MPC (Not for codegen)' 
 
-    // SystemInitialize for Merge generated from: '<S68>/Merge'
+    // SystemInitialize for Merge generated from: '<S137>/Merge'
     proc_control_B.MpcStatus = proc_control_P.Merge_2_InitialOutput_i;
 
-    // SystemInitialize for Merge generated from: '<S68>/Merge'
+    // SystemInitialize for Merge generated from: '<S137>/Merge'
     proc_control_B.alive = proc_control_P.Merge_3_InitialOutput;
 
     // SystemInitialize for Enabled SubSystem: '<Root>/Enabled Subsystem1'
-    // Start for MATLABSystem: '<S19>/SinkBlock'
+    // Start for MATLABSystem: '<S21>/SinkBlock'
     proc_control_DW.obj_oa.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_oa.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_oa.isSetupComplete = false;
@@ -57406,7 +59255,7 @@ void proc_control::initialize()
     proc_cont_Publisher_setupImpl_p(&proc_control_DW.obj_oa);
     proc_control_DW.obj_oa.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S20>/SinkBlock'
+    // Start for MATLABSystem: '<S22>/SinkBlock'
     proc_control_DW.obj_fd.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_fd.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_fd.isSetupComplete = false;
@@ -57414,7 +59263,7 @@ void proc_control::initialize()
     proc_con_Publisher_setupImpl_pr(&proc_control_DW.obj_fd);
     proc_control_DW.obj_fd.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S23>/SinkBlock'
+    // Start for MATLABSystem: '<S25>/SinkBlock'
     proc_control_DW.obj_clf.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_clf.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_clf.isSetupComplete = false;
@@ -57422,8 +59271,15 @@ void proc_control::initialize()
     proc_co_Publisher_setupImpl_pr3(&proc_control_DW.obj_clf);
     proc_control_DW.obj_clf.isSetupComplete = true;
     for (i = 0; i < 8; i++) {
+      // SystemInitialize for SignalConversion generated from: '<S2>/mv' incorporates:
+      //   Outport: '<S2>/mv'
+
+      proc_control_B.BufferToMakeInportVirtual_Ins_e[i] = proc_control_P.mv_Y0;
+
       // SystemInitialize for SignalConversion generated from: '<S2>/thrust' incorporates:
+      //   Outport: '<S2>/mv'
       //   Outport: '<S2>/thrust'
+      //   SignalConversion generated from: '<S2>/mv'
 
       proc_control_B.BufferToMakeInportVirtual_Inser[i] =
         proc_control_P.thrust_Y0;
@@ -57431,59 +59287,477 @@ void proc_control::initialize()
 
     // End of SystemInitialize for SubSystem: '<Root>/Enabled Subsystem1'
 
-    // Start for MATLABSystem: '<S56>/SourceBlock'
+    // SystemInitialize for Enabled SubSystem: '<Root>/Model System'
+    // InitializeConditions for DiscreteTransferFcn: '<S33>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states =
+      proc_control_P.DiscreteTransferFcn_InitialStat;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S34>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_k =
+      proc_control_P.DiscreteTransferFcn_InitialSt_j;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S35>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_p =
+      proc_control_P.DiscreteTransferFcn_InitialSt_d;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S36>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_f =
+      proc_control_P.DiscreteTransferFcn_InitialSt_e;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S37>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_e =
+      proc_control_P.DiscreteTransferFcn_InitialSt_c;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S38>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_m =
+      proc_control_P.DiscreteTransferFcn_InitialSt_f;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S39>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_l =
+      proc_control_P.DiscreteTransferFcn_InitialSt_g;
+
+    // InitializeConditions for DiscreteTransferFcn: '<S40>/Discrete Transfer Fcn' 
+    proc_control_DW.DiscreteTransferFcn_states_px =
+      proc_control_P.DiscreteTransferFcn_InitialS_ft;
+
+    // InitializeConditions for UniformRandomNumber: '<S27>/Drift'
+    tmp = std::floor(proc_control_P.dSeedX);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    for (i = 0; i < 6; i++) {
+      if (tmp < 0.0) {
+        tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>
+          (-tmp)));
+      } else {
+        tseed = static_cast<uint32_T>(tmp);
+      }
+
+      r = static_cast<int32_T>(tseed >> 16U);
+      t = static_cast<int32_T>(tseed & 32768U);
+      tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+                 static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+        static_cast<uint32_T>(r);
+      if (tseed < 1U) {
+        tseed = 1144108930U;
+      } else if (tseed > 2147483646U) {
+        tseed = 2147483646U;
+      }
+
+      proc_control_DW.RandSeed[i] = tseed;
+      dmin = proc_control_P.dmin[i];
+      proc_control_DW.Drift_NextOutput[i] = (proc_control_P.dmax[i] - dmin) *
+        rt_urand_Upu32_Yd_f_pw_snf(&proc_control_DW.RandSeed[i]) + dmin;
+    }
+
+    // End of InitializeConditions for UniformRandomNumber: '<S27>/Drift'
+
+    // InitializeConditions for UnitDelay: '<S3>/Unit Delay'
+    std::memcpy(&proc_control_DW.UnitDelay_DSTATE[0],
+                &proc_control_P.UnitDelay_InitialCondition[0], 13U * sizeof
+                (real_T));
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator' 
+    proc_control_DW.DiscreteTimeIntegrator_PrevRese = 2;
+    proc_control_DW.DiscreteTimeIntegrator_IC_LOADI = 1U;
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator1' 
+    proc_control_DW.DiscreteTimeIntegrator1_PrevRes = 2;
+    proc_control_DW.DiscreteTimeIntegrator1_IC_LOAD = 1U;
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   Constant: '<S3>/Initial Body Velocity'
+
+    proc_control_DW.DiscreteTimeIntegrator2_PrevRes = 2;
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[0] =
+      proc_control_P.InitialBodyVelocity_Value[0];
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   Constant: '<S3>/Initial Angular Rates'
+
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[0] =
+      proc_control_P.InitialAngularRates_Value[0];
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   Constant: '<S3>/Initial Body Velocity'
+
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[1] =
+      proc_control_P.InitialBodyVelocity_Value[1];
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   Constant: '<S3>/Initial Angular Rates'
+
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[1] =
+      proc_control_P.InitialAngularRates_Value[1];
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator2' incorporates:
+    //   Constant: '<S3>/Initial Body Velocity'
+
+    proc_control_DW.DiscreteTimeIntegrator2_DSTATE[2] =
+      proc_control_P.InitialBodyVelocity_Value[2];
+
+    // InitializeConditions for DiscreteIntegrator: '<S3>/Discrete-Time Integrator3' incorporates:
+    //   Constant: '<S3>/Initial Angular Rates'
+
+    proc_control_DW.DiscreteTimeIntegrator3_DSTATE[2] =
+      proc_control_P.InitialAngularRates_Value[2];
+    proc_control_DW.DiscreteTimeIntegrator3_PrevRes = 2;
+
+    // InitializeConditions for RandomNumber: '<S43>/White Noise'
+    tmp = std::floor(proc_control_P.BandLimitedWhiteNoise_seed);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    if (tmp < 0.0) {
+      tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>(
+        -tmp)));
+    } else {
+      tseed = static_cast<uint32_T>(tmp);
+    }
+
+    r = static_cast<int32_T>(tseed >> 16U);
+    t = static_cast<int32_T>(tseed & 32768U);
+    tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+               static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+      static_cast<uint32_T>(r);
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    proc_control_DW.RandSeed_o = tseed;
+    proc_control_DW.NextOutput = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_o) * proc_control_P.WhiteNoise_StdDev +
+      proc_control_P.WhiteNoise_Mean;
+
+    // End of InitializeConditions for RandomNumber: '<S43>/White Noise'
+
+    // InitializeConditions for RandomNumber: '<S44>/White Noise'
+    tmp = std::floor(proc_control_P.BandLimitedWhiteNoise1_seed);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    if (tmp < 0.0) {
+      tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>(
+        -tmp)));
+    } else {
+      tseed = static_cast<uint32_T>(tmp);
+    }
+
+    r = static_cast<int32_T>(tseed >> 16U);
+    t = static_cast<int32_T>(tseed & 32768U);
+    tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+               static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+      static_cast<uint32_T>(r);
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    proc_control_DW.RandSeed_n = tseed;
+    proc_control_DW.NextOutput_c = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_n) * proc_control_P.WhiteNoise_StdDev_i +
+      proc_control_P.WhiteNoise_Mean_j;
+
+    // End of InitializeConditions for RandomNumber: '<S44>/White Noise'
+
+    // InitializeConditions for RandomNumber: '<S45>/White Noise'
+    tmp = std::floor(proc_control_P.BandLimitedWhiteNoise2_seed);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    if (tmp < 0.0) {
+      tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>(
+        -tmp)));
+    } else {
+      tseed = static_cast<uint32_T>(tmp);
+    }
+
+    r = static_cast<int32_T>(tseed >> 16U);
+    t = static_cast<int32_T>(tseed & 32768U);
+    tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+               static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+      static_cast<uint32_T>(r);
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    proc_control_DW.RandSeed_h = tseed;
+    proc_control_DW.NextOutput_g = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_h) * proc_control_P.WhiteNoise_StdDev_a +
+      proc_control_P.WhiteNoise_Mean_n;
+
+    // End of InitializeConditions for RandomNumber: '<S45>/White Noise'
+
+    // InitializeConditions for RandomNumber: '<S46>/White Noise'
+    tmp = std::floor(proc_control_P.BandLimitedWhiteNoise3_seed);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    if (tmp < 0.0) {
+      tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>(
+        -tmp)));
+    } else {
+      tseed = static_cast<uint32_T>(tmp);
+    }
+
+    r = static_cast<int32_T>(tseed >> 16U);
+    t = static_cast<int32_T>(tseed & 32768U);
+    tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+               static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+      static_cast<uint32_T>(r);
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    proc_control_DW.RandSeed_d = tseed;
+    proc_control_DW.NextOutput_i = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_d) * proc_control_P.WhiteNoise_StdDev_e +
+      proc_control_P.WhiteNoise_Mean_g;
+
+    // End of InitializeConditions for RandomNumber: '<S46>/White Noise'
+
+    // InitializeConditions for RandomNumber: '<S47>/White Noise'
+    tmp = std::floor(proc_control_P.BandLimitedWhiteNoise4_seed);
+    if (std::isnan(tmp) || std::isinf(tmp)) {
+      tmp = 0.0;
+    } else {
+      tmp = std::fmod(tmp, 4.294967296E+9);
+    }
+
+    if (tmp < 0.0) {
+      tseed = static_cast<uint32_T>(-static_cast<int32_T>(static_cast<uint32_T>(
+        -tmp)));
+    } else {
+      tseed = static_cast<uint32_T>(tmp);
+    }
+
+    r = static_cast<int32_T>(tseed >> 16U);
+    t = static_cast<int32_T>(tseed & 32768U);
+    tseed = ((((tseed - (static_cast<uint32_T>(r) << 16U)) +
+               static_cast<uint32_T>(t)) << 16U) + static_cast<uint32_T>(t)) +
+      static_cast<uint32_T>(r);
+    if (tseed < 1U) {
+      tseed = 1144108930U;
+    } else if (tseed > 2147483646U) {
+      tseed = 2147483646U;
+    }
+
+    proc_control_DW.RandSeed_e = tseed;
+    proc_control_DW.NextOutput_f = rt_nrand_Upu32_Yd_f_pw_snf
+      (&proc_control_DW.RandSeed_e) * proc_control_P.WhiteNoise_StdDev_l +
+      proc_control_P.WhiteNoise_Mean_p;
+
+    // End of InitializeConditions for RandomNumber: '<S47>/White Noise'
+
+    // SystemInitialize for Enabled SubSystem: '<S58>/Enabled Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S59>/In1' incorporates:
+    //   Outport: '<S59>/Out1'
+
+    proc_control_B.In1_k = proc_control_P.Out1_Y0_p1;
+
+    // End of SystemInitialize for SubSystem: '<S58>/Enabled Subsystem'
+
+    // SystemInitialize for IfAction SubSystem: '<S48>/If Action Subsystem'
+    // SystemInitialize for SignalConversion generated from: '<S56>/In1' incorporates:
+    //   Outport: '<S56>/Out1'
+
+    proc_control_B.In1_g2 = proc_control_P.Out1_Y0_j;
+
+    // End of SystemInitialize for SubSystem: '<S48>/If Action Subsystem'
+
+    // Start for MATLABSystem: '<S3>/MATLAB System'
+    proc_control_DW.obj_f.isInitialized = 1;
+
+    // InitializeConditions for MATLABSystem: '<S3>/MATLAB System'
+    //  Perform one-time calculations, such as computing constants
+    //  reset  fonction
+    // ------------------------------------------------------------------------------ 
+    //  Initialize / reset discrete-state properties
+    proc_control_DW.obj_f.init = false;
+    std::memset(&proc_control_DW.obj_f.constValues[0], 0, 38U * sizeof(real_T));
+
+    // Start for MATLABSystem: '<S42>/SinkBlock'
+    proc_control_DW.obj_p5.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_p5.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_p5.isSetupComplete = false;
+    proc_control_DW.obj_p5.isInitialized = 1;
+    proc_c_Publisher_setupImpl_pr35(&proc_control_DW.obj_p5);
+    proc_control_DW.obj_p5.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S58>/SourceBlock'
+    proc_control_DW.obj_fb.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_fb.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_fb.isSetupComplete = false;
+    proc_control_DW.obj_fb.isInitialized = 1;
+    proc_contr_Subscriber_setupImpl(&proc_control_DW.obj_fb);
+    proc_control_DW.obj_fb.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S57>/SinkBlock'
+    proc_control_DW.obj_of.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_of.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_of.isSetupComplete = false;
+    proc_control_DW.obj_of.isInitialized = 1;
+    proc__Publisher_setupImpl_pr351(&proc_control_DW.obj_of);
+    proc_control_DW.obj_of.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S48>/MATLAB System'
+    proc_control_DW.method = 7U;
+    proc_control_DW.state = 1144108930U;
+    proc_control_DW.state_f[0] = 362436069U;
+    proc_control_DW.state_f[1] = 521288629U;
+
+    // SystemInitialize for Outport: '<S3>/Clean Output'
+    //  Perform one-time calculations, such as computing constants
+    //  Initialize / reset discrete-state properties
+    // this.pingerPosition = this.pingerStartPosition;
+    proc_control_B.y_o[0] = proc_control_P.CleanOutput_Y0.x.Quaternion[0];
+
+    // SystemInitialize for Sum: '<S29>/Sum2' incorporates:
+    //   Outport: '<S3>/Sensors Output'
+
+    proc_control_B.Quaternion[0] = proc_control_P.SensorsOutput_Y0.Quaternion[0];
+
+    // SystemInitialize for Outport: '<S3>/Clean Output'
+    proc_control_B.y_o[1] = proc_control_P.CleanOutput_Y0.x.Quaternion[1];
+
+    // SystemInitialize for Sum: '<S29>/Sum2' incorporates:
+    //   Outport: '<S3>/Sensors Output'
+
+    proc_control_B.Quaternion[1] = proc_control_P.SensorsOutput_Y0.Quaternion[1];
+
+    // SystemInitialize for Outport: '<S3>/Clean Output'
+    proc_control_B.y_o[2] = proc_control_P.CleanOutput_Y0.x.Quaternion[2];
+
+    // SystemInitialize for Sum: '<S29>/Sum2' incorporates:
+    //   Outport: '<S3>/Sensors Output'
+
+    proc_control_B.Quaternion[2] = proc_control_P.SensorsOutput_Y0.Quaternion[2];
+
+    // SystemInitialize for Outport: '<S3>/Clean Output'
+    proc_control_B.y_o[3] = proc_control_P.CleanOutput_Y0.x.Quaternion[3];
+
+    // SystemInitialize for Sum: '<S29>/Sum2' incorporates:
+    //   Outport: '<S3>/Sensors Output'
+
+    proc_control_B.Quaternion[3] = proc_control_P.SensorsOutput_Y0.Quaternion[3];
+
+    // End of SystemInitialize for SubSystem: '<Root>/Model System'
+
+    // SystemInitialize for Enabled SubSystem: '<Root>/ROS Output'
+    // SystemInitialize for Atomic SubSystem: '<S102>/Header Assignment'
+    proc_control_CurrentTime_Init(&proc_control_DW.CurrentTime_n);
+
+    // End of SystemInitialize for SubSystem: '<S102>/Header Assignment'
+
+    // Start for MATLABSystem: '<S112>/SinkBlock'
+    proc_control_DW.obj_bq.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_bq.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_bq.isSetupComplete = false;
+    proc_control_DW.obj_bq.isInitialized = 1;
+    p_Publisher_setupImpl_pr351ewpk(&proc_control_DW.obj_bq);
+    proc_control_DW.obj_bq.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S105>/SinkBlock'
+    proc_control_DW.obj_i2.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_i2.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_i2.isSetupComplete = false;
+    proc_control_DW.obj_i2.isInitialized = 1;
+    proc_Publisher_setupImpl_pr351e(&proc_control_DW.obj_i2);
+    proc_control_DW.obj_i2.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S107>/SinkBlock'
+    proc_control_DW.obj_cr.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_cr.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_cr.isSetupComplete = false;
+    proc_control_DW.obj_cr.isInitialized = 1;
+    pro_Publisher_setupImpl_pr351ew(&proc_control_DW.obj_cr);
+    proc_control_DW.obj_cr.isSetupComplete = true;
+
+    // Start for MATLABSystem: '<S110>/SinkBlock'
+    proc_control_DW.obj_iv.QOSAvoidROSNamespaceConventions = false;
+    proc_control_DW.obj_iv.matlabCodegenIsDeleted = false;
+    proc_control_DW.obj_iv.isSetupComplete = false;
+    proc_control_DW.obj_iv.isInitialized = 1;
+    pr_Publisher_setupImpl_pr351ewp(&proc_control_DW.obj_iv);
+    proc_control_DW.obj_iv.isSetupComplete = true;
+
+    // End of SystemInitialize for SubSystem: '<Root>/ROS Output'
+
+    // Start for MATLABSystem: '<S125>/SourceBlock'
     proc_control_DW.obj_nf.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_nf.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_nf.isSetupComplete = false;
     proc_control_DW.obj_nf.isInitialized = 1;
-    pro_Subscriber_setupImpl_pr351e(&proc_control_DW.obj_nf);
+    pr_Subscriber_setupImpl_pr351ew(&proc_control_DW.obj_nf);
     proc_control_DW.obj_nf.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S61>/SourceBlock'
+    // Start for MATLABSystem: '<S126>/SourceBlock'
     proc_control_DW.obj_i3.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_i3.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_i3.isSetupComplete = false;
     proc_control_DW.obj_i3.isInitialized = 1;
-    Subscriber_setupImp_pr351ewpk3k(&proc_control_DW.obj_i3);
+    p_Subscriber_setupImpl_pr351ewp(&proc_control_DW.obj_i3);
     proc_control_DW.obj_i3.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S57>/SourceBlock'
+    // Start for MATLABSystem: '<S129>/SourceBlock'
     proc_control_DW.obj_lt.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_lt.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_lt.isSetupComplete = false;
     proc_control_DW.obj_lt.isInitialized = 1;
-    pr_Subscriber_setupImpl_pr351ew(&proc_control_DW.obj_lt);
+    Subscriber_setupImp_pr351ewpk3k(&proc_control_DW.obj_lt);
     proc_control_DW.obj_lt.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S58>/SourceBlock'
+    // Start for MATLABSystem: '<S128>/SourceBlock'
     proc_control_DW.obj_fw.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_fw.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_fw.isSetupComplete = false;
     proc_control_DW.obj_fw.isInitialized = 1;
-    p_Subscriber_setupImpl_pr351ewp(&proc_control_DW.obj_fw);
+    Subscriber_setupImpl_pr351ewpk3(&proc_control_DW.obj_fw);
     proc_control_DW.obj_fw.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S59>/SourceBlock'
+    // Start for MATLABSystem: '<S130>/SourceBlock'
     proc_control_DW.obj_cg.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_cg.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_cg.isSetupComplete = false;
     proc_control_DW.obj_cg.isInitialized = 1;
-    Subscriber_setupImpl_pr351ewpk(&proc_control_DW.obj_cg);
+    Subscriber_setupIm_pr351ewpk3k4(&proc_control_DW.obj_cg);
     proc_control_DW.obj_cg.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S60>/SourceBlock'
+    // Start for MATLABSystem: '<S127>/SourceBlock'
     proc_control_DW.obj_ppy.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_ppy.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_ppy.isSetupComplete = false;
     proc_control_DW.obj_ppy.isInitialized = 1;
-    Subscriber_setupImpl_pr351ewpk3(&proc_control_DW.obj_ppy);
+    Subscriber_setupImpl_pr351ewpk(&proc_control_DW.obj_ppy);
     proc_control_DW.obj_ppy.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S45>/MATLAB System'
+    // Start for MATLABSystem: '<S114>/MATLAB System'
     proc_control_DW.obj_i.initial_mode = proc_control_P.mode.init;
     proc_control_DW.obj_i.isInitialized = 1;
 
-    // InitializeConditions for MATLABSystem: '<S45>/MATLAB System'
+    // InitializeConditions for MATLABSystem: '<S114>/MATLAB System'
     //  Perform one-time calculations, such as computing constants
     //  Initialize / reset discrete-state properties
     for (i = 0; i < 7; i++) {
@@ -57497,30 +59771,30 @@ void proc_control::initialize()
     proc_control_DW.obj_i.m_trajClear = 0.0;
     proc_control_DW.obj_i.m_notDryRun = 1.0;
 
-    // End of InitializeConditions for MATLABSystem: '<S45>/MATLAB System'
+    // End of InitializeConditions for MATLABSystem: '<S114>/MATLAB System'
 
-    // Start for MATLABSystem: '<S245>/SourceBlock'
+    // Start for MATLABSystem: '<S314>/SourceBlock'
     proc_control_DW.obj_jb.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_jb.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_jb.isSetupComplete = false;
     proc_control_DW.obj_jb.isInitialized = 1;
-    Subscriber_setup_pr351ewpk3k4u0(&proc_control_DW.obj_jb);
+    Subscriber_setu_pr351ewpk3k4u0o(&proc_control_DW.obj_jb);
     proc_control_DW.obj_jb.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S247>/SourceBlock'
+    // Start for MATLABSystem: '<S316>/SourceBlock'
     proc_control_DW.obj_eh.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_eh.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_eh.isSetupComplete = false;
     proc_control_DW.obj_eh.isInitialized = 1;
-    Subscriber_setu_pr351ewpk3k4u0o(&proc_control_DW.obj_eh);
+    proc_con_Subscriber_setupImpl_n(&proc_control_DW.obj_eh);
     proc_control_DW.obj_eh.isSetupComplete = true;
 
-    // Start for MATLABSystem: '<S243>/SinkBlock'
+    // Start for MATLABSystem: '<S312>/SinkBlock'
     proc_control_DW.obj_oe.QOSAvoidROSNamespaceConventions = false;
     proc_control_DW.obj_oe.matlabCodegenIsDeleted = false;
     proc_control_DW.obj_oe.isSetupComplete = false;
     proc_control_DW.obj_oe.isInitialized = 1;
-    proc_c_Publisher_setupImpl_pr35(&proc_control_DW.obj_oe);
+    Publisher_setupImpl_pr351ewpk3(&proc_control_DW.obj_oe);
     proc_control_DW.obj_oe.isSetupComplete = true;
   }
 }
@@ -57528,466 +59802,520 @@ void proc_control::initialize()
 // Model terminate function
 void proc_control::terminate()
 {
-  // Terminate for MATLABSystem: '<S56>/SourceBlock'
+  // Terminate for MATLABSystem: '<S125>/SourceBlock'
   if (!proc_control_DW.obj_nf.matlabCodegenIsDeleted) {
     proc_control_DW.obj_nf.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S56>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S125>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S61>/SourceBlock'
+  // Terminate for MATLABSystem: '<S126>/SourceBlock'
   if (!proc_control_DW.obj_i3.matlabCodegenIsDeleted) {
     proc_control_DW.obj_i3.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S61>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S126>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S57>/SourceBlock'
+  // Terminate for MATLABSystem: '<S129>/SourceBlock'
   if (!proc_control_DW.obj_lt.matlabCodegenIsDeleted) {
     proc_control_DW.obj_lt.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S57>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S129>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S58>/SourceBlock'
+  // Terminate for MATLABSystem: '<S128>/SourceBlock'
   if (!proc_control_DW.obj_fw.matlabCodegenIsDeleted) {
     proc_control_DW.obj_fw.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S58>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S128>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S59>/SourceBlock'
+  // Terminate for MATLABSystem: '<S130>/SourceBlock'
   if (!proc_control_DW.obj_cg.matlabCodegenIsDeleted) {
     proc_control_DW.obj_cg.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S59>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S130>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S60>/SourceBlock'
+  // Terminate for MATLABSystem: '<S127>/SourceBlock'
   if (!proc_control_DW.obj_ppy.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ppy.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S60>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S127>/SourceBlock'
 
-  // Terminate for IfAction SubSystem: '<S4>/Get_ROS_param'
-  // Terminate for MATLABSystem: '<S48>/Get Parameter'
+  // Terminate for IfAction SubSystem: '<S7>/Get_ROS_param'
+  // Terminate for MATLABSystem: '<S117>/MPC.P'
   if (!proc_control_DW.obj_f0.matlabCodegenIsDeleted) {
     proc_control_DW.obj_f0.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S48>/Get Parameter'
+  // End of Terminate for MATLABSystem: '<S117>/MPC.P'
 
-  // Terminate for MATLABSystem: '<S48>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S117>/MPC.M'
   if (!proc_control_DW.obj_dx.matlabCodegenIsDeleted) {
     proc_control_DW.obj_dx.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S48>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S117>/MPC.M'
 
-  // Terminate for MATLABSystem: '<S50>/Get Parameter'
-  if (!proc_control_DW.obj_fk.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_fk.matlabCodegenIsDeleted = true;
-  }
-
-  // End of Terminate for MATLABSystem: '<S50>/Get Parameter'
-
-  // Terminate for MATLABSystem: '<S50>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S119>/Default MV'
   if (!proc_control_DW.obj_iw.matlabCodegenIsDeleted) {
     proc_control_DW.obj_iw.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S50>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S119>/Default MV'
 
-  // Terminate for MATLABSystem: '<S50>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S119>/Default MVR'
   if (!proc_control_DW.obj_bn.matlabCodegenIsDeleted) {
     proc_control_DW.obj_bn.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S50>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S119>/Default MVR'
 
-  // Terminate for MATLABSystem: '<S51>/Get Parameter'
-  if (!proc_control_DW.obj_j1.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_j1.matlabCodegenIsDeleted = true;
+  // Terminate for MATLABSystem: '<S119>/Default OV'
+  if (!proc_control_DW.obj_fk.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_fk.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S51>/Get Parameter'
+  // End of Terminate for MATLABSystem: '<S119>/Default OV'
 
-  // Terminate for MATLABSystem: '<S51>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S120>/C10 MV'
   if (!proc_control_DW.obj_f2.matlabCodegenIsDeleted) {
     proc_control_DW.obj_f2.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S51>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S120>/C10 MV'
 
-  // Terminate for MATLABSystem: '<S51>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S120>/C10 MVR'
   if (!proc_control_DW.obj_pzf.matlabCodegenIsDeleted) {
     proc_control_DW.obj_pzf.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S51>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S120>/C10 MVR'
 
-  // Terminate for MATLABSystem: '<S52>/Get Parameter'
-  if (!proc_control_DW.obj_nl.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_nl.matlabCodegenIsDeleted = true;
+  // Terminate for MATLABSystem: '<S120>/C10 OV'
+  if (!proc_control_DW.obj_j1.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_j1.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S52>/Get Parameter'
+  // End of Terminate for MATLABSystem: '<S120>/C10 OV'
 
-  // Terminate for MATLABSystem: '<S52>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S121>/C11 MV'
   if (!proc_control_DW.obj_nr.matlabCodegenIsDeleted) {
     proc_control_DW.obj_nr.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S52>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S121>/C11 MV'
 
-  // Terminate for MATLABSystem: '<S52>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S121>/C11 MVR'
   if (!proc_control_DW.obj_as.matlabCodegenIsDeleted) {
     proc_control_DW.obj_as.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S52>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S121>/C11 MVR'
 
-  // Terminate for MATLABSystem: '<S53>/Get Parameter'
-  if (!proc_control_DW.obj_fs.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_fs.matlabCodegenIsDeleted = true;
+  // Terminate for MATLABSystem: '<S121>/C11 OV'
+  if (!proc_control_DW.obj_nl.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_nl.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S53>/Get Parameter'
+  // End of Terminate for MATLABSystem: '<S121>/C11 OV'
 
-  // Terminate for MATLABSystem: '<S53>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S122>/C19 MV'
   if (!proc_control_DW.obj_pz.matlabCodegenIsDeleted) {
     proc_control_DW.obj_pz.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S53>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S122>/C19 MV'
 
-  // Terminate for MATLABSystem: '<S53>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S122>/C19 MVR'
   if (!proc_control_DW.obj_hq.matlabCodegenIsDeleted) {
     proc_control_DW.obj_hq.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S53>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S122>/C19 MVR'
 
-  // Terminate for MATLABSystem: '<S54>/Get Parameter'
+  // Terminate for MATLABSystem: '<S122>/C19 OV'
+  if (!proc_control_DW.obj_fs.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_fs.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S122>/C19 OV'
+
+  // Terminate for MATLABSystem: '<S123>/NoDVL MV'
   if (!proc_control_DW.obj_nb.matlabCodegenIsDeleted) {
     proc_control_DW.obj_nb.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S54>/Get Parameter'
+  // End of Terminate for MATLABSystem: '<S123>/NoDVL MV'
 
-  // Terminate for MATLABSystem: '<S48>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S117>/MPC.TMAX'
   if (!proc_control_DW.obj_cm.matlabCodegenIsDeleted) {
     proc_control_DW.obj_cm.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S48>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S117>/MPC.TMAX'
 
-  // Terminate for MATLABSystem: '<S48>/Get Parameter3'
+  // Terminate for MATLABSystem: '<S117>/MPC.TMIN'
   if (!proc_control_DW.obj_pu.matlabCodegenIsDeleted) {
     proc_control_DW.obj_pu.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S48>/Get Parameter3'
+  // End of Terminate for MATLABSystem: '<S117>/MPC.TMIN'
 
-  // Terminate for MATLABSystem: '<S49>/Get Parameter'
-  if (!proc_control_DW.obj_dc.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_dc.matlabCodegenIsDeleted = true;
-  }
-
-  // End of Terminate for MATLABSystem: '<S49>/Get Parameter'
-
-  // Terminate for MATLABSystem: '<S49>/Get Parameter1'
+  // Terminate for MATLABSystem: '<S118>/Angular Tolerance'
   if (!proc_control_DW.obj_eug.matlabCodegenIsDeleted) {
     proc_control_DW.obj_eug.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S49>/Get Parameter1'
+  // End of Terminate for MATLABSystem: '<S118>/Angular Tolerance'
 
-  // Terminate for MATLABSystem: '<S49>/Get Parameter2'
+  // Terminate for MATLABSystem: '<S118>/Linear Tolerance'
+  if (!proc_control_DW.obj_dc.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_dc.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S118>/Linear Tolerance'
+
+  // Terminate for MATLABSystem: '<S118>/Time in Tolerance'
   if (!proc_control_DW.obj_do.matlabCodegenIsDeleted) {
     proc_control_DW.obj_do.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S49>/Get Parameter2'
+  // End of Terminate for MATLABSystem: '<S118>/Time in Tolerance'
 
-  // Terminate for MATLABSystem: '<S47>/Rho'
+  // Terminate for MATLABSystem: '<S116>/Physics Rho'
   if (!proc_control_DW.obj_pp.matlabCodegenIsDeleted) {
     proc_control_DW.obj_pp.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/Rho'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Rho'
 
-  // Terminate for MATLABSystem: '<S47>/g'
+  // Terminate for MATLABSystem: '<S116>/Physics G'
   if (!proc_control_DW.obj_axm.matlabCodegenIsDeleted) {
     proc_control_DW.obj_axm.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/g'
+  // End of Terminate for MATLABSystem: '<S116>/Physics G'
 
-  // Terminate for MATLABSystem: '<S47>/mass'
+  // Terminate for MATLABSystem: '<S116>/Physics Mass'
   if (!proc_control_DW.obj_jq.matlabCodegenIsDeleted) {
     proc_control_DW.obj_jq.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/mass'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Mass'
 
-  // Terminate for MATLABSystem: '<S47>/volume'
+  // Terminate for MATLABSystem: '<S116>/Physics Volume'
   if (!proc_control_DW.obj_ju.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ju.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/volume'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Volume'
 
-  // Terminate for MATLABSystem: '<S47>/sub height'
+  // Terminate for MATLABSystem: '<S116>/Physics Sub Height'
   if (!proc_control_DW.obj_e5.matlabCodegenIsDeleted) {
     proc_control_DW.obj_e5.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/sub height'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Sub Height'
 
-  // Terminate for MATLABSystem: '<S47>/rg'
+  // Terminate for MATLABSystem: '<S116>/Physics RG'
   if (!proc_control_DW.obj_e1.matlabCodegenIsDeleted) {
     proc_control_DW.obj_e1.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/rg'
+  // End of Terminate for MATLABSystem: '<S116>/Physics RG'
 
-  // Terminate for MATLABSystem: '<S47>/rb'
+  // Terminate for MATLABSystem: '<S116>/Physics RB'
   if (!proc_control_DW.obj_h.matlabCodegenIsDeleted) {
     proc_control_DW.obj_h.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/rb'
+  // End of Terminate for MATLABSystem: '<S116>/Physics RB'
 
-  // Terminate for MATLABSystem: '<S47>/cdl'
+  // Terminate for MATLABSystem: '<S116>/Physics CDL'
   if (!proc_control_DW.obj_fg.matlabCodegenIsDeleted) {
     proc_control_DW.obj_fg.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/cdl'
+  // End of Terminate for MATLABSystem: '<S116>/Physics CDL'
 
-  // Terminate for MATLABSystem: '<S47>/cdq'
+  // Terminate for MATLABSystem: '<S116>/Physics CDQ'
   if (!proc_control_DW.obj_kb.matlabCodegenIsDeleted) {
     proc_control_DW.obj_kb.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/cdq'
+  // End of Terminate for MATLABSystem: '<S116>/Physics CDQ'
 
-  // Terminate for MATLABSystem: '<S47>/added mass'
+  // Terminate for MATLABSystem: '<S116>/Physics Added Mass'
   if (!proc_control_DW.obj_ps.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ps.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/added mass'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Added Mass'
 
-  // Terminate for MATLABSystem: '<S47>/I'
+  // Terminate for MATLABSystem: '<S116>/Physics I'
   if (!proc_control_DW.obj_hn.matlabCodegenIsDeleted) {
     proc_control_DW.obj_hn.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/I'
+  // End of Terminate for MATLABSystem: '<S116>/Physics I'
 
-  // Terminate for MATLABSystem: '<S47>/depth pose'
+  // Terminate for MATLABSystem: '<S116>/Physics Depth Pose'
   if (!proc_control_DW.obj_lq.matlabCodegenIsDeleted) {
     proc_control_DW.obj_lq.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/depth pose'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Depth Pose'
 
-  // Terminate for MATLABSystem: '<S47>/hydro pose'
+  // Terminate for MATLABSystem: '<S116>/Physics Hydro Pose'
   if (!proc_control_DW.obj_c4.matlabCodegenIsDeleted) {
     proc_control_DW.obj_c4.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/hydro pose'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Hydro Pose'
 
-  // Terminate for MATLABSystem: '<S47>/sonar pose'
+  // Terminate for MATLABSystem: '<S116>/Physics Sonar Pose'
   if (!proc_control_DW.obj_eu.matlabCodegenIsDeleted) {
     proc_control_DW.obj_eu.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/sonar pose'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Sonar Pose'
 
-  // Terminate for MATLABSystem: '<S47>/dvl rotation'
+  // Terminate for MATLABSystem: '<S116>/Physics DVL Rotation'
   if (!proc_control_DW.obj_mh.matlabCodegenIsDeleted) {
     proc_control_DW.obj_mh.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/dvl rotation'
+  // End of Terminate for MATLABSystem: '<S116>/Physics DVL Rotation'
 
-  // Terminate for MATLABSystem: '<S47>/thrusters'
+  // Terminate for MATLABSystem: '<S116>/Physics Thrusters'
   if (!proc_control_DW.obj_l4.matlabCodegenIsDeleted) {
     proc_control_DW.obj_l4.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/thrusters'
+  // End of Terminate for MATLABSystem: '<S116>/Physics Thrusters'
 
-  // Terminate for MATLABSystem: '<S47>/dvl lost override'
+  // Terminate for MATLABSystem: '<S116>/DVL Lost Override'
   if (!proc_control_DW.obj_jk.matlabCodegenIsDeleted) {
     proc_control_DW.obj_jk.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S47>/dvl lost override'
-  // End of Terminate for SubSystem: '<S4>/Get_ROS_param'
+  // End of Terminate for MATLABSystem: '<S116>/DVL Lost Override'
+  // End of Terminate for SubSystem: '<S7>/Get_ROS_param'
 
-  // Terminate for IfAction SubSystem: '<S3>/Simulation'
-  // Terminate for MATLABSystem: '<S38>/SourceBlock'
+  // Terminate for IfAction SubSystem: '<S5>/Simulation'
+  // Terminate for MATLABSystem: '<S96>/SourceBlock'
   if (!proc_control_DW.obj_fe.matlabCodegenIsDeleted) {
     proc_control_DW.obj_fe.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S38>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S96>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S39>/SourceBlock'
+  // Terminate for MATLABSystem: '<S95>/SourceBlock'
   if (!proc_control_DW.obj_fka.matlabCodegenIsDeleted) {
     proc_control_DW.obj_fka.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S39>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S95>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S40>/SourceBlock'
+  // Terminate for MATLABSystem: '<S94>/SourceBlock'
   if (!proc_control_DW.obj_na.matlabCodegenIsDeleted) {
     proc_control_DW.obj_na.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S40>/SourceBlock'
-  // End of Terminate for SubSystem: '<S3>/Simulation'
+  // End of Terminate for MATLABSystem: '<S94>/SourceBlock'
+  // End of Terminate for SubSystem: '<S5>/Simulation'
 
-  // Terminate for IfAction SubSystem: '<S3>/AUV'
-  // Terminate for MATLABSystem: '<S27>/SourceBlock'
+  // Terminate for IfAction SubSystem: '<S5>/AUV'
+  // Terminate for MATLABSystem: '<S85>/SourceBlock'
   if (!proc_control_DW.obj_du.matlabCodegenIsDeleted) {
     proc_control_DW.obj_du.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S27>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S85>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S28>/SourceBlock'
+  // Terminate for MATLABSystem: '<S84>/SourceBlock'
   if (!proc_control_DW.obj_n5.matlabCodegenIsDeleted) {
     proc_control_DW.obj_n5.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S28>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S84>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S29>/SourceBlock'
+  // Terminate for MATLABSystem: '<S83>/SourceBlock'
   if (!proc_control_DW.obj_ak.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ak.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S29>/SourceBlock'
-  // End of Terminate for SubSystem: '<S3>/AUV'
+  // End of Terminate for MATLABSystem: '<S83>/SourceBlock'
+  // End of Terminate for SubSystem: '<S5>/AUV'
 
   // Terminate for Enabled SubSystem: '<Root>/Enabled Subsystem'
-  // Terminate for Atomic SubSystem: '<S9>/Header Assignment'
-  // Terminate for MATLABSystem: '<S13>/Current Time'
-  if (!proc_control_DW.obj_haq.matlabCodegenIsDeleted) {
-    proc_control_DW.obj_haq.matlabCodegenIsDeleted = true;
-  }
+  // Terminate for Atomic SubSystem: '<S12>/Header Assignment'
+  proc_control_CurrentTime_Term(&proc_control_DW.CurrentTime);
 
-  // End of Terminate for MATLABSystem: '<S13>/Current Time'
-  // End of Terminate for SubSystem: '<S9>/Header Assignment'
+  // End of Terminate for SubSystem: '<S12>/Header Assignment'
 
-  // Terminate for MATLABSystem: '<S15>/SinkBlock'
+  // Terminate for MATLABSystem: '<S17>/SinkBlock'
   if (!proc_control_DW.obj_ez.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ez.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S15>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S17>/SinkBlock'
 
-  // Terminate for MATLABSystem: '<S11>/SinkBlock'
+  // Terminate for MATLABSystem: '<S14>/SinkBlock'
   if (!proc_control_DW.obj_dv.matlabCodegenIsDeleted) {
     proc_control_DW.obj_dv.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S11>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S14>/SinkBlock'
   // End of Terminate for SubSystem: '<Root>/Enabled Subsystem'
 
-  // Terminate for IfAction SubSystem: '<S5>/If Action Subsystem'
-  // Terminate for MATLABSystem: '<S171>/SourceBlock'
+  // Terminate for IfAction SubSystem: '<S8>/If Action Subsystem'
+  // Terminate for MATLABSystem: '<S240>/SourceBlock'
   if (!proc_control_DW.obj_no.matlabCodegenIsDeleted) {
     proc_control_DW.obj_no.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S171>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S240>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S172>/SourceBlock'
+  // Terminate for MATLABSystem: '<S241>/SourceBlock'
   if (!proc_control_DW.obj_if.matlabCodegenIsDeleted) {
     proc_control_DW.obj_if.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S172>/SourceBlock'
-  // End of Terminate for SubSystem: '<S5>/If Action Subsystem'
+  // End of Terminate for MATLABSystem: '<S241>/SourceBlock'
+  // End of Terminate for SubSystem: '<S8>/If Action Subsystem'
 
-  // Terminate for MATLABSystem: '<S245>/SourceBlock'
+  // Terminate for MATLABSystem: '<S314>/SourceBlock'
   if (!proc_control_DW.obj_jb.matlabCodegenIsDeleted) {
     proc_control_DW.obj_jb.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S245>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S314>/SourceBlock'
 
-  // Terminate for MATLABSystem: '<S247>/SourceBlock'
+  // Terminate for MATLABSystem: '<S316>/SourceBlock'
   if (!proc_control_DW.obj_eh.matlabCodegenIsDeleted) {
     proc_control_DW.obj_eh.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S247>/SourceBlock'
+  // End of Terminate for MATLABSystem: '<S316>/SourceBlock'
 
-  // Terminate for IfAction SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
-  // Terminate for MATLABSystem: '<S252>/SourceBlock'
+  // Terminate for IfAction SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
+  // Terminate for MATLABSystem: '<S321>/SourceBlock'
   if (!proc_control_DW.obj_ha.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ha.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S252>/SourceBlock'
-  // End of Terminate for SubSystem: '<S7>/singleWpts Trajectory Control DEBUG only' 
+  // End of Terminate for MATLABSystem: '<S321>/SourceBlock'
+  // End of Terminate for SubSystem: '<S10>/singleWpts Trajectory Control DEBUG only' 
 
-  // Terminate for IfAction SubSystem: '<S68>/If Action Subsystem'
-  // Terminate for Atomic SubSystem: '<S78>/Header Assignment'
-  // Terminate for MATLABSystem: '<S110>/Current Time'
+  // Terminate for IfAction SubSystem: '<S137>/If Action Subsystem'
+  // Terminate for Atomic SubSystem: '<S147>/Header Assignment'
+  // Terminate for MATLABSystem: '<S179>/Current Time'
   if (!proc_control_DW.obj_o3.matlabCodegenIsDeleted) {
     proc_control_DW.obj_o3.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S110>/Current Time'
-  // End of Terminate for SubSystem: '<S78>/Header Assignment'
+  // End of Terminate for MATLABSystem: '<S179>/Current Time'
+  // End of Terminate for SubSystem: '<S147>/Header Assignment'
 
-  // Terminate for MATLABSystem: '<S111>/SinkBlock'
+  // Terminate for MATLABSystem: '<S180>/SinkBlock'
   if (!proc_control_DW.obj_ni.matlabCodegenIsDeleted) {
     proc_control_DW.obj_ni.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S111>/SinkBlock'
-  // End of Terminate for SubSystem: '<S68>/If Action Subsystem'
+  // End of Terminate for MATLABSystem: '<S180>/SinkBlock'
+  // End of Terminate for SubSystem: '<S137>/If Action Subsystem'
 
   // Terminate for Enabled SubSystem: '<Root>/Enabled Subsystem1'
-  // Terminate for MATLABSystem: '<S19>/SinkBlock'
+  // Terminate for MATLABSystem: '<S21>/SinkBlock'
   if (!proc_control_DW.obj_oa.matlabCodegenIsDeleted) {
     proc_control_DW.obj_oa.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S19>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S21>/SinkBlock'
 
-  // Terminate for MATLABSystem: '<S20>/SinkBlock'
+  // Terminate for MATLABSystem: '<S22>/SinkBlock'
   if (!proc_control_DW.obj_fd.matlabCodegenIsDeleted) {
     proc_control_DW.obj_fd.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S20>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S22>/SinkBlock'
 
-  // Terminate for MATLABSystem: '<S23>/SinkBlock'
+  // Terminate for MATLABSystem: '<S25>/SinkBlock'
   if (!proc_control_DW.obj_clf.matlabCodegenIsDeleted) {
     proc_control_DW.obj_clf.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S23>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S25>/SinkBlock'
   // End of Terminate for SubSystem: '<Root>/Enabled Subsystem1'
 
-  // Terminate for MATLABSystem: '<S243>/SinkBlock'
+  // Terminate for Enabled SubSystem: '<Root>/Model System'
+  // Terminate for MATLABSystem: '<S42>/SinkBlock'
+  if (!proc_control_DW.obj_p5.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_p5.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S42>/SinkBlock'
+
+  // Terminate for MATLABSystem: '<S58>/SourceBlock'
+  if (!proc_control_DW.obj_fb.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_fb.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S58>/SourceBlock'
+
+  // Terminate for MATLABSystem: '<S57>/SinkBlock'
+  if (!proc_control_DW.obj_of.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_of.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S57>/SinkBlock'
+  // End of Terminate for SubSystem: '<Root>/Model System'
+
+  // Terminate for Enabled SubSystem: '<Root>/ROS Output'
+  // Terminate for MATLABSystem: '<S112>/SinkBlock'
+  if (!proc_control_DW.obj_bq.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_bq.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S112>/SinkBlock'
+
+  // Terminate for MATLABSystem: '<S105>/SinkBlock'
+  if (!proc_control_DW.obj_i2.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_i2.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S105>/SinkBlock'
+
+  // Terminate for MATLABSystem: '<S107>/SinkBlock'
+  if (!proc_control_DW.obj_cr.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_cr.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S107>/SinkBlock'
+
+  // Terminate for Atomic SubSystem: '<S102>/Header Assignment'
+  proc_control_CurrentTime_Term(&proc_control_DW.CurrentTime_n);
+
+  // End of Terminate for SubSystem: '<S102>/Header Assignment'
+
+  // Terminate for MATLABSystem: '<S110>/SinkBlock'
+  if (!proc_control_DW.obj_iv.matlabCodegenIsDeleted) {
+    proc_control_DW.obj_iv.matlabCodegenIsDeleted = true;
+  }
+
+  // End of Terminate for MATLABSystem: '<S110>/SinkBlock'
+  // End of Terminate for SubSystem: '<Root>/ROS Output'
+
+  // Terminate for MATLABSystem: '<S312>/SinkBlock'
   if (!proc_control_DW.obj_oe.matlabCodegenIsDeleted) {
     proc_control_DW.obj_oe.matlabCodegenIsDeleted = true;
   }
 
-  // End of Terminate for MATLABSystem: '<S243>/SinkBlock'
+  // End of Terminate for MATLABSystem: '<S312>/SinkBlock'
 }
 
 // Constructor
@@ -58001,13 +60329,11 @@ proc_control::proc_control() :
 }
 
 // Destructor
-proc_control::~proc_control()
-{
-  // Currently there is no destructor body generated.
-}
+// Currently there is no destructor body generated.
+proc_control::~proc_control() = default;
 
 // Real-Time Model get method
-RT_MODEL_proc_control_T * proc_control::getRTM()
+proc_control::RT_MODEL_proc_control_T * proc_control::getRTM()
 {
   return (&proc_control_M);
 }

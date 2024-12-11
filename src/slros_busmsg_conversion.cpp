@@ -485,6 +485,25 @@ void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& m
 }
 
 
+// Conversions between SL_Bus_std_msgs_Int16MultiArray and std_msgs::msg::Int16MultiArray
+
+void convertFromBus(std_msgs::msg::Int16MultiArray& msgPtr, SL_Bus_std_msgs_Int16MultiArray const* busPtr)
+{
+  const std::string rosMessageType("std_msgs/Int16MultiArray");
+
+  convertFromBusVariablePrimitiveArray(msgPtr.data, busPtr->data, busPtr->data_SL_Info);
+  convertFromBus(msgPtr.layout, &busPtr->layout);
+}
+
+void convertToBus(SL_Bus_std_msgs_Int16MultiArray* busPtr, const std_msgs::msg::Int16MultiArray& msgPtr)
+{
+  const std::string rosMessageType("std_msgs/Int16MultiArray");
+
+  convertToBusVariablePrimitiveArray(busPtr->data, busPtr->data_SL_Info, msgPtr.data, slros::EnabledWarning(rosMessageType, "data"));
+  convertToBus(&busPtr->layout, msgPtr.layout);
+}
+
+
 // Conversions between SL_Bus_std_msgs_MultiArrayDimension and std_msgs::msg::MultiArrayDimension
 
 void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr)
