@@ -64,17 +64,17 @@ SimulinkSubscriber<trajectory_msgs::msg::MultiDOFJointTrajectoryPoint,SL_Bus_tra
 // proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe
 SimulinkSubscriber<sonia_common_ros2::msg::Pose,SL_Bus_sonia_common_ros2_Pose> Sub_proc_control_589;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Default/Default MV
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_72;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_72;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Default/Default MVR
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_74;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_74;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Default/Default OV
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_66;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_66;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 10/C10 MV
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_98;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_98;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 10/C10 MVR
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_99;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_99;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 10/C10 OV
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_97;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_97;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 11/C11 MV
 SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_107;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 11/C11 MVR
@@ -88,7 +88,7 @@ SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_contro
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains Mode 19/C19 OV
 SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_115;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains No DVL/NoDVL MV
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_133;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_133;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/MPC.M
 SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/MPC.P
@@ -106,34 +106,34 @@ SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_152;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/DVL Lost Override
 SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_196;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Added Mass
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_180;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_180;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics CDL
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_175;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_175;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics CDQ
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_177;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_177;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics DVL Rotation
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_192;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_192;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Depth Pose
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_184;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_184;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics G
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_167;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Hydro Pose
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_186;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_186;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics I
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_182;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_182;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Mass
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_168;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics RB
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_173;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_173;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics RG
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_171;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_171;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Rho
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_166;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Sonar Pose
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_190;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_190;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Sub Height
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_170;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Thrusters
-SimulinkParameterArrayGetter<real64_T,std::vector<int64_t>> ParamGet_proc_control_194;
+SimulinkParameterArrayGetter<real64_T,std::vector<real64_T>> ParamGet_proc_control_194;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Physics Volume
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
