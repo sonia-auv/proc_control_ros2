@@ -1,0 +1,124 @@
+# AUV8 proc_control parameters
+# Nimai Jariwala & Étienne Dutemple - 2024
+
+#***For safety concern, proc_control update the parameter only when soft kill (mode 0) is selected. ***
+#=========================================================================================================
+/proc_control:
+  ros__parameters:
+    proc_control:
+      mpc:
+        # Thrusters effort.
+        # must be double.
+        tmax: 30.0 # max thrust Newton
+        tmin: -25.0 # min thrust Newtons 
+        # MPC horizon
+        # See properties section here : https://www.mathworks.com/help/mpc/ref/mpc.html
+        # must be integers
+        p: 10 # prediction horizon MAX 10.
+        m: 1 # control horizon (m<=P otherwise crash).
+        #=========================================================================================================
+        ## MPC gains
+        # gains definition : see properties section under weight : https://www.mathworks.com/help/mpc/ref/mpc.html
+        # tips for tunning : https://www.mathworks.com/help/mpc/ug/tuning-weights.html
+        #=========================================================================================================
+        gains:
+          #MPC Gains Default
+          default:
+            ov: [70.0,60.0,70.0,90.0,90.0,90.0,90.0,0.0,0.0,0.0,0.0,0.0,0.0]
+            mv: [0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2]
+            mvr: [0.1,0.1,0.1,0.1,0.3,0.3,0.3,0.3]
+          #MPC Gain Mode 10
+          c10:
+            ov: [30.0, 30.0, 30.0, 60.0, 75.0, 75.0, 75.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            mv: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+            mvr: [0.4,0.4,0.4,0.4,0.5,0.5,0.5,0.5]
+          #MPC Gain Mode 11
+          # c11:
+          #   ov: "30,30,30,45,45,45,45,0,0,0,0,0,0"
+          #   mv: "0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0"
+          #   mvr: "0.4,0.4,0.4,0.4,0.5,0.5,0.5,0.5"
+          # #MPC Gain Mode 19
+          # c19:
+          #   ov: "0,0,0,0,0,0,0,20,20,20,20,20,20"
+          #   mv: "0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2"
+          #   mvr: "0.1,0.1,0.1,0.1,0.3,0.3,0.3,0.3"
+          #MPC no dvl Gains
+          noDvl:
+            mv: [0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2]
+      # TargetReached.
+      # must be double.
+      target_reached:
+        linear_tolerance: 0.2 # meters
+        angular_tolerance: 0.3 # radians
+        time_in_tolerance: 3.0 # seconds
+      #=========================================================================================================
+      # physical constants
+      #
+      # The AUV model use the MKS (Meters, Kilograms, Second) standard.
+      #=========================================================================================================
+      physics:
+        # Basic constants
+        #---------------------------------------------------------------------------------------------------------
+        rho: 998.0 # kg/m^3
+        g: 9.81 # m/s^2
+        # AUV Constant
+        #---------------------------------------------------------------------------------------------------------
+        mass: 42.9144 #Kg
+        volume: 0.043582 # M^3
+        sub_height: .315 # m
+        # Inertia tensor matrix define as:
+        # Ixx Ixy Ixz
+        # Iyx Iyy Iyz
+        # Izx Izy Izz
+        # This matrix is define with solidwork.
+        I: [0.7252, -0.0420, -0.0077, -0.0420, 1.8857, -0.0012, -0.0077, -0.0012, 2.2075]
+        # Center of mass              x     y     z
+        # This vector is define with solidwork.
+        rg: [0.0041, -0.0012, 0.0197] # distance (m) between center of mass and the geometric center of the sub.
+
+        # Center of boyency           x     y     z
+        # This vector is define with solidwork.
+        rb: [0.0055, -0.001467, 0.018993] # distance (m) between center of boyency and the geometric center of the sub.
+
+        # Drag linear constants
+        # This vector is guess
+        cdl: [15.0, 20.0, 23.3, 3.33, 2.33, 3.0] # dimensionless
+
+        # Drag quadratic constants
+        # This vector is guess
+        cdq: [1.17, 0.82, 0.756, 0.167, 0.08, 0.102] # dimensionless
+
+        # Added mass
+        # This vector is guess
+        added_mass: [-1.4648, -6.6156, -15.7695, -0.1164, -0.3493, -0.3493] # dimensionless
+
+        # thusters definition
+        # each row reprensent a thurster and each colunm reprensent an DOF
+        #             x       y       z      yaw     roll   pitch
+        thrusters: [0.281,  0.188,  0.097,  -45.0,  -90.0,  0.0,
+                    -0.281, 0.188,  0.097,  45.0,   -90.0,  0.0,
+                    -0.281, -0.188, 0.097,  -45.0,  -90.0,  0.0,
+                    0.281,  -0.188, 0.097,  45.0,   -90.0,  0.0, 
+                    0.184,  0.167,  0.097,  0.0,    0.0,    0.0,
+                    -0.184, 0.167,  0.097,  0.0,    180.0,  0.0,
+                    -0.184, -0.167, 0.097,  0.0,    0.0,    0.0,
+                    0.184,  -0.167, 0.097,  0.0,    180.0,  0.0]
+
+        # Sensors Definition
+        #---------------------------------------------------------------------------------------------------------
+        # Force dvl ON even when data is invalid
+        # (If Set to TRUE, when dvl is lost, kalman filter will assume DVL return 0m/s)
+        # (If set to FALSE' when dvl is lost Kalman will use the theorectical model)
+        dvl_lost_override: TRUE # Boolean
+
+        # transformation of the DVL frame to body frame
+        dvl_rotation: [0.0, 3.14159265359, 1.57079632679] # rad
+
+        # hydrophones distance acording to auv center
+        hydro_pose: [0.160, 0.0, 0.155] # m
+
+        # sonar distance acording to auv center
+        sonar_pose: [0.200, 0.0, -0.155] # m
+
+        # depth sensor distance according to the geometric center
+        depth_pose: [0.0, -0.114, 0.178] # m
