@@ -7,12 +7,12 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Fri Nov 29 19:21:38 2024
+// C/C++ source code generated on : Wed Dec 11 19:54:16 2024
 //
 // Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM 64-bit (LP64)
+// Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
 // Code generation objectives: Unspecified
 // Validation result: Not run
 //
@@ -25,10 +25,17 @@
 
 extern real_T rt_powd_snf(real_T u0, real_T u1);
 extern real_T rt_atan2d_snf(real_T u0, real_T u1);
-extern real_T rt_roundd_snf(real_T u);
+extern real_T rt_urand_Upu32_Yd_f_pw_snf(uint32_T *u);
+extern real_T rt_nrand_Upu32_Yd_f_pw_snf(uint32_T *u);
 extern uint32_T plook_u32d_binckpang(real_T u, const real_T bp[], uint32_T
   maxIndex, uint32_T *prevIndex);
+extern uint32_T plook_u32u16_binckan(uint16_T u, const uint16_T bp[], uint32_T
+  maxIndex);
+extern uint32_T plook_u32d_binckpan(real_T u, const real_T bp[], uint32_T
+  maxIndex, uint32_T *prevIndex);
 extern uint32_T binsearch_u32d_prevIdx(real_T u, const real_T bp[], uint32_T
+  startIndex, uint32_T maxIndex);
+extern uint32_T binsearch_u32u16(uint16_T u, const uint16_T bp[], uint32_T
   startIndex, uint32_T maxIndex);
 extern int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator);
 

@@ -7,12 +7,12 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Fri Nov 29 19:21:38 2024
+// C/C++ source code generated on : Wed Dec 11 19:54:16 2024
 //
 // Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM 64-bit (LP64)
+// Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
 // Code generation objectives: Unspecified
 // Validation result: Not run
 //
@@ -26,87 +26,30 @@ extern "C"
 
 }
 
-#include <stddef.h>
-
 extern "C"
 {
-
-#include "rt_nonfinite.h"
-
-}
-
-#define NumBitsPerChar                 8U
-
-extern "C"
-{
-  //
-  // Initialize rtInf needed by the generated code.
-  // Inf is initialized as non-signaling. Assumes IEEE.
-  //
+  // Return rtInf needed by the generated code.
   real_T rtGetInf(void)
   {
-    size_t bitsPerReal = sizeof(real_T) * (NumBitsPerChar);
-    real_T inf = 0.0;
-    if (bitsPerReal == 32U) {
-      inf = rtGetInfF();
-    } else {
-      union {
-        LittleEndianIEEEDouble bitVal;
-        real_T fltVal;
-      } tmpVal;
-
-      tmpVal.bitVal.words.wordH = 0x7FF00000U;
-      tmpVal.bitVal.words.wordL = 0x00000000U;
-      inf = tmpVal.fltVal;
-    }
-
-    return inf;
+    return rtInf;
   }
 
-  //
-  // Initialize rtInfF needed by the generated code.
-  // Inf is initialized as non-signaling. Assumes IEEE.
-  //
+  // Get rtInfF needed by the generated code.
   real32_T rtGetInfF(void)
   {
-    IEEESingle infF;
-    infF.wordL.wordLuint = 0x7F800000U;
-    return infF.wordL.wordLreal;
+    return rtInfF;
   }
 
-  //
-  // Initialize rtMinusInf needed by the generated code.
-  // Inf is initialized as non-signaling. Assumes IEEE.
-  //
+  // Return rtMinusInf needed by the generated code.
   real_T rtGetMinusInf(void)
   {
-    size_t bitsPerReal = sizeof(real_T) * (NumBitsPerChar);
-    real_T minf = 0.0;
-    if (bitsPerReal == 32U) {
-      minf = rtGetMinusInfF();
-    } else {
-      union {
-        LittleEndianIEEEDouble bitVal;
-        real_T fltVal;
-      } tmpVal;
-
-      tmpVal.bitVal.words.wordH = 0xFFF00000U;
-      tmpVal.bitVal.words.wordL = 0x00000000U;
-      minf = tmpVal.fltVal;
-    }
-
-    return minf;
+    return rtMinusInf;
   }
 
-  //
-  // Initialize rtMinusInfF needed by the generated code.
-  // Inf is initialized as non-signaling. Assumes IEEE.
-  //
+  // Return rtMinusInfF needed by the generated code.
   real32_T rtGetMinusInfF(void)
   {
-    IEEESingle minfF;
-    minfF.wordL.wordLuint = 0xFF800000U;
-    return minfF.wordL.wordLreal;
+    return rtMinusInfF;
   }
 }
 

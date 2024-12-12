@@ -7,47 +7,44 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.202
+// Model version                  : 1.177
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Fri Nov 29 19:21:38 2024
+// C/C++ source code generated on : Wed Dec 11 19:54:16 2024
 //
 // Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM 64-bit (LP64)
+// Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
 // Code generation objectives: Unspecified
 // Validation result: Not run
 //
 #include "proc_control.h"
 
 // Block parameters (default storage)
-P_proc_control_T proc_control::proc_control_P = {
+proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: physics
-  //  Referenced by: '<S73>/MATLAB System'
+  //  Referenced by: '<S142>/MATLAB System'
 
   {
-    35.42,
-    0.0365,
+    31.0,
+    0.0315,
     998.0,
     9.81,
     0.1435,
-    0.3,
+    0.15,
 
-    { 0.502, -0.0013, -0.0094, -0.0013, 1.5266, -0.0021, -0.009, -0.0021, 1.6682
-    },
+    { 0.4756, 0.008, 0.004, 0.008, 1.3735, -0.001, 0.004, -0.001, 1.5371 },
 
-    { 0.502, -0.0013, -0.0094, -0.0013, 1.5266, -0.0021, -0.0094, -0.0021,
-      1.6682 },
+    { 0.001, 0.002, 0.018 },
 
-    { 0.0028, 0.0001, 0.0222 },
+    { -0.0, 0.0, -0.006 },
 
-    { 0.003, -0.0002, 0.021 },
+    { 15.0, 20.0, 23.333333333333332, 3.3333333333333335, 2.3333333333333335,
+      5.0 },
 
-    { 15.0, 20.0, 23.3, 3.33, 2.33, 5.0 },
-
-    { 1.17, 0.82, 0.756, 0.167, 0.1, 0.102 },
+    { 2.17, 1.82, 1.756, 0.167, 0.1, 0.102 },
 
     { 0.12, 0.22, 0.292 },
 
-    { -1.4648, -6.6156, -15.7695, -0.1164, -0.3493, -0.3493 },
+    { -1.4648, -12.6156, -15.7695, -0.1164, -0.3493, -0.3493 },
 
     { 0.0, -0.136, 0.178 },
 
@@ -63,12 +60,6 @@ P_proc_control_T proc_control::proc_control_P = {
         0.082, 0.082, 0.082, 0.082, -45.0, 45.0, -45.0, 45.0, 0.0, 0.0, 0.0, 0.0,
         -90.0, -90.0, -90.0, -90.0, 0.0, 180.0, 0.0, 180.0, 0.0, 0.0, 0.0, 0.0,
         0.0, 0.0, 0.0, 0.0 },
-
-      { 0.292, 0.173, 0.082, -45.0, -90.0, 0.0, -0.292, 0.173, 0.082, 45.0,
-        -90.0, 0.0, -0.292, -0.173, 0.082, -45.0, -90.0, 0.0, 0.292, -0.173,
-        0.082, 45.0, -90.0, 0.0, 0.181, 0.159, 0.082, 0.0, 0.0, 0.0, -0.181,
-        0.159, 0.082, 0.0, 180.0, 0.0, -0.181, -0.159, 0.082, 0.0, 0.0, 0.0,
-        0.181, -0.159, 0.082, 0.0, 180.0, 0.0 },
       0.1,
       -0.81873075307798182,
       0.18126924692201818
@@ -76,7 +67,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Variable: mode
-  //  Referenced by: '<S45>/MATLAB System'
+  //  Referenced by: '<S114>/MATLAB System'
 
   {
     0.0,
@@ -102,8 +93,10 @@ P_proc_control_T proc_control::proc_control_P = {
 
   // Variable: N
   //  Referenced by:
-  //    '<S70>/N to A'
-  //    '<S70>/n-D Lookup Table1'
+  //    '<S26>/PWN to N'
+  //    '<S139>/N to A'
+  //    '<S139>/n-D Lookup Table1'
+  //    '<S32>/N to RPM'
 
   { -39.921561783600005, -39.7361560536, -39.4691718024, -38.8907059248,
     -38.267742672, -37.956261045599994, -37.5112872936, -37.288800417600008,
@@ -155,28 +148,78 @@ P_proc_control_T proc_control::proc_control_P = {
     49.169599596000005, 49.7925628488, 50.4600234768, 50.771505103200006,
     51.2164788552, 51.4537981896 },
 
-  // Variable: binv
-  //  Referenced by: '<S73>/MATLAB System'
+  // Variable: RPM
+  //  Referenced by: '<S32>/N to RPM'
 
-  { 0.3536294235804977, 0.35362942358049776, 0.35347735760604904,
-    0.35347735760604893, -0.082596685082873031, -0.082596685082872837,
-    0.082596685082872726, 0.082596685082873017, -0.35568231423555624,
-    0.35142446695099122, -0.351424466950991, 0.35568231423555613,
-    -0.0940251572327045, 0.094025157232704409, 0.094025157232704562,
-    -0.0940251572327043, -2.7916987706326951E-17, -7.0001962863246363E-18,
-    9.1761937789952957E-17, 1.5050203754637648E-17, -0.25402463601931968,
-    0.24628982938948552, -0.24597536398068048, 0.25371017061051454,
-    5.7789095089493325E-16, -4.9982206549614118E-16, 4.3462500735056523E-16,
-    -5.2186312597082734E-16, -1.572327044025158, 1.5723270440251578,
-    1.5723270440251575, -1.5723270440251582, 4.7217365889951761E-16,
-    -5.371931861074821E-16, -8.0750570199894264E-16, 8.1106126261044317E-16,
-    1.381215469613259, 1.3812154696132597, -1.381215469613259,
-    -1.3812154696132595, -0.76032987224359927, -0.76032987224359927,
-    0.76032987224359938, 0.76032987224359916, -6.15079078863519E-19,
-    -2.98904026077196E-16, -2.3443333774644704E-17, 2.13424102270383E-16 },
+  { 3464.7133333333336, 3468.01, 3449.07, 3421.12, 3409.95, 3394.78, 3373.93,
+    3356.28, 3323.16, 3306.57, 3282.25, 3247.62, 3223.24, 3207.09, 3176.96,
+    3152.96, 3111.45, 3086.3, 3061.4, 3049.78, 3003.32, 2987.73, 2952.33, 2918.2,
+    2895.86, 2864.72, 2845.12, 2821.23, 2792.39, 2758.52, 2736.37, 2712.08,
+    2681.26, 2660.64, 2629.0, 2598.64, 2575.93, 2547.87, 2517.32, 2482.17,
+    2440.17, 2418.69, 2369.48, 2345.45, 2306.38, 2277.85, 2248.15, 2222.36,
+    2198.72, 2156.96, 2140.15, 2105.77, 2081.37, 2039.83, 2001.27, 1968.2,
+    1935.5, 1902.76, 1869.56, 1839.98, 1807.39, 1773.08, 1737.6, 1704.96,
+    1667.06, 1630.35, 1589.17, 1553.88, 1518.54, 1481.78, 1448.45, 1409.65,
+    1362.08, 1324.67, 1284.84, 1246.14, 1199.38, 1152.94, 1112.71, 1064.11,
+    1016.48, 969.68, 916.03, 868.6, 809.94, 758.15, 697.28, 641.26, 577.81,
+    513.25, 449.5, 388.48, 317.17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 308.25, 374.8, 440.8, 508.01, 572.86, 630.43,
+    688.25, 749.32, 803.61, 859.4, 906.13, 961.53, 1007.38, 1056.66, 1104.32,
+    1147.5, 1194.61, 1237.07, 1278.89, 1319.08, 1359.21, 1408.65, 1443.5,
+    1479.63, 1516.03, 1548.64, 1583.02, 1628.86, 1668.42, 1699.09, 1739.95,
+    1766.18, 1802.32, 1835.1, 1865.47, 1900.85, 1929.78, 1960.82, 1994.08,
+    2030.99, 2071.37, 2106.28, 2128.7, 2160.39, 2189.6, 2219.18, 2243.76,
+    2266.35, 2305.35, 2341.59, 2391.8, 2415.81, 2445.98, 2475.13, 2497.91,
+    2537.88, 2583.51, 2608.66, 2639.26, 2663.25, 2688.12, 2710.8, 2735.48,
+    2765.9, 2809.4, 2822.46, 2853.6, 2888.0, 2903.17, 2933.63, 2973.17, 3001.72,
+    3041.86, 3065.09, 3107.61, 3124.51, 3153.38, 3180.33, 3204.34, 3242.32,
+    3260.1, 3299.33, 3307.84, 3351.13, 3378.76, 3405.6, 3427.86, 3437.91,
+    3454.99, 3493.84, 3515.95, 3527.23, 3533.445 },
+
+  // Variable: binv
+  //  Referenced by: '<S142>/MATLAB System'
+
+  { 0.35507405033776063, 0.35507405033776074, 0.35203273084878633,
+    0.35203273084878633, -0.0883977900552488, -0.088397790055248532,
+    0.08839779005524849, 0.088397790055248726, -0.35431372046551729,
+    0.35279306072103012, -0.35279306072102989, 0.35431372046551729,
+    -0.10062893081761017, 0.10062893081761014, 0.10062893081761014,
+    -0.10062893081760994, 1.6346609863753576E-16, 2.1909456414137297E-16,
+    -1.9050370803001359E-16, -1.1348952754722411E-16, -0.25452586955766326,
+    0.2517634386184367, -0.24547413044233665, 0.24823656138156297,
+    1.2586402675624013E-15, -5.8709160284481884E-16, -4.3358683530888794E-16,
+    -2.4732744990699777E-16, -1.5723270440251575, 1.5723270440251573,
+    1.5723270440251575, -1.5723270440251578, 6.60335539167431E-16,
+    -9.5450969411744989E-16, -4.307321863900061E-16, 6.9233000946583E-16,
+    1.3812154696132601, 1.38121546961326, -1.38121546961326, -1.3812154696132601,
+    -0.76032987224359916, -0.76032987224359916, 0.76032987224359916,
+    0.76032987224359927, 8.0368871314474784E-16, -8.7470695814627886E-16,
+    -1.2671975610207977E-15, 1.1303606556715383E-15 },
+
+  // Variable: dSeedX
+  //  Referenced by: '<S27>/Drift'
+
+  5.0,
+
+  // Variable: dmax
+  //  Referenced by: '<S27>/Drift'
+
+  { 0.19540463036237127, 0.19495294978003957, 0.094852515013948313,
+    0.015449036479313595, 0.078967050761036064, 0.039484800638610484 },
+
+  // Variable: dmin
+  //  Referenced by: '<S27>/Drift'
+
+  { -0.28472389616945137, -1.1987823254647929, -0.094849845502191985,
+    -0.036423127594514361, -0.027349285274002145, -0.087792413335193886 },
+
+  // Variable: waveDiscreteFrequency
+  //  Referenced by: '<S27>/Sine Wave'
+
+  { 200.0, 200.0, 200.0, 300.0, 300.0, 300.0 },
 
   // Variable: A
-  //  Referenced by: '<S70>/N to A'
+  //  Referenced by: '<S139>/N to A'
 
   { 24U, 24U, 24U, 23U, 23U, 22U, 21U, 21U, 20U, 20U, 19U, 19U, 18U, 18U, 17U,
     16U, 16U, 15U, 15U, 14U, 14U, 14U, 13U, 13U, 12U, 12U, 12U, 11U, 11U, 11U,
@@ -192,7 +235,9 @@ P_proc_control_T proc_control::proc_control_P = {
     21U, 21U, 22U, 22U, 23U, 23U, 24U, 24U },
 
   // Variable: PWM
-  //  Referenced by: '<S70>/n-D Lookup Table1'
+  //  Referenced by:
+  //    '<S26>/PWN to N'
+  //    '<S139>/n-D Lookup Table1'
 
   { 1100U, 1104U, 1108U, 1112U, 1116U, 1120U, 1124U, 1128U, 1132U, 1136U, 1140U,
     1144U, 1148U, 1152U, 1156U, 1160U, 1164U, 1168U, 1172U, 1176U, 1180U, 1184U,
@@ -214,32 +259,82 @@ P_proc_control_T proc_control::proc_control_P = {
     1848U, 1852U, 1856U, 1860U, 1864U, 1868U, 1872U, 1876U, 1880U, 1884U, 1888U,
     1892U, 1896U, 1900U },
 
+  // Mask Parameter: BandLimitedWhiteNoise_Cov
+  //  Referenced by: '<S43>/Output'
+
+  4.0E-10,
+
+  // Mask Parameter: BandLimitedWhiteNoise1_Cov
+  //  Referenced by: '<S44>/Output'
+
+  4.0E-10,
+
+  // Mask Parameter: BandLimitedWhiteNoise2_Cov
+  //  Referenced by: '<S45>/Output'
+
+  4.0E-10,
+
+  // Mask Parameter: BandLimitedWhiteNoise3_Cov
+  //  Referenced by: '<S46>/Output'
+
+  4.0E-10,
+
+  // Mask Parameter: BandLimitedWhiteNoise4_Cov
+  //  Referenced by: '<S47>/Output'
+
+  4.0E-10,
+
   // Mask Parameter: DiscreteDerivative_ICPrevScaled
-  //  Referenced by: '<S145>/UD'
+  //  Referenced by: '<S214>/UD'
 
   0.0,
 
+  // Mask Parameter: BandLimitedWhiteNoise_seed
+  //  Referenced by: '<S43>/White Noise'
+
+  23341.0,
+
+  // Mask Parameter: BandLimitedWhiteNoise1_seed
+  //  Referenced by: '<S44>/White Noise'
+
+  23341.0,
+
+  // Mask Parameter: BandLimitedWhiteNoise2_seed
+  //  Referenced by: '<S45>/White Noise'
+
+  23341.0,
+
+  // Mask Parameter: BandLimitedWhiteNoise3_seed
+  //  Referenced by: '<S46>/White Noise'
+
+  23341.0,
+
+  // Mask Parameter: BandLimitedWhiteNoise4_seed
+  //  Referenced by: '<S47>/White Noise'
+
+  23341.0,
+
   // Mask Parameter: MinMaxRunningResettable_vinit
   //  Referenced by:
-  //    '<S36>/Initial Condition'
-  //    '<S36>/Memory'
+  //    '<S92>/Initial Condition'
+  //    '<S92>/Memory'
 
   false,
 
   // Mask Parameter: MinMaxRunningResettable1_vinit
   //  Referenced by:
-  //    '<S37>/Initial Condition'
-  //    '<S37>/Memory'
+  //    '<S93>/Initial Condition'
+  //    '<S93>/Memory'
 
   false,
 
   // Mask Parameter: DetectRisePositive_vinit
-  //  Referenced by: '<S240>/Delay Input1'
+  //  Referenced by: '<S309>/Delay Input1'
 
   false,
 
   // Computed Parameter: Out1_Y0
-  //  Referenced by: '<S174>/Out1'
+  //  Referenced by: '<S243>/Out1'
 
   {
     {
@@ -561,7 +656,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value
-  //  Referenced by: '<S172>/Constant'
+  //  Referenced by: '<S241>/Constant'
 
   {
     {
@@ -883,7 +978,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_k
-  //  Referenced by: '<S22>/Constant'
+  //  Referenced by: '<S24>/Constant'
 
   {
     false,                             // is_mpc_alive
@@ -973,7 +1068,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_b
-  //  Referenced by: '<S173>/Out1'
+  //  Referenced by: '<S242>/Out1'
 
   {
     {
@@ -1031,7 +1126,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_h
-  //  Referenced by: '<S171>/Constant'
+  //  Referenced by: '<S240>/Constant'
 
   {
     {
@@ -1088,8 +1183,327 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0                                // min_thrust
   },
 
+  // Computed Parameter: Constant_Value_c
+  //  Referenced by: '<S41>/Constant'
+
+  {
+    {
+      {
+        {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        }, {
+          {
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+            0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U }
+          ,                            // label
+
+          {
+            0U,                        // CurrentLength
+            0U                         // ReceivedLength
+          },                           // label_SL_Info
+          0U,                          // size
+          0U                           // stride
+        } }
+      ,                                // dim
+
+      {
+        0U,                            // CurrentLength
+        0U                             // ReceivedLength
+      },                               // dim_SL_Info
+      0U                               // data_offset
+    },                                 // layout
+
+    {
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0 }
+    ,                                  // data
+
+    {
+      0U,                              // CurrentLength
+      0U                               // ReceivedLength
+    }                                  // data_SL_Info
+  },
+
   // Computed Parameter: Out1_Y0_n
-  //  Referenced by: '<S248>/Out1'
+  //  Referenced by: '<S317>/Out1'
 
   {
     {
@@ -1718,7 +2132,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_g
-  //  Referenced by: '<S247>/Constant'
+  //  Referenced by: '<S316>/Constant'
 
   {
     {
@@ -2347,7 +2761,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: mpcParams_Y0
-  //  Referenced by: '<S44>/mpcParams'
+  //  Referenced by: '<S113>/mpcParams'
 
   {
     {
@@ -2426,7 +2840,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_g3
-  //  Referenced by: '<S12>/Constant'
+  //  Referenced by: '<S15>/Constant'
 
   {
     {
@@ -2514,7 +2928,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_f
-  //  Referenced by: '<S109>/Constant'
+  //  Referenced by: '<S178>/Constant'
 
   {
     {
@@ -2602,7 +3016,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: physicsConstants_Y0
-  //  Referenced by: '<S44>/physicsConstants'
+  //  Referenced by: '<S113>/physicsConstants'
 
   {
     0.0,                               // rho
@@ -2661,7 +3075,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_no
-  //  Referenced by: '<S41>/Out1'
+  //  Referenced by: '<S97>/Out1'
 
   {
     {
@@ -2720,7 +3134,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_i
-  //  Referenced by: '<S38>/Constant'
+  //  Referenced by: '<S94>/Constant'
 
   {
     {
@@ -2779,7 +3193,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_c
-  //  Referenced by: '<S30>/Out1'
+  //  Referenced by: '<S86>/Out1'
 
   {
     {
@@ -2838,7 +3252,66 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_j
-  //  Referenced by: '<S27>/Constant'
+  //  Referenced by: '<S83>/Constant'
+
+  {
+    {
+      {
+        0,                             // sec
+        0U                             // nanosec
+      },                               // stamp
+
+      {
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U }
+      ,                                // frame_id
+
+      {
+        0U,                            // CurrentLength
+        0U                             // ReceivedLength
+      }                                // frame_id_SL_Info
+    },                                 // header
+
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0,                             // z
+      0.0                              // w
+    },                                 // orientation
+
+    {
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+    ,                                  // orientation_covariance
+
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0                              // z
+    },                                 // angular_velocity
+
+    {
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+    ,                                  // angular_velocity_covariance
+
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0                              // z
+    },                                 // linear_acceleration
+
+    {
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+    // linear_acceleration_covariance
+  },
+
+  // Computed Parameter: Constant_Value_e
+  //  Referenced by: '<S108>/Constant'
 
   {
     {
@@ -2897,7 +3370,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: MPCparam_Y0
-  //  Referenced by: '<S69>/MPC param'
+  //  Referenced by: '<S138>/MPC param'
 
   {
     {
@@ -2929,7 +3402,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_p
-  //  Referenced by: '<S42>/Out1'
+  //  Referenced by: '<S98>/Out1'
 
   {
     {
@@ -2964,8 +3437,8 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0                                // velocity4
   },
 
-  // Computed Parameter: Constant_Value_e
-  //  Referenced by: '<S39>/Constant'
+  // Computed Parameter: Constant_Value_ep
+  //  Referenced by: '<S95>/Constant'
 
   {
     {
@@ -3001,7 +3474,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_g
-  //  Referenced by: '<S31>/Out1'
+  //  Referenced by: '<S87>/Out1'
 
   {
     {
@@ -3037,7 +3510,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_p
-  //  Referenced by: '<S28>/Constant'
+  //  Referenced by: '<S84>/Constant'
 
   {
     {
@@ -3097,8 +3570,93 @@ P_proc_control_T proc_control::proc_control_P = {
     // Angular_Rate
   },
 
+  // Computed Parameter: SensorsOutput_Y0
+  //  Referenced by: '<S3>/Sensors Output'
+
+  {
+    0.0,                               // Pressure_Depth
+
+    {
+      0.0, 0.0, 0.0, 0.0 }
+    ,                                  // Quaternion
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // DVL_Velocity
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // Angular_Rate
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // Linear_Acceleration
+
+    {
+      0.0, 0.0, 0.0 }
+    // Hydro_Angles
+  },
+
+  // Computed Parameter: CleanOutput_Y0
+  //  Referenced by: '<S3>/Clean Output'
+
+  {
+    {
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // World_Position
+
+      {
+        0.0, 0.0, 0.0, 0.0 }
+      // Quaternion
+    },                                 // x
+
+    {
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // Body_Velocity
+
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // Linear_Acceleration
+
+      {
+        0.0, 0.0, 0.0 }
+      // Angular_Rate
+    }                                  // v
+  },
+
   // Computed Parameter: Out1_Y0_d
-  //  Referenced by: '<S255>/Out1'
+  //  Referenced by: '<S6>/Out1'
+
+  {
+    {
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // World_Position
+
+      {
+        0.0, 0.0, 0.0, 0.0 }
+      // Quaternion
+    },                                 // x
+
+    {
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // Body_Velocity
+
+      {
+        0.0, 0.0, 0.0 }
+      ,                                // Linear_Acceleration
+
+      {
+        0.0, 0.0, 0.0 }
+      // Angular_Rate
+    }                                  // v
+  },
+
+  // Computed Parameter: Out1_Y0_d0
+  //  Referenced by: '<S323>/Out1'
 
   {
     0U,                                // frame
@@ -3120,7 +3678,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_f4
-  //  Referenced by: '<S252>/Constant'
+  //  Referenced by: '<S321>/Constant'
 
   {
     0U,                                // frame
@@ -3141,8 +3699,26 @@ P_proc_control_T proc_control::proc_control_P = {
     false                              // rotation
   },
 
+  // Computed Parameter: Constant_Value_o
+  //  Referenced by: '<S111>/Constant'
+
+  {
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0                              // z
+    },                                 // position
+
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0,                             // z
+      0.0                              // w
+    }                                  // orientation
+  },
+
   // Computed Parameter: Out1_Y0_a
-  //  Referenced by: '<S64>/Out1'
+  //  Referenced by: '<S134>/Out1'
 
   {
     {
@@ -3160,7 +3736,25 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Constant_Value_ja
-  //  Referenced by: '<S58>/Constant'
+  //  Referenced by: '<S128>/Constant'
+
+  {
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0                              // z
+    },                                 // position
+
+    {
+      0.0,                             // x
+      0.0,                             // y
+      0.0,                             // z
+      0.0                              // w
+    }                                  // orientation
+  },
+
+  // Computed Parameter: Constant_Value_o1
+  //  Referenced by: '<S311>/Constant'
 
   {
     {
@@ -3178,7 +3772,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: DVLMeasurements_Y0
-  //  Referenced by: '<S177>/DVL Measurements'
+  //  Referenced by: '<S246>/DVL Measurements'
 
   {
     {
@@ -3192,7 +3786,7 @@ P_proc_control_T proc_control::proc_control_P = {
   },
 
   // Computed Parameter: Out1_Y0_f
-  //  Referenced by: '<S246>/Out1'
+  //  Referenced by: '<S315>/Out1'
 
   {
     {
@@ -3208,8 +3802,8 @@ P_proc_control_T proc_control::proc_control_P = {
     }                                  // angular
   },
 
-  // Computed Parameter: Constant_Value_o
-  //  Referenced by: '<S245>/Constant'
+  // Computed Parameter: Constant_Value_oo
+  //  Referenced by: '<S314>/Constant'
 
   {
     {
@@ -3223,129 +3817,193 @@ P_proc_control_T proc_control::proc_control_P = {
       0.0,                             // y
       0.0                              // z
     }                                  // angular
+  },
+
+  // Computed Parameter: Constant_Value_d
+  //  Referenced by: '<S104>/Constant'
+
+  {
+    0.0,                               // x
+    0.0,                               // y
+    0.0                                // z
+  },
+
+  // Computed Parameter: Out1_Y0_j
+  //  Referenced by: '<S56>/Out1'
+
+  {
+    0.0,                               // x
+    0.0,                               // y
+    0.0                                // z
+  },
+
+  // Computed Parameter: Out1_Y0_p1
+  //  Referenced by: '<S59>/Out1'
+
+  {
+    0.0,                               // x
+    0.0,                               // y
+    0.0                                // z
+  },
+
+  // Computed Parameter: Constant_Value_m
+  //  Referenced by: '<S58>/Constant'
+
+  {
+    0.0,                               // x
+    0.0,                               // y
+    0.0                                // z
+  },
+
+  // Computed Parameter: Constant_Value_ki
+  //  Referenced by: '<S19>/Constant'
+
+  {
+    0U,                                // motor1
+    0U,                                // motor2
+    0U,                                // motor3
+    0U,                                // motor4
+    0U,                                // motor5
+    0U,                                // motor6
+    0U,                                // motor7
+    0U                                 // motor8
+  },
+
+  // Computed Parameter: Constant_Value_mv
+  //  Referenced by: '<S20>/Constant'
+
+  {
+    0U,                                // motor1
+    0U,                                // motor2
+    0U,                                // motor3
+    0U,                                // motor4
+    0U,                                // motor5
+    0U,                                // motor6
+    0U,                                // motor7
+    0U                                 // motor8
   },
 
   // Computed Parameter: Out1_Y0_o
-  //  Referenced by: '<S63>/Out1'
+  //  Referenced by: '<S135>/Out1'
 
   {
     false                              // status
   },
 
   // Computed Parameter: Constant_Value_eb
-  //  Referenced by: '<S57>/Constant'
+  //  Referenced by: '<S129>/Constant'
 
   {
     false                              // status
   },
 
-  // Computed Parameter: Constant_Value_c
-  //  Referenced by: '<S10>/Constant'
+  // Computed Parameter: Constant_Value_cc
+  //  Referenced by: '<S13>/Constant'
 
   {
     false                              // data
   },
 
-  // Computed Parameter: Out1_Y0_e
-  //  Referenced by: '<S65>/Out1'
+  // Computed Parameter: Out1_Y0_jx
+  //  Referenced by: '<S132>/Out1'
 
   {
     false                              // data
   },
 
   // Computed Parameter: Out1_Y0_dr
-  //  Referenced by: '<S66>/Out1'
+  //  Referenced by: '<S133>/Out1'
 
   {
     false                              // data
   },
 
-  // Computed Parameter: Out1_Y0_j
-  //  Referenced by: '<S67>/Out1'
+  // Computed Parameter: Out1_Y0_e
+  //  Referenced by: '<S136>/Out1'
 
   {
     false                              // data
   },
 
   // Computed Parameter: Constant_Value_oy
-  //  Referenced by: '<S61>/Constant'
+  //  Referenced by: '<S126>/Constant'
 
   {
     false                              // data
   },
 
   // Computed Parameter: Constant_Value_oc
-  //  Referenced by: '<S59>/Constant'
+  //  Referenced by: '<S130>/Constant'
 
   {
     false                              // data
   },
 
   // Computed Parameter: Constant_Value_ha
-  //  Referenced by: '<S60>/Constant'
+  //  Referenced by: '<S127>/Constant'
 
   {
     false                              // data
   },
 
   // Computed Parameter: Out1_Y0_oo
-  //  Referenced by: '<S43>/Out1'
+  //  Referenced by: '<S99>/Out1'
 
   {
     0.0F                               // data
   },
 
-  // Computed Parameter: Constant_Value_d
-  //  Referenced by: '<S40>/Constant'
+  // Computed Parameter: Constant_Value_dh
+  //  Referenced by: '<S96>/Constant'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Out1_Y0_bc
-  //  Referenced by: '<S32>/Out1'
+  //  Referenced by: '<S88>/Out1'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Constant_Value_er
-  //  Referenced by: '<S29>/Constant'
+  //  Referenced by: '<S85>/Constant'
+
+  {
+    0.0F                               // data
+  },
+
+  // Computed Parameter: Constant_Value_pf
+  //  Referenced by: '<S106>/Constant'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Out1_Y0_fy
-  //  Referenced by: '<S62>/Out1'
+  //  Referenced by: '<S131>/Out1'
 
   {
     0U                                 // data
   },
 
   // Computed Parameter: Constant_Value_dx
-  //  Referenced by: '<S56>/Constant'
+  //  Referenced by: '<S125>/Constant'
 
   {
     0U                                 // data
   },
 
   // Expression: InsertTimeStamp
-  //  Referenced by: '<S13>/Constant'
+  //  Referenced by: '<S16>/Constant'
 
   1.0,
 
   // Expression: SetFrameID
-  //  Referenced by: '<S13>/Constant1'
+  //  Referenced by: '<S16>/Constant1'
 
   1.0,
-
-  // Expression: zeros(1, 36)
-  //  Referenced by: '<S9>/Constant'
-
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Computed Parameter: thrust_Y0
   //  Referenced by: '<S2>/thrust'
@@ -3353,7 +4011,7 @@ P_proc_control_T proc_control::proc_control_P = {
   0.0,
 
   // Expression: zeros(1,120)
-  //  Referenced by: '<S21>/Constant'
+  //  Referenced by: '<S23>/Constant'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3365,7 +4023,7 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,115)
-  //  Referenced by: '<S21>/Constant1'
+  //  Referenced by: '<S23>/Constant1'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3377,7 +4035,7 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,120)
-  //  Referenced by: '<S21>/Constant3'
+  //  Referenced by: '<S23>/Constant3'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3389,7 +4047,7 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,120)
-  //  Referenced by: '<S21>/Constant4'
+  //  Referenced by: '<S23>/Constant4'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3400,58 +4058,483 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
+  // Expression: simulation.wave.damp.B
+  //  Referenced by: '<S27>/Constant1'
+
+  1.0,
+
+  // Expression: simulation.wave.damp.A
+  //  Referenced by: '<S27>/Constant'
+
+  -0.4,
+
+  // Expression: simulation.wave.damp.min
+  //  Referenced by: '<S27>/Saturation'
+
+  1.0,
+
+  // Expression: simulation.wave.damp.max
+  //  Referenced by: '<S27>/Saturation'
+
+  0.2,
+
+  // Expression: zeros(1,6)
+  //  Referenced by: '<S27>/Constant2'
+
+  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S33>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S33>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S33>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S34>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S34>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S34>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S35>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S35>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S35>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S36>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S36>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S36>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S37>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S37>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S37>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S38>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S38>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S38>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S39>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S39>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S39>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S40>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S40>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S40>/Discrete Transfer Fcn'
+
+  0.0,
+
+  // Expression: simulation.wave.amplitudes
+  //  Referenced by: '<S27>/Sine Wave'
+
+  { 0.5, 1.0, 1.5, 0.25, 0.25, 0.25 },
+
+  // Expression: 0
+  //  Referenced by: '<S27>/Sine Wave'
+
+  0.0,
+
+  // Expression: waveDiscretePhase
+  //  Referenced by: '<S27>/Sine Wave'
+
+  { 0.0, 12.5, 25.0, 0.0, 12.5, 25.0 },
+
+  // Expression: MPC.Xi
+  //  Referenced by: '<S3>/Unit Delay'
+
+  { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+
+  // Expression: 0
+  //  Referenced by: '<S27>/Switch'
+
+  0.0,
+
+  // Expression: [0,0]
+  //  Referenced by: '<S30>/Constant'
+
+  { 0.0, 0.0 },
+
+  // Computed Parameter: DiscreteTimeIntegrator_gainval
+  //  Referenced by: '<S3>/Discrete-Time Integrator'
+
+  0.01,
+
+  // Computed Parameter: DiscreteTimeIntegrator1_gainval
+  //  Referenced by: '<S3>/Discrete-Time Integrator1'
+
+  0.01,
+
+  // Expression: [0,0,0]
+  //  Referenced by: '<S3>/Initial Body Velocity'
+
+  { 0.0, 0.0, 0.0 },
+
+  // Computed Parameter: DiscreteTimeIntegrator2_gainval
+  //  Referenced by: '<S3>/Discrete-Time Integrator2'
+
+  0.01,
+
+  // Expression: [0,0,0]
+  //  Referenced by: '<S3>/Initial Angular Rates'
+
+  { 0.0, 0.0, 0.0 },
+
+  // Computed Parameter: DiscreteTimeIntegrator3_gainval
+  //  Referenced by: '<S3>/Discrete-Time Integrator3'
+
+  0.01,
+
+  // Expression: 0
+  //  Referenced by: '<S43>/White Noise'
+
+  0.0,
+
+  // Computed Parameter: WhiteNoise_StdDev
+  //  Referenced by: '<S43>/White Noise'
+
+  1.0,
+
+  // Expression: 0
+  //  Referenced by: '<S44>/White Noise'
+
+  0.0,
+
+  // Computed Parameter: WhiteNoise_StdDev_i
+  //  Referenced by: '<S44>/White Noise'
+
+  1.0,
+
+  // Expression: 0
+  //  Referenced by: '<S45>/White Noise'
+
+  0.0,
+
+  // Computed Parameter: WhiteNoise_StdDev_a
+  //  Referenced by: '<S45>/White Noise'
+
+  1.0,
+
+  // Expression: 0
+  //  Referenced by: '<S46>/White Noise'
+
+  0.0,
+
+  // Computed Parameter: WhiteNoise_StdDev_e
+  //  Referenced by: '<S46>/White Noise'
+
+  1.0,
+
+  // Expression: 0
+  //  Referenced by: '<S47>/White Noise'
+
+  0.0,
+
+  // Computed Parameter: WhiteNoise_StdDev_l
+  //  Referenced by: '<S47>/White Noise'
+
+  1.0,
+
+  // Expression: simulation.sensors.imu.acc.bias
+  //  Referenced by: '<S29>/Constant'
+
+  { 0.0, 0.0, -9.59066 },
+
+  // Expression: 2
+  //  Referenced by: '<S65>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S65>/Gain1'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S65>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S65>/Gain2'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S55>/1//2'
+
+  0.5,
+
+  // Expression: 0.5
+  //  Referenced by: '<S69>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S69>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S69>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S69>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S70>/Gain'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S70>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S70>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S70>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S71>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S71>/Gain1'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S71>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S71>/Gain2'
+
+  2.0,
+
+  // Expression: simulation.sensors.depth.resolution
+  //  Referenced by: '<S29>/Gain'
+
+  0.001,
+
+  // Expression: simulation.sensors.dvl.resolution
+  //  Referenced by: '<S29>/Gain1'
+
+  0.001,
+
+  // Expression: 0.5
+  //  Referenced by: '<S75>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S75>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S75>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S75>/Gain2'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S76>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S76>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S76>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S76>/Gain2'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S77>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S77>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S77>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S77>/Gain2'
+
+  2.0,
+
   // Computed Parameter: y_Y0
-  //  Referenced by: '<S25>/y'
+  //  Referenced by: '<S81>/y'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S25>/Constant'
+  //  Referenced by: '<S81>/Constant'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S25>/Constant1'
+  //  Referenced by: '<S81>/Constant1'
 
   0.0,
 
   // Expression: InsertTimeStamp
-  //  Referenced by: '<S110>/Constant'
+  //  Referenced by: '<S109>/Constant'
 
   1.0,
 
   // Expression: SetFrameID
-  //  Referenced by: '<S110>/Constant1'
+  //  Referenced by: '<S109>/Constant1'
+
+  1.0,
+
+  // Expression: InsertTimeStamp
+  //  Referenced by: '<S179>/Constant'
+
+  1.0,
+
+  // Expression: SetFrameID
+  //  Referenced by: '<S179>/Constant1'
 
   1.0,
 
   // Expression: zeros(MPC.nu,1)
-  //  Referenced by: '<S71>/Delay'
+  //  Referenced by: '<S140>/Delay'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,8)
-  //  Referenced by: '<S76>/E_zero'
+  //  Referenced by: '<S145>/E_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,13)
-  //  Referenced by: '<S76>/F_zero'
+  //  Referenced by: '<S145>/F_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S76>/G_zero'
+  //  Referenced by: '<S145>/G_zero'
 
   0.0,
 
   // Computed Parameter: Constant_Value_aa
-  //  Referenced by: '<S79>/Constant'
+  //  Referenced by: '<S148>/Constant'
 
   10.0,
 
   // Expression: lastPcov
-  //  Referenced by: '<S79>/LastPcov'
+  //  Referenced by: '<S148>/LastPcov'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3485,147 +4568,147 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S76>/ext.mv_zero'
+  //  Referenced by: '<S145>/ext.mv_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: RMVscale
-  //  Referenced by: '<S79>/ext.mv_scale'
+  //  Referenced by: '<S148>/ext.mv_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: lastu+uoff
-  //  Referenced by: '<S79>/last_mv'
+  //  Referenced by: '<S148>/last_mv'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,6)
-  //  Referenced by: '<S71>/Constant'
+  //  Referenced by: '<S140>/Constant'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,2)
-  //  Referenced by: '<S71>/Constant1'
+  //  Referenced by: '<S140>/Constant1'
 
   { 0.0, 0.0 },
 
   // Expression: zeros(nym,1)
-  //  Referenced by: '<S79>/ym_zero'
+  //  Referenced by: '<S148>/ym_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S76>/md_zero'
+  //  Referenced by: '<S145>/md_zero'
 
   0.0,
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S76>/ymin_zero'
+  //  Referenced by: '<S145>/ymin_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S76>/ymax_zero'
+  //  Referenced by: '<S145>/ymax_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: MVscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S79>/umin_scale4'
+  //  Referenced by: '<S148>/umin_scale4'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: Yscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S79>/ymin_scale1'
+  //  Referenced by: '<S148>/ymin_scale1'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S76>/S_zero'
+  //  Referenced by: '<S145>/S_zero'
 
   0.0,
 
   // Expression: MDscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S79>/ymin_scale2'
+  //  Referenced by: '<S148>/ymin_scale2'
 
   1.0,
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S76>/switch_zero'
+  //  Referenced by: '<S145>/switch_zero'
 
   0.0,
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S76>/mv.target_zero'
+  //  Referenced by: '<S145>/mv.target_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: RMVscale
-  //  Referenced by: '<S79>/uref_scale'
+  //  Referenced by: '<S148>/uref_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S76>/ecr.wt_zero'
+  //  Referenced by: '<S145>/ecr.wt_zero'
 
   0.0,
 
   // Expression: MVscale
-  //  Referenced by: '<S79>/u_scale'
+  //  Referenced by: '<S148>/u_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: 1
-  //  Referenced by: '<S71>/Pulse Generator'
+  //  Referenced by: '<S140>/Pulse Generator'
 
   1.0,
 
   // Expression: 2
-  //  Referenced by: '<S71>/Pulse Generator'
+  //  Referenced by: '<S140>/Pulse Generator'
 
   2.0,
 
   // Expression: 1
-  //  Referenced by: '<S71>/Pulse Generator'
+  //  Referenced by: '<S140>/Pulse Generator'
 
   1.0,
 
   // Expression: 0
-  //  Referenced by: '<S71>/Pulse Generator'
+  //  Referenced by: '<S140>/Pulse Generator'
 
   0.0,
 
   // Expression: 40
-  //  Referenced by: '<S73>/MATLAB System'
+  //  Referenced by: '<S142>/MATLAB System'
 
   40.0,
 
   // Expression: 0
-  //  Referenced by: '<S73>/Constant1'
+  //  Referenced by: '<S142>/Constant1'
 
   0.0,
 
   // Computed Parameter: TSamp_WtEt
-  //  Referenced by: '<S145>/TSamp'
+  //  Referenced by: '<S214>/TSamp'
 
   10.0,
 
   // Expression: zeros(1,8)
-  //  Referenced by: '<S112>/E_zero'
+  //  Referenced by: '<S181>/E_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,13)
-  //  Referenced by: '<S112>/F_zero'
+  //  Referenced by: '<S181>/F_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S112>/G_zero'
+  //  Referenced by: '<S181>/G_zero'
 
   0.0,
 
   // Expression: lastPcov
-  //  Referenced by: '<S115>/LastPcov'
+  //  Referenced by: '<S184>/LastPcov'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3659,87 +4742,87 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S112>/ext.mv_zero'
+  //  Referenced by: '<S181>/ext.mv_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: RMVscale
-  //  Referenced by: '<S115>/ext.mv_scale'
+  //  Referenced by: '<S184>/ext.mv_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: lastu+uoff
-  //  Referenced by: '<S115>/last_mv'
+  //  Referenced by: '<S184>/last_mv'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,8)
-  //  Referenced by: '<S72>/Constant2'
+  //  Referenced by: '<S141>/Constant2'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(nym,1)
-  //  Referenced by: '<S115>/ym_zero'
+  //  Referenced by: '<S184>/ym_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S112>/md_zero'
+  //  Referenced by: '<S181>/md_zero'
 
   0.0,
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S112>/ymin_zero'
+  //  Referenced by: '<S181>/ymin_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S112>/ymax_zero'
+  //  Referenced by: '<S181>/ymax_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: MVscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S115>/umin_scale4'
+  //  Referenced by: '<S184>/umin_scale4'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: Yscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S115>/ymin_scale1'
+  //  Referenced by: '<S184>/ymin_scale1'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S112>/S_zero'
+  //  Referenced by: '<S181>/S_zero'
 
   0.0,
 
   // Expression: MDscale(:,ones(1,max(nCC,1)))'
-  //  Referenced by: '<S115>/ymin_scale2'
+  //  Referenced by: '<S184>/ymin_scale2'
 
   1.0,
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S112>/switch_zero'
+  //  Referenced by: '<S181>/switch_zero'
 
   0.0,
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S112>/mv.target_zero'
+  //  Referenced by: '<S181>/mv.target_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: RMVscale
-  //  Referenced by: '<S115>/uref_scale'
+  //  Referenced by: '<S184>/uref_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S112>/ecr.wt_zero'
+  //  Referenced by: '<S181>/ecr.wt_zero'
 
   0.0,
 
   // Expression: zeros(11,8)
-  //  Referenced by: '<S72>/Delay1'
+  //  Referenced by: '<S141>/Delay1'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -3749,7 +4832,7 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: repmat(MPC.Xi.',11,1)
-  //  Referenced by: '<S72>/Delay'
+  //  Referenced by: '<S141>/Delay'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,
@@ -3763,22 +4846,22 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: MPC.Ts
-  //  Referenced by: '<S72>/Constant'
+  //  Referenced by: '<S141>/Constant'
 
   0.1,
 
   // Expression: MPC.dts
-  //  Referenced by: '<S72>/Constant1'
+  //  Referenced by: '<S141>/Constant1'
 
   10.0,
 
   // Expression: MVscale
-  //  Referenced by: '<S115>/u_scale'
+  //  Referenced by: '<S184>/u_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: MVscale(:,ones(1,p+1))'
-  //  Referenced by: '<S115>/useq_scale'
+  //  Referenced by: '<S184>/useq_scale'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
@@ -3788,7 +4871,7 @@ P_proc_control_T proc_control::proc_control_P = {
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: Yscale(:,ones(1,p+1))'
-  //  Referenced by: '<S115>/useq_scale1'
+  //  Referenced by: '<S184>/useq_scale1'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
@@ -3802,252 +4885,252 @@ P_proc_control_T proc_control::proc_control_P = {
     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: 1
-  //  Referenced by: '<S72>/Pulse Generator'
+  //  Referenced by: '<S141>/Pulse Generator'
 
   1.0,
 
   // Expression: 2
-  //  Referenced by: '<S72>/Pulse Generator'
+  //  Referenced by: '<S141>/Pulse Generator'
 
   2.0,
 
   // Expression: 1
-  //  Referenced by: '<S72>/Pulse Generator'
+  //  Referenced by: '<S141>/Pulse Generator'
 
   1.0,
 
   // Expression: 0
-  //  Referenced by: '<S72>/Pulse Generator'
+  //  Referenced by: '<S141>/Pulse Generator'
 
   0.0,
 
   // Expression: zeros(MPC.nu,1)
-  //  Referenced by: '<S75>/Delay'
+  //  Referenced by: '<S144>/Delay'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S147>/md_zero'
+  //  Referenced by: '<S216>/md_zero'
 
   0.0,
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S147>/mv.target_zero'
+  //  Referenced by: '<S216>/mv.target_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S147>/y.min_zero'
+  //  Referenced by: '<S216>/y.min_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S147>/y.max_zero'
+  //  Referenced by: '<S216>/y.max_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S147>/dmv.min_zero'
+  //  Referenced by: '<S216>/dmv.min_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(8,1)
-  //  Referenced by: '<S147>/dmv.max_zero'
+  //  Referenced by: '<S216>/dmv.max_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S147>/x.min_zero'
+  //  Referenced by: '<S216>/x.min_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(13,1)
-  //  Referenced by: '<S147>/x.max_zero'
+  //  Referenced by: '<S216>/x.max_zero'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S147>/ecr.wt_zero'
+  //  Referenced by: '<S216>/ecr.wt_zero'
 
   0.0,
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S147>/params_zero'
+  //  Referenced by: '<S216>/params_zero'
 
   0.0,
 
   // Expression: ones(PredictionHorizon+1,1)
-  //  Referenced by: '<S149>/ones'
+  //  Referenced by: '<S218>/ones'
 
   { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 },
 
   // Expression: 2:max(2,PredictionHorizon)
-  //  Referenced by: '<S149>/Constant1'
+  //  Referenced by: '<S218>/Constant1'
 
   { 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 },
 
   // Expression: min(3,PredictionHorizon+1):(PredictionHorizon+1)
-  //  Referenced by: '<S149>/Constant'
+  //  Referenced by: '<S218>/Constant'
 
   { 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0 },
 
   // Expression: zeros(1,1)
-  //  Referenced by: '<S147>/e.init_zero'
+  //  Referenced by: '<S216>/e.init_zero'
 
   0.0,
 
   // Expression: 1
-  //  Referenced by: '<S75>/Pulse Generator'
+  //  Referenced by: '<S144>/Pulse Generator'
 
   1.0,
 
   // Expression: 20
-  //  Referenced by: '<S75>/Pulse Generator'
+  //  Referenced by: '<S144>/Pulse Generator'
 
   20.0,
 
   // Expression: 10
-  //  Referenced by: '<S75>/Pulse Generator'
+  //  Referenced by: '<S144>/Pulse Generator'
 
   10.0,
 
   // Expression: 0
-  //  Referenced by: '<S75>/Pulse Generator'
+  //  Referenced by: '<S144>/Pulse Generator'
 
   0.0,
 
   // Expression: zeros(1,MPC.nu)
-  //  Referenced by: '<S74>/Constant'
+  //  Referenced by: '<S143>/Constant'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 0
-  //  Referenced by: '<S74>/Constant2'
+  //  Referenced by: '<S143>/Constant2'
 
   0.0,
 
   // Computed Parameter: Quat_Y0
-  //  Referenced by: '<S205>/Quat'
+  //  Referenced by: '<S274>/Quat'
 
   0.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S206>/1//2'
+  //  Referenced by: '<S275>/1//2'
 
   0.5,
 
   // Expression: simulation.sensors.dvl.maxSpeedThres
-  //  Referenced by: '<S177>/Constant'
+  //  Referenced by: '<S246>/Constant'
 
   10.0,
 
   // Expression: 0
-  //  Referenced by: '<S202>/Constant'
+  //  Referenced by: '<S271>/Constant'
 
   0.0,
 
   // Expression: 1
-  //  Referenced by: '<S202>/Delay'
+  //  Referenced by: '<S271>/Delay'
 
   1.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S208>/Constant'
+  //  Referenced by: '<S277>/Constant'
 
   0.5,
 
   // Expression: 2
-  //  Referenced by: '<S208>/Gain'
+  //  Referenced by: '<S277>/Gain'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S208>/Gain1'
+  //  Referenced by: '<S277>/Gain1'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S208>/Gain2'
+  //  Referenced by: '<S277>/Gain2'
 
   2.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S209>/Constant'
+  //  Referenced by: '<S278>/Constant'
 
   0.5,
 
   // Expression: 2
-  //  Referenced by: '<S209>/Gain'
+  //  Referenced by: '<S278>/Gain'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S209>/Gain1'
+  //  Referenced by: '<S278>/Gain1'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S209>/Gain2'
+  //  Referenced by: '<S278>/Gain2'
 
   2.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S210>/Constant'
+  //  Referenced by: '<S279>/Constant'
 
   0.5,
 
   // Expression: 2
-  //  Referenced by: '<S210>/Gain'
+  //  Referenced by: '<S279>/Gain'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S210>/Gain1'
+  //  Referenced by: '<S279>/Gain1'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S210>/Gain2'
+  //  Referenced by: '<S279>/Gain2'
 
   2.0,
 
   // Computed Parameter: DepthMeasurements_Y0
-  //  Referenced by: '<S178>/Depth Measurements'
+  //  Referenced by: '<S247>/Depth Measurements'
 
   0.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S218>/Constant'
+  //  Referenced by: '<S287>/Constant'
 
   0.5,
 
   // Expression: 2
-  //  Referenced by: '<S218>/Gain'
+  //  Referenced by: '<S287>/Gain'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S218>/Gain1'
+  //  Referenced by: '<S287>/Gain1'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S218>/Gain2'
+  //  Referenced by: '<S287>/Gain2'
 
   2.0,
 
   // Expression: 1
-  //  Referenced by: '<S179>/Constant'
+  //  Referenced by: '<S248>/Constant'
 
   1.0,
 
   // Computed Parameter: xhat_Y0
-  //  Referenced by: '<S179>/xhat'
+  //  Referenced by: '<S248>/xhat'
 
   0.0,
 
   // Expression: p.Q
-  //  Referenced by: '<S221>/Q'
+  //  Referenced by: '<S290>/Q'
 
   { 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0,
@@ -4063,27 +5146,27 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 10.0 },
 
   // Expression: p.R{3}
-  //  Referenced by: '<S221>/R3'
+  //  Referenced by: '<S290>/R3'
 
   0.31622776601683794,
 
   // Expression: 1
-  //  Referenced by: '<S221>/MeasurementFcn3Inputs'
+  //  Referenced by: '<S290>/MeasurementFcn3Inputs'
 
   1.0,
 
   // Expression: p.R{2}
-  //  Referenced by: '<S221>/R2'
+  //  Referenced by: '<S290>/R2'
 
   { 0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1 },
 
   // Expression: 1
-  //  Referenced by: '<S221>/MeasurementFcn2Inputs'
+  //  Referenced by: '<S290>/MeasurementFcn2Inputs'
 
   1.0,
 
   // Expression: p.R{1}
-  //  Referenced by: '<S221>/R1'
+  //  Referenced by: '<S290>/R1'
 
   { 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -4091,17 +5174,17 @@ P_proc_control_T proc_control::proc_control_P = {
     0.0, 0.0, 0.0, 0.1 },
 
   // Expression: 0
-  //  Referenced by: '<S221>/MeasurementFcn1Inputs'
+  //  Referenced by: '<S290>/MeasurementFcn1Inputs'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S179>/Switch'
+  //  Referenced by: '<S248>/Switch'
 
   0.0,
 
   // Expression: p.InitialCovariance
-  //  Referenced by: '<S221>/DataStoreMemory - P'
+  //  Referenced by: '<S290>/DataStoreMemory - P'
 
   { 3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -4120,179 +5203,203 @@ P_proc_control_T proc_control::proc_control_P = {
     3.1622776601683795 },
 
   // Expression: p.InitialState
-  //  Referenced by: '<S221>/DataStoreMemory - x'
+  //  Referenced by: '<S290>/DataStoreMemory - x'
 
   { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: [0 0 0 1 0 0 0]
-  //  Referenced by: '<S235>/Constant'
+  //  Referenced by: '<S304>/Constant'
 
   { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 },
 
   // Expression: MPC.p
-  //  Referenced by: '<S235>/Constant1'
+  //  Referenced by: '<S304>/Constant1'
 
   10.0,
 
   // Computed Parameter: Out1_Y0_j3
-  //  Referenced by: '<S249>/Out1'
+  //  Referenced by: '<S318>/Out1'
 
   0.0,
 
   // Expression: .25
-  //  Referenced by: '<S238>/MATLAB System1'
+  //  Referenced by: '<S307>/MATLAB System1'
 
   0.25,
 
   // Expression: .22
-  //  Referenced by: '<S238>/MATLAB System1'
+  //  Referenced by: '<S307>/MATLAB System1'
 
   0.22,
 
   // Expression: 2
-  //  Referenced by: '<S238>/MATLAB System1'
+  //  Referenced by: '<S307>/MATLAB System1'
 
   2.0,
 
   // Computed Parameter: linWpts_Y0
-  //  Referenced by: '<S250>/linWpts'
+  //  Referenced by: '<S319>/linWpts'
 
   0.0,
 
   // Computed Parameter: RotWpts_Y0
-  //  Referenced by: '<S250>/RotWpts'
+  //  Referenced by: '<S319>/RotWpts'
 
   0.0,
 
   // Computed Parameter: time_Y0
-  //  Referenced by: '<S250>/time'
+  //  Referenced by: '<S319>/time'
 
   0.0,
 
   // Computed Parameter: target_Y0
-  //  Referenced by: '<S250>/target'
+  //  Referenced by: '<S319>/target'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S250>/Constant'
+  //  Referenced by: '<S319>/Constant'
 
   0.0,
 
   // Expression: zeros( 3, 2 )
-  //  Referenced by: '<S254>/Polynomial Trajectory'
+  //  Referenced by: '<S322>/Polynomial Trajectory'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 1
-  //  Referenced by: '<S251>/Constant'
+  //  Referenced by: '<S320>/Constant'
 
   1.0,
 
-  // Computed Parameter: DiscreteTimeIntegrator_gainval
-  //  Referenced by: '<S251>/Discrete-Time Integrator'
+  // Computed Parameter: DiscreteTimeIntegrator_gainva_g
+  //  Referenced by: '<S320>/Discrete-Time Integrator'
 
   0.01,
 
   // Expression: 0
-  //  Referenced by: '<S251>/Discrete-Time Integrator'
+  //  Referenced by: '<S320>/Discrete-Time Integrator'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S238>/Constant'
+  //  Referenced by: '<S307>/Constant'
 
   0.0,
 
   // Expression: [0,0,0.3,1,0,0,0,0,0,0,0,0,0]
-  //  Referenced by: '<S231>/Constant'
+  //  Referenced by: '<S300>/Constant'
 
   { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: MPC.p
-  //  Referenced by: '<S231>/Constant1'
+  //  Referenced by: '<S300>/Constant1'
 
   10.0,
 
+  // Expression: 0
+  //  Referenced by: '<S114>/Delay'
+
+  0.0,
+
+  // Expression: 1
+  //  Referenced by: '<Root>/Constant'
+
+  1.0,
+
   // Expression: [0,0,0,0,0,0,0,0]
-  //  Referenced by: '<S181>/Delay'
+  //  Referenced by: '<S250>/Delay'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 0
-  //  Referenced by: '<S45>/Delay'
-
-  0.0,
-
-  // Expression: 0
-  //  Referenced by: '<S3>/Delay'
+  //  Referenced by: '<S5>/Delay'
 
   0.0,
 
   // Expression: -1
-  //  Referenced by: '<S236>/Gain'
+  //  Referenced by: '<S305>/Gain'
 
   -1.0,
 
   // Computed Parameter: Merge_1_InitialOutput
-  //  Referenced by: '<S7>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   0.0,
 
   // Computed Parameter: Merge_1_InitialOutput_i
-  //  Referenced by: '<S68>/Merge'
+  //  Referenced by: '<S137>/Merge'
 
   0.0,
 
   // Expression: 0.0
-  //  Referenced by: '<S70>/Delay'
+  //  Referenced by: '<S139>/Delay'
 
   0.0,
 
   // Computed Parameter: Merge_3_InitialOutput
-  //  Referenced by: '<S68>/Merge'
+  //  Referenced by: '<S137>/Merge'
 
   0.0,
 
   // Computed Parameter: Merge_4_InitialOutput
-  //  Referenced by: '<S7>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   0.0,
 
   // Expression: FrameID
-  //  Referenced by: '<S13>/String Constant1'
+  //  Referenced by: '<S16>/String Constant1'
 
   "NED",
 
   // Expression: FrameID
-  //  Referenced by: '<S110>/String Constant1'
+  //  Referenced by: '<S109>/String Constant1'
+
+  "NED",
+
+  // Expression: FrameID
+  //  Referenced by: '<S179>/String Constant1'
 
   "NED",
 
   // Expression: Ndis
-  //  Referenced by: '<S143>/FixedHorizonOptimizer'
+  //  Referenced by: '<S212>/FixedHorizonOptimizer'
 
   0,
 
   // Expression: uint32(MPC.nu)
-  //  Referenced by: '<S21>/Constant2'
+  //  Referenced by: '<S23>/Constant2'
 
   8U,
 
   // Expression: uint32(MPC.nx)
-  //  Referenced by: '<S21>/Constant5'
+  //  Referenced by: '<S23>/Constant5'
 
   13U,
 
   // Expression: uint32(MPC.nu)
-  //  Referenced by: '<S21>/Constant6'
+  //  Referenced by: '<S23>/Constant6'
 
   8U,
 
   // Expression: uint32(MPC.nu)
-  //  Referenced by: '<S21>/Constant7'
+  //  Referenced by: '<S23>/Constant7'
 
   8U,
+
+  // Expression: uint32(8)
+  //  Referenced by: '<S32>/Constant'
+
+  8U,
+
+  // Expression: int16(zeros(1,120))
+  //  Referenced by: '<S32>/Constant1'
+
+  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 
   // Computed Parameter: mv_Y0
   //  Referenced by: '<S2>/mv'
@@ -4300,12 +5407,12 @@ P_proc_control_T proc_control::proc_control_P = {
   0U,
 
   // Computed Parameter: Delay_InitialCondition_e
-  //  Referenced by: '<S5>/Delay'
+  //  Referenced by: '<S8>/Delay'
 
   { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U },
 
   // Expression: iA
-  //  Referenced by: '<S79>/Memory'
+  //  Referenced by: '<S148>/Memory'
 
   { false, false, false, false, false, false, false, false, false, false, false,
     false, false, false, false, false, false, false, false, false, false, false,
@@ -4330,7 +5437,7 @@ P_proc_control_T proc_control::proc_control_P = {
     false, false, false, false, false, false },
 
   // Expression: iA
-  //  Referenced by: '<S115>/Memory'
+  //  Referenced by: '<S184>/Memory'
 
   { false, false, false, false, false, false, false, false, false, false, false,
     false, false, false, false, false, false, false, false, false, false, false,
@@ -4355,92 +5462,92 @@ P_proc_control_T proc_control::proc_control_P = {
     false, false, false, false, false, false },
 
   // Computed Parameter: yBlockOrdering_Y0
-  //  Referenced by: '<S222>/yBlockOrdering'
+  //  Referenced by: '<S291>/yBlockOrdering'
 
   false,
 
   // Computed Parameter: yBlockOrdering_Y0_l
-  //  Referenced by: '<S223>/yBlockOrdering'
+  //  Referenced by: '<S292>/yBlockOrdering'
 
   false,
 
   // Computed Parameter: yBlockOrdering_Y0_h
-  //  Referenced by: '<S224>/yBlockOrdering'
+  //  Referenced by: '<S293>/yBlockOrdering'
 
   false,
 
   // Expression: true()
-  //  Referenced by: '<S221>/BlockOrdering'
+  //  Referenced by: '<S290>/BlockOrdering'
 
   true,
 
   // Expression: true()
-  //  Referenced by: '<S221>/Enable1'
+  //  Referenced by: '<S290>/Enable1'
 
   true,
 
   // Expression: true()
-  //  Referenced by: '<S221>/Enable3'
+  //  Referenced by: '<S290>/Enable3'
 
   true,
 
   // Expression: false
-  //  Referenced by: '<S235>/Constant2'
+  //  Referenced by: '<S304>/Constant2'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S235>/Constant3'
+  //  Referenced by: '<S304>/Constant3'
 
   false,
 
   // Computed Parameter: Constant_Value_pl
-  //  Referenced by: '<S241>/Constant'
+  //  Referenced by: '<S310>/Constant'
 
   false,
 
   // Computed Parameter: Delay_InitialCondition_az
-  //  Referenced by: '<S238>/Delay'
+  //  Referenced by: '<S307>/Delay'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S238>/Constant1'
+  //  Referenced by: '<S307>/Constant1'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S231>/Constant2'
+  //  Referenced by: '<S300>/Constant2'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S231>/Constant3'
+  //  Referenced by: '<S300>/Constant3'
 
   false,
 
   // Computed Parameter: Merge_2_InitialOutput
-  //  Referenced by: '<S7>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   false,
 
   // Computed Parameter: Merge_3_InitialOutput_i
-  //  Referenced by: '<S7>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   false,
 
   // Expression: int8(0)
-  //  Referenced by: '<S73>/Constant'
+  //  Referenced by: '<S142>/Constant'
 
   0,
 
   // Expression: int8(0)
-  //  Referenced by: '<S74>/Constant1'
+  //  Referenced by: '<S143>/Constant1'
 
   0,
 
   // Computed Parameter: Merge_2_InitialOutput_i
-  //  Referenced by: '<S68>/Merge'
+  //  Referenced by: '<S137>/Merge'
 
   0
 };

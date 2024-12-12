@@ -54,7 +54,7 @@ endif()
 target_compile_options(proc_control PRIVATE
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
   -DMODEL=proc_control
-  -DNUMST=5
+  -DNUMST=6
   -DNCSTATES=0
   -DHAVESTDIO
   -DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0
@@ -112,4 +112,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Fri Nov 29 19:22:09 2024
+# Generated on Wed Dec 11 19:54:54 2024

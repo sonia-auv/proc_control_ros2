@@ -24,6 +24,7 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 #include <std_msgs/msg/header.hpp>
+#include <std_msgs/msg/int16_multi_array.hpp>
 #include <std_msgs/msg/multi_array_dimension.hpp>
 #include <std_msgs/msg/multi_array_layout.hpp>
 #include <std_msgs/msg/u_int8.hpp>
@@ -97,6 +98,9 @@ void convertToBus(SL_Bus_std_msgs_Float64MultiArray* busPtr, const std_msgs::msg
 
 void convertFromBus(std_msgs::msg::Header& msgPtr, SL_Bus_std_msgs_Header const* busPtr);
 void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& msgPtr);
+
+void convertFromBus(std_msgs::msg::Int16MultiArray& msgPtr, SL_Bus_std_msgs_Int16MultiArray const* busPtr);
+void convertToBus(SL_Bus_std_msgs_Int16MultiArray* busPtr, const std_msgs::msg::Int16MultiArray& msgPtr);
 
 void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr);
 void convertToBus(SL_Bus_std_msgs_MultiArrayDimension* busPtr, const std_msgs::msg::MultiArrayDimension& msgPtr);
