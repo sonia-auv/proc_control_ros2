@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.177
+// Model version                  : 1.178
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Dec 11 19:54:16 2024
+// C/C++ source code generated on : Tue Feb 11 21:47:52 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -199,19 +199,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  5.0,
+  0.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.19540463036237127, 0.19495294978003957, 0.094852515013948313,
-    0.015449036479313595, 0.078967050761036064, 0.039484800638610484 },
+  { 0.252240882757184, 1.0320972131934458, 0.090422980143036971,
+    0.082338311238667375, 0.025439790045735655, 0.099124549287270991 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.28472389616945137, -1.1987823254647929, -0.094849845502191985,
-    -0.036423127594514361, -0.027349285274002145, -0.087792413335193886 },
+  { -0.23899437835543763, -0.56994689015938482, -0.0605962547423915,
+    -0.02151648314750625, -0.0088437608765858933, -0.073238258036541132 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -5009,6 +5009,21 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   0.0,
 
+  // Computed Parameter: Merge_1_InitialOutput
+  //  Referenced by: '<S137>/Merge'
+
+  0.0,
+
+  // Computed Parameter: Merge_3_InitialOutput
+  //  Referenced by: '<S137>/Merge'
+
+  0.0,
+
+  // Expression: 0.0
+  //  Referenced by: '<S139>/Delay'
+
+  0.0,
+
   // Computed Parameter: Quat_Y0
   //  Referenced by: '<S274>/Quat'
 
@@ -5322,23 +5337,8 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   -1.0,
 
-  // Computed Parameter: Merge_1_InitialOutput
-  //  Referenced by: '<S10>/Merge'
-
-  0.0,
-
   // Computed Parameter: Merge_1_InitialOutput_i
-  //  Referenced by: '<S137>/Merge'
-
-  0.0,
-
-  // Expression: 0.0
-  //  Referenced by: '<S139>/Delay'
-
-  0.0,
-
-  // Computed Parameter: Merge_3_InitialOutput
-  //  Referenced by: '<S137>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   0.0,
 

@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.177
+// Model version                  : 1.178
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Dec 11 19:54:16 2024
+// C/C++ source code generated on : Tue Feb 11 21:47:52 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -20,17 +20,6 @@
 #define proc_control_types_h_
 #include "rtwtypes.h"
 #include "coder_bounded_array.h"
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-
-// MsgType=std_msgs/Bool
-struct SL_Bus_std_msgs_Bool
-{
-  boolean_T data;
-};
-
-#endif
-
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 
@@ -39,6 +28,142 @@ struct SL_Bus_builtin_interfaces_Time
 {
   int32_T sec;
   uint32_T nanosec;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Default_
+#define DEFINED_TYPEDEF_FOR_Default_
+
+struct Default
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C10_
+#define DEFINED_TYPEDEF_FOR_C10_
+
+struct C10
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C11_
+#define DEFINED_TYPEDEF_FOR_C11_
+
+struct C11
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C19_
+#define DEFINED_TYPEDEF_FOR_C19_
+
+struct C19
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
+#define DEFINED_TYPEDEF_FOR_NoDvl_
+
+struct NoDvl
+{
+  real_T MV[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Gains_
+#define DEFINED_TYPEDEF_FOR_Gains_
+
+struct Gains
+{
+  Default predefined;
+  C10 c10;
+  C11 c11;
+  C19 c19;
+  NoDvl noDvl;
+  real_T p;
+  real_T m;
+  real_T tmax;
+  real_T tmin;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
+#define DEFINED_TYPEDEF_FOR_TargetReached_
+
+struct TargetReached
+{
+  real_T linearTol;
+  real_T angularTol;
+  real_T timeInTol;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
+#define DEFINED_TYPEDEF_FOR_mpcParams_
+
+struct mpcParams
+{
+  Gains gains;
+  TargetReached targetReached;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
+#define DEFINED_TYPEDEF_FOR_physicsConstants_
+
+struct physicsConstants
+{
+  real_T rho;
+  real_T g;
+  real_T mass;
+  real_T volume;
+  real_T sub_height;
+  real_T rg[3];
+  real_T rb[3];
+  real_T cdl[6];
+  real_T cdq[6];
+  real_T added_mass[6];
+  real_T I[9];
+  real_T depth_pose[3];
+  real_T hydro_pose[3];
+  real_T sonar_pose[3];
+  real_T dvl_rotation[3];
+  real_T thrusters[48];
+  real_T dvl_lost_override;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+
+// MsgType=std_msgs/Bool
+struct SL_Bus_std_msgs_Bool
+{
+  boolean_T data;
 };
 
 #endif
@@ -314,17 +439,6 @@ struct SL_Bus_std_msgs_Int16MultiArray
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-
-// MsgType=std_msgs/Float32
-struct SL_Bus_std_msgs_Float32
-{
-  real32_T data;
-};
-
-#endif
-
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 
@@ -345,6 +459,59 @@ struct SL_Bus_sensor_msgs_Imu
   // MsgType=geometry_msgs/Vector3
   SL_Bus_geometry_msgs_Vector3 linear_acceleration;
   real_T linear_acceleration_covariance[9];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+
+// MsgType=sonia_common_ros2/BodyVelocityDVL
+struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+  real_T x_vel_btm;
+  real_T y_vel_btm;
+  real_T z_vel_btm;
+  real_T e_vel_btm;
+  real_T velocity1;
+  real_T velocity2;
+  real_T velocity3;
+  real_T velocity4;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+
+// MsgType=std_msgs/Float32
+struct SL_Bus_std_msgs_Float32
+{
+  real32_T data;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+
+// MsgType=std_msgs/UInt8
+struct SL_Bus_std_msgs_UInt8
+{
+  uint8_T data;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+
+// MsgType=sonia_common_ros2/KillStatus
+struct SL_Bus_sonia_common_ros2_KillStatus
+{
+  boolean_T status;
 };
 
 #endif
@@ -440,173 +607,6 @@ struct SL_Bus_sonia_common_ros2_Pose
   SL_Bus_geometry_msgs_Vector3 orientation;
   real_T fine;
   boolean_T rotation;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_Default_
-#define DEFINED_TYPEDEF_FOR_Default_
-
-struct Default
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C10_
-#define DEFINED_TYPEDEF_FOR_C10_
-
-struct C10
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C11_
-#define DEFINED_TYPEDEF_FOR_C11_
-
-struct C11
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C19_
-#define DEFINED_TYPEDEF_FOR_C19_
-
-struct C19
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
-#define DEFINED_TYPEDEF_FOR_NoDvl_
-
-struct NoDvl
-{
-  real_T MV[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_Gains_
-#define DEFINED_TYPEDEF_FOR_Gains_
-
-struct Gains
-{
-  Default predefined;
-  C10 c10;
-  C11 c11;
-  C19 c19;
-  NoDvl noDvl;
-  real_T p;
-  real_T m;
-  real_T tmax;
-  real_T tmin;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
-#define DEFINED_TYPEDEF_FOR_TargetReached_
-
-struct TargetReached
-{
-  real_T linearTol;
-  real_T angularTol;
-  real_T timeInTol;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
-#define DEFINED_TYPEDEF_FOR_mpcParams_
-
-struct mpcParams
-{
-  Gains gains;
-  TargetReached targetReached;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
-#define DEFINED_TYPEDEF_FOR_physicsConstants_
-
-struct physicsConstants
-{
-  real_T rho;
-  real_T g;
-  real_T mass;
-  real_T volume;
-  real_T sub_height;
-  real_T rg[3];
-  real_T rb[3];
-  real_T cdl[6];
-  real_T cdq[6];
-  real_T added_mass[6];
-  real_T I[9];
-  real_T depth_pose[3];
-  real_T hydro_pose[3];
-  real_T sonar_pose[3];
-  real_T dvl_rotation[3];
-  real_T thrusters[48];
-  real_T dvl_lost_override;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-
-// MsgType=sonia_common_ros2/BodyVelocityDVL
-struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
-{
-  // MsgType=std_msgs/Header
-  SL_Bus_std_msgs_Header header;
-  real_T x_vel_btm;
-  real_T y_vel_btm;
-  real_T z_vel_btm;
-  real_T e_vel_btm;
-  real_T velocity1;
-  real_T velocity2;
-  real_T velocity3;
-  real_T velocity4;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
-
-// MsgType=std_msgs/UInt8
-struct SL_Bus_std_msgs_UInt8
-{
-  uint8_T data;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
-
-// MsgType=sonia_common_ros2/KillStatus
-struct SL_Bus_sonia_common_ros2_KillStatus
-{
-  boolean_T status;
 };
 
 #endif

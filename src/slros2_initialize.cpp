@@ -1,5 +1,5 @@
 // Copyright 2022-2023 The MathWorks, Inc.
-// Generated 11-Dec-2024 19:54:45
+// Generated 11-Feb-2025 21:48:21
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/Publish
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;

@@ -7,6 +7,9 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     auv = os.getenv("AUV", "")
+    
+    if auv == "":
+        raise Exception("env var AUV not set")
 
     config = os.path.join(
         get_package_share_directory("proc_control"), "config", f"{auv}_config.yaml"
