@@ -1,5 +1,5 @@
 // Copyright 2022-2023 The MathWorks, Inc.
-// Generated 27-Nov-2024 16:52:24
+// Generated 11-Feb-2025 21:06:17
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -68,18 +68,18 @@ extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_p
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
 extern SimulinkSubscriber<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Sub_proc_control_1278;
-// proc_control/ROS Input/AUV/provider_depth//depth
-extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_6;
-// proc_control/ROS Input/AUV/provider_dvl//dvl_velocity
-extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
-// proc_control/ROS Input/AUV/provider_imu//imu_info
+// proc_control/ROS Input/AUV/Subscribe
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
-// proc_control/ROS Input/Simulation/proc_simulation//depth
-extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
-// proc_control/ROS Input/Simulation/proc_simulation//dvl_velocity
-extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
-// proc_control/ROS Input/Simulation/proc_simulation//imu_info
+// proc_control/ROS Input/AUV/Subscribe1
+extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
+// proc_control/ROS Input/AUV/Subscribe2
+extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_6;
+// proc_control/ROS Input/Simulation/Subscribe
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
+// proc_control/ROS Input/Simulation/Subscribe1
+extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
+// proc_control/ROS Input/Simulation/Subscribe2
+extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
 // proc_control/Ros Command/Ros Command Manager/proc_control//set_mode
 extern SimulinkSubscriber<std_msgs::msg::UInt8,SL_Bus_std_msgs_UInt8> Sub_proc_control_1;
 // proc_control/Ros Command/Ros Command Manager/proc_nav//reset_pos

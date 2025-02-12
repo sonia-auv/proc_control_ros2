@@ -45,14 +45,6 @@ src/slros2_initialize.cpp
 src/slros_busmsg_conversion.cpp
 src/slros2_generic_param.cpp
 )
-install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-install(
-  DIRECTORY config
-  DESTINATION share/${PROJECT_NAME}/
-)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 target_compile_options(proc_control PUBLIC 
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
@@ -120,4 +112,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Wed Nov 27 16:52:29 2024
+# Generated on Tue Feb 11 21:06:25 2025

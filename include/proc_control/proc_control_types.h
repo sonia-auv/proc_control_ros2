@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.177
+// Model version                  : 1.178
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Nov 27 16:37:06 2024
+// C/C++ source code generated on : Tue Feb 11 21:05:49 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Intel->x86-64 (Linux 64)
@@ -439,13 +439,26 @@ struct SL_Bus_std_msgs_Int16MultiArray
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 
-// MsgType=std_msgs/Float32
-struct SL_Bus_std_msgs_Float32
+// MsgType=sensor_msgs/Imu
+struct SL_Bus_sensor_msgs_Imu
 {
-  real32_T data;
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+
+  // MsgType=geometry_msgs/Quaternion
+  SL_Bus_geometry_msgs_Quaternion orientation;
+  real_T orientation_covariance[9];
+
+  // MsgType=geometry_msgs/Vector3
+  SL_Bus_geometry_msgs_Vector3 angular_velocity;
+  real_T angular_velocity_covariance[9];
+
+  // MsgType=geometry_msgs/Vector3
+  SL_Bus_geometry_msgs_Vector3 linear_acceleration;
+  real_T linear_acceleration_covariance[9];
 };
 
 #endif
@@ -470,26 +483,13 @@ struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
 
-// MsgType=sensor_msgs/Imu
-struct SL_Bus_sensor_msgs_Imu
+// MsgType=std_msgs/Float32
+struct SL_Bus_std_msgs_Float32
 {
-  // MsgType=std_msgs/Header
-  SL_Bus_std_msgs_Header header;
-
-  // MsgType=geometry_msgs/Quaternion
-  SL_Bus_geometry_msgs_Quaternion orientation;
-  real_T orientation_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 angular_velocity;
-  real_T angular_velocity_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 linear_acceleration;
-  real_T linear_acceleration_covariance[9];
+  real32_T data;
 };
 
 #endif

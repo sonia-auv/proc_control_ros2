@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.177
+// Model version                  : 1.178
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Nov 27 16:37:06 2024
+// C/C++ source code generated on : Tue Feb 11 21:05:49 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Intel->x86-64 (Linux 64)
@@ -199,19 +199,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  8.0,
+  7.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.22984516151205925, 0.19078334841971351, 0.096435612718520636,
-    0.020094430770558558, 0.02495289017064023, 0.018554729092965027 },
+  { 0.30109317258742435, 0.40441970903725466, 0.045826905121371754,
+    0.00785006886470906, 0.085210730502434551, 0.070850183804607031 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.4150110517068144, -1.3006092529999886, -0.046918531409681358,
-    -0.024884080688144718, -0.085178050192749308, -0.071687599995639215 },
+  { -0.31810731685104265, -1.2262330768808467, -0.030625594537113034,
+    -0.091947355677945541, -0.088110096827011875, -0.061922030847042654 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -3075,7 +3075,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Out1_Y0_no
-  //  Referenced by: '<S99>/Out1'
+  //  Referenced by: '<S97>/Out1'
 
   {
     {
@@ -3134,7 +3134,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value_i
-  //  Referenced by: '<S96>/Constant'
+  //  Referenced by: '<S94>/Constant'
 
   {
     {
@@ -3193,7 +3193,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Out1_Y0_c
-  //  Referenced by: '<S88>/Out1'
+  //  Referenced by: '<S86>/Out1'
 
   {
     {
@@ -3252,7 +3252,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value_j
-  //  Referenced by: '<S85>/Constant'
+  //  Referenced by: '<S83>/Constant'
 
   {
     {
@@ -3947,28 +3947,28 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Out1_Y0_oo
-  //  Referenced by: '<S97>/Out1'
+  //  Referenced by: '<S99>/Out1'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Constant_Value_dh
-  //  Referenced by: '<S94>/Constant'
+  //  Referenced by: '<S96>/Constant'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Out1_Y0_bc
-  //  Referenced by: '<S86>/Out1'
+  //  Referenced by: '<S88>/Out1'
 
   {
     0.0F                               // data
   },
 
   // Computed Parameter: Constant_Value_er
-  //  Referenced by: '<S83>/Constant'
+  //  Referenced by: '<S85>/Constant'
 
   {
     0.0F                               // data
@@ -5009,6 +5009,21 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   0.0,
 
+  // Computed Parameter: Merge_1_InitialOutput
+  //  Referenced by: '<S137>/Merge'
+
+  0.0,
+
+  // Computed Parameter: Merge_3_InitialOutput
+  //  Referenced by: '<S137>/Merge'
+
+  0.0,
+
+  // Expression: 0.0
+  //  Referenced by: '<S139>/Delay'
+
+  0.0,
+
   // Computed Parameter: Quat_Y0
   //  Referenced by: '<S274>/Quat'
 
@@ -5322,23 +5337,8 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   -1.0,
 
-  // Computed Parameter: Merge_1_InitialOutput
-  //  Referenced by: '<S10>/Merge'
-
-  0.0,
-
   // Computed Parameter: Merge_1_InitialOutput_i
-  //  Referenced by: '<S137>/Merge'
-
-  0.0,
-
-  // Expression: 0.0
-  //  Referenced by: '<S139>/Delay'
-
-  0.0,
-
-  // Computed Parameter: Merge_3_InitialOutput
-  //  Referenced by: '<S137>/Merge'
+  //  Referenced by: '<S10>/Merge'
 
   0.0,
 
