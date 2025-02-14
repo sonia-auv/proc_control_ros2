@@ -94,9 +94,18 @@ target_include_directories(proc_control PUBLIC
 install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
+install(TARGETS proc_control
+  DIRECTORY launch
+  DESTINATION share/proc_control
+)
+install(TARGETS proc_control
+  DIRECTORY config
+  DESTINATION share/proc_control
+)
 ament_export_include_directories(
   include
 )
+
 foreach(file_i ${CUDA_BINS})
 add_custom_command(
                    TARGET proc_control
