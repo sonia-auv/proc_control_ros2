@@ -87,13 +87,21 @@ ament_target_dependencies(
 target_include_directories(proc_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_link_libraries(proc_control 
-    "/usr/local/MATLAB/R2024a/sys/os/glnxa64/orig/libstdc++.so.6"
-	${CMAKE_DL_LIBS}
-    )
+#target_link_libraries(proc_control 
+#    "/usr/local/MATLAB/R2024a/sys/os/glnxa64/orig/libstdc++.so.6"
+#	${CMAKE_DL_LIBS}
+#    )
 install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
+install(
+  DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
 ament_export_include_directories(
   include
 )
