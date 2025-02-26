@@ -4,7 +4,7 @@
   <name>proc_control</name>
   <version>1.0.0</version>
   <description>TODO</description>
-  <maintainer email="ros2user@test.com">Team Sonia</maintainer>
+  <maintainer email="nimai.jariwala.1@ens.etsmtl.ca">Nimai Jariwala</maintainer>
   <license>BSD</license>
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
   <depend>geometry_msgs</depend>
@@ -21,4 +21,4 @@
     <build_type>ament_cmake</build_type>
   </export>
 </package>
-<!-- Generated on Tue Feb 11 21:48:25 2025 -->
+<!-- Generated on Wed Feb 26 16:57:57 2025 -->

@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.178
+// Model version                  : 1.184
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Tue Feb 11 21:47:52 2025
+// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -439,6 +439,17 @@ struct SL_Bus_std_msgs_Int16MultiArray
 
 #endif
 
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
+
+// MsgType=std_msgs/Float32
+struct SL_Bus_std_msgs_Float32
+{
+  real32_T data;
+};
+
+#endif
+
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 
@@ -463,37 +474,6 @@ struct SL_Bus_sensor_msgs_Imu
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
-
-// MsgType=sonia_common_ros2/BodyVelocityDVL
-struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
-{
-  // MsgType=std_msgs/Header
-  SL_Bus_std_msgs_Header header;
-  real_T x_vel_btm;
-  real_T y_vel_btm;
-  real_T z_vel_btm;
-  real_T e_vel_btm;
-  real_T velocity1;
-  real_T velocity2;
-  real_T velocity3;
-  real_T velocity4;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
-
-// MsgType=std_msgs/Float32
-struct SL_Bus_std_msgs_Float32
-{
-  real32_T data;
-};
-
-#endif
-
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
 
@@ -512,6 +492,26 @@ struct SL_Bus_std_msgs_UInt8
 struct SL_Bus_sonia_common_ros2_KillStatus
 {
   boolean_T status;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
+
+// MsgType=sonia_common_ros2/BodyVelocityDVL
+struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+  real_T x_vel_btm;
+  real_T y_vel_btm;
+  real_T z_vel_btm;
+  real_T e_vel_btm;
+  real_T velocity1;
+  real_T velocity2;
+  real_T velocity3;
+  real_T velocity4;
 };
 
 #endif

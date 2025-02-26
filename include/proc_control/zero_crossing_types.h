@@ -7,16 +7,10 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.178
+// Model version                  : 1.184
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Tue Feb 11 21:47:52 2025
+// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
 //
-// Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
-// Code generation objectives: Unspecified
-// Validation result: Not run
-//
-
 #ifndef ZERO_CROSSING_TYPES_H
 #define ZERO_CROSSING_TYPES_H
 #include "rtwtypes.h"

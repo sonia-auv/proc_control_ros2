@@ -38,11 +38,36 @@ src/main.cpp
 src/proc_control.cpp
 src/proc_control_data.cpp
 src/ros2nodeinterface.cpp
-src/rtGetInf.cpp
-src/rtGetNaN.cpp
-src/rt_nonfinite.cpp
 src/slros2_initialize.cpp
 src/slros_busmsg_conversion.cpp
+src/DropConstraint_OmgSxYRz.cpp
+src/all_3Trhx1la.cpp
+src/binsearch_u32d_prevIdx.cpp
+src/binsearch_u32u16.cpp
+src/checkVectorNonFinite_05wHFXMc.cpp
+src/div_nde_s32_floor.cpp
+src/isfinite_i0dyo4ea.cpp
+src/log2_vuRSI7Et.cpp
+src/maximum_J4IV0dMM.cpp
+src/minimum_C7HhEuqv.cpp
+src/norm_5mFsPpno.cpp
+src/norm_6MGHpllc.cpp
+src/norm_CGP5TnFt.cpp
+src/plook_u32d_binckpan.cpp
+src/plook_u32d_binckpang.cpp
+src/plook_u32u16_binckan.cpp
+src/rtGetInf.cpp
+src/rtGetNaN.cpp
+src/rt_atan2d_snf.cpp
+src/rt_nonfinite.cpp
+src/rt_nrand_Upu32_Yd_f_pw_snf.cpp
+src/rt_powd_snf.cpp
+src/rt_urand_Upu32_Yd_f_pw_snf.cpp
+src/trisolve_pksRbxPf.cpp
+src/updateWeights_kndg1rRc.cpp
+src/updateWeights_u0LrMd4J.cpp
+src/xpotrf_4914lrOO.cpp
+src/xzlartg_keGa8Um8.cpp
 src/slros2_generic_param.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -87,13 +112,23 @@ ament_target_dependencies(
 target_include_directories(proc_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_link_libraries(proc_control 
-    "/usr/local/MATLAB/R2024a/sys/os/glnxa64/orig/libstdc++.so.6"
-	${CMAKE_DL_LIBS}
-    )
+# target_link_libraries(proc_control 
+#     "/usr/local/MATLAB/R2024a/sys/os/glnxa64/orig/libstdc++.so.6"
+# 	${CMAKE_DL_LIBS}
+#     )
 install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
+
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+install(
+  DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}/
+)
+  
 ament_export_include_directories(
   include
 )
@@ -112,4 +147,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Tue Feb 11 21:48:25 2025
+# Generated on Wed Feb 26 16:57:57 2025
