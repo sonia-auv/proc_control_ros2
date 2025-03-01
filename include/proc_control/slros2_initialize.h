@@ -1,5 +1,5 @@
 // Copyright 2022-2023 The MathWorks, Inc.
-// Generated 26-Feb-2025 16:57:51
+// Generated 01-Mar-2025 18:34:19
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -55,7 +55,7 @@ extern SimulinkPublisher<std_msgs::msg::Int16MultiArray,SL_Bus_std_msgs_Int16Mul
 // proc_control/Model System/Sensor Model/Hydrophones Model/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1280;
 // proc_control/ROS Output/Send DVL msg/Publish
-extern SimulinkPublisher<geometry_msgs::msg::Point,SL_Bus_geometry_msgs_Point> Pub_proc_control_1347;
+extern SimulinkPublisher<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Pub_proc_control_1347;
 // proc_control/ROS Output/Send Depth msg/Publish
 extern SimulinkPublisher<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Pub_proc_control_1353;
 // proc_control/ROS Output/Send IMU Msg/Publish

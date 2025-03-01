@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
+// Model version                  : 1.185
 // Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// C/C++ source code generated on : Sat Mar  1 18:33:47 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -199,19 +199,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  7.0,
+  3.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.14940550177846834, 1.1949766848714209, 0.0034718439035479665,
-    0.039162110330534863, 0.0779769639315464, 0.040682629192917923 },
+  { 0.49066450116331828, 1.4804992421061764, 0.055361504838860334,
+    0.021924433509883934, 0.042604289007054853, 0.065930149462912355 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.28372103085595624, -0.080366818315329214, -0.048677323148128442,
-    -0.071008032704965016, -0.045313052452183394, -0.049609839581290532 },
+  { -0.47188947155942645, -0.21971430544213466, -0.049947876651090434,
+    -0.092422021674256061, -0.07090435819026171, -0.09495129716154517 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -3401,6 +3401,42 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     0.0                                // m
   },
 
+  // Computed Parameter: Constant_Value_d
+  //  Referenced by: '<S84>/Constant'
+
+  {
+    {
+      {
+        0,                             // sec
+        0U                             // nanosec
+      },                               // stamp
+
+      {
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+        0U, 0U }
+      ,                                // frame_id
+
+      {
+        0U,                            // CurrentLength
+        0U                             // ReceivedLength
+      }                                // frame_id_SL_Info
+    },                                 // header
+    0.0,                               // x_vel_btm
+    0.0,                               // y_vel_btm
+    0.0,                               // z_vel_btm
+    0.0,                               // e_vel_btm
+    0.0,                               // velocity1
+    0.0,                               // velocity2
+    0.0,                               // velocity3
+    0.0                                // velocity4
+  },
+
   // Computed Parameter: Out1_Y0_p
   //  Referenced by: '<S135>/Out1'
 
@@ -3817,15 +3853,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
       0.0,                             // y
       0.0                              // z
     }                                  // angular
-  },
-
-  // Computed Parameter: Constant_Value_d
-  //  Referenced by: '<S84>/Constant'
-
-  {
-    0.0,                               // x
-    0.0,                               // y
-    0.0                                // z
   },
 
   // Computed Parameter: Out1_Y0_j
