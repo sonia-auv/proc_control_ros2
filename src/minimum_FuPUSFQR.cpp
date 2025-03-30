@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: maximum_J4IV0dMM.cpp
+// File: minimum_FuPUSFQR.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// Model version                  : 2.1
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
 #include "rtwtypes.h"
-#include "maximum_J4IV0dMM.h"
+#include "minimum_FuPUSFQR.h"
 #include <cmath>
 #include "cmath"
 
 // Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
-real_T maximum_J4IV0dMM(const real_T x[9])
+real_T minimum_FuPUSFQR(const real_T x[9])
 {
   real_T ex;
   int32_T idx;
@@ -46,7 +46,7 @@ real_T maximum_J4IV0dMM(const real_T x[9])
     for (k = idx + 1; k < 10; k++) {
       real_T x_0;
       x_0 = x[k - 1];
-      if (ex < x_0) {
+      if (ex > x_0) {
         ex = x_0;
       }
     }

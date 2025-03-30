@@ -3,16 +3,16 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: log2_vuRSI7Et.cpp
+// File: log2_oa8AMOVy.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// Model version                  : 2.1
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
 #include "rtwtypes.h"
-#include "log2_vuRSI7Et.h"
+#include "log2_oa8AMOVy.h"
 #include <cmath>
 
 extern "C"
@@ -25,7 +25,7 @@ extern "C"
 #include "cmath"
 
 // Function for MATLAB Function: '<S141>/MATLAB Function'
-real_T log2_vuRSI7Et(real_T x)
+real_T log2_oa8AMOVy(real_T x)
 {
   real_T f;
   int32_T inte;

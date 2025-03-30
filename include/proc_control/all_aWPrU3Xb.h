@@ -3,7 +3,7 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: binsearch_u32u16.cpp
+// File: all_aWPrU3Xb.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
@@ -11,33 +11,13 @@
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
 // C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
-#include "binsearch_u32u16.h"
-#include <string>
+#ifndef all_aWPrU3Xb_h_
+#define all_aWPrU3Xb_h_
 #include "rtwtypes.h"
 
-uint32_T binsearch_u32u16(uint16_T u, const uint16_T bp[], uint32_T startIndex,
-  uint32_T maxIndex)
-{
-  uint32_T bpIdx;
-  uint32_T bpIndex;
-  uint32_T iRght;
+extern void all_aWPrU3Xb(const boolean_T x[130], boolean_T y[13]);
 
-  // Binary Search
-  bpIdx = startIndex;
-  bpIndex = 0U;
-  iRght = maxIndex;
-  while (iRght - bpIndex > 1U) {
-    if (u < bp[bpIdx]) {
-      iRght = bpIdx;
-    } else {
-      bpIndex = bpIdx;
-    }
-
-    bpIdx = (iRght + bpIndex) >> 1U;
-  }
-
-  return bpIndex;
-}
+#endif                                 // all_aWPrU3Xb_h_
 
 //
 // File trailer for generated code.

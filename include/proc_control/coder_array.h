@@ -1,4 +1,4 @@
-/* Copyright 2019-2023 The MathWorks, Inc. */
+/* Copyright 2019-2024 The MathWorks, Inc. */
 /* Copied from
  * fullfile(matlabroot,'extern','include','coder','coder_array','coder_array_rtw_cpp11.h') */
 
@@ -172,12 +172,12 @@ class data_ptr {
     }
 
   public:
-    void set(T* _data, SZ _sz) {
+    void set(T const* _data, SZ _sz) {
         if (owner_) {
             destroy_last_n(data_, size_);
             CODER_DEALLOC(data_);
         }
-        data_ = _data;
+        data_ = const_cast<T*>(_data);
         size_ = _sz;
         owner_ = false;
         capacity_ = size_;
@@ -578,7 +578,7 @@ class array_base {
     }
 
     template <typename... Dims>
-    void set(T* _data, Dims... dims) {
+    void set(T const* _data, Dims... dims) {
         coder::detail::match_dimensions<N == sizeof...(dims)>::check();
         data_.set(_data, coder::detail::product<SZ>(dims...));
         set_size_i<0>(dims...);

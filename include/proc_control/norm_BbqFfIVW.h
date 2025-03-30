@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: log2_vuRSI7Et.h
+// File: norm_BbqFfIVW.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// Model version                  : 2.1
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
-#ifndef log2_vuRSI7Et_h_
-#define log2_vuRSI7Et_h_
+#ifndef norm_BbqFfIVW_h_
+#define norm_BbqFfIVW_h_
 #include "rtwtypes.h"
 
-extern real_T log2_vuRSI7Et(real_T x);
+extern real_T norm_BbqFfIVW(const real_T x[9]);
 
-#endif                                 // log2_vuRSI7Et_h_
+#endif                                 // norm_BbqFfIVW_h_
 
 //
 // File trailer for generated code.

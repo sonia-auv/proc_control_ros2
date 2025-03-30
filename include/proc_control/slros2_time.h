@@ -1,4 +1,4 @@
-/* Copyright 2022 The MathWorks, Inc. */
+/* Copyright 2022-2024 The MathWorks, Inc. */
 
 #ifndef _SLROS2_TIME_H_
 #define _SLROS2_TIME_H_
@@ -6,7 +6,13 @@
 #include "rclcpp/rclcpp.hpp"
 #include <builtin_interfaces/msg/time.hpp>
 
+#ifndef _SL_ROS2_CONTROL_PLUGIN_
 extern rclcpp::Node::SharedPtr SLROSNodePtr;
+#endif
+#ifdef _SL_ROS2_CONTROL_PLUGIN_
+extern rclcpp_lifecycle::LifecycleNode::SharedPtr SLROSNodePtr;
+#endif
+
 /**
  * Retrieve the current ROS2 time and return the information in a message bus.
  *

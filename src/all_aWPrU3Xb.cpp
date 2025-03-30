@@ -3,19 +3,19 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: all_3Trhx1la.cpp
+// File: all_aWPrU3Xb.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// Model version                  : 2.1
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
 #include "rtwtypes.h"
-#include "all_3Trhx1la.h"
+#include "all_aWPrU3Xb.h"
 
 // Function for MATLAB Function: '<S217>/NLMPC'
-void all_3Trhx1la(const boolean_T x[130], boolean_T y[13])
+void all_aWPrU3Xb(const boolean_T x[130], boolean_T y[13])
 {
   int32_T i2;
   i2 = 1;

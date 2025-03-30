@@ -19,10 +19,10 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
+find_package( builtin_interfaces REQUIRED)
 find_package( geometry_msgs REQUIRED)
 find_package( nav_msgs REQUIRED)
 find_package( rclcpp REQUIRED)
-find_package( rclcpp_action REQUIRED)
 find_package( sensor_msgs REQUIRED)
 find_package( sonia_common_ros2 REQUIRED)
 find_package( std_msgs REQUIRED)
@@ -40,19 +40,19 @@ src/proc_control_data.cpp
 src/ros2nodeinterface.cpp
 src/slros2_initialize.cpp
 src/slros_busmsg_conversion.cpp
-src/DropConstraint_OmgSxYRz.cpp
-src/all_3Trhx1la.cpp
+src/DropConstraint_9jcugUNq.cpp
+src/all_aWPrU3Xb.cpp
 src/binsearch_u32d_prevIdx.cpp
 src/binsearch_u32u16.cpp
-src/checkVectorNonFinite_05wHFXMc.cpp
+src/checkVectorNonFinite_2YVslTT4.cpp
 src/div_nde_s32_floor.cpp
-src/isfinite_i0dyo4ea.cpp
-src/log2_vuRSI7Et.cpp
-src/maximum_J4IV0dMM.cpp
-src/minimum_C7HhEuqv.cpp
-src/norm_5mFsPpno.cpp
-src/norm_6MGHpllc.cpp
-src/norm_CGP5TnFt.cpp
+src/isfinite_tbtZO0of.cpp
+src/log2_oa8AMOVy.cpp
+src/maximum_6ril9Yjp.cpp
+src/minimum_FuPUSFQR.cpp
+src/norm_BbqFfIVW.cpp
+src/norm_bB8YUzwT.cpp
+src/norm_sA0IlwP6.cpp
 src/plook_u32d_binckpan.cpp
 src/plook_u32d_binckpang.cpp
 src/plook_u32u16_binckan.cpp
@@ -63,11 +63,10 @@ src/rt_nonfinite.cpp
 src/rt_nrand_Upu32_Yd_f_pw_snf.cpp
 src/rt_powd_snf.cpp
 src/rt_urand_Upu32_Yd_f_pw_snf.cpp
-src/trisolve_pksRbxPf.cpp
-src/updateWeights_kndg1rRc.cpp
-src/updateWeights_u0LrMd4J.cpp
-src/xpotrf_4914lrOO.cpp
-src/xzlartg_keGa8Um8.cpp
+src/trisolve_welyRBjd.cpp
+src/updateWeights_WFpXHMT0.cpp
+src/updateWeights_iTeQU2p6.cpp
+src/xzlartg_5opjPB6F.cpp
 src/slros2_generic_param.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -100,10 +99,10 @@ target_compile_options(proc_control PRIVATE
   )
 ament_target_dependencies(
   proc_control
+  "builtin_interfaces"
   "geometry_msgs"
   "nav_msgs"
   "rclcpp"
-  "rclcpp_action"
   "sensor_msgs"
   "sonia_common_ros2"
   "std_msgs"
@@ -112,23 +111,13 @@ ament_target_dependencies(
 target_include_directories(proc_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-# target_link_libraries(proc_control 
-#     "/usr/local/MATLAB/R2024a/sys/os/glnxa64/orig/libstdc++.so.6"
-# 	${CMAKE_DL_LIBS}
-#     )
+target_link_libraries(proc_control 
+    "/usr/local/MATLAB/R2024b/sys/os/glnxa64/orig/libstdc++.so.6"
+	${CMAKE_DL_LIBS}
+    )
 install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
-
-install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-install(
-  DIRECTORY config
-  DESTINATION share/${PROJECT_NAME}/
-)
-  
 ament_export_include_directories(
   include
 )
@@ -147,4 +136,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Sat Mar 01 18:34:29 2025
+# Generated on Sat Mar 29 22:32:24 2025

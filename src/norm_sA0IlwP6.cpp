@@ -3,20 +3,20 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: norm_CGP5TnFt.cpp
+// File: norm_sA0IlwP6.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.184
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Wed Feb 26 16:57:19 2025
+// Model version                  : 2.1
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
 //
 #include "rtwtypes.h"
-#include "norm_CGP5TnFt.h"
+#include "norm_sA0IlwP6.h"
 #include <cmath>
 
 // Function for MATLAB Function: '<S141>/MATLAB Function'
-real_T norm_CGP5TnFt(const real_T x[4])
+real_T norm_sA0IlwP6(const real_T x[4])
 {
   real_T absxk;
   real_T scale;

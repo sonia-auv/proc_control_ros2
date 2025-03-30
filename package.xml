@@ -7,10 +7,10 @@
   <maintainer email="nimai.jariwala.1@ens.etsmtl.ca">Nimai Jariwala</maintainer>
   <license>BSD</license>
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  <depend>builtin_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
-  <depend>rclcpp_action</depend>
   <depend>sensor_msgs</depend>
   <depend>sonia_common_ros2</depend>
   <depend>std_msgs</depend>
@@ -21,4 +21,4 @@
     <build_type>ament_cmake</build_type>
   </export>
 </package>
-<!-- Generated on Sat Mar 01 18:34:29 2025 -->
+<!-- Generated on Sat Mar 29 22:32:24 2025 -->
