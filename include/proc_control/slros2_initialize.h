@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 29-Mar-2025 22:32:13
+// Generated 26-Jul-2025 18:23:58
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -128,9 +128,9 @@ extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains No DVL/MV
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_133;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/M
-extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
+extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/P
-extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_140;
+extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_140;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Max
 extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_144;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Min

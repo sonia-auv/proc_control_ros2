@@ -63,9 +63,9 @@
         g: 9.81 # m/s^2
         # AUV Constant
         #---------------------------------------------------------------------------------------------------------
-        mass: 42.9144 #Kg
-        volume: 0.043582 # M^3
-        sub_height: .315 # m
+        mass: 26.0 #Kg
+        volume: 0.029 # M^3
+        sub_height: .34 # m
         # Inertia tensor matrix define as:
         # Ixx Ixy Ixz
         # Iyx Iyy Iyz
@@ -74,11 +74,11 @@
         I: [0.7252, -0.0420, -0.0077, -0.0420, 1.8857, -0.0012, -0.0077, -0.0012, 2.2075]
         # Center of mass              x     y     z
         # This vector is define with solidwork.
-        rg: [0.0041, -0.0012, 0.0197] # distance (m) between center of mass and the geometric center of the sub.
+        rg: [0.00, 0.00, 0.05] # distance (m) between center of mass and the geometric center of the sub.
 
         # Center of boyency           x     y     z
         # This vector is define with solidwork.
-        rb: [0.0055, -0.001467, 0.018993] # distance (m) between center of boyency and the geometric center of the sub.
+        rb: [0.00, 0.00, 0.00] # distance (m) between center of boyency and the geometric center of the sub.
 
         # Drag linear constants
         # This vector is guess
@@ -95,21 +95,21 @@
         # thusters definition
         # each row reprensent a thurster and each colunm reprensent an DOF
         #             x       y       z      yaw     roll   pitch
-        thrusters: [0.281,  0.188,  0.097,  -45.0,  -90.0,  0.0,
-                    -0.281, 0.188,  0.097,  45.0,   -90.0,  0.0,
-                    -0.281, -0.188, 0.097,  -45.0,  -90.0,  0.0,
-                    0.281,  -0.188, 0.097,  45.0,   -90.0,  0.0, 
-                    0.184,  0.167,  0.097,  0.0,    0.0,    0.0,
-                    -0.184, 0.167,  0.097,  0.0,    180.0,  0.0,
-                    -0.184, -0.167, 0.097,  0.0,    0.0,    0.0,
-                    0.184,  -0.167, 0.097,  0.0,    180.0,  0.0]
+        thrusters: [0.25,  0.275,  -0.03,  -45.0,  -90.0,  0.0,
+                    -0.25, 0.275,  -0.03,  45.0,   -90.0,  0.0,
+                    -0.25, -0.275, -0.03,  -45.0,  -90.0,  0.0,
+                    0.25,  -0.275, -0.03,  45.0,   -90.0,  0.0, 
+                    0.12,  0.275,  -0.03,  0.0,    0.0,    0.0,
+                    -0.12, 0.275,  -0.03,  0.0,    180.0,  0.0,
+                    -0.12, -0.275, -0.03,  0.0,    0.0,    0.0,
+                    0.12,  -0.275, -0.03,  0.0,    180.0,  0.0]
 
         # Sensors Definition
         #---------------------------------------------------------------------------------------------------------
         # Force dvl ON even when data is invalid
         # (If Set to TRUE, when dvl is lost, kalman filter will assume DVL return 0m/s)
         # (If set to FALSE' when dvl is lost Kalman will use the theorectical model)
-        dvl_lost_override: TRUE # Boolean
+        dvl_lost_override: True # Boolean
 
         # transformation of the DVL frame to body frame
         dvl_rotation: [0.0, 3.14159265359, 1.57079632679] # rad

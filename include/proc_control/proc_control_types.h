@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.7
+// Model version                  : 1.206
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Mar 29 22:31:41 2025
+// C/C++ source code generated on : Sat Jul 26 18:23:28 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -342,19 +342,19 @@ struct SL_Bus_sonia_common_ros2_MotorPwm
 struct SL_Bus_sonia_common_ros2_MpcGains
 {
   // IsVarLen=1:VarLenCategory=data:VarLenElem=ov_SL_Info:TruncateAction=warn
-  real_T ov[13];
+  real_T ov[128];
 
   // IsVarLen=1:VarLenCategory=length:VarLenElem=ov
   SL_Bus_ROSVariableLengthArrayInfo ov_SL_Info;
 
   // IsVarLen=1:VarLenCategory=data:VarLenElem=mv_SL_Info:TruncateAction=warn
-  real_T mv[8];
+  real_T mv[128];
 
   // IsVarLen=1:VarLenCategory=length:VarLenElem=mv
   SL_Bus_ROSVariableLengthArrayInfo mv_SL_Info;
 
   // IsVarLen=1:VarLenCategory=data:VarLenElem=mvr_SL_Info:TruncateAction=warn
-  real_T mvr[8];
+  real_T mvr[128];
 
   // IsVarLen=1:VarLenCategory=length:VarLenElem=mvr
   SL_Bus_ROSVariableLengthArrayInfo mvr_SL_Info;
@@ -375,7 +375,7 @@ struct SL_Bus_sonia_common_ros2_MpcInfo
   boolean_T is_trajectory_done;
 
   // IsVarLen=1:VarLenCategory=data:VarLenElem=thrusters_status_SL_Info:TruncateAction=warn 
-  boolean_T thrusters_status[8];
+  boolean_T thrusters_status[128];
 
   // IsVarLen=1:VarLenCategory=length:VarLenElem=thrusters_status
   SL_Bus_ROSVariableLengthArrayInfo thrusters_status_SL_Info;
@@ -431,7 +431,7 @@ struct SL_Bus_std_msgs_Int16MultiArray
   SL_Bus_std_msgs_MultiArrayLayout layout;
 
   // IsVarLen=1:VarLenCategory=data:VarLenElem=data_SL_Info:TruncateAction=warn
-  int16_T data[8];
+  int16_T data[128];
 
   // IsVarLen=1:VarLenCategory=length:VarLenElem=data
   SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
@@ -948,7 +948,6 @@ struct AuvDifferentialEquation_proc__T
   int32_T isInitialized;
   boolean_T init;
   real_T constValues[38];
-  real_T Bc[104];
 };
 
 #endif                                // struct_AuvDifferentialEquation_proc__T

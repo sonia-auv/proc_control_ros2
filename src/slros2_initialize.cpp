@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 29-Mar-2025 22:32:14
+// Generated 26-Jul-2025 18:23:59
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -90,9 +90,9 @@ SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains No DVL/MV
 SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_133;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/M
-SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
+SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/P
-SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_140;
+SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_140;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Max
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_144;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Min

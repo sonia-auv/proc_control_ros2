@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.1
+// Model version                  : 1.186
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Mon Mar  3 17:37:57 2025
+// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
 //
 #ifndef rt_nrand_Upu32_Yd_f_pw_snf_h_
 #define rt_nrand_Upu32_Yd_f_pw_snf_h_
