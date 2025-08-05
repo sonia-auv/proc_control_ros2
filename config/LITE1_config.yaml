@@ -14,8 +14,8 @@
         # MPC horizon
         # See properties section here : https://www.mathworks.com/help/mpc/ref/mpc.html
         # must be integers
-        p: 10.0 # prediction horizon MAX 10.
-        m: 1.0 # control horizon (m<=P otherwise crash).
+        p: 10 # prediction horizon MAX 10.
+        m: 1 # control horizon (m<=P otherwise crash).
         #=========================================================================================================
         ## MPC gains
         # gains definition : see properties section under weight : https://www.mathworks.com/help/mpc/ref/mpc.html
@@ -71,7 +71,10 @@
         # Iyx Iyy Iyz
         # Izx Izy Izz
         # This matrix is define with solidwork.
-        I: [0.7252, -0.0420, -0.0077, -0.0420, 1.8857, -0.0012, -0.0077, -0.0012, 2.2075]
+        I: [ 1.0878, -0.0294, -0.0046, 
+            -0.0630,  1.3200, -0.0007, 
+            -0.0116, -0.0008,  1.3245 ]
+
         # Center of mass              x     y     z
         # This vector is define with solidwork.
         rg: [0.00, 0.00, 0.05] # distance (m) between center of mass and the geometric center of the sub.
@@ -94,22 +97,24 @@
 
         # thusters definition
         # each row reprensent a thurster and each colunm reprensent an DOF
-        #             x       y       z      yaw     roll   pitch
-        thrusters: [0.25,  0.275,  -0.03,  -45.0,  -90.0,  0.0,
-                    -0.25, 0.275,  -0.03,  45.0,   -90.0,  0.0,
-                    -0.25, -0.275, -0.03,  -45.0,  -90.0,  0.0,
-                    0.25,  -0.275, -0.03,  45.0,   -90.0,  0.0, 
-                    0.12,  0.275,  -0.03,  0.0,    0.0,    0.0,
-                    -0.12, 0.275,  -0.03,  0.0,    180.0,  0.0,
-                    -0.12, -0.275, -0.03,  0.0,    0.0,    0.0,
-                    0.12,  -0.275, -0.03,  0.0,    180.0,  0.0]
+        #             x       y      z     yaw    roll  pitch
+        thrusters: [ 0.25,  0.275, -0.03, -45.0, -90.0,  0.0,
+                    -0.25,  0.275, -0.03,  45.0, -90.0,  0.0,
+                    -0.25, -0.275, -0.03, -45.0, -90.0,  0.0,
+                     0.25, -0.275, -0.03,  45.0, -90.0,  0.0,
+                     0.12,  0.275, -0.03,  0.0,   0.0,   0.0,
+                    -0.12,  0.275, -0.03,  0.0,   180.0, 0.0,
+                    -0.12, -0.275, -0.03,  0.0,   0.0,   0.0,
+                     0.12, -0.275, -0.03,  0.0,   180.0, 0.0]
 
         # Sensors Definition
         #---------------------------------------------------------------------------------------------------------
         # Force dvl ON even when data is invalid
         # (If Set to TRUE, when dvl is lost, kalman filter will assume DVL return 0m/s)
         # (If set to FALSE' when dvl is lost Kalman will use the theorectical model)
-        dvl_lost_override: True # Boolean
+        dvl_lost_override: TRUE # Boolean
+
+        has_dvl: FALSE
 
         # transformation of the DVL frame to body frame
         dvl_rotation: [0.0, 3.14159265359, 1.57079632679] # rad
@@ -122,3 +127,4 @@
 
         # depth sensor distance according to the geometric center
         depth_pose: [0.0, -0.114, 0.178] # m
+        

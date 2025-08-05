@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 26-Jul-2025 18:23:58
+// Generated 05-Aug-2025 15:45:05
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -63,6 +63,8 @@ extern SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
+// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel/Publish
+extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1583;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -79,18 +81,18 @@ extern SimulinkSubscriber<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Su
 extern SimulinkSubscriber<sonia_common_ros2::msg::KillStatus,SL_Bus_sonia_common_ros2_KillStatus> Sub_proc_control_13;
 // proc_control/Ros Command/Ros Command Manager/telemetry dryrun
 extern SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_15;
-// proc_control/Sensors Input/AUV/provider_depth depth
-extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_6;
-// proc_control/Sensors Input/AUV/provider_dvl dvl_velocity
-extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
-// proc_control/Sensors Input/AUV/provider_imu imu_info
+// proc_control/Sensors Input/AUV/Subscribe
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
-// proc_control/Sensors Input/Simulation/proc_simulation depth
-extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
-// proc_control/Sensors Input/Simulation/proc_simulation dvl_velocity
-extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
-// proc_control/Sensors Input/Simulation/proc_simulation imu_info
+// proc_control/Sensors Input/AUV/Subscribe1
+extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
+// proc_control/Sensors Input/AUV/Subscribe2
+extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_6;
+// proc_control/Sensors Input/Simulation/Subscribe
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
+// proc_control/Sensors Input/Simulation/Subscribe1
+extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
+// proc_control/Sensors Input/Simulation/Subscribe2
+extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe
 extern SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
@@ -128,9 +130,9 @@ extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/Gains No DVL/MV
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_133;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/M
-extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_143;
+extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/P
-extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_140;
+extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_140;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Max
 extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_144;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Min
@@ -175,4 +177,6 @@ extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_170;
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_194;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Volume
 extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
+// For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/proc_control.has_dvl
+extern SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_1548;
 #endif

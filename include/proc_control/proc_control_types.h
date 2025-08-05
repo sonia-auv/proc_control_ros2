@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.206
+// Model version                  : 1.218
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jul 26 18:23:28 2025
+// C/C++ source code generated on : Tue Aug  5 15:44:36 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -28,6 +28,33 @@ struct SL_Bus_builtin_interfaces_Time
 {
   int32_T sec;
   uint32_T nanosec;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
+#define DEFINED_TYPEDEF_FOR_physicsConstants_
+
+struct physicsConstants
+{
+  real_T rho;
+  real_T g;
+  real_T mass;
+  real_T volume;
+  real_T sub_height;
+  real_T rg[3];
+  real_T rb[3];
+  real_T cdl[6];
+  real_T cdq[6];
+  real_T added_mass[6];
+  real_T I[9];
+  real_T depth_pose[3];
+  real_T hydro_pose[3];
+  real_T sonar_pose[3];
+  real_T dvl_rotation[3];
+  real_T thrusters[48];
+  real_T dvl_lost_override;
+  uint8_T has_dvl;
 };
 
 #endif
@@ -127,32 +154,6 @@ struct mpcParams
 {
   Gains gains;
   TargetReached targetReached;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
-#define DEFINED_TYPEDEF_FOR_physicsConstants_
-
-struct physicsConstants
-{
-  real_T rho;
-  real_T g;
-  real_T mass;
-  real_T volume;
-  real_T sub_height;
-  real_T rg[3];
-  real_T rb[3];
-  real_T cdl[6];
-  real_T cdq[6];
-  real_T added_mass[6];
-  real_T I[9];
-  real_T depth_pose[3];
-  real_T hydro_pose[3];
-  real_T sonar_pose[3];
-  real_T dvl_rotation[3];
-  real_T thrusters[48];
-  real_T dvl_lost_override;
 };
 
 #endif
@@ -624,16 +625,15 @@ struct struct_qfomatEQOl7mLQ02Mpt2VE
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
-#define DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
+#ifndef DEFINED_TYPEDEF_FOR_struct_e3WejieKNGDdsQIQIEifCB_
+#define DEFINED_TYPEDEF_FOR_struct_e3WejieKNGDdsQIQIEifCB_
 
-struct struct_PHAFHl5XyXX1OaeSBzWbKD
+struct struct_e3WejieKNGDdsQIQIEifCB
 {
   real_T mass;
   real_T volume;
   real_T rho;
   real_T g;
-  real_T dvlCenterDist;
   real_T height;
   real_T I[9];
   real_T RG[3];
@@ -647,6 +647,7 @@ struct struct_PHAFHl5XyXX1OaeSBzWbKD
   real_T sonarPose[3];
   real_T dvlRotation[3];
   struct_qfomatEQOl7mLQ02Mpt2VE thruster;
+  boolean_T has_dvl;
 };
 
 #endif
@@ -806,7 +807,7 @@ struct ros_slros2_internal_block_Cur_T
 
 #endif                                // struct_ros_slros2_internal_block_Cur_T
 
-// Custom Type definition for MATLABSystem: '<S321>/SourceBlock'
+// Custom Type definition for MATLABSystem: '<S325>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
