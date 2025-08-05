@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.178
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Tue Feb 11 21:06:20 2025
+// Model version                  : 1.205
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Sat Aug 02 17:12:36 2025
 //
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -31,6 +31,12 @@
 #include <thread>
 #include <chrono>
 #include <utility>
+#undef ROS_SET_RTM_ERROR_STATUS
+#undef ROS_GET_RTM_ERROR_STATUS
+#undef ROS_RTM_STEP_TASK
+#define ROS_SET_RTM_ERROR_STATUS(status) mModel->getRTM()->setErrorStatus(status)
+#define ROS_GET_RTM_ERROR_STATUS()       mModel->getRTM()->getErrorStatus()
+#define ROS_RTM_STEP_TASK(id)            mModel->getRTM()->StepTask(id)
 const std::string SLROSNodeName("proc_control");
 extern rclcpp::Node::SharedPtr SLROSNodePtr;
 namespace ros2 {
@@ -61,7 +67,7 @@ void NodeInterface::initialize(int argc, char * const argv[]) {
         //initialize the model which will initialize the publishers and subscribers
         mModel = std::make_shared<proc_control>(
         );
-		rtmSetErrorStatus(mModel->getRTM(), (NULL));
+		ROS_SET_RTM_ERROR_STATUS(NULL);
         mModel->initialize();
         //create the threads for the rates in the Model
         mBaseRateThread = std::make_shared<std::thread>(&NodeInterface::baseRateTask, this);
@@ -88,10 +94,10 @@ int NodeInterface::run() {
 }
 boolean_T NodeInterface::getStopRequestedFlag(void) {
     #ifndef rtmGetStopRequested
-    return (!(rtmGetErrorStatus(mModel->getRTM())
+    return (!(ROS_GET_RTM_ERROR_STATUS()
         == (NULL)));
     #else
-    return (!(rtmGetErrorStatus(mModel->getRTM())
+    return (!(ROS_GET_RTM_ERROR_STATUS()
         == (NULL)) || rtmGetStopRequested(mModel->getRTM()));
     #endif
 }
@@ -136,7 +142,7 @@ void NodeInterface::schedulerThreadCallback(void)
 //Model specific
 // Base-rate task
 void NodeInterface::baseRateTask(void) {
-  mRunModel = (rtmGetErrorStatus(mModel->getRTM()) ==
+  mRunModel = (ROS_GET_RTM_ERROR_STATUS() ==
               (NULL));
   while (mRunModel) {
     mBaseRateSem.wait();

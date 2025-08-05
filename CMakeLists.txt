@@ -19,10 +19,10 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
+find_package( builtin_interfaces REQUIRED)
 find_package( geometry_msgs REQUIRED)
 find_package( nav_msgs REQUIRED)
 find_package( rclcpp REQUIRED)
-find_package( rclcpp_action REQUIRED)
 find_package( sensor_msgs REQUIRED)
 find_package( sonia_common_ros2 REQUIRED)
 find_package( std_msgs REQUIRED)
@@ -38,11 +38,52 @@ src/main.cpp
 src/proc_control.cpp
 src/proc_control_data.cpp
 src/ros2nodeinterface.cpp
-src/rtGetInf.cpp
-src/rtGetNaN.cpp
-src/rt_nonfinite.cpp
 src/slros2_initialize.cpp
 src/slros_busmsg_conversion.cpp
+src/AUV8QuatJacobianMatrix_BCzctSl9.cpp
+src/DropConstraint_9jcugUNq.cpp
+src/binsearch_u32d_prevIdx.cpp
+src/binsearch_u32u16.cpp
+src/checkVectorNonFinite_2YVslTT4.cpp
+src/div_nde_s32_floor.cpp
+src/isfinite_tbtZO0of.cpp
+src/log2_oa8AMOVy.cpp
+src/maximum_6ril9Yjp.cpp
+src/minimum_FuPUSFQR.cpp
+src/mldivide_Bh63yZKV.cpp
+src/norm_BbqFfIVW.cpp
+src/norm_bB8YUzwT.cpp
+src/norm_sA0IlwP6.cpp
+src/padeApproximation_Qbpaua2E.cpp
+src/plook_u32d_binckpan.cpp
+src/plook_u32d_binckpang.cpp
+src/plook_u32u16_binckan.cpp
+src/recomputeBlockDiag_GI8hdgJN.cpp
+src/rotateRight_lMfCUnsH.cpp
+src/rotateRight_ppseAKEY.cpp
+src/rtGetInf.cpp
+src/rtGetNaN.cpp
+src/rt_atan2d_snf.cpp
+src/rt_hypotd_snf.cpp
+src/rt_nonfinite.cpp
+src/rt_nrand_Upu32_Yd_f_pw_snf.cpp
+src/rt_powd_snf.cpp
+src/rt_urand_Upu32_Yd_f_pw_snf.cpp
+src/trisolve_welyRBjd.cpp
+src/updateWeights_WFpXHMT0.cpp
+src/updateWeights_iTeQU2p6.cpp
+src/xdlaev2_vjOFz6O2.cpp
+src/xgemv_zYrlt8Jf.cpp
+src/xgerc_vcdhhgKg.cpp
+src/xnrm2_gjjcOr5M.cpp
+src/xpotrf_GAY9CXNB.cpp
+src/xrotg_QLPrMQ5c.cpp
+src/xsyheev_DufRbymR.cpp
+src/xzlartg_5opjPB6F.cpp
+src/xzlascl_01CBiMMh.cpp
+src/xzlascl_Nlhd5GaE.cpp
+src/xzsteqr_j8DfaNbg.cpp
+src/xzsyhetrd_Fl8IXuj6.cpp
 src/slros2_generic_param.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -75,10 +116,10 @@ target_compile_options(proc_control PRIVATE
   )
 ament_target_dependencies(
   proc_control
+  "builtin_interfaces"
   "geometry_msgs"
   "nav_msgs"
   "rclcpp"
-  "rclcpp_action"
   "sensor_msgs"
   "sonia_common_ros2"
   "std_msgs"
@@ -120,4 +161,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Tue Feb 11 21:06:25 2025
+# Generated on Sat Aug 02 17:12:48 2025

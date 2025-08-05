@@ -1,0 +1,38 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/nimai/ros2_sonia_ws/install/rs485_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/install/dvl_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/install/sonia_common_ros2/include/**",
+        "/home/nimai/ros2_sonia_ws/install/sonia_common_cpp/include/**",
+        "/home/nimai/ros2_sonia_ws/install/cam_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/install/behaviortree_cpp/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/nimai/ros2_sonia_ws/src/BehaviorTree.CPP/include/**",
+        "/home/nimai/ros2_sonia_ws/src/BehaviorTree.ROS2/behaviortree_ros2/include/**",
+        "/home/nimai/ros2_sonia_ws/src/Spinnaker/include/**",
+        "/home/nimai/ros2_sonia_ws/src/cam_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/src/dropper_test/include/**",
+        "/home/nimai/ros2_sonia_ws/src/dvl_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/src/proc_control_ros2/include/**",
+        "/home/nimai/ros2_sonia_ws/src/provider_system_ros2/include/**",
+        "/home/nimai/ros2_sonia_ws/src/rs485_port_manager/include/**",
+        "/home/nimai/ros2_sonia_ws/src/sonia_BehaviorTree/include/**",
+        "/home/nimai/ros2_sonia_ws/src/sonia_common_ros2/sonia_common_cpp/include/**",
+        "include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

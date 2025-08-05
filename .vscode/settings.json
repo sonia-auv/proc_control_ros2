@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/nimai/ros2_sonia_ws/install/sonia_common_ros2/local/lib/python3.10/dist-packages",
+        "/home/nimai/ros2_sonia_ws/install/ros_tcp_endpoint/lib/python3.10/site-packages",
+        "/home/nimai/ros2_sonia_ws/install/proc_planner_ros2/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/nimai/ros2_sonia_ws/install/sonia_common_ros2/local/lib/python3.10/dist-packages",
+        "/home/nimai/ros2_sonia_ws/install/ros_tcp_endpoint/lib/python3.10/site-packages",
+        "/home/nimai/ros2_sonia_ws/install/proc_planner_ros2/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

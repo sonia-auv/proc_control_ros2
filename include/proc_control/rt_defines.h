@@ -7,14 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.178
-// Simulink Coder version         : 24.1 (R2024a) 19-Nov-2023
-// C/C++ source code generated on : Tue Feb 11 21:05:49 2025
-//
-// Target selection: ert.tlc
-// Embedded hardware selection: Intel->x86-64 (Linux 64)
-// Code generation objectives: Unspecified
-// Validation result: Not run
+// Model version                  : 1.205
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Sat Aug  2 17:12:04 2025
 //
 #ifndef rt_defines_h_
 #define rt_defines_h_

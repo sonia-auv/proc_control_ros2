@@ -1,0 +1,35 @@
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+//
+// File: updateWeights_WFpXHMT0.cpp
+//
+// Code generated for Simulink model 'proc_control'.
+//
+// Model version                  : 1.205
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Sat Aug  2 17:12:04 2025
+//
+#include "rtwtypes.h"
+#include "updateWeights_WFpXHMT0.h"
+
+// Function for MATLAB Function: '<S176>/VariableHorizonOptimizer'
+void updateWeights_WFpXHMT0(const real_T b_signal[8], real_T W[8])
+{
+  for (int32_T ct{0}; ct < 8; ct++) {
+    real_T b_signal_0;
+    b_signal_0 = b_signal[ct];
+    if (b_signal_0 < 0.0) {
+      W[ct] = 0.0;
+    } else {
+      W[ct] = b_signal_0 * b_signal_0;
+    }
+  }
+}
+
+//
+// File trailer for generated code.
+//
+// [EOF]
+//
