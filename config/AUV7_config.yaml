@@ -122,3 +122,7 @@
 
         # depth sensor distance according to the geometric center
         depth_pose: [0.0, 0.0, 0.160] # m
+
+      sensors:
+        has_dvl: FALSE
+        linear_acceleration_bias: [0.0, 0.0, -10.165871670815797]

@@ -63,21 +63,21 @@
         g: 9.81 # m/s^2
         # AUV Constant
         #---------------------------------------------------------------------------------------------------------
-        mass: 26.0 #Kg
+        mass: 28.26 #Kg
         volume: 0.029 # M^3
-        sub_height: .34 # m
+        sub_height: .349 # m
         # Inertia tensor matrix define as:
         # Ixx Ixy Ixz
         # Iyx Iyy Iyz
         # Izx Izy Izz
         # This matrix is define with solidwork.
-        I: [ 1.0878, -0.0294, -0.0046, 
-            -0.0630,  1.3200, -0.0007, 
-            -0.0116, -0.0008,  1.3245 ]
+        I: [ 1.05, 0.00, 0.00, 
+             0.00, 0.78, 0.01, 
+             0.00, 0.01, 1.10 ]
 
         # Center of mass              x     y     z
         # This vector is define with solidwork.
-        rg: [0.00, 0.00, 0.05] # distance (m) between center of mass and the geometric center of the sub.
+        rg: [-0.0015, 0.00158, 0.08251] # distance (m) between center of mass and the geometric center of the sub.
 
         # Center of boyency           x     y     z
         # This vector is define with solidwork.
@@ -98,14 +98,14 @@
         # thusters definition
         # each row reprensent a thurster and each colunm reprensent an DOF
         #             x       y      z     yaw    roll  pitch
-        thrusters: [ 0.25,  0.275, -0.03, -45.0, -90.0,  0.0,
-                    -0.25,  0.275, -0.03,  45.0, -90.0,  0.0,
-                    -0.25, -0.275, -0.03, -45.0, -90.0,  0.0,
-                     0.25, -0.275, -0.03,  45.0, -90.0,  0.0,
-                     0.12,  0.275, -0.03,  0.0,   0.0,   0.0,
-                    -0.12,  0.275, -0.03,  0.0,   180.0, 0.0,
-                    -0.12, -0.275, -0.03,  0.0,   0.0,   0.0,
-                     0.12, -0.275, -0.03,  0.0,   180.0, 0.0]
+        thrusters: [ 0.246,  0.267, -0.05, -45.0, -90.0,  0.0,
+                    -0.246,  0.267, -0.05,  45.0, -90.0,  0.0,
+                    -0.246, -0.267, -0.05, -45.0, -90.0,  0.0,
+                     0.246, -0.267, -0.05,  45.0, -90.0,  0.0,
+                     0.121,  0.282, -0.05,  0.0,   0.0,   0.0,
+                    -0.121,  0.282, -0.05,  0.0,   180.0, 0.0,
+                    -0.121, -0.282, -0.05,  0.0,   0.0,   0.0,
+                     0.121, -0.282, -0.05,  0.0,   180.0, 0.0]
 
         # Sensors Definition
         #---------------------------------------------------------------------------------------------------------
@@ -114,7 +114,6 @@
         # (If set to FALSE' when dvl is lost Kalman will use the theorectical model)
         dvl_lost_override: TRUE # Boolean
 
-        has_dvl: FALSE
 
         # transformation of the DVL frame to body frame
         dvl_rotation: [0.0, 3.14159265359, 1.57079632679] # rad
@@ -126,5 +125,8 @@
         sonar_pose: [0.200, 0.0, -0.155] # m
 
         # depth sensor distance according to the geometric center
-        depth_pose: [0.0, -0.114, 0.178] # m
+        depth_pose: [-0.045, -0.165, 0.149] # m
         
+      sensors:
+        has_dvl: FALSE
+        linear_acceleration_bias: [0.0, 0.0, -10.165871670815797]
