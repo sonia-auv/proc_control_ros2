@@ -64,21 +64,23 @@
         # AUV Constant
         #---------------------------------------------------------------------------------------------------------
         mass: 42.9144 #Kg
-        volume: 0.043582 # M^3
+        volume: 0.045752 # M^3
         sub_height: .315 # m
         # Inertia tensor matrix define as:
         # Ixx Ixy Ixz
         # Iyx Iyy Iyz
         # Izx Izy Izz
         # This matrix is define with solidwork.
-        I: [0.7252, -0.0420, -0.0077, -0.0420, 1.8857, -0.0012, -0.0077, -0.0012, 2.2075]
+        I: [ 0.7198, -0.0352, 0.0112,
+            -0.0352,  1.9966, -0.0036, 
+             0.0112, -0.0036,  2.2283 ]
         # Center of mass              x     y     z
         # This vector is define with solidwork.
-        rg: [0.0041, -0.0012, 0.0197] # distance (m) between center of mass and the geometric center of the sub.
+        rg: [0.0012, -0.0032, 0.0231] # distance (m) between center of mass and the geometric center of the sub.
 
         # Center of boyency           x     y     z
         # This vector is define with solidwork.
-        rb: [0.0055, -0.001467, 0.018993] # distance (m) between center of boyency and the geometric center of the sub.
+        rb: [0.003208, -0.023076, 0.011995] # distance (m) between center of boyency and the geometric center of the sub.
 
         # Drag linear constants
         # This vector is guess
