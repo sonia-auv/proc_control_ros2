@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.245
+// Model version                  : 1.246
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Mon Aug 11 08:25:33 2025
+// C/C++ source code generated on : Tue Aug 12 00:38:21 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -222,19 +222,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  7.0,
+  9.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.31172248433693178, 1.4923588124390625, 0.011989060396283913,
-    0.0087320349455457975, 0.063823038774972668, 0.062128338339971313 },
+  { 0.215505748733127, 0.11060011009742865, 0.006944009700313847,
+    0.09179350042424006, 0.0693162575886971, 0.078085858002411163 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.48906386907769589, -0.0016077332700421554, -0.086280845269037718,
-    -0.0017082327275322218, -0.0932476577243594, -0.070839071976138535 },
+  { -0.0070751067667814138, -0.40966770327768265, -0.098890339799324836,
+    -0.015418107408809546, -0.032299870282254707, -0.032230925638966935 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
