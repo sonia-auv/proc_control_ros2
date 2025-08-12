@@ -85,7 +85,7 @@
 
         # Drag linear constants
         # This vector is guess
-        cdl: [15.0, 20.0, 23.3, 3.33, 2.33, 3.0] # dimensionless
+        cdl: [18.0, 18.0, 25.0, 3.0, 3.0, 2.0] # dimensionless
 
         # Drag quadratic constants
         # This vector is guess
@@ -132,4 +132,4 @@
         imu_VN_linear_acceleration_bias: [0.0, 0.0, -10.2775]
         imu_ZED_linear_acceleration_bias: [0.0, 0.0, -9.79]
         imu_VN_accel_thresh: [0.1, 0.1, 0.1]
-        imu_ZED_accel_thresh: [0.0, 0.0, 0.1]
+        imu_ZED_accel_thresh: [0.1, 0.1, 0.1]
