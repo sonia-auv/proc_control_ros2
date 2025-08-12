@@ -64,7 +64,7 @@
         # AUV Constant
         #---------------------------------------------------------------------------------------------------------
         mass: 28.26 #Kg
-        volume: 0.029 # M^3
+        volume: 0.0333 # M^3
         sub_height: .349 # m
         # Inertia tensor matrix define as:
         # Ixx Ixy Ixz
@@ -77,11 +77,11 @@
 
         # Center of mass              x     y     z
         # This vector is define with solidwork.
-        rg: [-0.0015, 0.00158, 0.08251] # distance (m) between center of mass and the geometric center of the sub.
+        rg: [-0.0015, 0.00158, 0.08351] # distance (m) between center of mass and the geometric center of the sub.
 
         # Center of boyency           x     y     z
         # This vector is define with solidwork.
-        rb: [0.00, 0.00, 0.00] # distance (m) between center of boyency and the geometric center of the sub.
+        rb: [-0.00035, 0.00213, 0.08234] # distance (m) between center of boyency and the geometric center of the sub.
 
         # Drag linear constants
         # This vector is guess
@@ -129,4 +129,7 @@
         
       sensors:
         has_dvl: FALSE
-        linear_acceleration_bias: [0.0, 0.0, -10.165871670815797]
+        imu_VN_linear_acceleration_bias: [0.0, 0.0, -10.2775]
+        imu_ZED_linear_acceleration_bias: [0.0, 0.0, -9.79]
+        imu_VN_accel_thresh: [0.1, 0.1, 0.1]
+        imu_ZED_accel_thresh: [0.0, 0.0, 0.1]
