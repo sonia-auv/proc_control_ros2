@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 12-Aug-2025 00:38:51
+// Generated 13-Aug-2025 04:02:28
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -65,6 +65,8 @@ extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub
 extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
 // proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1583;
+// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel1/Publish
+extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1701;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -99,6 +101,8 @@ extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_pr
 extern SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
 extern SimulinkSubscriber<std_msgs::msg::Float64MultiArray,SL_Bus_std_msgs_Float64MultiArray> Sub_proc_control_781;
+// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Subsystem/Subscribe
+extern SimulinkSubscriber<geometry_msgs::msg::Transform,SL_Bus_geometry_msgs_Transform> Sub_proc_control_1705;
 // proc_control/Subsystem Trajectory/Subsystem/Subscribe
 extern SimulinkSubscriber<geometry_msgs::msg::Twist,SL_Bus_geometry_msgs_Twist> Sub_proc_control_532;
 // proc_control/Subsystem Trajectory/Subsystem1/Subscribe

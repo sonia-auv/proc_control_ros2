@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.246
+// Model version                  : 1.247
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Tue Aug 12 00:38:21 2025
+// C/C++ source code generated on : Wed Aug 13 04:01:57 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -863,7 +863,7 @@ struct ros_slros2_internal_block_Cur_T
 
 #endif                                // struct_ros_slros2_internal_block_Cur_T
 
-// Custom Type definition for MATLABSystem: '<S346>/SourceBlock'
+// Custom Type definition for MATLABSystem: '<S352>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
