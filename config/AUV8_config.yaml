@@ -80,7 +80,7 @@
 
         # Center of boyency           x     y     z
         # This vector is define with solidwork.
-        rb: [0.0035, -0.0045, 0.011995] # distance (m) between center of boyency and the geometric center of the sub.
+        rb: [0.0026, -0.0036, 0.011995] # distance (m) between center of boyency and the geometric center of the sub.
 
         # Drag linear constants
         # This vector is guess
