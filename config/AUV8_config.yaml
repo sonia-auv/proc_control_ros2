@@ -123,4 +123,4 @@
         sonar_pose: [0.200, 0.0, -0.155] # m
 
         # depth sensor distance according to the geometric center
-        depth_pose: [0.0, -0.114, 0.178] # m
+        depth_pose: [0.0, -0.114, 0.0] # m
