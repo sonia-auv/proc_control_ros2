@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.205
+// Model version                  : 1.247
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Aug 08 18:07:33 2025
+// C/C++ source code generated on : Wed Aug 13 04:02:30 2025
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -31,6 +31,7 @@ class proc_control;
 #include "rtwtypes.h"
 #include "slros_busmsg_conversion.h"
 #include "geometry_msgs/msg/pose.hpp"
+#include "geometry_msgs/msg/transform.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/vector3.hpp"
 #include "nav_msgs/msg/odometry.hpp"
