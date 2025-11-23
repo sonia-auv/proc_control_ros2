@@ -71,9 +71,9 @@
         # Iyx Iyy Iyz
         # Izx Izy Izz
         # This matrix is define with solidwork.
-        I: [ 0.7338,  0.0348, -0.0053,
-             0.0348,  2.2115, -0.0038, 
-            -0.0053, -0.0038,  2.4452 ]
+        I: [ 0.7010, -0.0378, -0.0089,
+             -0.0378, 2.2223,  -0.0001,
+             -0.0089, -0.0001,  2.4889 ]
         # Center of mass              x     y     z
         # This vector is define with solidwork.
         rg: [0.0012, -0.0032, 0.0231] # distance (m) between center of mass and the geometric center of the sub.
