@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 22-Nov-2025 19:33:36
+// Generated 22-Nov-2025 22:54:07
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -25,10 +25,6 @@ SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_control
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel/Publish
-SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1583;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel1/Publish
-SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1701;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -45,24 +41,24 @@ SimulinkSubscriber<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Sub_proc_
 SimulinkSubscriber<sonia_common_ros2::msg::KillStatus,SL_Bus_sonia_common_ros2_KillStatus> Sub_proc_control_13;
 // proc_control/Ros Command/Ros Command Manager/telemetry dryrun
 SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_15;
-// proc_control/Sensors Input/AUV/Subscribe
-SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
-// proc_control/Sensors Input/AUV/Subscribe1
-SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
-// proc_control/Sensors Input/AUV/Subscribe2
+// proc_control/Sensors Input/AUV/provider_depth depth
 SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_6;
-// proc_control/Sensors Input/AUV/Subscribe4
-SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_1617;
-// proc_control/Sensors Input/Simulation/Subscribe
-SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
-// proc_control/Sensors Input/Simulation/Subscribe1
-SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
-// proc_control/Sensors Input/Simulation/Subscribe2
+// proc_control/Sensors Input/AUV/provider_dvl dvl_velocity
+SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
+// proc_control/Sensors Input/AUV/provider_imu imu_info
+SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
+// proc_control/Sensors Input/Simulation/proc_simulation depth
 SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
+// proc_control/Sensors Input/Simulation/proc_simulation dvl_velocity
+SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
+// proc_control/Sensors Input/Simulation/proc_simulation imu_info
+SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe
 SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
 SimulinkSubscriber<std_msgs::msg::Float64MultiArray,SL_Bus_std_msgs_Float64MultiArray> Sub_proc_control_781;
+// proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe
+SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_1492;
 // proc_control/Subsystem Trajectory/Subsystem/Subscribe
 SimulinkSubscriber<geometry_msgs::msg::Twist,SL_Bus_geometry_msgs_Twist> Sub_proc_control_532;
 // proc_control/Subsystem Trajectory/Subsystem1/Subscribe
@@ -143,13 +139,3 @@ SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_170;
 SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_194;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Volume
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter
-SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1642;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter1
-SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1674;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Has DVL
-SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_1598;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Linear Accel Bias
-SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1599;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Linear Accel Bias1
-SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1675;
