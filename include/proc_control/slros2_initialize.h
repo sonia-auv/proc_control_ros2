@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 22-Nov-2025 19:33:35
+// Generated 26-Nov-2025 14:33:01
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -63,10 +63,6 @@ extern SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel/Publish
-extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1583;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel1/Publish
-extern SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1701;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -185,6 +181,10 @@ extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1642;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter1
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1674;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter2
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1797;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter3
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1798;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Has DVL
 extern SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_1598;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Linear Accel Bias
