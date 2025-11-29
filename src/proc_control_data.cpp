@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.2
+// Model version                  : 2.4
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Nov 22 22:53:39 2025
+// C/C++ source code generated on : Sat Nov 29 18:16:03 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -199,19 +199,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  2.0,
+  6.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.25977376217905973, 0.7604241124079042, 0.013770802199928002,
-    0.013028536064134255, 0.039126511038129412, 0.039717309123067812 },
+  { 0.32680170237437822, 1.2336176219558244, 0.01559506390864831,
+    0.0464711296405948, 0.062390425304487587, 0.0011617973617148447 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.042398255093444248, -0.65759132173912338, -0.064017078149542064,
-    -0.093483552193863451, -0.002785527345208694, -0.0557009473863449 },
+  { -0.18152897174216076, -0.53335774023426841, -0.017967137119948653,
+    -0.0666485397564529, -0.0023795946832370187, -0.0061104756988894287 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -286,6 +286,11 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   // Mask Parameter: DiscreteDerivative_ICPrevScaled
   //  Referenced by: '<S214>/UD'
+
+  0.0,
+
+  // Mask Parameter: DiscreteDerivative_ICPrevScal_j
+  //  Referenced by: '<S282>/UD'
 
   0.0,
 
@@ -79919,11 +79924,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   0.0,
 
-  // Expression: 0.5
-  //  Referenced by: '<S287>/Constant'
-
-  0.5,
-
   // Expression: 2
   //  Referenced by: '<S287>/Gain'
 
@@ -79934,10 +79934,35 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   2.0,
 
+  // Expression: 0.5
+  //  Referenced by: '<S287>/Constant'
+
+  0.5,
+
   // Expression: 2
   //  Referenced by: '<S287>/Gain2'
 
   2.0,
+
+  // Computed Parameter: TSamp_WtEt_g
+  //  Referenced by: '<S282>/TSamp'
+
+  50.0,
+
+  // Expression: [physics.thruster.a1 0 ]
+  //  Referenced by: '<S247>/Discrete Transfer Fcn'
+
+  { 0.18126924692201818, 0.0 },
+
+  // Expression: [1  physics.thruster.b0]
+  //  Referenced by: '<S247>/Discrete Transfer Fcn'
+
+  { 1.0, -0.81873075307798182 },
+
+  // Expression: 0
+  //  Referenced by: '<S247>/Discrete Transfer Fcn'
+
+  0.0,
 
   // Expression: 1
   //  Referenced by: '<S248>/Constant'
@@ -79968,18 +79993,18 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Expression: p.R{4}
   //  Referenced by: '<S290>/R4'
 
-  { 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.31622776601683794, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1 },
+  { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 1.0 },
 
   // Expression: 1
   //  Referenced by: '<S290>/MeasurementFcn4Inputs'
@@ -79989,7 +80014,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Expression: p.R{3}
   //  Referenced by: '<S290>/R3'
 
-  0.31622776601683794,
+  { 0.1, 0.0, 0.0, 0.31622776601683794 },
 
   // Expression: 1
   //  Referenced by: '<S290>/MeasurementFcn3Inputs'
@@ -80011,8 +80036,8 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   { 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.1 },
+    0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 1.0 },
 
   // Expression: 0
   //  Referenced by: '<S290>/MeasurementFcn1Inputs'
