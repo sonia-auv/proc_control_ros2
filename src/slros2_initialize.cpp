@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 29-Nov-2025 18:16:31
+// Generated 30-Nov-2025 18:44:21
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -59,6 +59,8 @@ SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_Mpc
 SimulinkSubscriber<std_msgs::msg::Float64MultiArray,SL_Bus_std_msgs_Float64MultiArray> Sub_proc_control_781;
 // proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe
 SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_1492;
+// proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem1/Subscribe
+SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_1501;
 // proc_control/Subsystem Trajectory/Subsystem/Subscribe
 SimulinkSubscriber<geometry_msgs::msg::Twist,SL_Bus_geometry_msgs_Twist> Sub_proc_control_532;
 // proc_control/Subsystem Trajectory/Subsystem1/Subscribe

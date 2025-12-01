@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.4
+// Model version                  : 2.6
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Nov 29 18:16:03 2025
+// C/C++ source code generated on : Sun Nov 30 18:43:51 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -103,7 +103,7 @@ class proc_control final
     real_T varargin_1_data[33800];
     real_T Auf_data[25600];
     real_T tmp_data[20800];
-    SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint In1;// '<S321>/In1'
+    SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint In1;// '<S325>/In1'
     SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint rtb_SourceBlock_o2_kk;
     real_T unusedExpr[19321];
     real_T JacCeqTrans[18070];
@@ -322,8 +322,9 @@ class proc_control final
     real_T VectorConcatenate1[128];    // '<S21>/Vector Concatenate1'
     real_T VectorConcatenate2[128];    // '<S21>/Vector Concatenate2'
     real_T VectorConcatenate3[128];    // '<S21>/Vector Concatenate3'
-    SL_Bus_nav_msgs_Odometry In1_o;    // '<S300>/In1'
-    SL_Bus_nav_msgs_Odometry rtb_SourceBlock_o2_n_i;
+    SL_Bus_nav_msgs_Odometry In1_m;    // '<S304>/In1'
+    SL_Bus_nav_msgs_Odometry In1_o;    // '<S302>/In1'
+    SL_Bus_nav_msgs_Odometry rtb_SourceBlock_o2_a_i;
     SL_Bus_nav_msgs_Odometry BusAssignment_g;// '<S12>/Bus Assignment'
     SL_Bus_nav_msgs_Odometry BusAssignment_k;// '<S147>/Bus Assignment'
     real_T Selector_m[117];            // '<S218>/Selector'
@@ -397,7 +398,6 @@ class proc_control final
     boolean_T isMrows0[436];
     real_T Sy_p[49];
     real_T R_n[49];
-    real_T Transpose[48];              // '<S250>/Transpose'
     real_T array_k[48];                // '<S96>/MATLAB Function'
     real_T K_n3[48];
     real_T Tm[48];
@@ -430,7 +430,7 @@ class proc_control final
     real_T a__1_g[30];
     real_T K_l[30];
     boolean_T bv[226];
-    SL_Bus_sonia_common_ros2_BodyVelocityDVL In1_m;// '<S124>/In1'
+    SL_Bus_sonia_common_ros2_BodyVelocityDVL In1_mz;// '<S124>/In1'
     SL_Bus_sonia_common_ros2_BodyVelocityDVL In1_i;// '<S135>/In1'
     SL_Bus_sonia_common_ros2_BodyVelocityDVL BusAssignment_aa;// '<S80>/Bus Assignment' 
     real_T b_dHdx_f[26];
@@ -444,7 +444,7 @@ class proc_control final
     int8_T val[169];
     real_T b_xoff[21];
     real_T rtb_X_e_n[21];
-    real_T Transpose_b[18];            // '<S323>/Transpose'
+    real_T Transpose_b[18];            // '<S327>/Transpose'
     real_T Opt[18];
     real_T Rhs[18];
     boolean_T bv1[130];
@@ -491,35 +491,37 @@ class proc_control final
     real_T tamp[13];
     real_T b_tau_p[13];
     real_T work_a[13];
+    real_T b_tau_o[13];
+    real_T work_j[13];
     real_T coefMat[12];
-    real_T coefMat_o[12];
+    real_T coefMat_p[12];
     real_T newSegmentCoeffs[12];
     real_T e[12];
     real_T tau[12];
-    real_T e_j[12];
-    real_T tau_p[12];
-    real_T vseq_o[11];
+    real_T e_o[12];
+    real_T tau_l[12];
+    real_T vseq_k[11];
     int8_T b[81];
     int32_T i_data[20];
-    int32_T ii_data_l[20];
+    int32_T ii_data_j[20];
     boolean_T gb_data[80];
-    boolean_T gb_data_k[80];
+    boolean_T gb_data_f[80];
     Vector2DoubleArray_proc__pr35_T obj_lw;
     real_T twpt[9];
-    real_T TmpSignalConversionAtMATL_d[9];// '<S311>/Enabled Subsystem'
-    real_T twpt_j[9];
+    real_T TmpSignalConversionAtMATL_d[9];// '<S315>/Enabled Subsystem'
+    real_T twpt_c[9];
     real_T zopt[9];
     real_T varargin_1_f[9];
-    real_T r_c[9];
-    real_T z_fq[9];
-    real_T tau_n[9];
+    real_T r_n[9];
+    real_T z_i[9];
+    real_T tau_l4[9];
     real_T work_i[9];
-    real_T varargin_1_l[9];
-    somzaGboVhDG7PNQS6E98jD_proc__T expl_temp_i;
-    somzaGboVhDG7PNQS6E98jD_proc__T expl_temp_k;
+    real_T varargin_1_k[9];
+    somzaGboVhDG7PNQS6E98jD_proc__T expl_temp_f;
+    somzaGboVhDG7PNQS6E98jD_proc__T expl_temp_a;
     int8_T As[64];
     int8_T Au_tmp[64];
-    int8_T Au_tmp_f[64];
+    int8_T Au_tmp_d[64];
     real_T PWNtoN[8];                  // '<S26>/PWN to N'
     real_T mv[8];                      // '<S217>/NLMPC'
     real_T u_e[8];                     // '<S176>/VariableHorizonOptimizer'
@@ -532,124 +534,123 @@ class proc_control final
     real_T b_Wu[8];
     real_T b_Wdu[8];
     real_T iu[8];
-    real_T umvk_a[8];
-    real_T duk_d[8];
-    real_T gfU_e[8];
-    real_T ic_e[8];
-    real_T c_b[8];
+    real_T umvk_e[8];
+    real_T duk_e[8];
+    real_T gfU_b[8];
+    real_T ic_a[8];
+    real_T c_i[8];
     real_T runtimedata_MVRateMin[8];
-    SL_Bus_sonia_common_ros2_Pose rtb_SourceBlock_o2_ne_a;
+    SL_Bus_sonia_common_ros2_Pose rtb_SourceBlock_o2_ne_f;
     SL_Bus_geometry_msgs_Pose In1_gs;  // '<S114>/In1'
-    SL_Bus_geometry_msgs_Pose rtb_SourceBlock_o2_m_i;
+    SL_Bus_geometry_msgs_Pose rtb_SourceBlock_o2_m_j;
     SL_Bus_geometry_msgs_Pose BusAssignment_c;// '<S83>/Bus Assignment'
-    SL_Bus_geometry_msgs_Pose BusAssignment_f;
+    SL_Bus_geometry_msgs_Pose BusAssignment_o;
+    real_T Selector4[7];               // '<S327>/Selector4'
     real_T TmpSignalConversionAtMATLAB[7];
     real_T d[7];
-    real_T d_j[7];
+    real_T d_f[7];
     real_T mp[7];
-    real_T y_oo[7];
-    real_T b_tau_f[7];
-    real_T work_o[7];
+    real_T y_oy[7];
+    real_T b_tau_l[7];
+    real_T work_lu[7];
+    real_T b_tau_g[7];
+    real_T work_d4[7];
     int32_T iv[13];
-    int32_T icf_tmp_l[13];
-    int32_T icf_tmp_lu[13];
-    int32_T icf_tmp_g[13];
     int32_T icf_tmp_d[13];
+    int32_T icf_tmp_j[13];
+    int32_T icf_tmp_f[13];
+    int32_T icf_tmp_js[13];
     Vector2DoubleArray_proc_co_pr_T obj_n;
     Vector2DoubleArray_proc_co_pr_T obj_li;
     Vector2DoubleArray_proc_co_pr_T obj_d;
     int32_T blockFormat[12];
-    int32_T blockFormat_d[12];
-    SL_Bus_geometry_msgs_Twist In1_l;  // '<S319>/In1'
-    SL_Bus_geometry_msgs_Twist rtb_SourceBlock_o2_g_j;
+    int32_T blockFormat_h[12];
+    SL_Bus_geometry_msgs_Twist In1_l;  // '<S323>/In1'
+    SL_Bus_geometry_msgs_Twist rtb_SourceBlock_o2_g_c;
+    real_T DataTypeConversion[6];      // '<S326>/Data Type Conversion'
     real_T TSamp_e[6];                 // '<S214>/TSamp'
-    real_T rtb_TSamp_e_f[6];
-    real_T constValues_j[6];
-    real_T constValues_h[6];
+    real_T rtb_TSamp_e_n[6];
+    real_T constValues_ki[6];
+    real_T constValues_a[6];
     real_T dv20[6];
     real_T varargin_1_tmp[6];
     char_T b_zeroDelimTopic[37];
-    char_T b_zeroDelimTopic_c[35];
-    char_T b_zeroDelimTopic_n[34];
+    char_T b_zeroDelimTopic_f[35];
+    char_T b_zeroDelimTopic_j[34];
     char_T b_zeroDelimTopic_k[34];
-    char_T b_zeroDelimTopic_a[33];
-    char_T b_zeroDelimTopic_kl[32];
+    char_T b_zeroDelimTopic_b[33];
+    char_T b_zeroDelimTopic_h[32];
     real_T n[4];
     real_T rq[4];
     real_T TmpSignalConversionAtSFunct[4];// '<S246>/MATLAB Function'
     real_T qt[4];
     real_T modBreaks[4];
     real_T qRel[4];
-    real_T qRel_b[4];
+    real_T qRel_k[4];
     int32_T iv1[8];
     int32_T gfU_tmp[8];
-    int32_T gfU_tmp_h[8];
+    int32_T gfU_tmp_j[8];
     int32_T iv2[8];
     int32_T iv3[8];
     int32_T iv4[8];
     int32_T iv5[8];
     quaternion_proc_control_T pnCorrected;
-    quaternion_proc_control_T expl_temp_f;
-    quaternion_proc_control_T expl_temp_j;
-    char_T b_zeroDelimTopic_e[31];
-    char_T b_zeroDelimTopic_h[31];
-    char_T b_zeroDelimTopic_ku[30];
-    char_T b_zeroDelimTopic_j[30];
-    char_T b_zeroDelimTopic_o[30];
-    char_T b_zeroDelimTopic_cs[29];
-    char_T b_zeroDelimTopic_hw[29];
+    quaternion_proc_control_T expl_temp_h;
+    quaternion_proc_control_T expl_temp_e;
+    char_T b_zeroDelimTopic_o[31];
+    char_T b_zeroDelimTopic_c[31];
+    char_T b_zeroDelimTopic_hw[31];
+    char_T b_zeroDelimTopic_i[30];
+    char_T b_zeroDelimTopic_p[30];
+    char_T b_zeroDelimTopic_f0[30];
+    char_T b_zeroDelimTopic_e[29];
+    char_T b_zeroDelimTopic_n[29];
     int8_T UnknownIn[29];
-    char_T b_zeroDelimTopic_i[28];
-    char_T b_zeroDelimTopic_p[28];
-    char_T b_zeroDelimTopic_f[28];
-    char_T b_zeroDelimTopic_ew[28];
-    char_T b_zeroDelimTopic_nh[27];
-    char_T b_zeroDelimTopic_ho[27];
+    char_T b_zeroDelimTopic_ho[28];
+    char_T b_zeroDelimTopic_hp[28];
+    char_T b_zeroDelimTopic_fn[28];
+    char_T b_zeroDelimTopic_iv[28];
+    char_T b_zeroDelimTopic_f4[27];
+    char_T b_zeroDelimTopic_cy[27];
+    boolean_T icf_n[26];
     boolean_T icf_h[26];
-    boolean_T icf_f[26];
-    char_T b_zeroDelimTopic_iv[26];
-    char_T b_zeroDelimTopic_f4[26];
+    char_T b_zeroDelimTopic_kq[26];
+    char_T b_zeroDelimTopic_hz[26];
     Vector2DoubleArray_proc_c_pr3_T obj_n0;
     Vector2DoubleArray_proc_c_pr3_T obj_jm;
     Vector2DoubleArray_proc_c_pr3_T obj_bx;
     Vector2DoubleArray_proc_c_pr3_T obj_o4;
     Vector2DoubleArray_proc_c_pr3_T obj_k3;
-    char_T b_zeroDelimTopic_cy[24];
+    char_T b_zeroDelimTopic_be[24];
     SL_Bus_geometry_msgs_Vector3 In1_k;// '<S59>/In1'
     SL_Bus_geometry_msgs_Vector3 In1_g2;// '<S56>/In1'
-    SL_Bus_geometry_msgs_Vector3 rtb_SourceBlock_o2_d_n;
-    real_T Gain[3];                    // '<S309>/Gain'
+    SL_Bus_geometry_msgs_Vector3 rtb_SourceBlock_o2_d_o;
     real_T v[3];                       // '<S246>/MATLAB Function'
     real_T BodyVelocity_tmp[3];
-    real_T unusedExpr_h[3];
+    real_T unusedExpr_n[3];
     real_T dv21[3];
-    real_T varargin_1_tmp_k[3];
+    real_T varargin_1_tmp_m[3];
     real_T target[3];
-    real_T b_this_h[3];
-    real_T b_tau_b[3];
-    real_T work_os[3];
+    real_T b_this_k[3];
+    real_T b_tau_jk[3];
+    real_T work_hc[3];
     int32_T ipiv[6];
-    int32_T ipiv_n[6];
-    char_T b_zeroDelimTopic_m[23];
-    char_T b_zeroDelimTopic_kuk[23];
-    char_T b_zeroDelimTopic_jk[23];
-    char_T b_zeroDelimTopic_hc[23];
-    char_T b_zeroDelimTopic_f2[23];
-    char_T b_zeroDelimTopic_d[22];
-    char_T b_zeroDelimTopic_l[21];
+    int32_T ipiv_f[6];
+    char_T b_zeroDelimTopic_d[23];
+    char_T b_zeroDelimTopic_l[23];
+    char_T b_zeroDelimTopic_kg[23];
+    char_T b_zeroDelimTopic_ic[23];
+    char_T b_zeroDelimTopic_h5[23];
+    char_T b_zeroDelimTopic_m[22];
+    char_T b_zeroDelimTopic_g[21];
     boolean_T corr[20];
-    char_T b_zeroDelimTopic_kg[20];
-    char_T b_zeroDelimTopic_ic[19];
+    char_T b_zeroDelimTopic_lf[20];
+    char_T b_zeroDelimTopic_m4[19];
     sJ4ih70VmKcvCeguWN0mNVF deadline;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_h;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_m;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_g;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_l;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_m4;
     sJ4ih70VmKcvCeguWN0mNVF deadline_n;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_gv;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_g;
     sJ4ih70VmKcvCeguWN0mNVF deadline_d;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_mq;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_m;
     sJ4ih70VmKcvCeguWN0mNVF deadline_f;
     sJ4ih70VmKcvCeguWN0mNVF deadline_gd;
     sJ4ih70VmKcvCeguWN0mNVF deadline_j;
@@ -666,46 +667,52 @@ class proc_control final
     sJ4ih70VmKcvCeguWN0mNVF deadline_jb;
     sJ4ih70VmKcvCeguWN0mNVF deadline_gi;
     sJ4ih70VmKcvCeguWN0mNVF deadline_om;
-    sJ4ih70VmKcvCeguWN0mNVF deadline_hm;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_h;
     sJ4ih70VmKcvCeguWN0mNVF deadline_c2;
     sJ4ih70VmKcvCeguWN0mNVF deadline_a0;
-    char_T b_zeroDelimTopic_lu[16];
+    sJ4ih70VmKcvCeguWN0mNVF deadline_l;
     sJ4ih70VmKcvCeguWN0mNVF deadline_jc;
     sJ4ih70VmKcvCeguWN0mNVF deadline_i;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_mi;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_ft;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_on;
+    char_T b_zeroDelimTopic_iz[16];
+    sJ4ih70VmKcvCeguWN0mNVF deadline_e0;
+    sJ4ih70VmKcvCeguWN0mNVF deadline_j0;
     SL_Bus_sonia_common_ros2_MotorPwm BusAssignment_p;// '<S2>/Bus Assignment'
     SL_Bus_sonia_common_ros2_MotorPwm BusAssignment1;// '<S2>/Bus Assignment1'
-    real_T MatrixConcatenate[2];       // '<S323>/Matrix Concatenate'
-    real_T Selector[6];                // '<S323>/Selector'
-    real_T Selector1[8];               // '<S323>/Selector1'
-    real_T Selector4[7];               // '<S323>/Selector4'
-    real_T DataTypeConversion[6];      // '<S322>/Data Type Conversion'
-    real_T DataTypeConversion1[2];     // '<S322>/Data Type Conversion1'
-    real_T ywt[13];                    // '<S138>/MATLAB System'
-    real_T mvwt[8];                    // '<S138>/MATLAB System'
-    real_T dmwwt[8];                   // '<S138>/MATLAB System'
+    real_T DataTypeConversion1[2];     // '<S326>/Data Type Conversion1'
+    real_T MV_p[8];                    // '<S99>/MATLAB System4'
+    real_T OV_d[13];                   // '<S99>/MATLAB System3'
+    real_T MVR_cn[8];                  // '<S99>/MATLAB System1'
     real_T dv22[2];
     real_T dv23[2];
     real_T dv24[2];
     real_T obj[2];
-    real_T b_tau_m[2];
+    real_T b_tau_o4[2];
     real_T work_f[2];
     int16_T NtoRPM[8];                 // '<S32>/N to RPM'
     uint16_T current[8];               // '<S139>/N to A'
     uint16_T pwm[8];                   // '<S139>/n-D Lookup Table1'
     uint8_T rows[13];
-    uint8_T rows_e[13];
+    uint8_T rows_h[13];
     int8_T b_ipiv[13];
-    int8_T ipiv_j[13];
-    boolean_T x_o[13];
-    boolean_T x_i[13];
-    boolean_T x_o4[13];
-    boolean_T x_f[13];
+    int8_T ipiv_o[13];
+    boolean_T x_m[13];
+    boolean_T x_a[13];
+    boolean_T x_h[13];
+    boolean_T x_j[13];
     int32_T Jx_size[3];
     int16_T WorkingSet_tmp[5];
     s7RdrPWkr8UPAUyTdDJkLaG_proc__T Flags;
     real_T Probe_o1;                   // '<S250>/Probe'
     real_T Delay[8];                   // '<S250>/Delay'
-    real_T DataTypeConversion2;        // '<S322>/Data Type Conversion2'
+    real_T Transpose[48];              // '<S250>/Transpose'
+    real_T Gain[3];                    // '<S313>/Gain'
+    real_T MatrixConcatenate[2];       // '<S327>/Matrix Concatenate'
+    real_T Selector[6];                // '<S327>/Selector'
+    real_T Selector1[8];               // '<S327>/Selector1'
+    real_T DataTypeConversion2;        // '<S326>/Data Type Conversion2'
     real_T zposition;                  // '<S247>/Sum'
     real_T zvelocity;                  // '<S247>/Discrete Transfer Fcn'
     real_T Gain_l;                     // '<S277>/Gain'
@@ -725,6 +732,9 @@ class proc_control final
     real_T q1;                         // '<S275>/q1'
     real_T q2;                         // '<S275>/q2'
     real_T q3;                         // '<S275>/q3'
+    real_T ywt[13];                    // '<S138>/MATLAB System'
+    real_T mvwt[8];                    // '<S138>/MATLAB System'
+    real_T dmwwt[8];                   // '<S138>/MATLAB System'
     real_T p;                          // '<S138>/MATLAB System'
     real_T m;                          // '<S138>/MATLAB System'
     real_T mvmin[8];                   // '<S138>/MATLAB System'
@@ -747,9 +757,6 @@ class proc_control final
     real_T MV_j[8];                    // '<S100>/MATLAB System5'
     real_T OV_c[13];                   // '<S100>/MATLAB System4'
     real_T MVR_a[8];                   // '<S100>/MATLAB System3'
-    real_T MV_p[8];                    // '<S99>/MATLAB System4'
-    real_T OV_d[13];                   // '<S99>/MATLAB System3'
-    real_T MVR_cn[8];                  // '<S99>/MATLAB System1'
     real_T DiscreteTransferFcn;        // '<S33>/Discrete Transfer Fcn'
     real_T DiscreteTransferFcn_o;      // '<S34>/Discrete Transfer Fcn'
     real_T DiscreteTransferFcn_i;      // '<S35>/Discrete Transfer Fcn'
@@ -778,7 +785,7 @@ class proc_control final
                          // '<S1>/BusConversion_InsertedFor_Output_at_inport_0'
     real_T AngularRate_m[3];
                          // '<S1>/BusConversion_InsertedFor_Output_at_inport_0'
-    real_T d_m;
+    real_T d_g;
     real_T scale;
     real_T absxk;
     real_T t;
@@ -838,7 +845,7 @@ class proc_control final
     real_T rtb_Divide_a_tmp;
     real_T t32_tmp;
     real_T t29_tmp;
-    real_T d_a;
+    real_T d_j;
     real_T d1;
     real_T d2;
     real_T d3;
@@ -871,109 +878,109 @@ class proc_control final
     real_T d30;
     real_T Gain_n_tmp;
     real_T PressureDepth_tmp;
-    real_T PressureDepth_tmp_h;
-    real_T PressureDepth_tmp_o;
-    real_T PressureDepth_tmp_hn;
+    real_T PressureDepth_tmp_l;
+    real_T PressureDepth_tmp_k;
+    real_T PressureDepth_tmp_d;
     real_T A_tmp;
     real_T Sx_data_tmp;
     real_T b_p;
     real_T pny1;
-    real_T CA_j;
+    real_T CA_n;
     real_T bkj;
     real_T t5;
     real_T t6;
-    real_T t14_g;
-    real_T t15_j;
-    real_T t16_l;
-    real_T t17_k;
+    real_T t14_j;
+    real_T t15_a;
+    real_T t16_h;
+    real_T t17_i;
     real_T t18;
     real_T t19;
     real_T constMec_rg;
     real_T constMec_rg_d;
-    real_T constMec_rg_n;
+    real_T constMec_rg_b;
     real_T exptj;
-    real_T d6_j;
+    real_T d6_h;
     real_T eta1;
-    real_T A4_a3;
-    real_T e_h;
+    real_T A4_pn;
+    real_T e_n;
     real_T ed2;
-    real_T cBuffer_i;
-    real_T b_c_d;
+    real_T cBuffer_jz;
+    real_T b_c_o;
     real_T scale_b;
-    real_T absxk_h;
-    real_T t_p;
+    real_T absxk_j;
+    real_T t_e;
     real_T TrialState_lambdasqp;
     real_T phi_alpha;
     real_T fs;
-    real_T e_n;
+    real_T e_i;
     real_T wtYerr;
-    real_T umvk_j;
-    real_T duk_o;
-    real_T wtYerr_b;
-    real_T e_jk;
-    real_T ic_eq;
+    real_T umvk_n;
+    real_T duk_i;
+    real_T wtYerr_p;
+    real_T e_og;
+    real_T ic_m;
     real_T runtimedata_OutputMin;
     real_T normH;
     real_T s;
-    real_T b_B_i;
-    real_T WuI2Jm_n;
+    real_T b_B_o;
+    real_T WuI2Jm_g;
     real_T b_Jm;
     real_T rMin;
     real_T Xnorm0;
     real_T cMin;
     real_T cVal;
-    real_T t_i;
+    real_T t_ez;
     real_T beta1;
-    real_T b_A_p;
-    real_T RLinv_o;
-    real_T scale_m;
-    real_T absxk_o;
+    real_T b_A_i;
+    real_T RLinv_g;
+    real_T scale_g;
+    real_T absxk_g;
     real_T t_g;
-    real_T exptj_e;
-    real_T d6_i;
-    real_T eta1_g;
-    real_T A4_g;
-    real_T e_g;
-    real_T ed2_g;
-    real_T cBuffer_ca;
-    real_T e_k;
-    real_T ic_d;
-    real_T runtimedata_OutputMin_k;
-    real_T fs_p;
+    real_T exptj_c;
+    real_T d6_k;
+    real_T eta1_d;
+    real_T A4_k;
     real_T e_p;
-    real_T wtYerr_m;
-    real_T duk_k;
-    real_T umvk_a0;
-    real_T wtYerr_f;
-    real_T obj_next_next_next_next_next__c;
+    real_T ed2_p;
+    real_T cBuffer_m;
+    real_T e_k;
+    real_T ic_a0;
+    real_T runtimedata_OutputMin_f;
+    real_T fs_c;
+    real_T e_j;
+    real_T wtYerr_k;
+    real_T duk_h;
+    real_T umvk_d;
+    real_T wtYerr_j;
+    real_T obj_next_next_next_next_next__n;
     real_T sina_j;
-    real_T sinb_k;
-    real_T sinc_h;
+    real_T sinb_l;
+    real_T sinc_p;
     real_T cosa;
     real_T cosb;
     real_T cosc;
     real_T qt_idx_0;
     real_T qt_idx_1;
     real_T qt_idx_2;
-    real_T inputs_d;
-    real_T inputs_j;
-    real_T inputs_n;
+    real_T inputs_p;
+    real_T inputs_l;
+    real_T inputs_ld;
     real_T t20;
     real_T t22;
     real_T t23;
     real_T t24;
-    real_T t27_j;
-    real_T t28_l;
-    real_T t29_p;
+    real_T t27_h;
+    real_T t28_c;
+    real_T t29_g;
     real_T t30;
     real_T t31;
-    real_T t32_p;
+    real_T t32_e;
     real_T t36;
     real_T t37;
     real_T t38;
-    real_T t40_l;
-    real_T t41_l;
-    real_T t43_h;
+    real_T t40_n;
+    real_T t41_f;
+    real_T t43_n;
     real_T t48;
     real_T t49;
     real_T t51;
@@ -1039,53 +1046,47 @@ class proc_control final
     real_T t111_tmp_tmp;
     real_T t118_tmp_tmp;
     real_T in4_tmp;
-    real_T in4_tmp_c;
-    real_T in4_tmp_g;
-    real_T t122_tmp_tmp;
     real_T in4_tmp_e;
+    real_T in4_tmp_b;
+    real_T t122_tmp_tmp;
+    real_T in4_tmp_a;
+    real_T in4_tmp_i;
     real_T in4_tmp_n;
     real_T in4_tmp_f;
-    real_T in4_tmp_nl;
-    real_T in4_tmp_e2;
-    real_T in4_tmp_b;
-    real_T in4_tmp_a;
-    real_T t95_tmp_i;
-    real_T t96_tmp_n;
-    real_T t99_tmp_f;
-    real_T t100_tmp_i;
-    real_T t103_tmp_k;
-    real_T t104_tmp_b;
-    real_T t111_tmp_d;
-    real_T t114_tmp_h;
-    real_T t118_tmp_n;
-    real_T t122_tmp_f;
-    real_T in4_tmp_ay;
-    real_T in4_tmp_m;
-    real_T in4_tmp_gu;
-    real_T in4_tmp_nh;
-    real_T in4_tmp_ch;
-    real_T in4_tmp_d;
+    real_T in4_tmp_i4;
     real_T in4_tmp_k;
-    real_T in4_tmp_cl;
+    real_T in4_tmp_b0;
+    real_T t95_tmp_d;
+    real_T t96_tmp_h;
+    real_T t99_tmp_n;
+    real_T t100_tmp_f;
+    real_T t103_tmp_a;
+    real_T t104_tmp_m;
+    real_T t111_tmp_g;
+    real_T t114_tmp_n;
+    real_T t118_tmp_c;
+    real_T t122_tmp_d;
+    real_T in4_tmp_ky;
+    real_T in4_tmp_c;
     real_T in4_tmp_j;
-    real_T in4_tmp_mt;
-    real_T in4_tmp_i;
+    real_T in4_tmp_m;
+    real_T in4_tmp_ie;
     real_T in4_tmp_bj;
     real_T in4_tmp_o;
-    real_T in4_tmp_gs;
+    real_T in4_tmp_g;
     real_T in4_tmp_ed;
     real_T in4_tmp_in;
     real_T in4_tmp_eb;
     real_T in4_tmp_is;
     real_T in4_tmp_m5;
-    real_T in4_tmp_dl;
+    real_T in4_tmp_d;
     real_T in4_tmp_j4;
     real_T in4_tmp_p;
     real_T in4_tmp_b4;
     real_T in4_tmp_pn;
     real_T in4_tmp_nm;
     real_T in4_tmp_ce;
-    real_T in4_tmp_nhy;
+    real_T in4_tmp_nh;
     real_T in4_tmp_da;
     real_T in4_tmp_ih;
     real_T in4_tmp_no;
@@ -1107,6 +1108,12 @@ class proc_control final
     real_T in4_tmp_ok;
     real_T in4_tmp_b4z;
     real_T in4_tmp_an;
+    real_T in4_tmp_aq;
+    real_T in4_tmp_i0;
+    real_T in4_tmp_iz;
+    real_T in4_tmp_lg;
+    real_T in4_tmp_o5;
+    real_T in4_tmp_py;
     real_T t898;
     real_T t899;
     real_T t900;
@@ -1119,48 +1126,48 @@ class proc_control final
     real_T ct_tmp;
     real_T t901_tmp;
     real_T t903_tmp;
-    real_T ct_tmp_a;
-    real_T t902_tmp;
-    real_T ct_tmp_i;
-    real_T ct_tmp_iz;
-    real_T ct_tmp_l;
     real_T ct_tmp_o;
-    real_T ct_tmp_p;
-    real_T ct_tmp_om;
+    real_T t902_tmp;
     real_T ct_tmp_c;
     real_T ct_tmp_oc;
     real_T ct_tmp_ol;
     real_T ct_tmp_h;
-    real_T t900_tmp_i;
-    real_T t899_tmp_g;
-    real_T t898_tmp_c;
-    real_T t901_tmp_o;
-    real_T t903_tmp_g;
-    real_T t902_tmp_o;
+    real_T ct_tmp_i;
     real_T ct_tmp_g;
-    real_T ct_tmp_ad;
-    real_T ct_tmp_gy;
-    real_T ct_tmp_b;
-    real_T ct_tmp_tmp;
-    real_T ct_tmp_tmp_k;
-    real_T ct_tmp_tmp_c;
-    real_T ct_tmp_tmp_j;
-    real_T ct_tmp_al;
+    real_T ct_tmp_c1;
+    real_T ct_tmp_ok;
+    real_T ct_tmp_g5;
+    real_T ct_tmp_o2;
+    real_T t900_tmp_g;
+    real_T t899_tmp_a;
+    real_T t898_tmp_g;
+    real_T t901_tmp_b;
+    real_T t903_tmp_k;
+    real_T t902_tmp_c;
+    real_T ct_tmp_j;
+    real_T ct_tmp_a;
     real_T ct_tmp_d;
     real_T ct_tmp_cx;
-    real_T ct_tmp_d0;
-    real_T ct_tmp_a2;
-    real_T ct_tmp_bo;
+    real_T ct_tmp_tmp;
+    real_T ct_tmp_tmp_d;
+    real_T ct_tmp_tmp_a;
+    real_T ct_tmp_tmp_b;
     real_T ct_tmp_gu;
     real_T ct_tmp_f;
     real_T ct_tmp_cg;
-    real_T ct_tmp_pn;
-    real_T ct_tmp_tmp_a;
+    real_T ct_tmp_p;
+    real_T ct_tmp_at;
     real_T ct_tmp_n;
     real_T ct_tmp_hl;
     real_T ct_tmp_m;
     real_T ct_tmp_f5;
-    real_T ct_tmp_bw;
+    real_T ct_tmp_b;
+    real_T ct_tmp_tmp_e;
+    real_T ct_tmp_nz;
+    real_T ct_tmp_p4;
+    real_T ct_tmp_ih;
+    real_T ct_tmp_js;
+    real_T ct_tmp_l;
     real_T t1164;
     real_T t1165;
     real_T t1166;
@@ -1181,19 +1188,13 @@ class proc_control final
     real_T t1526;
     real_T t1542;
     real_T t1546_tmp;
-    real_T t1546_tmp_e;
+    real_T t1546_tmp_c;
     real_T t1543_tmp;
-    real_T t1543_tmp_n;
+    real_T t1543_tmp_g;
     real_T t1542_tmp;
     real_T out1_tmp;
-    real_T out1_tmp_p;
-    real_T out1_tmp_i;
-    real_T out1_tmp_j;
-    real_T out1_tmp_l;
     real_T out1_tmp_c;
-    real_T out1_tmp_g;
-    real_T out1_tmp_c5;
-    real_T out1_tmp_ly;
+    real_T out1_tmp_l;
     real_T out1_tmp_e;
     real_T out1_tmp_d;
     real_T out1_tmp_m;
@@ -1203,9 +1204,9 @@ class proc_control final
     real_T out1_tmp_en;
     real_T out1_tmp_mp;
     real_T out1_tmp_ch;
-    real_T out1_tmp_g4;
+    real_T out1_tmp_g;
     real_T out1_tmp_b;
-    real_T out1_tmp_po;
+    real_T out1_tmp_p;
     real_T out1_tmp_p2;
     real_T out1_tmp_a;
     real_T out1_tmp_fm;
@@ -1214,13 +1215,13 @@ class proc_control final
     real_T out1_tmp_k;
     real_T out1_tmp_k1;
     real_T out1_tmp_bw;
-    real_T out1_tmp_ix;
+    real_T out1_tmp_i;
     real_T out1_tmp_nj;
     real_T out1_tmp_h;
     real_T out1_tmp_ni;
     real_T out1_tmp_mm;
     real_T out1_tmp_gu;
-    real_T out1_tmp_jb;
+    real_T out1_tmp_j;
     real_T out1_tmp_f0;
     real_T out1_tmp_ng;
     real_T out1_tmp_gt;
@@ -1259,47 +1260,47 @@ class proc_control final
     real_T out1_tmp_k4;
     real_T out1_tmp_iv;
     real_T out1_tmp_ew;
-    real_T out1_tmp_tmp;
-    real_T out1_tmp_tmp_f;
-    real_T out1_tmp_tmp_k;
+    real_T out1_tmp_ft;
+    real_T out1_tmp_kx;
     real_T out1_tmp_ne;
     real_T out1_tmp_it;
     real_T out1_tmp_im;
     real_T out1_tmp_o2;
-    real_T out1_tmp_dn;
-    real_T out1_tmp_iu;
+    real_T out1_tmp_tmp;
+    real_T out1_tmp_tmp_d;
+    real_T out1_tmp_tmp_i;
     real_T out1_tmp_gy;
     real_T out1_tmp_cv;
     real_T out1_tmp_ee;
     real_T out1_tmp_a5;
-    real_T out1_tmp_tmp_h;
-    real_T out1_tmp_tmp_e;
-    real_T out1_tmp_tmp_d;
+    real_T out1_tmp_hq;
+    real_T out1_tmp_ef;
+    real_T out1_tmp_dw;
     real_T out1_tmp_g5;
     real_T out1_tmp_ev;
     real_T out1_tmp_eq;
-    real_T out1_tmp_gm;
-    real_T out1_tmp_gk;
-    real_T out1_tmp_dz;
+    real_T out1_tmp_tmp_g;
+    real_T out1_tmp_tmp_gk;
+    real_T out1_tmp_tmp_dz;
     real_T out1_tmp_n1;
     real_T out1_tmp_p2p;
     real_T out1_tmp_bs;
     real_T out1_tmp_iw;
     real_T out1_tmp_bi;
-    real_T out1_tmp_tmp_j;
-    real_T out1_tmp_tmp_g;
-    real_T out1_tmp_tmp_n;
+    real_T out1_tmp_jv;
+    real_T out1_tmp_gz;
+    real_T out1_tmp_nl;
     real_T out1_tmp_p4;
     real_T out1_tmp_fbc;
     real_T out1_tmp_fs;
-    real_T out1_tmp_aa;
-    real_T out1_tmp_g3;
-    real_T out1_tmp_ma;
+    real_T out1_tmp_tmp_a;
+    real_T out1_tmp_tmp_g3;
+    real_T out1_tmp_tmp_m;
     real_T out1_tmp_dv;
-    real_T out1_tmp_ef;
+    real_T out1_tmp_efd;
     real_T out1_tmp_ey;
     real_T out1_tmp_dl;
-    real_T out1_tmp_jbr;
+    real_T out1_tmp_jb;
     real_T out1_tmp_nx;
     real_T out1_tmp_ju;
     real_T out1_tmp_pm;
@@ -1315,43 +1316,43 @@ class proc_control final
     real_T out1_tmp_ie;
     real_T out1_tmp_mz;
     real_T out1_tmp_cy;
-    real_T out1_tmp_tmp_l;
-    real_T out1_tmp_tmp_p;
+    real_T out1_tmp_lv;
+    real_T out1_tmp_pb;
     real_T out1_tmp_i1;
     real_T out1_tmp_b3;
     real_T out1_tmp_gn;
     real_T out1_tmp_oq;
-    real_T out1_tmp_b1;
-    real_T out1_tmp_ewq;
-    real_T out1_tmp_tmp_e1;
-    real_T out1_tmp_tmp_lg;
-    real_T out1_tmp_tmp_c;
+    real_T out1_tmp_tmp_b;
+    real_T out1_tmp_tmp_e;
+    real_T out1_tmp_e1;
+    real_T out1_tmp_lg;
+    real_T out1_tmp_cf;
     real_T out1_tmp_e5;
-    real_T out1_tmp_dw;
+    real_T out1_tmp_dwl;
     real_T out1_tmp_oe;
-    real_T out1_tmp_lw;
-    real_T out1_tmp_hga;
-    real_T out1_tmp_ln;
-    real_T out1_tmp_c5w;
+    real_T out1_tmp_tmp_l;
+    real_T out1_tmp_tmp_h;
+    real_T out1_tmp_tmp_ln;
+    real_T out1_tmp_c5;
     real_T out1_tmp_cxz;
     real_T out1_tmp_ag;
     real_T out1_tmp_i2;
     real_T out1_tmp_lt;
     real_T out1_tmp_iy;
     real_T out1_tmp_az;
-    real_T out1_tmp_ixq;
-    real_T out1_tmp_tmp_c3;
-    real_T out1_tmp_tmp_m;
-    real_T out1_tmp_tmp_nn;
+    real_T out1_tmp_ix;
+    real_T out1_tmp_c3;
+    real_T out1_tmp_mb;
+    real_T out1_tmp_nn;
     real_T out1_tmp_chb;
     real_T out1_tmp_na;
     real_T out1_tmp_hk;
-    real_T out1_tmp_iut;
-    real_T out1_tmp_ef2;
-    real_T out1_tmp_pc;
+    real_T out1_tmp_tmp_iu;
+    real_T out1_tmp_tmp_ef;
+    real_T out1_tmp_tmp_p;
     real_T out1_tmp_kov;
     real_T out1_tmp_i3;
-    real_T out1_tmp_nl;
+    real_T out1_tmp_nlp;
     real_T out1_tmp_ob;
     real_T out1_tmp_lc;
     real_T out1_tmp_pr;
@@ -1360,8 +1361,8 @@ class proc_control final
     real_T out1_tmp_is;
     real_T out1_tmp_ci;
     real_T out1_tmp_gl;
-    real_T out1_tmp_iuw;
-    real_T out1_tmp_b11;
+    real_T out1_tmp_iu;
+    real_T out1_tmp_b1;
     real_T out1_tmp_nad;
     real_T out1_tmp_pn;
     real_T out1_tmp_oor;
@@ -1373,18 +1374,18 @@ class proc_control final
     real_T out1_tmp_pw;
     real_T out1_tmp_np;
     real_T out1_tmp_oec;
-    real_T out1_tmp_tmp_d5;
-    real_T out1_tmp_tmp_gq;
-    real_T out1_tmp_tmp_i;
+    real_T out1_tmp_d5;
+    real_T out1_tmp_gq;
+    real_T out1_tmp_il;
     real_T out1_tmp_ih;
     real_T out1_tmp_cc;
     real_T out1_tmp_bv;
-    real_T out1_tmp_gh;
-    real_T out1_tmp_dfn;
-    real_T out1_tmp_fn;
+    real_T out1_tmp_tmp_gh;
+    real_T out1_tmp_tmp_df;
+    real_T out1_tmp_tmp_f;
     real_T out1_tmp_j1;
     real_T out1_tmp_eqx;
-    real_T out1_tmp_pc2;
+    real_T out1_tmp_pc;
     real_T out1_tmp_ddg;
     real_T out1_tmp_fmm;
     real_T out1_tmp_n5;
@@ -1408,132 +1409,132 @@ class proc_control final
     real_T out1_tmp_gyk;
     real_T out1_tmp_le;
     real_T out1_tmp_jo;
-    real_T t20_p;
-    real_T t22_d;
-    real_T t23_k;
-    real_T t24_m;
-    real_T t27_f;
-    real_T t28_m;
-    real_T t29_n;
-    real_T t30_m;
-    real_T t31_b;
-    real_T t32_c;
-    real_T t36_g;
-    real_T t37_c;
-    real_T t38_i;
+    real_T out1_tmp_pk;
+    real_T out1_tmp_d0;
+    real_T out1_tmp_kh;
+    real_T out1_tmp_m0;
+    real_T out1_tmp_fv;
+    real_T out1_tmp_m4;
+    real_T t20_n;
+    real_T t22_m;
+    real_T t23_b;
+    real_T t24_c;
+    real_T t27_g;
+    real_T t28_ck;
+    real_T t29_i;
+    real_T t30_k;
+    real_T t31_g;
+    real_T t32_p;
+    real_T t36_f;
+    real_T t37_m;
+    real_T t38_m;
     real_T t39;
-    real_T t41_k;
-    real_T t42_g;
-    real_T t44_p;
-    real_T t49_f;
+    real_T t41_l;
+    real_T t42_j;
+    real_T t44_m;
+    real_T t49_j;
     real_T t50;
-    real_T t52_m;
+    real_T t52_i;
     real_T t80;
     real_T t81;
     real_T t82;
-    real_T t83_m;
-    real_T t84_l;
-    real_T t85_j;
-    real_T t86_m;
-    real_T t87_j;
-    real_T t88_i;
-    real_T t89_a;
-    real_T t90_h;
-    real_T t91_d;
-    real_T t92_i;
-    real_T t93_h;
-    real_T t94_d;
-    real_T t95_l;
-    real_T t96_f;
-    real_T t97_l;
-    real_T t100_l;
+    real_T t83_a;
+    real_T t84_h;
+    real_T t85_d;
+    real_T t86_i;
+    real_T t87_h;
+    real_T t88_d;
+    real_T t89_l;
+    real_T t90_f;
+    real_T t91_l;
+    real_T t92_l;
+    real_T t93_f;
+    real_T t94_g;
+    real_T t95_g;
+    real_T t96_a;
+    real_T t97_d;
+    real_T t100_b;
     real_T t101;
     real_T t102;
-    real_T t103_f;
-    real_T t104_g;
-    real_T t105_g;
-    real_T t108_a;
-    real_T t111_d;
+    real_T t103_d;
+    real_T t104_f;
+    real_T t105_a;
+    real_T t108_m;
+    real_T t111_i;
     real_T t112;
     real_T t113;
-    real_T t115_b;
+    real_T t115_i;
     real_T t117;
     real_T t119;
-    real_T t120_d;
+    real_T t120_k;
     real_T t80_tmp;
     real_T t81_tmp;
     real_T t82_tmp;
-    real_T t83_tmp_f;
-    real_T t84_tmp_a;
-    real_T t85_tmp_m;
+    real_T t83_tmp_a;
+    real_T t84_tmp_m;
+    real_T t85_tmp_c;
     real_T t92_tmp;
     real_T t93_tmp;
     real_T t80_tmp_tmp;
     real_T t82_tmp_tmp;
-    real_T t96_tmp_i;
+    real_T t96_tmp_b;
     real_T t97_tmp;
-    real_T t100_tmp_ir;
+    real_T t100_tmp_k;
     real_T t101_tmp;
     real_T t108_tmp;
-    real_T t111_tmp_k;
+    real_T t111_tmp_l;
     real_T t115_tmp;
     real_T t119_tmp;
     real_T t81_tmp_tmp;
-    real_T t84_tmp_tmp_a;
-    real_T t83_tmp_tmp_m;
-    real_T t85_tmp_tmp_c;
-    real_T t96_tmp_tmp_b;
+    real_T t84_tmp_tmp_n;
+    real_T t83_tmp_tmp_p;
+    real_T t85_tmp_tmp_f;
+    real_T t96_tmp_tmp_k;
     real_T t97_tmp_tmp;
     real_T t92_tmp_tmp;
     real_T t93_tmp_tmp;
-    real_T t111_tmp_tmp_k;
+    real_T t111_tmp_tmp_e;
     real_T t108_tmp_tmp;
     real_T t115_tmp_tmp;
     real_T in3_tmp;
-    real_T in3_tmp_l;
     real_T in3_tmp_n;
+    real_T in3_tmp_o;
     real_T t119_tmp_tmp;
-    real_T in3_tmp_p;
-    real_T in3_tmp_f;
-    real_T in3_tmp_k;
-    real_T in3_tmp_e;
-    real_T in3_tmp_na;
-    real_T t92_tmp_o;
-    real_T t96_tmp_a;
-    real_T t100_tmp_b;
-    real_T t119_tmp_b;
+    real_T in3_tmp_a;
+    real_T in3_tmp_b;
+    real_T in3_tmp_ba;
     real_T in3_tmp_m;
     real_T in3_tmp_mc;
-    real_T in3_tmp_kw;
-    real_T in3_tmp_mcj;
-    real_T in3_tmp_h;
-    real_T in3_tmp_i;
+    real_T t92_tmp_k;
+    real_T t96_tmp_m;
+    real_T t100_tmp_h;
+    real_T t119_tmp_i;
     real_T in3_tmp_c;
     real_T in3_tmp_ni;
-    real_T in3_tmp_il;
-    real_T in3_tmp_o;
-    real_T in3_tmp_hy;
-    real_T in3_tmp_pj;
+    real_T in3_tmp_i;
+    real_T in3_tmp_oc;
+    real_T in3_tmp_h;
+    real_T in3_tmp_p;
     real_T in3_tmp_g;
     real_T in3_tmp_cy;
     real_T in3_tmp_gn;
-    real_T in3_tmp_b;
+    real_T in3_tmp_bb;
     real_T in3_tmp_j;
     real_T in3_tmp_ha;
     real_T in3_tmp_d;
     real_T in3_tmp_oa;
-    real_T in3_tmp_k2;
+    real_T in3_tmp_k;
     real_T in3_tmp_jw;
     real_T in3_tmp_de;
-    real_T in3_tmp_fs;
-    real_T in3_tmp_a;
-    real_T in3_tmp_eg;
+    real_T in3_tmp_f;
+    real_T in3_tmp_aq;
+    real_T in3_tmp_e;
     real_T in3_tmp_ns;
     real_T in3_tmp_ob;
     real_T in3_tmp_dk;
     real_T in3_tmp_cu;
     real_T in3_tmp_mw;
-    real_T in3_tmp_oc;
+    real_T in3_tmp_ocx;
     real_T in3_tmp_bc;
     real_T in3_tmp_ml;
     real_T in3_tmp_ii;
@@ -1549,7 +1550,7 @@ class proc_control final
     real_T in3_tmp_k4;
     real_T in3_tmp_id;
     real_T in3_tmp_eh;
-    real_T in3_tmp_ly;
+    real_T in3_tmp_l;
     real_T in3_tmp_ld;
     real_T in3_tmp_lc;
     real_T in3_tmp_obs;
@@ -1561,80 +1562,86 @@ class proc_control final
     real_T in3_tmp_cuz;
     real_T in3_tmp_ap;
     real_T in3_tmp_ms;
-    real_T t93_tmp_c;
-    real_T t97_tmp_f;
-    real_T t101_tmp_m;
-    real_T t108_tmp_k;
-    real_T t111_tmp_b;
-    real_T t115_tmp_h;
+    real_T in3_tmp_ck;
+    real_T in3_tmp_fg;
+    real_T in3_tmp_mj;
+    real_T in3_tmp_k0;
+    real_T in3_tmp_bu;
+    real_T in3_tmp_hc;
+    real_T t93_tmp_h;
+    real_T t97_tmp_h;
+    real_T t101_tmp_b;
+    real_T t108_tmp_b;
+    real_T t111_tmp_d;
+    real_T t115_tmp_j;
     real_T t896;
     real_T t897;
-    real_T t898_h;
-    real_T t899_h;
-    real_T t900_b;
+    real_T t898_d;
+    real_T t899_l;
+    real_T t900_j;
     real_T t901_b;
     real_T t897_tmp;
     real_T t896_tmp;
-    real_T t898_tmp_d;
-    real_T ct_tmp_j;
-    real_T t899_tmp_d;
-    real_T t901_tmp_l;
-    real_T ct_tmp_jk;
-    real_T t900_tmp_b;
-    real_T ct_tmp_f2;
+    real_T t898_tmp_f;
     real_T ct_tmp_po;
-    real_T ct_tmp_lr;
-    real_T ct_tmp_l1;
+    real_T t899_tmp_l;
+    real_T t901_tmp_l;
     real_T ct_tmp_i5;
-    real_T ct_tmp_ok;
+    real_T t900_tmp_o;
     real_T ct_tmp_bv;
     real_T ct_tmp_it;
     real_T ct_tmp_gv;
     real_T ct_tmp_pob;
-    real_T t898_tmp_h;
-    real_T t897_tmp_d;
-    real_T t896_tmp_f;
-    real_T t899_tmp_f;
-    real_T t901_tmp_c;
-    real_T t900_tmp_d;
-    real_T ct_tmp_ca;
-    real_T ct_tmp_bc;
-    real_T ct_tmp_pw;
-    real_T ct_tmp_hh;
-    real_T ct_tmp_tmp_e;
-    real_T ct_tmp_tmp_l;
-    real_T ct_tmp_tmp_h;
-    real_T ct_tmp_tmp_n;
+    real_T ct_tmp_h5;
+    real_T ct_tmp_dd;
+    real_T ct_tmp_fb;
+    real_T ct_tmp_fo;
+    real_T ct_tmp_c1h;
+    real_T ct_tmp_dk;
+    real_T t898_tmp_c;
+    real_T t897_tmp_b;
+    real_T t896_tmp_p;
+    real_T t899_tmp_h;
+    real_T t901_tmp_e;
+    real_T t900_tmp_l;
+    real_T ct_tmp_hg;
+    real_T ct_tmp_nt;
     real_T ct_tmp_k;
     real_T ct_tmp_bt;
-    real_T ct_tmp_oy;
-    real_T ct_tmp_ni;
-    real_T ct_tmp_fi;
-    real_T ct_tmp_gr;
+    real_T ct_tmp_tmp_o;
+    real_T ct_tmp_tmp_n;
+    real_T ct_tmp_tmp_f;
+    real_T ct_tmp_tmp_g;
     real_T ct_tmp_dm;
     real_T ct_tmp_d1;
     real_T ct_tmp_e;
     real_T ct_tmp_ce;
-    real_T ct_tmp_tmp_ar;
+    real_T ct_tmp_ar;
     real_T ct_tmp_hp;
     real_T ct_tmp_er;
     real_T ct_tmp_ne;
-    real_T ct_tmp_hg;
+    real_T ct_tmp_hgs;
     real_T ct_tmp_oc2;
+    real_T ct_tmp_tmp_fo;
+    real_T ct_tmp_k1;
+    real_T ct_tmp_ej;
+    real_T ct_tmp_iw;
+    real_T ct_tmp_o3;
+    real_T ct_tmp_jo;
     real_T t1162;
     real_T t1163;
-    real_T t1164_f;
+    real_T t1164_k;
     real_T t1459;
     real_T t1483;
     real_T t1484;
     real_T t1485;
-    real_T t1488_k;
-    real_T t1489_e;
-    real_T t1490_i;
+    real_T t1488_j;
+    real_T t1489_d;
+    real_T t1490_g;
     real_T t517;
     real_T t552;
     real_T t575;
-    real_T ct_tmp_tmp_o;
+    real_T ct_tmp_tmp_c;
     real_T t1456;
     real_T t1457;
     real_T t1458;
@@ -1643,14 +1650,8 @@ class proc_control final
     real_T t1527;
     real_T t1533;
     real_T t1533_tmp;
-    real_T t1533_tmp_j;
     real_T t1533_tmp_k;
-    real_T out1_tmp_ja;
-    real_T out1_tmp_d0;
-    real_T out1_tmp_gnz;
-    real_T out1_tmp_c5m;
-    real_T out1_tmp_kh;
-    real_T out1_tmp_jn;
+    real_T t1533_tmp_j;
     real_T out1_tmp_hc;
     real_T out1_tmp_cz;
     real_T out1_tmp_dh;
@@ -1685,7 +1686,7 @@ class proc_control final
     real_T out1_tmp_dq;
     real_T out1_tmp_dj;
     real_T out1_tmp_o0;
-    real_T out1_tmp_cf;
+    real_T out1_tmp_cfs;
     real_T out1_tmp_oz;
     real_T out1_tmp_aj;
     real_T out1_tmp_dqn;
@@ -1733,15 +1734,15 @@ class proc_control final
     real_T out1_tmp_ig;
     real_T out1_tmp_ged;
     real_T out1_tmp_efo;
-    real_T out1_tmp_tmp_ha;
-    real_T out1_tmp_tmp_gq5;
-    real_T out1_tmp_tmp_cg;
+    real_T out1_tmp_ha;
+    real_T out1_tmp_gq5;
+    real_T out1_tmp_cg;
     real_T out1_tmp_a5c;
     real_T out1_tmp_fpc;
     real_T out1_tmp_ik;
-    real_T out1_tmp_c1;
-    real_T out1_tmp_nrj;
-    real_T out1_tmp_c2;
+    real_T out1_tmp_tmp_c;
+    real_T out1_tmp_tmp_n;
+    real_T out1_tmp_tmp_c2;
     real_T out1_tmp_c4;
     real_T out1_tmp_ikw;
     real_T out1_tmp_hu;
@@ -1751,68 +1752,68 @@ class proc_control final
     real_T out1_tmp_ms;
     real_T out1_tmp_ex;
     real_T out1_tmp_ean;
-    real_T out1_tmp_il;
+    real_T out1_tmp_ilr;
     real_T out1_tmp_fw;
     real_T out1_tmp_hvb;
     real_T out1_tmp_in;
     real_T out1_tmp_pi;
-    real_T out1_tmp_aaa;
+    real_T out1_tmp_aa;
     real_T out1_tmp_fj;
     real_T out1_tmp_ddh;
     real_T out1_tmp_cu;
-    real_T out1_tmp_tmp_j1;
-    real_T out1_tmp_tmp_c30;
-    real_T out1_tmp_tmp_nw;
-    real_T out1_tmp_tmp_jf;
-    real_T out1_tmp_tmp_ks;
-    real_T out1_tmp_os;
-    real_T out1_tmp_g2;
-    real_T out1_tmp_ks;
-    real_T out1_tmp_j5b;
-    real_T out1_tmp_px1;
-    real_T out1_tmp_hw;
+    real_T out1_tmp_j1k;
+    real_T out1_tmp_c30;
     real_T out1_tmp_nw;
+    real_T out1_tmp_jfi;
+    real_T out1_tmp_ks;
+    real_T out1_tmp_os;
+    real_T out1_tmp_tmp_g2;
+    real_T out1_tmp_tmp_k;
+    real_T out1_tmp_tmp_j;
+    real_T out1_tmp_tmp_px;
+    real_T out1_tmp_tmp_hw;
+    real_T out1_tmp_nwp;
     real_T out1_tmp_bx;
     real_T out1_tmp_mt;
     real_T out1_tmp_kvt;
     real_T out1_tmp_b4;
     real_T out1_tmp_l1g;
     real_T out1_tmp_g5i;
-    real_T out1_tmp_g23;
+    real_T out1_tmp_g2;
     real_T out1_tmp_n4p;
-    real_T out1_tmp_tmp_c3d;
-    real_T out1_tmp_tmp_eo;
-    real_T out1_tmp_tmp_fb;
+    real_T out1_tmp_c3d;
+    real_T out1_tmp_eo;
+    real_T out1_tmp_fbf;
     real_T out1_tmp_k4t;
     real_T out1_tmp_cch;
     real_T out1_tmp_dt;
-    real_T out1_tmp_mzp;
-    real_T out1_tmp_jce;
-    real_T out1_tmp_cfl;
+    real_T out1_tmp_tmp_mz;
+    real_T out1_tmp_tmp_jc;
+    real_T out1_tmp_tmp_cf;
     real_T out1_tmp_d41;
     real_T out1_tmp_pd;
     real_T out1_tmp_ay;
-    real_T out1_tmp_m0;
+    real_T out1_tmp_m0c;
     real_T out1_tmp_nk;
     real_T out1_tmp_k5;
     real_T out1_tmp_pd3;
-    real_T out1_tmp_kx;
-    real_T out1_tmp_gkm;
-    real_T out1_tmp_hq;
+    real_T out1_tmp_kx5;
+    real_T out1_tmp_gk;
+    real_T out1_tmp_hqs;
     real_T out1_tmp_lds;
     real_T out1_tmp_o0o;
     real_T out1_tmp_a2;
     real_T out1_tmp_n3;
     real_T out1_tmp_ov;
-    real_T out1_tmp_tmp_da;
-    real_T out1_tmp_tmp_hk;
-    real_T out1_tmp_tmp_h4;
+    real_T out1_tmp_da;
+    real_T out1_tmp_hko;
+    real_T out1_tmp_h4;
     real_T out1_tmp_a0;
     real_T out1_tmp_kg3;
     real_T out1_tmp_jrp;
-    real_T out1_tmp_dg;
-    real_T out1_tmp_pe;
-    real_T out1_tmp_dhd;
+    real_T out1_tmp_tmp_dg;
+    real_T out1_tmp_tmp_pe;
+    real_T out1_tmp_tmp_dh;
     real_T out1_tmp_byy;
     real_T out1_tmp_oa;
     real_T out1_tmp_j45;
@@ -1824,15 +1825,15 @@ class proc_control final
     real_T out1_tmp_awu;
     real_T out1_tmp_oqc;
     real_T out1_tmp_io;
-    real_T out1_tmp_tmp_es;
-    real_T out1_tmp_tmp_a;
-    real_T out1_tmp_tmp_eu;
-    real_T out1_tmp_dz2;
-    real_T out1_tmp_lv;
+    real_T out1_tmp_esa;
+    real_T out1_tmp_azw;
+    real_T out1_tmp_eu;
+    real_T out1_tmp_dz;
+    real_T out1_tmp_lvf;
     real_T out1_tmp_if;
-    real_T out1_tmp_nkd;
-    real_T out1_tmp_cfu;
-    real_T out1_tmp_i4;
+    real_T out1_tmp_tmp_nk;
+    real_T out1_tmp_tmp_cfu;
+    real_T out1_tmp_tmp_i4;
     real_T out1_tmp_d4s;
     real_T out1_tmp_b4j;
     real_T out1_tmp_at;
@@ -1856,85 +1857,85 @@ class proc_control final
     real_T out1_tmp_nmf;
     real_T out1_tmp_c0;
     real_T out1_tmp_et;
-    real_T out1_tmp_jv;
+    real_T out1_tmp_jvh;
     real_T out1_tmp_l2;
     real_T out1_tmp_jt;
-    real_T out1_tmp_c3;
+    real_T out1_tmp_c3v;
     real_T out1_tmp_bd;
     real_T out1_tmp_i0;
     real_T out1_tmp_kzv;
     real_T out1_tmp_lo;
     real_T out1_tmp_j2h;
     real_T out1_tmp_mq;
-    real_T s_j;
+    real_T out1_tmp_jh;
+    real_T out1_tmp_euk;
+    real_T out1_tmp_dt4;
+    real_T out1_tmp_j4n;
+    real_T out1_tmp_k1b;
+    real_T out1_tmp_oc;
+    real_T s_n;
     real_T b_atmp;
-    real_T beta1_e;
-    real_T c_A_d;
-    real_T scale_j;
-    real_T absxk_k;
-    real_T t_o;
-    real_T t15_n;
-    real_T t17_b;
-    real_T t19_i;
-    real_T t23_d;
-    real_T t25_d;
-    real_T t27_p;
-    real_T t33_e;
-    real_T t34_n;
+    real_T beta1_b;
+    real_T c_A_ih;
+    real_T scale_d;
+    real_T absxk_d;
+    real_T t_p;
+    real_T t15_e;
+    real_T t17_n;
+    real_T t19_d;
+    real_T t23_m;
+    real_T t25_g;
+    real_T t27_i;
+    real_T t33_k;
+    real_T t34_i;
     real_T t35;
-    real_T t37_d;
-    real_T t38_m;
-    real_T t39_g;
+    real_T t37_mc;
+    real_T t38_j;
+    real_T t39_a;
     real_T t41_i;
-    real_T t42_k;
+    real_T t42_e;
     real_T t43_i;
-    real_T t44_m;
-    real_T t45_j;
+    real_T t44_h;
+    real_T t45_m;
     real_T t47;
     real_T t50_a;
     real_T t57;
-    real_T t58_i;
+    real_T t58_o;
     real_T t129;
     real_T t130;
     real_T t131;
     real_T t133;
     real_T t134;
     real_T t135;
-    real_T in3_tmp_ec;
-    real_T in3_tmp_ik;
-    real_T in3_tmp_hv;
-    real_T in3_tmp_mg;
-    real_T in3_tmp_a4;
-    real_T in3_tmp_of;
     real_T in3_tmp_os;
     real_T in3_tmp_nt;
-    real_T in3_tmp_k25;
-    real_T in3_tmp_tmp;
-    real_T in3_tmp_tmp_h;
+    real_T in3_tmp_k2;
+    real_T in3_tmp_hn;
     real_T in3_tmp_d4;
     real_T in3_tmp_ae;
     real_T in3_tmp_hg;
     real_T in3_tmp_cc;
     real_T in3_tmp_bv;
-    real_T in3_tmp_ch;
+    real_T in3_tmp_tmp;
+    real_T in3_tmp_tmp_c;
     real_T in3_tmp_gk;
-    real_T in3_tmp_pjd;
+    real_T in3_tmp_pj;
     real_T in3_tmp_ib;
     real_T in3_tmp_jj;
-    real_T in3_tmp_tmp_c;
-    real_T in3_tmp_tmp_ce;
+    real_T in3_tmp_ce;
+    real_T in3_tmp_ceq;
+    real_T in3_tmp_fe;
+    real_T in3_tmp_dy;
+    real_T in3_tmp_nr;
+    real_T in3_tmp_br;
     real_T in3_tmp_tmp_f;
-    real_T in3_tmp_tmp_d;
-    real_T in3_tmp_tmp_n;
-    real_T in3_tmp_tmp_b;
-    real_T in3_tmp_tmp_f0;
     real_T in3_tmp_tmp_j;
-    real_T in3_tmp_hc;
-    real_T in3_tmp_hgh;
-    real_T in3_tmp_c2;
-    real_T in3_tmp_gr;
-    real_T in3_tmp_ejx;
-    real_T in3_tmp_eq;
+    real_T in3_tmp_tmp_h;
+    real_T in3_tmp_tmp_hg;
+    real_T in3_tmp_tmp_c2;
+    real_T in3_tmp_tmp_g;
+    real_T in3_tmp_tmp_e;
+    real_T in3_tmp_tmp_eq;
     real_T in3_tmp_av;
     real_T in3_tmp_hz;
     real_T in3_tmp_gc;
@@ -1945,44 +1946,44 @@ class proc_control final
     real_T in3_tmp_e3;
     real_T in3_tmp_haj;
     real_T in3_tmp_jx;
-    real_T in3_tmp_tmp_bq;
+    real_T in3_tmp_bq;
+    real_T in3_tmp_kq;
+    real_T in3_tmp_hq;
+    real_T in3_tmp_dd;
+    real_T in3_tmp_oh;
+    real_T in3_tmp_ku;
     real_T in3_tmp_tmp_k;
-    real_T in3_tmp_tmp_hq;
-    real_T in3_tmp_tmp_dd;
     real_T in3_tmp_tmp_o;
-    real_T in3_tmp_tmp_ku;
-    real_T in3_tmp_tmp_k0;
-    real_T in3_tmp_tmp_on;
-    real_T in3_tmp_tmp_do;
+    real_T in3_tmp_tmp_d;
     real_T in3_tmp_tmp_l;
-    real_T in3_tmp_me;
-    real_T in3_tmp_oi;
-    real_T in3_tmp_at;
-    real_T in3_tmp_i2;
-    real_T in3_tmp_fi;
+    real_T in3_tmp_tmp_m;
+    real_T in3_tmp_tmp_oi;
     real_T in3_tmp_tmp_a;
+    real_T in3_tmp_tmp_i;
+    real_T in3_tmp_tmp_fi;
+    real_T in3_tmp_tmp_as;
     real_T in3_tmp_g1;
     real_T in3_tmp_k1;
-    real_T in3_tmp_tmp_l3;
-    real_T in3_tmp_tmp_e;
-    real_T in3_tmp_tmp_tmp;
-    real_T in3_tmp_tmp_eq;
+    real_T in3_tmp_l3;
+    real_T in3_tmp_eu1;
+    real_T in3_tmp_eq;
     real_T in3_tmp_tmp_ft;
     real_T in3_tmp_dw;
-    real_T in3_tmp_tmp_bc;
-    real_T in3_tmp_tmp_tmp_o;
-    real_T in3_tmp_tmp_tmp_p;
+    real_T in3_tmp_bck;
+    real_T in3_tmp_tmp_ol;
+    real_T in3_tmp_tmp_p;
+    real_T in3_tmp_tmp_tmp;
     real_T in3_tmp_tmp_lf;
-    real_T in3_tmp_do;
+    real_T in3_tmp_tmp_do;
     real_T in3_tmp_lt;
-    real_T in3_tmp_tmp_tmp_a;
+    real_T in3_tmp_tmp_ad;
     real_T in3_tmp_tmp_tmp_n;
-    real_T in3_tmp_es;
-    real_T in3_tmp_nf;
+    real_T in3_tmp_tmp_tmp_e;
+    real_T in3_tmp_tmp_n;
     real_T in3_tmp_hh;
     real_T in3_tmp_ah;
-    real_T in3_tmp_b5;
-    real_T in3_tmp_k5;
+    real_T in3_tmp_tmp_tmp_b;
+    real_T in3_tmp_tmp_tmp_k;
     real_T in3_tmp_aw;
     real_T in3_tmp_km;
     real_T in3_tmp_pa;
@@ -2001,12 +2002,12 @@ class proc_control final
     real_T in3_tmp_fr;
     real_T in3_tmp_pn;
     real_T in3_tmp_p5;
-    real_T in3_tmp_br;
-    real_T in3_tmp_k0;
-    real_T in3_tmp_mea;
+    real_T in3_tmp_br5;
+    real_T in3_tmp_k0a;
+    real_T in3_tmp_me;
     real_T in3_tmp_gko;
-    real_T in3_tmp_b5t;
-    real_T in3_tmp_ilo;
+    real_T in3_tmp_b5;
+    real_T in3_tmp_il;
     real_T in3_tmp_bs;
     real_T in3_tmp_h2;
     real_T in3_tmp_df;
@@ -2014,34 +2015,34 @@ class proc_control final
     real_T in3_tmp_dkn;
     real_T in3_tmp_pp;
     real_T in3_tmp_gs;
-    real_T ct_tmp_f3;
-    real_T ct_tmp_o2;
-    real_T ct_tmp_f4;
-    real_T ct_tmp_o3;
-    real_T ct_tmp_l0;
-    real_T ct_tmp_e3;
+    real_T in3_tmp_f3;
+    real_T in3_tmp_o2;
+    real_T in3_tmp_f4;
+    real_T in3_tmp_o32;
+    real_T in3_tmp_l0;
+    real_T in3_tmp_e3s;
     real_T ct_tmp_gn;
     real_T ct_tmp_ba;
     real_T ct_tmp_je;
     real_T ct_tmp_fp;
     real_T ct_tmp_co;
-    real_T ct_tmp_fo;
+    real_T ct_tmp_fof;
     real_T ct_tmp_bn;
     real_T ct_tmp_de;
     real_T ct_tmp_jm;
     real_T ct_tmp_oe;
     real_T ct_tmp_li;
-    real_T ct_tmp_tmp_g;
-    real_T ct_tmp_tmp_m;
-    real_T ct_tmp_tmp_gh;
-    real_T ct_tmp_tmp_an;
-    real_T ct_tmp_tmp_ey;
+    real_T ct_tmp_gj;
+    real_T ct_tmp_mc;
+    real_T ct_tmp_gh;
+    real_T ct_tmp_an;
+    real_T ct_tmp_ey;
     real_T ct_tmp_b0;
-    real_T ct_tmp_ez;
-    real_T ct_tmp_mz;
-    real_T ct_tmp_hz;
-    real_T ct_tmp_br;
-    real_T ct_tmp_dmg;
+    real_T ct_tmp_tmp_ez;
+    real_T ct_tmp_tmp_m;
+    real_T ct_tmp_tmp_h;
+    real_T ct_tmp_tmp_br;
+    real_T ct_tmp_tmp_dm;
     real_T ct_tmp_oh;
     real_T ct_tmp_kk;
     real_T ct_tmp_mr;
@@ -2052,20 +2053,20 @@ class proc_control final
     real_T ct_tmp_kg;
     real_T ct_tmp_n1;
     real_T ct_tmp_fq;
-    real_T ct_tmp_mzs;
+    real_T ct_tmp_mz;
     real_T ct_tmp_ia;
     real_T ct_tmp_ii;
     real_T ct_tmp_bl;
-    real_T ct_tmp_nt;
+    real_T ct_tmp_ntz;
     real_T ct_tmp_ir;
     real_T ct_tmp_nj;
     real_T ct_tmp_m0;
     real_T ct_tmp_pp;
-    real_T ct_tmp_k1;
+    real_T ct_tmp_k1e;
     real_T ct_tmp_p3;
     real_T ct_tmp_eq;
     real_T ct_tmp_k2;
-    real_T ct_tmp_bro;
+    real_T ct_tmp_br;
     real_T ct_tmp_lm;
     real_T ct_tmp_j1;
     real_T ct_tmp_jx;
@@ -2076,7 +2077,7 @@ class proc_control final
     real_T ct_tmp_hls;
     real_T ct_tmp_i1;
     real_T ct_tmp_jd;
-    real_T ct_tmp_a2r;
+    real_T ct_tmp_a2;
     real_T ct_tmp_jh;
     real_T ct_tmp_gc;
     real_T ct_tmp_njm;
@@ -2088,14 +2089,14 @@ class proc_control final
     real_T ct_tmp_dz;
     real_T ct_tmp_df;
     real_T ct_tmp_j4;
-    real_T ct_tmp_tmp_f;
-    real_T ct_tmp_tmp_k2;
+    real_T ct_tmp_f2;
+    real_T ct_tmp_k2k;
     real_T ct_tmp_nex;
     real_T ct_tmp_nb;
     real_T ct_tmp_ic;
     real_T ct_tmp_e4;
-    real_T ct_tmp_kj;
-    real_T ct_tmp_k3;
+    real_T ct_tmp_tmp_k;
+    real_T ct_tmp_tmp_k3;
     real_T ct_tmp_p0;
     real_T ct_tmp_kn;
     real_T ct_tmp_p1;
@@ -2104,12 +2105,12 @@ class proc_control final
     real_T ct_tmp_cc;
     real_T ct_tmp_deq;
     real_T ct_tmp_c0;
-    real_T ct_tmp_adt;
+    real_T ct_tmp_ad;
     real_T ct_tmp_icn;
     real_T ct_tmp_du;
     real_T ct_tmp_foe;
     real_T ct_tmp_nee;
-    real_T ct_tmp_gyn;
+    real_T ct_tmp_gy;
     real_T ct_tmp_of;
     real_T ct_tmp_mi;
     real_T ct_tmp_hlr;
@@ -2127,15 +2128,15 @@ class proc_control final
     real_T ct_tmp_gf;
     real_T ct_tmp_ccn;
     real_T ct_tmp_kb;
-    real_T ct_tmp_dd;
+    real_T ct_tmp_dd1;
     real_T ct_tmp_cm;
     real_T ct_tmp_knj;
     real_T ct_tmp_kl;
     real_T ct_tmp_fw;
     real_T ct_tmp_gm;
-    real_T ct_tmp_k35;
+    real_T ct_tmp_k3;
     real_T ct_tmp_nk;
-    real_T ct_tmp_pna;
+    real_T ct_tmp_pn;
     real_T ct_tmp_e2;
     real_T ct_tmp_l3;
     real_T ct_tmp_ak;
@@ -2145,11 +2146,11 @@ class proc_control final
     real_T ct_tmp_ei;
     real_T ct_tmp_nu;
     real_T ct_tmp_mzf;
-    real_T ct_tmp_bwf;
+    real_T ct_tmp_bw;
     real_T ct_tmp_nh;
     real_T ct_tmp_c4;
     real_T ct_tmp_mk;
-    real_T ct_tmp_js;
+    real_T ct_tmp_js3;
     real_T ct_tmp_hu;
     real_T ct_tmp_ct;
     real_T ct_tmp_mq;
@@ -2165,6 +2166,12 @@ class proc_control final
     real_T ct_tmp_m4;
     real_T ct_tmp_dt;
     real_T ct_tmp_ic2;
+    real_T ct_tmp_e1;
+    real_T ct_tmp_kb0;
+    real_T ct_tmp_pyr;
+    real_T ct_tmp_j3;
+    real_T ct_tmp_cq;
+    real_T ct_tmp_b2;
     real_T t3179;
     real_T t3180;
     real_T t3181;
@@ -2224,20 +2231,20 @@ class proc_control final
     real_T t3245;
     real_T t3247;
     real_T t3247_tmp;
-    real_T t3247_tmp_e;
+    real_T t3247_tmp_l;
     real_T Anq_tmp;
     real_T Anq_tmp_tmp;
-    real_T Anq_tmp_k;
-    real_T Anq_tmp_p;
-    real_T Anq_tmp_j;
-    real_T Anq_tmp_c;
-    real_T Anq_tmp_b;
-    real_T Jmv_l;
+    real_T Anq_tmp_n;
+    real_T Anq_tmp_a;
+    real_T Anq_tmp_nd;
+    real_T Anq_tmp_d;
+    real_T Anq_tmp_g;
+    real_T Jmv_f;
     real_T t2;
     real_T t3;
     real_T t4;
-    real_T t5_n;
-    real_T t6_a;
+    real_T t5_g;
+    real_T t6_l;
     real_T t7;
     real_T t8;
     real_T t9;
@@ -2245,122 +2252,122 @@ class proc_control final
     real_T t11;
     real_T t12;
     real_T t13;
-    real_T t17_n;
-    real_T t18_d;
-    real_T t19_g;
-    real_T t20_f;
-    real_T t21_g;
-    real_T t22_l;
-    real_T t23_l;
-    real_T t24_o;
-    real_T t25_k;
-    real_T t26_g;
+    real_T t17_l;
+    real_T t18_o;
+    real_T t19_k;
+    real_T t20_g;
+    real_T t21_k;
+    real_T t22_j;
+    real_T t23_k;
+    real_T t24_g;
+    real_T t25_h;
+    real_T t26_m;
     real_T t27_k;
-    real_T t28_j;
-    real_T t29_k;
-    real_T t30_g;
-    real_T t31_h;
-    real_T t32_m;
-    real_T t33_k;
+    real_T t28_cz;
+    real_T t29_h;
+    real_T t30_h;
+    real_T t31_d;
+    real_T t32_b;
+    real_T t33_p;
     real_T t34_c;
-    real_T t39_h;
-    real_T t40_h;
-    real_T t41_d;
-    real_T t42_b;
-    real_T t43_p;
-    real_T t44_c;
-    real_T t45_b;
-    real_T t55_l;
+    real_T t39_b;
+    real_T t40_l;
+    real_T t41_o;
+    real_T t42_d;
+    real_T t43_m;
+    real_T t44_n;
+    real_T t45_me;
+    real_T t55_i;
     real_T t56_o;
-    real_T t57_d;
-    real_T t58_m;
-    real_T t59_n;
-    real_T t61_m;
-    real_T t62_i;
-    real_T t65_o;
-    real_T t68_a;
-    real_T t35_k;
-    real_T t36_m;
-    real_T t37_g;
-    real_T t27_tmp_n;
+    real_T t57_a;
+    real_T t58_k;
+    real_T t59_m;
+    real_T t61_g;
+    real_T t62_n;
+    real_T t65_i;
+    real_T t68_e;
+    real_T t35_e;
+    real_T t36_b;
+    real_T t37_i;
+    real_T t27_tmp_k;
     real_T t31_tmp;
     real_T t24_tmp;
-    real_T t32_tmp_i;
-    real_T t25_tmp_e;
-    real_T rMin_e;
-    real_T Xnorm0_b;
-    real_T cMin_i;
-    real_T cVal_k;
-    real_T t_d;
+    real_T t32_tmp_d;
+    real_T t25_tmp_k;
+    real_T rMin_a;
+    real_T Xnorm0_i;
+    real_T cMin_b;
+    real_T cVal_e;
+    real_T t_l;
     real_T Linv;
     real_T atmp;
     real_T xnorm;
-    real_T scale_k;
-    real_T absxk_a;
-    real_T t_if;
-    real_T c_bs;
-    real_T d_e;
-    real_T s_l;
+    real_T scale_i;
+    real_T absxk_b;
+    real_T t_el;
+    real_T c_b;
     real_T d_i;
-    real_T s_b;
-    real_T ic_el;
-    real_T t8_b;
-    real_T t9_i;
+    real_T s_m;
+    real_T d_l;
+    real_T s_o;
+    real_T ic_nm;
+    real_T t8_i;
+    real_T t9_o;
     real_T t11_m;
-    real_T t12_l;
-    real_T t13_o;
-    real_T t14_n;
-    real_T t15_i;
-    real_T t16_o;
-    real_T t25_m;
-    real_T t29_a;
+    real_T t12_a;
+    real_T t13_c;
+    real_T t14_d;
+    real_T t15_g;
+    real_T t16_hh;
+    real_T t25_b;
+    real_T t29_d;
     real_T t31_c;
-    real_T t50_d;
+    real_T t50_h;
     real_T t53;
     real_T t54;
-    real_T t17_g;
-    real_T t18_h;
-    real_T t19_b;
-    real_T t57_ds;
+    real_T t17_f;
+    real_T t18_n;
+    real_T t19_do;
+    real_T t57_e;
     real_T t64;
-    real_T t65_c;
-    real_T t68_h;
+    real_T t65_e;
+    real_T t68_p;
     real_T t69;
-    real_T t70_f;
+    real_T t70_n;
     real_T t12_tmp;
     real_T t13_tmp;
     real_T t14_tmp;
     real_T t15_tmp;
-    real_T out1_tmp_nke;
-    real_T out1_tmp_doo;
-    real_T out1_tmp_ej;
-    real_T out1_tmp_ebl;
-    real_T out1_tmp_p5n;
-    real_T out1_tmp_nb;
     real_T out1_tmp_f4d;
     real_T out1_tmp_eg;
+    real_T out1_tmp_kfo;
+    real_T out1_tmp_f3;
+    real_T out1_tmp_k5r;
+    real_T out1_tmp_ph;
+    real_T out1_tmp_h2q;
+    real_T out1_tmp_dc;
     real_T dmin;
     real_T holdPoint;
     real_T evalPointVector_idx_0;
-    real_T normH_k;
+    real_T normH_d;
     real_T absx;
     real_T ssq;
-    real_T c_f;
+    real_T c_d;
     real_T anrm;
-    real_T absx_k;
+    real_T absx_j;
     real_T cfromc;
     real_T cfrom1;
     real_T cto1;
     real_T mul;
     real_T tst;
-    real_T p_p;
-    real_T r_h;
-    real_T s_d;
-    real_T c_d;
-    real_T b_d;
+    real_T p_a;
+    real_T r_a;
+    real_T s_a;
+    real_T c_l;
+    real_T b_i;
     real_T b_s;
     real_T b_anorm;
-    real_T e_j5;
+    real_T e_na;
     real_T sm;
     real_T df;
     real_T adf;
@@ -2368,31 +2375,31 @@ class proc_control final
     real_T ab;
     real_T acmx;
     real_T acmn;
-    real_T b_a_a;
-    real_T anrm_a;
-    real_T absx_a;
+    real_T b_a_b;
+    real_T anrm_h;
+    real_T absx_b;
     real_T ctoc;
-    real_T cfrom1_l;
-    real_T cto1_i;
-    real_T mul_n;
-    real_T tst_b;
-    real_T p_hs;
-    real_T r_b;
-    real_T s_a;
-    real_T c_bx;
+    real_T cfrom1_a;
+    real_T cto1_b;
+    real_T mul_l;
+    real_T tst_h;
+    real_T p_d;
+    real_T r_g;
+    real_T s_j;
+    real_T c_m;
     real_T b_l;
     real_T c_s;
     real_T anorm;
-    real_T e_hh;
-    real_T sm_d;
-    real_T df_g;
-    real_T adf_j;
+    real_T e_oe;
+    real_T sm_p;
+    real_T df_d;
+    real_T adf_g;
     real_T tb_m;
-    real_T ab_l;
-    real_T acmx_o;
-    real_T acmn_p;
+    real_T ab_o;
+    real_T acmx_f;
+    real_T acmn_i;
     real_T a_d;
-    real_T c_g;
+    real_T c_f;
     real_T q0_a;
     real_T q0_b;
     real_T q0_c;
@@ -2402,13 +2409,13 @@ class proc_control final
     real_T qF_c;
     real_T qF_d;
     real_T linearScaling;
-    real_T n_m;
+    real_T n_n;
     real_T dp;
     real_T ob;
     real_T oc;
     real_T od;
     real_T oa;
-    real_T ob_o;
+    real_T ob_d;
     real_T assign_temp_a_data;
     real_T assign_temp_b_data;
     real_T assign_temp_c_data;
@@ -2418,27 +2425,27 @@ class proc_control final
     real_T od_tmp;
     real_T h_idx_0;
     real_T b_idx_0;
-    real_T dp_f;
-    real_T n_i;
+    real_T dp_c;
+    real_T n_b;
+    real_T oa_b;
+    real_T ob_h;
+    real_T oc_g;
+    real_T od_c;
     real_T oa_d;
-    real_T ob_f;
-    real_T oc_n;
-    real_T od_d;
-    real_T oa_c;
-    real_T ob_b;
-    real_T assign_temp_a_data_b;
-    real_T assign_temp_b_data_h;
-    real_T assign_temp_c_data_g;
-    real_T assign_temp_d_data_c;
-    real_T ob_tmp_d;
-    real_T oc_tmp_a;
-    real_T od_tmp_h;
+    real_T ob_a;
+    real_T assign_temp_a_data_h;
+    real_T assign_temp_b_data_c;
+    real_T assign_temp_c_data_c;
+    real_T assign_temp_d_data_m;
+    real_T ob_tmp_o;
+    real_T oc_tmp_e;
+    real_T od_tmp_j;
     real_T nrmGradInf;
     real_T nrmDirInf;
     real_T beta;
     real_T qpfvalQuadExcess;
     real_T smax;
-    real_T s_c;
+    real_T s_l;
     real_T qpfvalQuadExcess_tmp;
     real_T maxConstr_new;
     real_T normDelta;
@@ -2446,136 +2453,138 @@ class proc_control final
     real_T tempMaxConstr;
     real_T constrViolation_basicX;
     real_T temp;
-    real_T smax_c;
-    real_T s_m;
+    real_T smax_n;
+    real_T s_e;
     real_T vn1;
-    real_T xnorm_o;
-    real_T a_e;
-    real_T scale_jq;
-    real_T absxk_l;
-    real_T t_n;
-    real_T temp_e;
-    real_T smax_cz;
-    real_T s_j3;
-    real_T temp_m;
-    real_T t8_e;
-    real_T t9_h;
-    real_T t10_c;
-    real_T t11_j;
-    real_T t12_a;
-    real_T t13_d;
+    real_T xnorm_c;
+    real_T a_j3;
+    real_T scale_m;
+    real_T absxk_e;
+    real_T t_h;
+    real_T temp_c;
+    real_T smax_j;
+    real_T s_ah;
+    real_T temp_d;
+    real_T t8_b;
+    real_T t9_c;
+    real_T t10_a;
+    real_T t11_i;
+    real_T t12_p;
+    real_T t13_m;
     real_T t15_b;
-    real_T t20_c;
-    real_T t33_a;
-    real_T t37_i;
-    real_T t39_p;
+    real_T t20_e;
+    real_T t33_f;
+    real_T t37_mz;
+    real_T t39_ax;
     real_T t63;
     real_T t67;
-    real_T t68_m;
-    real_T t16_b;
-    real_T t17_e;
-    real_T t18_f;
-    real_T t19_m;
-    real_T t21_a;
-    real_T t22_o;
-    real_T t23_l1;
+    real_T t68_o;
+    real_T t16_l;
+    real_T t17_p;
+    real_T t18_d;
+    real_T t19_b;
+    real_T t21_d;
+    real_T t22_d;
+    real_T t23_e;
     real_T t71;
-    real_T t80_p;
-    real_T t81_d;
-    real_T t84_b;
-    real_T t45_d;
-    real_T t55_d;
-    real_T t65_e;
-    real_T t86_l;
-    real_T t87_k;
-    real_T t56_l;
-    real_T t85_jt;
-    real_T out1_tmp_hr;
-    real_T out1_tmp_kpo;
-    real_T out1_tmp_e0;
-    real_T out1_tmp_gi;
-    real_T out1_tmp_cf3;
-    real_T out1_tmp_ob1;
-    real_T out1_tmp_lwy;
-    real_T out1_tmp_ejk;
+    real_T t80_l;
+    real_T t81_k;
+    real_T t84_l;
+    real_T t45_j;
+    real_T t55_h;
+    real_T t65_k;
+    real_T t86_e;
+    real_T t87_g;
+    real_T t56_c;
+    real_T t85_o;
+    real_T out1_tmp_lw;
+    real_T out1_tmp_ej;
     real_T out1_tmp_me;
-    real_T absx_o;
-    real_T smax_e;
-    real_T s_mr;
-    real_T smax_j;
-    real_T s_h;
-    real_T b_atmp_n;
-    real_T beta1_j;
-    real_T c_A_dx;
-    real_T scale_jx;
-    real_T absxk_kq;
-    real_T t_b;
-    real_T b_atmp_l;
-    real_T beta1_je;
-    real_T c_A_n;
-    real_T scale_g;
-    real_T absxk_d;
-    real_T t_ok;
-    real_T b_atmp_a;
-    real_T beta1_ew;
-    real_T c_A_o;
-    real_T scale_i;
-    real_T absxk_b;
-    real_T t_a;
-    real_T a_jl;
-    real_T c_a;
-    real_T tmp;
-    real_T cosa_g;
-    real_T cosc_o;
-    real_T cosb_a;
-    real_T f_idx_0;
-    real_T scale_c;
-    real_T t8_d;
-    real_T t9_d;
-    real_T t11_l;
-    real_T t12_d;
-    real_T t13_j;
-    real_T t14_k;
-    real_T t15_d;
-    real_T t16_c;
-    real_T t25_k3;
-    real_T t29_pg;
-    real_T t31_e;
-    real_T t50_i;
-    real_T t53_b;
-    real_T t54_i;
-    real_T t17_h;
-    real_T t18_d5;
-    real_T t19_gd;
-    real_T t57_m;
-    real_T t64_g;
-    real_T t65_h;
-    real_T t68_ao;
-    real_T t69_e;
-    real_T t70_i;
-    real_T t12_tmp_h;
-    real_T t13_tmp_k;
-    real_T t14_tmp_f;
-    real_T t15_tmp_l;
-    real_T out1_tmp_obm;
-    real_T b_atmp_lj;
-    real_T beta1_d;
-    real_T b_c_a;
-    real_T normDelta_j;
-    real_T solution_lambda_o;
-    real_T smax_eh;
-    real_T s_mm;
+    real_T out1_tmp_o15;
+    real_T out1_tmp_eh;
+    real_T out1_tmp_mrk;
+    real_T out1_tmp_jol;
+    real_T out1_tmp_hj;
+    real_T out1_tmp_nag;
+    real_T absx_jc;
     real_T smax_d;
-    real_T s_c5;
-    real_T y_i;
+    real_T s_jx;
+    real_T smax_k;
+    real_T s_b;
+    real_T b_atmp_l;
+    real_T beta1_j;
+    real_T c_A_n;
+    real_T scale_g0;
+    real_T absxk_do;
+    real_T t_o;
+    real_T b_atmp_a;
+    real_T beta1_e;
+    real_T c_A_o;
+    real_T scale_im;
+    real_T absxk_bv;
+    real_T t_a;
+    real_T b_atmp_j;
+    real_T beta1_a;
+    real_T c_A_gu;
+    real_T scale_o;
+    real_T absxk_a;
+    real_T t_c;
+    real_T a_dm;
+    real_T c_da;
+    real_T tmp;
+    real_T cosa_l;
+    real_T cosc_d;
+    real_T cosb_j;
+    real_T f_idx_0;
+    real_T scale_k;
+    real_T t8_d;
+    real_T t9_ce;
+    real_T t11_k;
+    real_T t12_pg;
+    real_T t13_e;
+    real_T t14_i;
+    real_T t15_bv;
+    real_T t16_i;
+    real_T t25_hh;
+    real_T t29_d5;
+    real_T t31_gd;
+    real_T t50_m;
+    real_T t53_g;
+    real_T t54_h;
+    real_T t17_a;
+    real_T t18_e;
+    real_T t19_i;
+    real_T t57_h;
+    real_T t64_k;
+    real_T t65_f;
+    real_T t68_l;
+    real_T t69_o;
+    real_T t70_l;
+    real_T t12_tmp_d;
+    real_T t13_tmp_a;
+    real_T t14_tmp_j;
+    real_T t15_tmp_o;
+    real_T out1_tmp_eht;
+    real_T b_atmp_m;
+    real_T beta1_d;
+    real_T b_atmp_c;
+    real_T beta1_i;
+    real_T b_c_k;
+    real_T normDelta_c;
+    real_T solution_lambda_f;
+    real_T smax_jn;
+    real_T s_i;
+    real_T smax_c;
+    real_T s_d;
+    real_T y_ai;
+    real_T bkj_h;
     real_T bkj_k;
-    real_T bkj_c;
-    real_T b_atmp_f;
-    real_T beta1_jn;
-    real_T c_A_ie;
-    real_T scale_c3;
-    real_T absxk_da;
-    real_T t_ai;
+    real_T b_atmp_k;
+    real_T beta1_n;
+    real_T c_A_j;
+    real_T scale_bl;
+    real_T absxk_es;
+    real_T t_m;
     real_T penaltyParamTrial;
     real_T constrViolationEq;
     real_T constrViolationIneq;
@@ -2583,137 +2592,139 @@ class proc_control final
     real_T constrViolation;
     real_T tol;
     real_T maxDiag;
-    real_T b_atmp_h;
+    real_T b_atmp_o;
     real_T tau_k;
-    real_T c_k;
-    real_T dp_n;
-    real_T n_j;
-    real_T oa_b;
-    real_T ob_e;
-    real_T oc_m;
-    real_T od_o;
-    real_T oa_k;
-    real_T ob_a;
-    real_T assign_temp_a_data_n;
+    real_T c_a;
+    real_T b_atmp_n;
+    real_T beta1_p;
+    real_T dp_d;
+    real_T n_a;
+    real_T oa_e;
+    real_T ob_m;
+    real_T oc_f;
+    real_T od_h;
+    real_T oa_bs;
+    real_T ob_f;
+    real_T assign_temp_a_data_l;
     real_T assign_temp_b_data_p;
-    real_T assign_temp_c_data_d;
-    real_T assign_temp_d_data_a;
-    real_T ob_tmp_e;
-    real_T oc_tmp_m;
-    real_T od_tmp_f;
-    real_T b_atmp_h1;
-    real_T beta1_b;
-    real_T c_A_f;
-    real_T scale_l;
-    real_T absxk_p;
-    real_T t_nt;
-    real_T nlpComplErrorTmp;
-    real_T smax_i;
-    real_T s_be;
-    real_T d31;
-    real_T temp_ev;
-    real_T b_atmp_p;
-    real_T beta1_o;
-    real_T c_A_ff;
-    real_T scale_d;
+    real_T assign_temp_c_data_n;
+    real_T assign_temp_d_data_i;
+    real_T ob_tmp_b;
+    real_T oc_tmp_ev;
+    real_T od_tmp_p;
+    real_T b_atmp_ou;
+    real_T beta1_f;
+    real_T c_A_d;
+    real_T scale_i5;
     real_T absxk_i;
-    real_T t_i4;
+    real_T t_h4;
+    real_T nlpComplErrorTmp;
+    real_T smax_f;
+    real_T s_h;
+    real_T d31;
+    real_T temp_l;
+    real_T b_atmp_g;
+    real_T beta1_l;
+    real_T c_A_m;
+    real_T scale_n;
+    real_T absxk_n;
+    real_T t_lt;
     real_T c_c;
-    real_T b_s_h;
+    real_T b_s_p;
     real_T b_temp;
     real_T roe;
     real_T absa;
     real_T absb;
-    real_T scale_f;
+    real_T scale_l;
     real_T ads;
     real_T bds;
-    real_T tol_h;
-    real_T maxDiag_l;
+    real_T tol_p;
+    real_T maxDiag_m;
     real_T denomTol;
     real_T alphaTemp;
     real_T phaseOneCorrectionP;
     real_T ratio;
-    real_T b_c_g;
-    real_T c_l;
+    real_T b_c_ck;
+    real_T c_az;
     real_T temp2;
     real_T taui;
-    real_T xnorm_m;
+    real_T xnorm_g;
     real_T tau_tmp;
-    real_T scale_n;
-    real_T absxk_n;
-    real_T t_l;
-    real_T bkj_p;
+    real_T scale_c;
+    real_T absxk_c;
+    real_T t_m0;
+    real_T bkj_b;
     real_T temp1;
-    real_T taui_l;
-    real_T xnorm_p;
-    real_T tau_tmp_m;
-    real_T scale_ck;
-    real_T absxk_az;
-    real_T t_g1;
-    real_T tol_c;
+    real_T taui_e;
+    real_T xnorm_b;
+    real_T tau_tmp_i;
+    real_T scale_lm;
+    real_T absxk_dg;
+    real_T t_f;
+    real_T tol_g;
     real_T qtb;
     real_T ctemp;
     real_T stemp;
-    real_T temp_c;
-    real_T cfromc_m;
-    real_T ctoc_b;
-    real_T cfrom1_e;
-    real_T cto1_b;
-    real_T mul_i;
-    real_T cfromc_l;
-    real_T ctoc_d;
-    real_T cfrom1_f;
-    real_T cto1_g;
-    real_T mul_l;
-    real_T ctemp_o;
-    real_T stemp_i;
-    real_T temp_d;
+    real_T temp_ld;
+    real_T cfromc_o;
+    real_T ctoc_i;
+    real_T cfrom1_d;
+    real_T cto1_a;
+    real_T mul_o;
+    real_T cfromc_i;
+    real_T ctoc_m;
+    real_T cfrom1_h;
+    real_T cto1_l;
+    real_T mul_a;
+    real_T ctemp_n;
+    real_T stemp_j;
+    real_T temp_lm;
     real_T d32;
-    real_T ssq_a;
-    real_T c_o;
-    real_T tempMaxConstr_i;
+    real_T ssq_g;
+    real_T c_mx;
+    real_T tempMaxConstr_d;
     real_T obj_maxConstrWorkspace;
-    real_T c_m;
+    real_T c_ls;
     real_T vnorm;
     real_T qnorm;
     real_T vscale_data;
-    real_T ctemp_h;
-    real_T stemp_l;
-    real_T temp_a;
-    real_T cfromc_n;
-    real_T ctoc_j;
-    real_T cfrom1_lm;
-    real_T cfromc_g;
-    real_T ctoc_m;
-    real_T cfrom1_d;
+    real_T ctemp_d;
+    real_T stemp_jx;
+    real_T temp_j;
+    real_T cfromc_f;
+    real_T ctoc_g;
+    real_T cfrom1_n;
+    real_T cfromc_e;
+    real_T ctoc_d;
+    real_T cfrom1_ay;
     real_T alpha1;
-    real_T y_ls;
-    real_T temp_dk;
-    real_T ctemp_j;
-    real_T stemp_j;
-    real_T temp_f;
+    real_T y_h;
+    real_T temp_b;
+    real_T ctemp_i;
+    real_T stemp_p;
+    real_T temp_bq;
+    real_T temp_m;
     real_T temp_g;
-    real_T temp_n;
-    real_T s_e;
-    real_T temp_d5;
-    real_T smax_a;
-    real_T s_hn;
+    real_T s_k;
+    real_T temp_gs;
+    real_T smax_p;
+    real_T s_f;
+    real_T obj_maxConstrWorkspace_h;
+    real_T c_h;
     real_T obj_maxConstrWorkspace_b;
-    real_T c_i;
-    real_T obj_maxConstrWorkspace_p;
-    real_T c_bq;
-    real_T sina_m;
-    real_T sinb_g;
+    real_T c_n;
+    real_T sina_e;
+    real_T sinb_le;
     real_T dotSY;
-    real_T c_kd;
+    real_T c_j;
     real_T delta;
-    real_T delta_g;
-    real_T scale_p;
-    real_T a_f;
-    real_T z_h;
+    real_T delta_m;
+    real_T scale_iw;
+    real_T a_b;
+    real_T z_e;
     real_T scale_h;
     real_T xloc;
-    real_T ssq_b;
+    real_T ssq_n;
     SL_Bus_std_msgs_UInt8 In1_me;      // '<S112>/In1'
     SL_Bus_std_msgs_Float32 In1_b;     // '<S123>/In1'
     SL_Bus_std_msgs_Float32 In1_hb;    // '<S134>/In1'
@@ -2721,10 +2732,11 @@ class proc_control final
     SL_Bus_sonia_common_ros2_KillStatus In1_lz;// '<S115>/In1'
     uint16_T BufferToMakeInportVirtual_Ins_e[8];
     int64_T b_value;
+    boolean_T thrustersStatus[8];      // '<S138>/MATLAB System'
     boolean_T umax_incr_flag[8];
     boolean_T umin_incr_flag[8];
-    boolean_T umax_incr_flag_n[8];
-    boolean_T umin_incr_flag_e[8];
+    boolean_T umax_incr_flag_g[8];
+    boolean_T umin_incr_flag_i[8];
     boolean_T bv3[8];
     int32_T A_size[2];
     int32_T Jm_size[2];
@@ -2748,78 +2760,78 @@ class proc_control final
     int32_T varargin_1_size[2];
     int32_T a__3_size[2];
     int32_T a__4_size[2];
-    int32_T varargin_1_size_l[2];
+    int32_T varargin_1_size_a[2];
     int32_T b_varargin_1_size[2];
-    int32_T Jx_j[2];
+    int32_T Jx_p[2];
     int32_T tmp_size_m[2];
     int32_T RLinv_size[2];
     int32_T b_D_size[2];
-    int32_T b_H_size_i[2];
+    int32_T b_H_size_k[2];
     int32_T AcRow_size[2];
-    int32_T b_H_size_b[2];
+    int32_T b_H_size_h[2];
     int32_T Q_size[2];
     int32_T b_A_size[2];
     int32_T idx[2];
-    int32_T tmp_size_e[2];
-    int32_T b_size_h[2];
+    int32_T tmp_size_b[2];
+    int32_T b_size_f[2];
     int32_T assign_temp_a_size[2];
     int32_T assign_temp_b_size[2];
     int32_T assign_temp_c_size[2];
     int32_T assign_temp_d_size[2];
-    int32_T tmp_size_n[2];
-    int32_T tmp_size_g[2];
-    int32_T tmp_size_i[2];
-    int32_T tmp_size_a[2];
-    int32_T tmp_size_p[2];
-    int32_T tmp_size_mj[2];
-    int32_T tmp_size_k[2];
-    int32_T tmp_size_h[2];
-    int32_T tmp_size_b[2];
-    int32_T tmp_size_f[2];
     int32_T tmp_size_ba[2];
-    int32_T tmp_size_ie[2];
+    int32_T tmp_size_i[2];
     int32_T tmp_size_j[2];
+    int32_T tmp_size_e[2];
+    int32_T tmp_size_k[2];
+    int32_T tmp_size_c[2];
+    int32_T tmp_size_f[2];
+    int32_T tmp_size_g[2];
+    int32_T tmp_size_h[2];
+    int32_T tmp_size_cp[2];
+    int32_T tmp_size_l[2];
+    int32_T tmp_size_jv[2];
+    int32_T tmp_size_n[2];
     rmw_qos_profile_t qos_profile;
-    int8_T b_ipiv_e[6];
-    boolean_T b_k[4];
+    int8_T b_ipiv_f[6];
+    boolean_T b_e[4];
     int16_T sizes[2];
-    int16_T sizes_c[2];
-    int16_T Jx_f[2];
+    int16_T sizes_p[2];
+    int16_T Jx_a[2];
     int16_T varargin_2[2];
-    int16_T Je_g[2];
+    int16_T Je_b[2];
     real32_T rtb_Merge2_data;
     int32_T base_index;
     int32_T ibmat;
     int32_T b_j;
     int32_T Ns;
     int32_T i;
-    int32_T i_h;
-    int32_T i_c;
-    int32_T i_l;
-    int32_T i_j;
-    int32_T i_n;
+    int32_T i_g;
+    int32_T i_f;
+    int32_T i_k;
+    int32_T i_o;
+    int32_T i_gy;
     int32_T modCoeffs_tmp;
     int32_T pny;
     int32_T nmoves;
     int32_T TotalFreeMoves;
     int32_T j;
     int32_T ioff;
-    int32_T b_j_f;
-    int32_T i_e;
-    int32_T pny_p;
+    int32_T b_j_p;
+    int32_T i_n;
+    int32_T pny_d;
     int32_T trueCount;
-    int32_T b_Ac_a;
+    int32_T b_Ac_i;
     int32_T loop_ub;
     int32_T nmoves_tmp;
     int32_T i_input_sizes_idx_1_tmp;
     int32_T s_size_idx_0;
     int32_T Mu_size_idx_0;
     int32_T Mv_aux_size_idx_0;
-    int32_T i_b;
-    int32_T loop_ub_g;
+    int32_T i_p;
+    int32_T loop_ub_e;
     int32_T i1;
-    int32_T loop_ub_f;
-    int32_T loop_ub_k;
+    int32_T loop_ub_g;
+    int32_T loop_ub_gk;
     int32_T input_sizes_idx_0;
     int32_T b_input_sizes_idx_0;
     int32_T Sum_tmp;
@@ -2829,16 +2841,16 @@ class proc_control final
     int32_T coffset;
     int32_T boffset;
     int32_T aoffset;
-    int32_T b_i;
-    int32_T i_o;
+    int32_T b_i_a;
+    int32_T i_fj;
     int32_T b_i_g;
-    int32_T b_k_p;
+    int32_T b_k;
     int32_T b_I_tmp;
-    int32_T b_I_tmp_n;
-    int32_T j_d;
-    int32_T b_k_i;
+    int32_T b_I_tmp_i;
+    int32_T j_c;
+    int32_T b_k_p;
     int32_T eint;
-    int32_T i_p;
+    int32_T i_gv;
     int32_T i2;
     int32_T mLinIneq;
     int32_T mIneq;
@@ -2847,50 +2859,50 @@ class proc_control final
     int32_T mNonlinIneq;
     int32_T k;
     int32_T ia;
-    int32_T i_ef;
+    int32_T i_j;
     int32_T WorkingSet_tmp_tmp;
     int32_T mFixed;
-    int32_T mIneq_g;
+    int32_T mIneq_n;
     int32_T mLB;
     int32_T mUB;
     int32_T mConstr;
-    int32_T mLinIneq_g;
+    int32_T mLinIneq_n;
     int32_T qpoptions_MaxIterations;
-    int32_T k_a;
-    int32_T n_f;
-    int32_T ix_g;
+    int32_T k_j;
+    int32_T n_j;
+    int32_T ix_h;
     int32_T iy;
     int32_T b_ix;
     int32_T b_iy;
     int32_T d_ix;
-    int32_T loop_ub_i;
+    int32_T loop_ub_p;
     int32_T u1;
     int32_T nVar_tmp_tmp;
     int32_T n_tmp;
     int32_T iy_tmp;
-    int32_T mLinIneq_c;
-    int32_T k_p;
-    int32_T b_tmp_g;
+    int32_T mLinIneq_p;
+    int32_T k_l;
+    int32_T b_tmp_d;
     int32_T yk;
-    int32_T i_jj;
-    int32_T i_nr;
+    int32_T i_h;
+    int32_T i_b;
     int32_T ineqRange_size_idx_1;
     int32_T kidx;
-    int32_T i2_n;
+    int32_T i2_l;
     int32_T Tries;
-    int32_T i_jd;
+    int32_T i_gym;
     int32_T i3;
-    int32_T kidx_j;
+    int32_T kidx_g;
     int32_T nA;
-    int32_T tmp_h;
+    int32_T tmp_g;
     int32_T exponent;
     int32_T b_exponent;
-    int32_T i_pw;
+    int32_T i_on;
     int32_T iSave;
-    int32_T iC_p;
-    int32_T e_j_l;
-    int32_T e_i;
-    int32_T b_s_d;
+    int32_T iC_k;
+    int32_T e_j_p;
+    int32_T e_i_p;
+    int32_T b_s_e;
     int32_T i4;
     int32_T i5;
     int32_T row;
@@ -2898,36 +2910,36 @@ class proc_control final
     int32_T col_end;
     int32_T idx_mat;
     int32_T i6;
-    int32_T loop_ub_h;
-    int32_T loop_ub_b;
+    int32_T loop_ub_k;
+    int32_T loop_ub_n;
     int32_T d_k;
-    int32_T i_lw;
-    int32_T icf_tmp_gy;
+    int32_T i_e;
+    int32_T icf_tmp_ot;
     int32_T tmp_size_idx_0;
     int32_T i7;
     int32_T i8;
-    int32_T loop_ub_gk;
-    int32_T loop_ub_gr;
-    int32_T loop_ub_o;
-    int32_T aoffset_k;
-    int32_T b_j_p;
-    int32_T b_i_p;
-    int32_T b_k_e;
-    int32_T TotalFreeMoves_k;
-    int32_T nA_n;
+    int32_T loop_ub_d;
+    int32_T loop_ub_gj;
+    int32_T loop_ub_dl;
+    int32_T aoffset_m;
+    int32_T b_j_j;
+    int32_T b_i_m;
+    int32_T b_k_d;
+    int32_T TotalFreeMoves_i;
+    int32_T nA_h;
     int32_T kDrop;
     int32_T kNext;
-    int32_T idx_e;
-    int32_T loop_ub_ot;
-    int32_T b_Ac_d;
+    int32_T idx_c;
+    int32_T loop_ub_f;
+    int32_T b_Ac_g;
     int32_T b_m;
     int32_T b_n;
-    int32_T i_j_g;
-    int32_T iC_d;
+    int32_T i_j_k;
+    int32_T iC_c;
     int32_T RLinv_idx_0_tmp;
     int32_T RLinv_idx_1_tmp;
     int32_T i_j_tmp;
-    int32_T loop_ub_m;
+    int32_T loop_ub_c;
     int32_T TL_size_idx_0;
     int32_T R_size_idx_0;
     int32_T minmana;
@@ -2936,19 +2948,19 @@ class proc_control final
     int32_T mmi;
     int32_T mmip1;
     int32_T ix0;
-    int32_T b_i_j;
-    int32_T idx_m;
-    int32_T Tries_d;
-    int32_T b_k_ij;
+    int32_T b_i_g1;
+    int32_T idx_f;
+    int32_T Tries_h;
+    int32_T b_k_e;
     int32_T b_degrees_tmp;
     int32_T emlN_tmp;
-    int32_T loop_ub_tmp_h;
+    int32_T loop_ub_tmp_i;
     int32_T idxAjj;
-    int32_T j_c;
-    int32_T ix_f;
+    int32_T j_f;
+    int32_T ix_l;
     int32_T i9;
     int32_T F_tmp;
-    int32_T e_i_g;
+    int32_T e_i_b;
     int32_T itau;
     int32_T iaii;
     int32_T lastc;
@@ -2957,136 +2969,136 @@ class proc_control final
     int32_T b_ia;
     int32_T jy;
     int32_T l1;
-    int32_T m_k;
+    int32_T m_f;
     int32_T i10;
     int32_T i11;
-    int32_T b_cn;
-    int32_T itau_c;
-    int32_T iaii_g;
+    int32_T b_ir;
+    int32_T itau_g;
+    int32_T iaii_p;
     int32_T lastv;
-    int32_T lastc_f;
-    int32_T e_he;
-    int32_T coltop_e;
-    int32_T jy_i;
-    int32_T jtot;
-    int32_T l1_f;
-    int32_T ia_l;
-    int32_T i_bk;
-    int32_T itau_f;
-    int32_T lastv_i;
-    int32_T lastc_g;
+    int32_T lastc_m;
+    int32_T e_m;
     int32_T coltop_p;
-    int32_T b_ia_m;
+    int32_T jy_j;
+    int32_T jtot;
+    int32_T l1_g;
+    int32_T ia_j;
+    int32_T i_f3;
+    int32_T itau_d;
+    int32_T lastv_a;
+    int32_T lastc_c;
+    int32_T coltop_c;
+    int32_T b_ia_i;
     int32_T nVar;
-    int32_T k_m;
+    int32_T k_e;
     int32_T idxStartIneq;
     int32_T idxEndIneq;
     int32_T idxStartIneq_tmp;
     int32_T nVarOrig;
     int32_T idx_max;
-    int32_T ix_p;
+    int32_T ix_i;
     int32_T mLBOrig;
     int32_T mFiniteLBOrig;
     int32_T mLBOrig_tmp;
-    int32_T nVar_j;
-    int32_T idx_g;
+    int32_T nVar_b;
+    int32_T idx_n;
     int32_T ixlast;
     int32_T PROBTYPE_ORIG;
-    int32_T mConstr_j;
-    int32_T idxStartIneq_f;
-    int32_T idxEndIneq_d;
+    int32_T mConstr_m;
+    int32_T idxStartIneq_i;
+    int32_T idxEndIneq_n;
     int32_T nVar_tmp;
-    int32_T idxStartIneq_tmp_a;
+    int32_T idxStartIneq_tmp_e;
     int32_T activeSetChangeID;
-    int32_T nVar_c;
+    int32_T nVar_g;
     int32_T globalActiveConstrIdx;
     int32_T idxMinLambda;
-    int32_T k_c;
+    int32_T k_jh;
     int32_T iQR0;
-    int32_T g_i;
-    int32_T nVar_e;
-    int32_T mWConstr;
+    int32_T g_a;
     int32_T nVar_i;
+    int32_T mWConstr;
+    int32_T nVar_c;
     int32_T rankQR;
     int32_T ldq;
     int32_T b_idx;
     int32_T jBcol;
     int32_T iAcol;
-    int32_T ix_b;
+    int32_T ix_lo;
     int32_T br;
-    int32_T n_n;
-    int32_T iQR0_m;
-    int32_T b_n_i;
+    int32_T n_h;
+    int32_T iQR0_i;
+    int32_T b_n_n;
     int32_T temp_tmp;
-    int32_T idx_n;
-    int32_T ix0_e;
+    int32_T idx_j;
+    int32_T ix0_k;
     int32_T iy0;
-    int32_T b_g;
-    int32_T k_j;
-    int32_T minmn_a;
+    int32_T b_ms;
+    int32_T k_i;
+    int32_T minmn_p;
     int32_T nfxd;
-    int32_T b_j_i;
+    int32_T b_j_h;
     int32_T ma_tmp;
     int32_T ma;
-    int32_T minmn_c;
+    int32_T minmn_f;
     int32_T ii_l;
     int32_T nmi;
-    int32_T mmi_h;
+    int32_T mmi_a;
     int32_T b_info;
     int32_T ip;
-    int32_T b_i_i;
-    int32_T b_j_n;
+    int32_T b_i_f;
+    int32_T b_j_c;
     int32_T kAcol;
-    int32_T b_info_j;
-    int32_T ip_k;
-    int32_T b_i_m;
-    int32_T b_j_ih;
-    int32_T kAcol_p;
-    int32_T b_i_h;
+    int32_T b_info_a;
+    int32_T ip_n;
+    int32_T b_i_fu;
+    int32_T b_j_k;
+    int32_T kAcol_h;
+    int32_T b_i_b;
     int32_T i12;
-    int32_T nVar_f;
-    int32_T mConstrMax_l;
+    int32_T nVar_iy;
+    int32_T mConstrMax_o;
     int32_T idxIneqOffset;
     int32_T idx_Aineq;
     int32_T idx_lower;
     int32_T nWIneq_old;
     int32_T nWLower_old;
     int32_T nWUpper_old;
-    int32_T ix_a;
-    int32_T iy_f;
+    int32_T ix_g;
+    int32_T iy_b;
     int32_T l;
-    int32_T idxStartIneq_c;
-    int32_T idxStartIneq_tmp_am;
-    int32_T activeSetChangeID_n;
-    int32_T nVar_fu;
-    int32_T globalActiveConstrIdx_k;
-    int32_T idxMinLambda_h;
-    int32_T k_b;
-    int32_T iQR0_i;
-    int32_T g_o;
-    int32_T nVar_g;
+    int32_T idxStartIneq_a;
+    int32_T idxStartIneq_tmp_h;
+    int32_T activeSetChangeID_g;
+    int32_T nVar_d;
+    int32_T globalActiveConstrIdx_e;
+    int32_T idxMinLambda_k;
+    int32_T k_f;
+    int32_T iQR0_n;
+    int32_T g_l;
+    int32_T nVar_a;
     int32_T nullStartIdx;
     int32_T b_mNull;
     int32_T nullStart;
     int32_T c_mNull;
     int32_T b_jjA;
-    int32_T d_ix_b;
+    int32_T d_ix_m;
     int32_T mNull_tmp;
     int32_T nullStartIdx_tmp;
     int32_T LDimSizeP1;
     int32_T A_maxDiag_idx;
     int32_T LD_diagOffset;
-    int32_T ix_ap;
-    int32_T iy0_h;
+    int32_T ix_b;
+    int32_T iy0_e;
     int32_T LDimSizeP1_g;
     int32_T subRows;
-    int32_T coffset_d;
-    int32_T boffset_e;
-    int32_T b_i_k;
-    int32_T e_f;
-    int32_T c_i_n;
-    int32_T loop_ub_l;
-    int32_T c_a5;
+    int32_T coffset_b;
+    int32_T boffset_m;
+    int32_T b_i_f1;
+    int32_T e_e;
+    int32_T c_i_d;
+    int32_T loop_ub_m;
+    int32_T c_fb;
     int32_T i13;
     int32_T i14;
     int32_T i15;
@@ -3099,129 +3111,129 @@ class proc_control final
     int32_T stride_0_1;
     int32_T stride_1_1;
     int32_T stride_2_1;
-    int32_T loop_ub_mp;
-    int32_T loop_ub_b5;
-    int32_T mc_e;
-    int32_T coffset_g;
-    int32_T boffset_b;
-    int32_T b_ml;
-    int32_T k_f;
-    int32_T b_e;
-    int32_T idxStartIneq_d;
-    int32_T idxEndIneq_m;
-    int32_T idxStartIneq_tmp_f;
+    int32_T loop_ub_h;
+    int32_T loop_ub_eo;
+    int32_T mc_f;
+    int32_T coffset_e;
+    int32_T boffset_o;
+    int32_T b_jx;
+    int32_T k_ff;
+    int32_T b_kl;
+    int32_T idxStartIneq_n;
+    int32_T idxEndIneq_f;
+    int32_T idxStartIneq_tmp_p;
     int32_T nActiveConstr;
     int32_T nFixedConstr;
-    int32_T nVar_h;
-    int32_T nDepIneq;
-    int32_T ix0_eo;
-    int32_T iy0_f;
-    int32_T d_ej;
-    int32_T nVar_tmp_tmp_o;
-    int32_T lda;
-    int32_T ii_j;
-    int32_T mmi_f;
-    int32_T i_k;
-    int32_T i16;
-    int32_T stride_0_0_n;
-    int32_T stride_1_0_f;
-    int32_T stride_2_0_p;
     int32_T nVar_i1;
+    int32_T nDepIneq;
+    int32_T ix0_kb;
+    int32_T iy0_i;
+    int32_T d_c;
+    int32_T nVar_tmp_tmp_b;
+    int32_T lda;
+    int32_T ii_k;
+    int32_T mmi_l;
+    int32_T i_by;
+    int32_T i16;
+    int32_T stride_0_0_m;
+    int32_T stride_1_0_b;
+    int32_T stride_2_0_l;
+    int32_T nVar_gi;
     int32_T mLambda;
-    int32_T idx_max_k;
-    int32_T ix_i;
+    int32_T idx_max_p;
+    int32_T ix_c;
     int32_T rankR;
     int32_T c_ix;
-    int32_T iQR0_c;
-    int32_T n_b;
-    int32_T ia_k;
-    int32_T i_l1;
-    int32_T itau_b;
-    int32_T nActiveConstr_m;
+    int32_T iQR0_m;
+    int32_T n_i;
+    int32_T ia_a;
+    int32_T i_d;
+    int32_T itau_h;
+    int32_T nActiveConstr_e;
     int32_T nFixedConstr_b;
-    int32_T nVar_l;
-    int32_T nDepIneq_g;
-    int32_T ix0_p;
-    int32_T iy0_c;
-    int32_T d_mn;
-    int32_T nVar_tmp_tmp_i;
+    int32_T nVar_cc;
+    int32_T nDepIneq_c;
+    int32_T ix0_i;
+    int32_T iy0_p;
+    int32_T d_lw;
+    int32_T nVar_tmp_tmp_n;
     int32_T pvt;
     int32_T itemp;
-    int32_T j_a;
+    int32_T j_o;
     int32_T ldw;
-    int32_T d_d;
+    int32_T d_f1;
     int32_T iyend;
-    int32_T iv_h;
+    int32_T iv_a;
     int32_T i17;
     int32_T i18;
-    int32_T aux_0_1_e;
-    int32_T aux_1_1_b;
-    int32_T stride_0_1_c;
-    int32_T stride_1_1_c;
-    int32_T loop_ub_ie;
-    int32_T coffset_p;
-    int32_T boffset_l;
+    int32_T aux_0_1_i;
+    int32_T aux_1_1_l;
+    int32_T stride_0_1_h;
+    int32_T stride_1_1_k;
+    int32_T loop_ub_nn;
+    int32_T coffset_k;
+    int32_T boffset_c;
     int32_T ia0;
-    int32_T nVar_n;
+    int32_T nVar_h;
     int32_T mWorkingFixed;
     int32_T mTotalWorkingEq;
     int32_T totalRank;
-    int32_T ix_o;
+    int32_T ix_m;
     int32_T c_tmp_tmp;
     int32_T mTotalWorkingEq_tmp;
-    int32_T c_f1;
-    int32_T m_ax;
-    int32_T l_i;
+    int32_T c_fw;
+    int32_T m_g;
+    int32_T l_d;
     int32_T lsv;
     int32_T lend;
     int32_T lendsv;
-    int32_T l_l;
-    int32_T lsv_h;
-    int32_T lend_k;
-    int32_T lendsv_n;
+    int32_T l_c;
+    int32_T lsv_n;
+    int32_T lend_n;
+    int32_T lendsv_d;
     int32_T minszA;
-    int32_T j_k;
-    int32_T i_c2;
+    int32_T j_n;
+    int32_T i_l;
     int32_T nA_tmp;
-    int32_T c_h;
-    int32_T n_mu;
-    int32_T jBcol_f;
-    int32_T idx_gj;
-    int32_T ix0_d;
-    int32_T iy0_c2;
-    int32_T b_k_n;
+    int32_T c_p;
+    int32_T n_e;
+    int32_T jBcol_o;
+    int32_T idx_p;
+    int32_T ix0_ii;
+    int32_T iy0_d;
+    int32_T b_k_b;
     int32_T idxA1j;
     int32_T idxFillStart;
     int32_T colOffsetATw;
     int32_T iAeq0;
     int32_T iATw0;
-    int32_T idx_nr;
-    int32_T f_d;
+    int32_T idx_b;
+    int32_T f_l;
     int32_T idxUpperExisting;
     int32_T offsetEq1;
-    int32_T nVar_nl;
-    int32_T b_li;
-    int32_T idx_p;
-    int32_T ix0_e5;
-    int32_T iy0_o;
-    int32_T b_p5;
-    int32_T k_i;
-    int32_T minmn_d;
-    int32_T loop_ub_bt;
-    int32_T loop_ub_b2;
+    int32_T nVar_br;
+    int32_T b_na;
+    int32_T idx_pq;
+    int32_T ix0_o;
+    int32_T iy0_pl;
+    int32_T b_h;
+    int32_T k_o;
+    int32_T minmn_b;
+    int32_T loop_ub_cy;
+    int32_T loop_ub_gi;
     int32_T U_tmp;
-    int32_T k_i_l;
+    int32_T k_i_e;
     int32_T knt;
-    int32_T coltop_b;
+    int32_T coltop_o;
     int32_T i19;
     int32_T i20;
-    int32_T aux_0_1_n;
-    int32_T aux_1_1_p;
+    int32_T aux_0_1_l;
+    int32_T aux_1_1_o;
     int32_T offsetEq2;
-    int32_T loop_ub_oh;
+    int32_T loop_ub_eoq;
     int32_T ii_tmp;
-    int32_T n_tmp_p;
-    int32_T LD_diagOffset_h;
+    int32_T n_tmp_o;
+    int32_T LD_diagOffset_l;
     uint32_T len;
     uint32_T b_q;
     uint32_T b_q_tmp;
@@ -3230,19 +3242,19 @@ class proc_control final
     SL_Bus_std_msgs_Float32 BusAssignment_ak;// '<S81>/Bus Assignment'
     int32_T B_size[1];
     int32_T isMrows_size[1];
-    int32_T tmp_size_bt[1];
-    int32_T tmp_size_c[1];
-    int32_T tmp_size_gi[1];
+    int32_T tmp_size_a[1];
+    int32_T tmp_size_bd[1];
+    int32_T tmp_size_o[1];
     int32_T Je_size[1];
     int32_T z_size[1];
     int32_T tau_size[1];
-    int32_T tmp_size_e1[1];
+    int32_T tmp_size_c1[1];
     int8_T MpcStatus;                  // '<S137>/Merge'
-    boolean_T SourceBlock_o1;          // '<S320>/SourceBlock'
-    boolean_T MATLABSystem_o3_f;       // '<S293>/MATLAB System'
-    boolean_T MATLABSystem_o3_k;       // '<S292>/MATLAB System'
+    boolean_T SourceBlock_o1;          // '<S324>/SourceBlock'
+    boolean_T MATLABSystem_o3_p;       // '<S295>/MATLAB System'
+    boolean_T MATLABSystem_o3_f;       // '<S294>/MATLAB System'
+    boolean_T MATLABSystem_o3_k;       // '<S293>/MATLAB System'
     boolean_T isMpcAlive;              // '<S139>/Data Type Conversion'
-    boolean_T thrustersStatus[8];      // '<S138>/MATLAB System'
     boolean_T SourceBlock_o1_k;        // '<S110>/SourceBlock'
     boolean_T SourceBlock_o1_e;        // '<S109>/SourceBlock'
     boolean_T SourceBlock_o1_a;        // '<S108>/SourceBlock'
@@ -3255,15 +3267,15 @@ class proc_control final
 
   // Block states (default storage) for system '<Root>'
   struct DW_proc_control_T {
-    TrajectoryManager_proc_contro_T obj;// '<S311>/MATLAB System1'
-    ProcPlannerManager_proc_contr_T obj_l;// '<S306>/MATLAB System'
+    TrajectoryManager_proc_contro_T obj;// '<S315>/MATLAB System1'
+    ProcPlannerManager_proc_contr_T obj_l;// '<S310>/MATLAB System'
     mpcManager_proc_control_T obj_k;   // '<S138>/MATLAB System'
     TrimPlant_proc_control_T obj_b;    // '<S140>/MATLAB System'
-    robotics_slcore_internal_bl_p_T obj_m;// '<S327>/Polynomial Trajectory'
+    robotics_slcore_internal_bl_p_T obj_m;// '<S331>/Polynomial Trajectory'
     OpenLoopController_proc_contr_T obj_p;// '<S142>/MATLAB System'
-    robotics_slcore_internal_bloc_T obj_p3;// '<S324>/Rotation Trajectory'
+    robotics_slcore_internal_bloc_T obj_p3;// '<S328>/Rotation Trajectory'
     AuvDifferentialEquation_proc__T obj_f;// '<S3>/MATLAB System'
-    AddPose_proc_control_T obj_fo;     // '<S311>/MATLAB System'
+    AddPose_proc_control_T obj_fo;     // '<S315>/MATLAB System'
     rosCommandManager_proc_contro_T obj_i;// '<S94>/MATLAB System'
     ros_slros2_internal_block_Cur_T obj_o3;// '<S179>/Current Time'
     ros_slros2_internal_block_Get_T obj_ju;// '<S96>/Volume'
@@ -3303,7 +3315,7 @@ class proc_control final
     ros_slros2_internal_block_Get_T obj_fk;// '<S99>/OV'
     ros_slros2_internal_block_Get_T obj_bn;// '<S99>/MVR'
     ros_slros2_internal_block_Get_T obj_iw;// '<S99>/MV'
-    ros_slros2_internal_block_Pub_T obj_oe;// '<S316>/SinkBlock'
+    ros_slros2_internal_block_Pub_T obj_oe;// '<S320>/SinkBlock'
     ros_slros2_internal_block_Pub_T obj_ni;// '<S180>/SinkBlock'
     ros_slros2_internal_block_Pub_T obj_bq;// '<S92>/SinkBlock'
     ros_slros2_internal_block_Pub_T obj_iv;// '<S90>/SinkBlock'
@@ -3316,10 +3328,11 @@ class proc_control final
     ros_slros2_internal_block_Pub_T obj_clf;// '<S25>/SinkBlock'
     ros_slros2_internal_block_Pub_T obj_ez;// '<S18>/SinkBlock'
     ros_slros2_internal_block_Pub_T obj_dv;// '<S14>/SinkBlock'
-    ros_slros2_internal_block_Sub_T obj_ha;// '<S325>/SourceBlock'
-    ros_slros2_internal_block_Sub_T obj_eh;// '<S320>/SourceBlock'
-    ros_slros2_internal_block_Sub_T obj_jb;// '<S318>/SourceBlock'
-    ros_slros2_internal_block_Sub_T obj_g;// '<S299>/SourceBlock'
+    ros_slros2_internal_block_Sub_T obj_ha;// '<S329>/SourceBlock'
+    ros_slros2_internal_block_Sub_T obj_eh;// '<S324>/SourceBlock'
+    ros_slros2_internal_block_Sub_T obj_jb;// '<S322>/SourceBlock'
+    ros_slros2_internal_block_Sub_T obj_h1;// '<S303>/SourceBlock'
+    ros_slros2_internal_block_Sub_T obj_g;// '<S301>/SourceBlock'
     ros_slros2_internal_block_Sub_T obj_if;// '<S241>/SourceBlock'
     ros_slros2_internal_block_Sub_T obj_no;// '<S240>/SourceBlock'
     ros_slros2_internal_block_Sub_T obj_du;// '<S122>/SourceBlock'
@@ -3338,7 +3351,7 @@ class proc_control final
     real_T Delay_DSTATE;               // '<S94>/Delay'
     real_T Delay_DSTATE_c[8];          // '<S250>/Delay'
     real_T Delay_DSTATE_m;             // '<S7>/Delay'
-    real_T DiscreteTimeIntegrator_DSTATE;// '<S324>/Discrete-Time Integrator'
+    real_T DiscreteTimeIntegrator_DSTATE;// '<S328>/Discrete-Time Integrator'
     real_T UD_DSTATE;                  // '<S282>/UD'
     real_T DiscreteTransferFcn_states; // '<S247>/Discrete Transfer Fcn'
     real_T Delay_DSTATE_i;             // '<S271>/Delay'
@@ -3423,8 +3436,8 @@ class proc_control final
     uint32_T state_f[2];               // '<S48>/MATLAB System'
     uint32_T state_fo[625];            // '<S48>/MATLAB System'
     uint16_T Delay_DSTATE_m0[8];       // '<S8>/Delay'
-    boolean_T Delay_DSTATE_g;          // '<S311>/Delay'
-    boolean_T DelayInput1_DSTATE;      // '<S313>/Delay Input1'
+    boolean_T Delay_DSTATE_g;          // '<S315>/Delay'
+    boolean_T DelayInput1_DSTATE;      // '<S317>/Delay Input1'
     int8_T SwitchCase_ActiveSubsystem; // '<S10>/Switch Case'
     int8_T If_ActiveSubsystem_b;       // '<S8>/If'
     int8_T SwitchCase_ActiveSubsystem_p;// '<S137>/Switch Case'
@@ -3447,7 +3460,7 @@ class proc_control final
 
   // Zero-crossing (trigger) state
   struct PrevZCX_proc_control_T {
-    ZCSigState ResettableSubsystem_Reset_ZCE;// '<S311>/Resettable Subsystem'
+    ZCSigState ResettableSubsystem_Reset_ZCE;// '<S315>/Resettable Subsystem'
   };
 
   // Parameters (default storage)
@@ -3553,13 +3566,13 @@ class proc_control final
 
     boolean_T DetectRisePositive_vinit;
                                      // Mask Parameter: DetectRisePositive_vinit
-                                        //  Referenced by: '<S313>/Delay Input1'
+                                        //  Referenced by: '<S317>/Delay Input1'
 
     SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint Out1_Y0;// Computed Parameter: Out1_Y0
-                                                                   //  Referenced by: '<S321>/Out1'
+                                                                   //  Referenced by: '<S325>/Out1'
 
     SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint Constant_Value;// Computed Parameter: Constant_Value
-                                                                      //  Referenced by: '<S320>/Constant'
+                                                                      //  Referenced by: '<S324>/Constant'
 
     SL_Bus_std_msgs_Float64MultiArray Out1_Y0_n;// Computed Parameter: Out1_Y0_n
                                                    //  Referenced by: '<S243>/Out1'
@@ -3589,10 +3602,16 @@ class proc_control final
                                                  //  Referenced by: '<S178>/Constant'
 
     SL_Bus_nav_msgs_Odometry Out1_Y0_a;// Computed Parameter: Out1_Y0_a
-                                          //  Referenced by: '<S300>/Out1'
+                                          //  Referenced by: '<S302>/Out1'
+
+    SL_Bus_nav_msgs_Odometry Out1_Y0_p;// Computed Parameter: Out1_Y0_p
+                                          //  Referenced by: '<S304>/Out1'
+
+    SL_Bus_nav_msgs_Odometry Constant_Value_m;// Computed Parameter: Constant_Value_m
+                                                 //  Referenced by: '<S303>/Constant'
 
     SL_Bus_nav_msgs_Odometry Constant_Value_ky;// Computed Parameter: Constant_Value_ky
-                                                  //  Referenced by: '<S299>/Constant'
+                                                  //  Referenced by: '<S301>/Constant'
 
     physicsConstants physicsConstants_Y0;
                                       // Computed Parameter: physicsConstants_Y0
@@ -3619,8 +3638,8 @@ class proc_control final
     SL_Bus_sonia_common_ros2_BodyVelocityDVL Constant_Value_d;// Computed Parameter: Constant_Value_d
                                                                  //  Referenced by: '<S84>/Constant'
 
-    SL_Bus_sonia_common_ros2_BodyVelocityDVL Out1_Y0_p;// Computed Parameter: Out1_Y0_p
-                                                          //  Referenced by: '<S135>/Out1'
+    SL_Bus_sonia_common_ros2_BodyVelocityDVL Out1_Y0_ps;// Computed Parameter: Out1_Y0_ps
+                                                           //  Referenced by: '<S135>/Out1'
 
     SL_Bus_sonia_common_ros2_BodyVelocityDVL Constant_Value_ep;// Computed Parameter: Constant_Value_ep
                                                                   //  Referenced by: '<S132>/Constant'
@@ -3644,10 +3663,10 @@ class proc_control final
                                                //  Referenced by: '<S5>/Out1'
 
     SL_Bus_sonia_common_ros2_Pose Out1_Y0_d0;// Computed Parameter: Out1_Y0_d0
-                                                //  Referenced by: '<S328>/Out1'
+                                                //  Referenced by: '<S332>/Out1'
 
     SL_Bus_sonia_common_ros2_Pose Constant_Value_f4;// Computed Parameter: Constant_Value_f4
-                                                       //  Referenced by: '<S325>/Constant'
+                                                       //  Referenced by: '<S329>/Constant'
 
     SL_Bus_geometry_msgs_Pose Constant_Value_o;// Computed Parameter: Constant_Value_o
                                                   //  Referenced by: '<S91>/Constant'
@@ -3659,16 +3678,16 @@ class proc_control final
                                                    //  Referenced by: '<S108>/Constant'
 
     SL_Bus_geometry_msgs_Pose Constant_Value_o1;// Computed Parameter: Constant_Value_o1
-                                                   //  Referenced by: '<S315>/Constant'
+                                                   //  Referenced by: '<S319>/Constant'
 
     struct_TOFpsJJYcOBczOpEd57stD DVLMeasurements_Y0;// Computed Parameter: DVLMeasurements_Y0
                                                         //  Referenced by: '<S246>/DVL Measurements'
 
     SL_Bus_geometry_msgs_Twist Out1_Y0_f;// Computed Parameter: Out1_Y0_f
-                                            //  Referenced by: '<S319>/Out1'
+                                            //  Referenced by: '<S323>/Out1'
 
     SL_Bus_geometry_msgs_Twist Constant_Value_oo;// Computed Parameter: Constant_Value_oo
-                                                    //  Referenced by: '<S318>/Constant'
+                                                    //  Referenced by: '<S322>/Constant'
 
     SL_Bus_geometry_msgs_Vector3 Out1_Y0_j;// Computed Parameter: Out1_Y0_j
                                               //  Referenced by: '<S56>/Out1'
@@ -3676,8 +3695,8 @@ class proc_control final
     SL_Bus_geometry_msgs_Vector3 Out1_Y0_p1;// Computed Parameter: Out1_Y0_p1
                                                //  Referenced by: '<S59>/Out1'
 
-    SL_Bus_geometry_msgs_Vector3 Constant_Value_m;// Computed Parameter: Constant_Value_m
-                                                     //  Referenced by: '<S58>/Constant'
+    SL_Bus_geometry_msgs_Vector3 Constant_Value_mc;// Computed Parameter: Constant_Value_mc
+                                                      //  Referenced by: '<S58>/Constant'
 
     SL_Bus_sonia_common_ros2_MotorPwm Constant_Value_ki;// Computed Parameter: Constant_Value_ki
                                                            //  Referenced by: '<S19>/Constant'
@@ -4380,7 +4399,13 @@ class proc_control final
     real_T Q_Value[169];               // Expression: p.Q
                                           //  Referenced by: '<S290>/Q'
 
-    real_T R4_Value[169];              // Expression: p.R{4}
+    real_T R5_Value[169];              // Expression: p.R{5}
+                                          //  Referenced by: '<S290>/R5'
+
+    real_T MeasurementFcn5Inputs_Value;// Expression: 1
+                                          //  Referenced by: '<S290>/MeasurementFcn5Inputs'
+
+    real_T R4_Value[49];               // Expression: p.R{4}
                                           //  Referenced by: '<S290>/R4'
 
     real_T MeasurementFcn4Inputs_Value;// Expression: 1
@@ -4414,59 +4439,59 @@ class proc_control final
                                                 //  Referenced by: '<S290>/DataStoreMemory - x'
 
     real_T Constant_Value_l4[7];       // Expression: [0 0 0 1 0 0 0]
-                                          //  Referenced by: '<S308>/Constant'
+                                          //  Referenced by: '<S312>/Constant'
 
     real_T Constant1_Value_hu;         // Expression: MPC.p
-                                          //  Referenced by: '<S308>/Constant1'
+                                          //  Referenced by: '<S312>/Constant1'
 
     real_T Out1_Y0_j3;                 // Computed Parameter: Out1_Y0_j3
-                                          //  Referenced by: '<S322>/Out1'
+                                          //  Referenced by: '<S326>/Out1'
 
     real_T MATLABSystem1_linearConvergence;// Expression: .25
-                                              //  Referenced by: '<S311>/MATLAB System1'
+                                              //  Referenced by: '<S315>/MATLAB System1'
 
     real_T MATLABSystem1_quaternionConverg;// Expression: .22
-                                              //  Referenced by: '<S311>/MATLAB System1'
+                                              //  Referenced by: '<S315>/MATLAB System1'
 
     real_T MATLABSystem1_TargetThreshold;// Expression: 2
-                                            //  Referenced by: '<S311>/MATLAB System1'
+                                            //  Referenced by: '<S315>/MATLAB System1'
 
     real_T linWpts_Y0;                 // Computed Parameter: linWpts_Y0
-                                          //  Referenced by: '<S323>/linWpts'
+                                          //  Referenced by: '<S327>/linWpts'
 
     real_T RotWpts_Y0;                 // Computed Parameter: RotWpts_Y0
-                                          //  Referenced by: '<S323>/RotWpts'
+                                          //  Referenced by: '<S327>/RotWpts'
 
     real_T time_Y0;                    // Computed Parameter: time_Y0
-                                          //  Referenced by: '<S323>/time'
+                                          //  Referenced by: '<S327>/time'
 
     real_T target_Y0;                  // Computed Parameter: target_Y0
-                                          //  Referenced by: '<S323>/target'
+                                          //  Referenced by: '<S327>/target'
 
     real_T Constant_Value_j55;         // Expression: 0
-                                          //  Referenced by: '<S323>/Constant'
+                                          //  Referenced by: '<S327>/Constant'
 
     real_T PolynomialTrajectory_VelocityBo[6];// Expression: zeros( 3, 2 )
-                                                 //  Referenced by: '<S327>/Polynomial Trajectory'
+                                                 //  Referenced by: '<S331>/Polynomial Trajectory'
 
     real_T Constant_Value_ht;          // Expression: 1
-                                          //  Referenced by: '<S324>/Constant'
+                                          //  Referenced by: '<S328>/Constant'
 
     real_T DiscreteTimeIntegrator_gainva_g;
                           // Computed Parameter: DiscreteTimeIntegrator_gainva_g
-                             //  Referenced by: '<S324>/Discrete-Time Integrator'
+                             //  Referenced by: '<S328>/Discrete-Time Integrator'
 
     real_T DiscreteTimeIntegrator_IC;  // Expression: 0
-                                          //  Referenced by: '<S324>/Discrete-Time Integrator'
+                                          //  Referenced by: '<S328>/Discrete-Time Integrator'
 
     real_T Constant_Value_ao;          // Expression: 0
-                                          //  Referenced by: '<S311>/Constant'
+                                          //  Referenced by: '<S315>/Constant'
 
     real_T Constant_Value_mt[13];   // Expression: [0,0,0.3,1,0,0,0,0,0,0,0,0,0]
-                                       //  Referenced by: '<S304>/Constant'
+                                       //  Referenced by: '<S308>/Constant'
 
     real_T Constant1_Value_p;          // Expression: MPC.p
-                                          //  Referenced by: '<S304>/Constant1'
+                                          //  Referenced by: '<S308>/Constant1'
 
     real_T Delay_InitialCondition_at;  // Expression: 0
                                           //  Referenced by: '<S94>/Delay'
@@ -4481,7 +4506,7 @@ class proc_control final
                                           //  Referenced by: '<S7>/Delay'
 
     real_T Gain_Gain_er;               // Expression: -1
-                                          //  Referenced by: '<S309>/Gain'
+                                          //  Referenced by: '<S313>/Gain'
 
     real_T Merge_1_InitialOutput_i;
                                   // Computed Parameter: Merge_1_InitialOutput_i
@@ -4534,16 +4559,19 @@ class proc_control final
                                                 //  Referenced by: '<S184>/Memory'
 
     boolean_T yBlockOrdering_Y0;       // Computed Parameter: yBlockOrdering_Y0
-                                          //  Referenced by: '<S292>/yBlockOrdering'
+                                          //  Referenced by: '<S293>/yBlockOrdering'
 
     boolean_T yBlockOrdering_Y0_l;    // Computed Parameter: yBlockOrdering_Y0_l
-                                         //  Referenced by: '<S293>/yBlockOrdering'
-
-    boolean_T yBlockOrdering_Y0_h;    // Computed Parameter: yBlockOrdering_Y0_h
                                          //  Referenced by: '<S294>/yBlockOrdering'
 
-    boolean_T yBlockOrdering_Y0_e;    // Computed Parameter: yBlockOrdering_Y0_e
+    boolean_T yBlockOrdering_Y0_h;    // Computed Parameter: yBlockOrdering_Y0_h
                                          //  Referenced by: '<S295>/yBlockOrdering'
+
+    boolean_T yBlockOrdering_Y0_e;    // Computed Parameter: yBlockOrdering_Y0_e
+                                         //  Referenced by: '<S296>/yBlockOrdering'
+
+    boolean_T yBlockOrdering_Y0_n;    // Computed Parameter: yBlockOrdering_Y0_n
+                                         //  Referenced by: '<S297>/yBlockOrdering'
 
     boolean_T BlockOrdering_Value;     // Expression: true()
                                           //  Referenced by: '<S290>/BlockOrdering'
@@ -4557,27 +4585,30 @@ class proc_control final
     boolean_T Enable4_Value;           // Expression: true()
                                           //  Referenced by: '<S290>/Enable4'
 
+    boolean_T Enable5_Value;           // Expression: true()
+                                          //  Referenced by: '<S290>/Enable5'
+
     boolean_T Constant2_Value_h;       // Expression: false
-                                          //  Referenced by: '<S308>/Constant2'
+                                          //  Referenced by: '<S312>/Constant2'
 
     boolean_T Constant3_Value_i;       // Expression: false
-                                          //  Referenced by: '<S308>/Constant3'
+                                          //  Referenced by: '<S312>/Constant3'
 
     boolean_T Constant_Value_pl;       // Computed Parameter: Constant_Value_pl
-                                          //  Referenced by: '<S314>/Constant'
+                                          //  Referenced by: '<S318>/Constant'
 
     boolean_T Delay_InitialCondition_az;
                                 // Computed Parameter: Delay_InitialCondition_az
-                                   //  Referenced by: '<S311>/Delay'
+                                   //  Referenced by: '<S315>/Delay'
 
     boolean_T Constant1_Value_is;      // Expression: false
-                                          //  Referenced by: '<S311>/Constant1'
+                                          //  Referenced by: '<S315>/Constant1'
 
     boolean_T Constant2_Value_a;       // Expression: false
-                                          //  Referenced by: '<S304>/Constant2'
+                                          //  Referenced by: '<S308>/Constant2'
 
     boolean_T Constant3_Value_n;       // Expression: false
-                                          //  Referenced by: '<S304>/Constant3'
+                                          //  Referenced by: '<S308>/Constant3'
 
     boolean_T Merge_2_InitialOutput;// Computed Parameter: Merge_2_InitialOutput
                                        //  Referenced by: '<S10>/Merge'
@@ -4688,12 +4719,13 @@ class proc_control final
   void proc_control_trisolve_pr351e(const real_T A[4], real_T B[26]);
   real_T proc_control_xnrm2_pr351ew(int32_T n, const real_T x[195], int32_T ix0);
   void proc_control_qr_pr351(const real_T A[195], real_T Q[195], real_T R[169]);
-  real_T proc_control_xnrm2_pr351ewp(int32_T n, const real_T x[338], int32_T ix0);
-  void proc_control_qr_pr351e(const real_T A[338], real_T Q[338], real_T R[169]);
+  real_T proc_control_xnrm2_pr351ewpk3(int32_T n, const real_T x[338], int32_T
+    ix0);
+  void proc_control_qr_pr351ewp(const real_T A[338], real_T Q[338], real_T R[169]);
   void proc_control_qrFactor(const real_T A[169], const real_T S[169], const
     real_T Ns[169], real_T b_S[169]);
-  void proc_control_trisolve_pr351ew(const real_T A[169], real_T B[169]);
-  void proc_control_trisolve_pr351ewp(const real_T A[169], real_T B[169]);
+  void proc_control_trisolve_pr351ewpk(const real_T A[169], real_T B[169]);
+  void proc_contro_trisolve_pr351ewpk3(const real_T A[169], real_T B[169]);
   void proc_control_mldivide_pr35(const real_T A[36], real_T B[48]);
   real_T proc_control_erf(real_T x);
   void proc_control_ft_3_pr(const real_T ct[1016], real_T out1[13]);
@@ -5359,6 +5391,8 @@ class proc_control final
     *obj);
   void Subscriber_setupImpl_pr351ewpk3(const ros_slros2_internal_block_Sub_T
     *obj);
+  void proc_con_Subscriber_setupImpl_n(const ros_slros2_internal_block_Sub_T
+    *obj);
   void Subscriber_setu_pr351ewpk3k4u0o(const ros_slros2_internal_block_Sub_T
     *obj);
   void pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t rmwProfile, real_T
@@ -5367,7 +5401,7 @@ class proc_control final
   void proc_contro_Publisher_setupImpl(const ros_slros2_internal_block_Pub_T
     *obj);
   void proc_cont_PolyTrajSys_setupImpl(robotics_slcore_internal_bl_p_T *obj);
-  void proc_con_Subscriber_setupImpl_k(const ros_slros2_internal_block_Sub_T
+  void proc_con_Subscriber_setupImpl_d(const ros_slros2_internal_block_Sub_T
     *obj);
   void Subscriber_setupI_pr351ewpk3k4u(const ros_slros2_internal_block_Sub_T
     *obj);
@@ -5405,9 +5439,9 @@ class proc_control final
     *obj);
   void proc_con_Subscriber_setupImpl_p(const ros_slros2_internal_block_Sub_T
     *obj);
-  void proc_con_Subscriber_setupImpl_n(const ros_slros2_internal_block_Sub_T
-    *obj);
   void proc_con_Subscriber_setupImpl_g(const ros_slros2_internal_block_Sub_T
+    *obj);
+  void proc_con_Subscriber_setupImpl_k(const ros_slros2_internal_block_Sub_T
     *obj);
   void Publisher_setupImpl_pr351ewpk3(const ros_slros2_internal_block_Pub_T *obj);
 
@@ -5719,41 +5753,42 @@ extern volatile boolean_T runModel;
 //  Block '<S290>/checkMeasurementFcn2Signals' : Unused code path elimination
 //  Block '<S290>/checkMeasurementFcn3Signals' : Unused code path elimination
 //  Block '<S290>/checkMeasurementFcn4Signals' : Unused code path elimination
+//  Block '<S290>/checkMeasurementFcn5Signals' : Unused code path elimination
 //  Block '<S290>/checkStateTransitionFcnSignals' : Unused code path elimination
 //  Block '<S250>/Display' : Unused code path elimination
 //  Block '<S251>/Scope' : Unused code path elimination
 //  Block '<S251>/Scope1' : Unused code path elimination
 //  Block '<S251>/Scope2' : Unused code path elimination
 //  Block '<S251>/Scope3' : Unused code path elimination
-//  Block '<S305>/Matrix Concatenate' : Unused code path elimination
-//  Block '<S305>/Scope' : Unused code path elimination
-//  Block '<S305>/Scope1' : Unused code path elimination
-//  Block '<S305>/Scope2' : Unused code path elimination
-//  Block '<S305>/Scope3' : Unused code path elimination
-//  Block '<S305>/Selector' : Unused code path elimination
-//  Block '<S305>/Selector1' : Unused code path elimination
-//  Block '<S305>/Selector2' : Unused code path elimination
-//  Block '<S305>/Selector3' : Unused code path elimination
-//  Block '<S305>/Selector4' : Unused code path elimination
-//  Block '<S305>/Sum' : Unused code path elimination
-//  Block '<S305>/e angular rates' : Unused code path elimination
-//  Block '<S305>/e position' : Unused code path elimination
-//  Block '<S305>/e quaternion' : Unused code path elimination
-//  Block '<S305>/e velocity' : Unused code path elimination
+//  Block '<S309>/Matrix Concatenate' : Unused code path elimination
 //  Block '<S309>/Scope' : Unused code path elimination
-//  Block '<S323>/Display' : Unused code path elimination
-//  Block '<S323>/Selector3' : Unused code path elimination
-//  Block '<S311>/Scope' : Unused code path elimination
-//  Block '<S326>/Constant1' : Unused code path elimination
-//  Block '<S326>/Constant2' : Unused code path elimination
-//  Block '<S326>/Constant3' : Unused code path elimination
-//  Block '<S326>/Constant4' : Unused code path elimination
-//  Block '<S326>/Constant5' : Unused code path elimination
-//  Block '<S326>/Constant6' : Unused code path elimination
-//  Block '<S326>/Frame' : Unused code path elimination
-//  Block '<S326>/fine' : Unused code path elimination
-//  Block '<S326>/speed' : Unused code path elimination
-//  Block '<S326>/speed1' : Unused code path elimination
+//  Block '<S309>/Scope1' : Unused code path elimination
+//  Block '<S309>/Scope2' : Unused code path elimination
+//  Block '<S309>/Scope3' : Unused code path elimination
+//  Block '<S309>/Selector' : Unused code path elimination
+//  Block '<S309>/Selector1' : Unused code path elimination
+//  Block '<S309>/Selector2' : Unused code path elimination
+//  Block '<S309>/Selector3' : Unused code path elimination
+//  Block '<S309>/Selector4' : Unused code path elimination
+//  Block '<S309>/Sum' : Unused code path elimination
+//  Block '<S309>/e angular rates' : Unused code path elimination
+//  Block '<S309>/e position' : Unused code path elimination
+//  Block '<S309>/e quaternion' : Unused code path elimination
+//  Block '<S309>/e velocity' : Unused code path elimination
+//  Block '<S313>/Scope' : Unused code path elimination
+//  Block '<S327>/Display' : Unused code path elimination
+//  Block '<S327>/Selector3' : Unused code path elimination
+//  Block '<S315>/Scope' : Unused code path elimination
+//  Block '<S330>/Constant1' : Unused code path elimination
+//  Block '<S330>/Constant2' : Unused code path elimination
+//  Block '<S330>/Constant3' : Unused code path elimination
+//  Block '<S330>/Constant4' : Unused code path elimination
+//  Block '<S330>/Constant5' : Unused code path elimination
+//  Block '<S330>/Constant6' : Unused code path elimination
+//  Block '<S330>/Frame' : Unused code path elimination
+//  Block '<S330>/fine' : Unused code path elimination
+//  Block '<S330>/speed' : Unused code path elimination
+//  Block '<S330>/speed1' : Unused code path elimination
 //  Block '<S81>/Zero-Order Hold' : Eliminated since input and output rates are identical
 //  Block '<S7>/Zero-Order Hold' : Eliminated since input and output rates are identical
 //  Block '<S148>/Reshape' : Reshape block reduction
@@ -5792,19 +5827,23 @@ extern volatile boolean_T runModel;
 //  Block '<S290>/DataTypeConversion_Enable1' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_Enable3' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_Enable4' : Eliminate redundant data type conversion
+//  Block '<S290>/DataTypeConversion_Enable5' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_Q' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_R1' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_R2' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_R3' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_R4' : Eliminate redundant data type conversion
+//  Block '<S290>/DataTypeConversion_R5' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_uMeas1' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_uMeas2' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_uMeas3' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_uMeas4' : Eliminate redundant data type conversion
+//  Block '<S290>/DataTypeConversion_uMeas5' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_y1' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_y2' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_y3' : Eliminate redundant data type conversion
 //  Block '<S290>/DataTypeConversion_y4' : Eliminate redundant data type conversion
+//  Block '<S290>/DataTypeConversion_y5' : Eliminate redundant data type conversion
 //  Block '<S248>/Zero-Order Hold' : Eliminated since input and output rates are identical
 //  Block '<S248>/Zero-Order Hold1' : Eliminated since input and output rates are identical
 //  Block '<S250>/Reshape' : Reshape block reduction
@@ -6116,43 +6155,47 @@ extern volatile boolean_T runModel;
 //  '<S289>' : 'proc_control/Subsystem ProcNav/Depth Measurements/Quaternion Rotation/Quaternion Normalize/Quaternion Modulus/Quaternion Norm'
 //  '<S290>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter'
 //  '<S291>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem'
-//  '<S292>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct1'
-//  '<S293>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct2'
-//  '<S294>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct3'
-//  '<S295>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct4'
-//  '<S296>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Output'
-//  '<S297>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Predict'
-//  '<S298>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Output/MATLAB Function'
-//  '<S299>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe'
-//  '<S300>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe/Enabled Subsystem'
-//  '<S301>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse'
-//  '<S302>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse/Quaternion Conjugate'
-//  '<S303>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse/Quaternion Norm'
-//  '<S304>' : 'proc_control/Subsystem Trajectory/IDLE'
-//  '<S305>' : 'proc_control/Subsystem Trajectory/Performance Graph'
-//  '<S306>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory'
-//  '<S307>' : 'proc_control/Subsystem Trajectory/Send Current Target'
-//  '<S308>' : 'proc_control/Subsystem Trajectory/SpaceNav'
-//  '<S309>' : 'proc_control/Subsystem Trajectory/Subsystem'
-//  '<S310>' : 'proc_control/Subsystem Trajectory/Subsystem1'
-//  '<S311>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only'
-//  '<S312>' : 'proc_control/Subsystem Trajectory/IDLE/MATLAB Function'
-//  '<S313>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory/Detect Rise Positive'
-//  '<S314>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory/Detect Rise Positive/Positive'
-//  '<S315>' : 'proc_control/Subsystem Trajectory/Send Current Target/Blank Message'
-//  '<S316>' : 'proc_control/Subsystem Trajectory/Send Current Target/Publish'
-//  '<S317>' : 'proc_control/Subsystem Trajectory/SpaceNav/MATLAB Function'
-//  '<S318>' : 'proc_control/Subsystem Trajectory/Subsystem/Subscribe'
-//  '<S319>' : 'proc_control/Subsystem Trajectory/Subsystem/Subscribe/Enabled Subsystem'
-//  '<S320>' : 'proc_control/Subsystem Trajectory/Subsystem1/Subscribe'
-//  '<S321>' : 'proc_control/Subsystem Trajectory/Subsystem1/Subscribe/Enabled Subsystem'
-//  '<S322>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Enabled Subsystem'
-//  '<S323>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Pre-traitement'
-//  '<S324>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Resettable Subsystem'
-//  '<S325>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe'
-//  '<S326>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subsystem'
-//  '<S327>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Resettable Subsystem/Subsystem'
-//  '<S328>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe/Enabled Subsystem'
+//  '<S292>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem1'
+//  '<S293>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct1'
+//  '<S294>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct2'
+//  '<S295>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct3'
+//  '<S296>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct4'
+//  '<S297>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Correct5'
+//  '<S298>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Output'
+//  '<S299>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Predict'
+//  '<S300>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Extended Kalman Filter/Output/MATLAB Function'
+//  '<S301>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe'
+//  '<S302>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe/Enabled Subsystem'
+//  '<S303>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem1/Subscribe'
+//  '<S304>' : 'proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem1/Subscribe/Enabled Subsystem'
+//  '<S305>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse'
+//  '<S306>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse/Quaternion Conjugate'
+//  '<S307>' : 'proc_control/Subsystem ProcNav/mux2Bus/Quaternion Inverse/Quaternion Norm'
+//  '<S308>' : 'proc_control/Subsystem Trajectory/IDLE'
+//  '<S309>' : 'proc_control/Subsystem Trajectory/Performance Graph'
+//  '<S310>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory'
+//  '<S311>' : 'proc_control/Subsystem Trajectory/Send Current Target'
+//  '<S312>' : 'proc_control/Subsystem Trajectory/SpaceNav'
+//  '<S313>' : 'proc_control/Subsystem Trajectory/Subsystem'
+//  '<S314>' : 'proc_control/Subsystem Trajectory/Subsystem1'
+//  '<S315>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only'
+//  '<S316>' : 'proc_control/Subsystem Trajectory/IDLE/MATLAB Function'
+//  '<S317>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory/Detect Rise Positive'
+//  '<S318>' : 'proc_control/Subsystem Trajectory/ProcPlanner Trajectory/Detect Rise Positive/Positive'
+//  '<S319>' : 'proc_control/Subsystem Trajectory/Send Current Target/Blank Message'
+//  '<S320>' : 'proc_control/Subsystem Trajectory/Send Current Target/Publish'
+//  '<S321>' : 'proc_control/Subsystem Trajectory/SpaceNav/MATLAB Function'
+//  '<S322>' : 'proc_control/Subsystem Trajectory/Subsystem/Subscribe'
+//  '<S323>' : 'proc_control/Subsystem Trajectory/Subsystem/Subscribe/Enabled Subsystem'
+//  '<S324>' : 'proc_control/Subsystem Trajectory/Subsystem1/Subscribe'
+//  '<S325>' : 'proc_control/Subsystem Trajectory/Subsystem1/Subscribe/Enabled Subsystem'
+//  '<S326>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Enabled Subsystem'
+//  '<S327>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Pre-traitement'
+//  '<S328>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Resettable Subsystem'
+//  '<S329>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe'
+//  '<S330>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subsystem'
+//  '<S331>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Resettable Subsystem/Subsystem'
+//  '<S332>' : 'proc_control/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe/Enabled Subsystem'
 
 #endif                                 // proc_control_h_
 
