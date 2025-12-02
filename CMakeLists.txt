@@ -27,6 +27,7 @@ find_package( sensor_msgs REQUIRED)
 find_package( sonia_common_ros2 REQUIRED)
 find_package( std_msgs REQUIRED)
 find_package( trajectory_msgs REQUIRED)
+find_package( visualization_msgs REQUIRED)
 include_directories("include/proc_control")
 set (CMAKE_SKIP_BUILD_RPATH false)
 set (CMAKE_BUILD_WITH_INSTALL_RPATH true)
@@ -107,6 +108,7 @@ ament_target_dependencies(
   "sonia_common_ros2"
   "std_msgs"
   "trajectory_msgs"
+  "visualization_msgs"
 )
 target_include_directories(proc_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
