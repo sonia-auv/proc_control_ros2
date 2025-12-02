@@ -15,10 +15,11 @@
   <depend>sonia_common_ros2</depend>
   <depend>std_msgs</depend>
   <depend>trajectory_msgs</depend>
+  <depend>visualization_msgs</depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>
 </package>
-<!-- Generated on Sun Nov 30 18:44:31 2025 -->
+<!-- Generated on Tue Dec 02 01:29:58 2025 -->

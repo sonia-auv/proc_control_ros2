@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.6
+// Model version                  : 2.31
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sun Nov 30 18:44:22 2025
+// C/C++ source code generated on : Tue Dec 02 01:29:48 2025
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -47,6 +47,7 @@ class proc_control;
 #include "std_msgs/msg/int16_multi_array.hpp"
 #include "std_msgs/msg/u_int8.hpp"
 #include "trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp"
+#include "visualization_msgs/msg/marker_array.hpp"
 namespace ros2 {
 namespace matlab {
   //Semaphore using std::CV and std::mutex

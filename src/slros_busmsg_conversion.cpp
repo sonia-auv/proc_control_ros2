@@ -222,6 +222,27 @@ void convertToBus(SL_Bus_nav_msgs_Odometry* busPtr, const nav_msgs::msg::Odometr
 }
 
 
+// Conversions between SL_Bus_sensor_msgs_CompressedImage and sensor_msgs::msg::CompressedImage
+
+void convertFromBus(sensor_msgs::msg::CompressedImage& msgPtr, SL_Bus_sensor_msgs_CompressedImage const* busPtr)
+{
+  const std::string rosMessageType("sensor_msgs/CompressedImage");
+
+  convertFromBusVariablePrimitiveArray(msgPtr.data, busPtr->data, busPtr->data_SL_Info);
+  convertFromBusVariablePrimitiveArray(msgPtr.format, busPtr->format, busPtr->format_SL_Info);
+  convertFromBus(msgPtr.header, &busPtr->header);
+}
+
+void convertToBus(SL_Bus_sensor_msgs_CompressedImage* busPtr, const sensor_msgs::msg::CompressedImage& msgPtr)
+{
+  const std::string rosMessageType("sensor_msgs/CompressedImage");
+
+  convertToBusVariablePrimitiveArray(busPtr->data, busPtr->data_SL_Info, msgPtr.data, slros::EnabledWarning(rosMessageType, "data"));
+  convertToBusVariablePrimitiveArray(busPtr->format, busPtr->format_SL_Info, msgPtr.format, slros::EnabledWarning(rosMessageType, "format"));
+  convertToBus(&busPtr->header, msgPtr.header);
+}
+
+
 // Conversions between SL_Bus_sensor_msgs_Imu and sensor_msgs::msg::Imu
 
 void convertFromBus(sensor_msgs::msg::Imu& msgPtr, SL_Bus_sensor_msgs_Imu const* busPtr)
@@ -430,6 +451,29 @@ void convertToBus(SL_Bus_std_msgs_Bool* busPtr, const std_msgs::msg::Bool& msgPt
 }
 
 
+// Conversions between SL_Bus_std_msgs_ColorRGBA and std_msgs::msg::ColorRGBA
+
+void convertFromBus(std_msgs::msg::ColorRGBA& msgPtr, SL_Bus_std_msgs_ColorRGBA const* busPtr)
+{
+  const std::string rosMessageType("std_msgs/ColorRGBA");
+
+  msgPtr.a =  busPtr->a;
+  msgPtr.b =  busPtr->b;
+  msgPtr.g =  busPtr->g;
+  msgPtr.r =  busPtr->r;
+}
+
+void convertToBus(SL_Bus_std_msgs_ColorRGBA* busPtr, const std_msgs::msg::ColorRGBA& msgPtr)
+{
+  const std::string rosMessageType("std_msgs/ColorRGBA");
+
+  busPtr->a =  msgPtr.a;
+  busPtr->b =  msgPtr.b;
+  busPtr->g =  msgPtr.g;
+  busPtr->r =  msgPtr.r;
+}
+
+
 // Conversions between SL_Bus_std_msgs_Float32 and std_msgs::msg::Float32
 
 void convertFromBus(std_msgs::msg::Float32& msgPtr, SL_Bus_std_msgs_Float32 const* busPtr)
@@ -581,5 +625,113 @@ void convertToBus(SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint* busPtr, c
   convertToBus(&busPtr->time_from_start, msgPtr.time_from_start);
   convertToBusVariableNestedArray(busPtr->transforms, busPtr->transforms_SL_Info, msgPtr.transforms, slros::EnabledWarning(rosMessageType, "transforms"));
   convertToBusVariableNestedArray(busPtr->velocities, busPtr->velocities_SL_Info, msgPtr.velocities, slros::EnabledWarning(rosMessageType, "velocities"));
+}
+
+
+// Conversions between SL_Bus_visualization_msgs_Marker and visualization_msgs::msg::Marker
+
+void convertFromBus(visualization_msgs::msg::Marker& msgPtr, SL_Bus_visualization_msgs_Marker const* busPtr)
+{
+  const std::string rosMessageType("visualization_msgs/Marker");
+
+  msgPtr.action =  busPtr->action;
+  convertFromBus(msgPtr.color, &busPtr->color);
+  convertFromBusVariableNestedArray(msgPtr.colors, busPtr->colors, busPtr->colors_SL_Info);
+  msgPtr.frame_locked =  busPtr->frame_locked;
+  convertFromBus(msgPtr.header, &busPtr->header);
+  msgPtr.id =  busPtr->id;
+  convertFromBus(msgPtr.lifetime, &busPtr->lifetime);
+  convertFromBus(msgPtr.mesh_file, &busPtr->mesh_file);
+  convertFromBusVariablePrimitiveArray(msgPtr.mesh_resource, busPtr->mesh_resource, busPtr->mesh_resource_SL_Info);
+  msgPtr.mesh_use_embedded_materials =  busPtr->mesh_use_embedded_materials;
+  convertFromBusVariablePrimitiveArray(msgPtr.ns, busPtr->ns, busPtr->ns_SL_Info);
+  convertFromBusVariableNestedArray(msgPtr.points, busPtr->points, busPtr->points_SL_Info);
+  convertFromBus(msgPtr.pose, &busPtr->pose);
+  convertFromBus(msgPtr.scale, &busPtr->scale);
+  convertFromBusVariablePrimitiveArray(msgPtr.text, busPtr->text, busPtr->text_SL_Info);
+  convertFromBus(msgPtr.texture, &busPtr->texture);
+  convertFromBusVariablePrimitiveArray(msgPtr.texture_resource, busPtr->texture_resource, busPtr->texture_resource_SL_Info);
+  msgPtr.type =  busPtr->type;
+  convertFromBusVariableNestedArray(msgPtr.uv_coordinates, busPtr->uv_coordinates, busPtr->uv_coordinates_SL_Info);
+}
+
+void convertToBus(SL_Bus_visualization_msgs_Marker* busPtr, const visualization_msgs::msg::Marker& msgPtr)
+{
+  const std::string rosMessageType("visualization_msgs/Marker");
+
+  busPtr->action =  msgPtr.action;
+  convertToBus(&busPtr->color, msgPtr.color);
+  convertToBusVariableNestedArray(busPtr->colors, busPtr->colors_SL_Info, msgPtr.colors, slros::EnabledWarning(rosMessageType, "colors"));
+  busPtr->frame_locked =  msgPtr.frame_locked;
+  convertToBus(&busPtr->header, msgPtr.header);
+  busPtr->id =  msgPtr.id;
+  convertToBus(&busPtr->lifetime, msgPtr.lifetime);
+  convertToBus(&busPtr->mesh_file, msgPtr.mesh_file);
+  convertToBusVariablePrimitiveArray(busPtr->mesh_resource, busPtr->mesh_resource_SL_Info, msgPtr.mesh_resource, slros::EnabledWarning(rosMessageType, "mesh_resource"));
+  busPtr->mesh_use_embedded_materials =  msgPtr.mesh_use_embedded_materials;
+  convertToBusVariablePrimitiveArray(busPtr->ns, busPtr->ns_SL_Info, msgPtr.ns, slros::EnabledWarning(rosMessageType, "ns"));
+  convertToBusVariableNestedArray(busPtr->points, busPtr->points_SL_Info, msgPtr.points, slros::EnabledWarning(rosMessageType, "points"));
+  convertToBus(&busPtr->pose, msgPtr.pose);
+  convertToBus(&busPtr->scale, msgPtr.scale);
+  convertToBusVariablePrimitiveArray(busPtr->text, busPtr->text_SL_Info, msgPtr.text, slros::EnabledWarning(rosMessageType, "text"));
+  convertToBus(&busPtr->texture, msgPtr.texture);
+  convertToBusVariablePrimitiveArray(busPtr->texture_resource, busPtr->texture_resource_SL_Info, msgPtr.texture_resource, slros::EnabledWarning(rosMessageType, "texture_resource"));
+  busPtr->type =  msgPtr.type;
+  convertToBusVariableNestedArray(busPtr->uv_coordinates, busPtr->uv_coordinates_SL_Info, msgPtr.uv_coordinates, slros::EnabledWarning(rosMessageType, "uv_coordinates"));
+}
+
+
+// Conversions between SL_Bus_visualization_msgs_MarkerArray and visualization_msgs::msg::MarkerArray
+
+void convertFromBus(visualization_msgs::msg::MarkerArray& msgPtr, SL_Bus_visualization_msgs_MarkerArray const* busPtr)
+{
+  const std::string rosMessageType("visualization_msgs/MarkerArray");
+
+  convertFromBusVariableNestedArray(msgPtr.markers, busPtr->markers, busPtr->markers_SL_Info);
+}
+
+void convertToBus(SL_Bus_visualization_msgs_MarkerArray* busPtr, const visualization_msgs::msg::MarkerArray& msgPtr)
+{
+  const std::string rosMessageType("visualization_msgs/MarkerArray");
+
+  convertToBusVariableNestedArray(busPtr->markers, busPtr->markers_SL_Info, msgPtr.markers, slros::EnabledWarning(rosMessageType, "markers"));
+}
+
+
+// Conversions between SL_Bus_visualization_msgs_MeshFile and visualization_msgs::msg::MeshFile
+
+void convertFromBus(visualization_msgs::msg::MeshFile& msgPtr, SL_Bus_visualization_msgs_MeshFile const* busPtr)
+{
+  const std::string rosMessageType("visualization_msgs/MeshFile");
+
+  convertFromBusVariablePrimitiveArray(msgPtr.data, busPtr->data, busPtr->data_SL_Info);
+  convertFromBusVariablePrimitiveArray(msgPtr.filename, busPtr->filename, busPtr->filename_SL_Info);
+}
+
+void convertToBus(SL_Bus_visualization_msgs_MeshFile* busPtr, const visualization_msgs::msg::MeshFile& msgPtr)
+{
+  const std::string rosMessageType("visualization_msgs/MeshFile");
+
+  convertToBusVariablePrimitiveArray(busPtr->data, busPtr->data_SL_Info, msgPtr.data, slros::EnabledWarning(rosMessageType, "data"));
+  convertToBusVariablePrimitiveArray(busPtr->filename, busPtr->filename_SL_Info, msgPtr.filename, slros::EnabledWarning(rosMessageType, "filename"));
+}
+
+
+// Conversions between SL_Bus_visualization_msgs_UVCoordinate and visualization_msgs::msg::UVCoordinate
+
+void convertFromBus(visualization_msgs::msg::UVCoordinate& msgPtr, SL_Bus_visualization_msgs_UVCoordinate const* busPtr)
+{
+  const std::string rosMessageType("visualization_msgs/UVCoordinate");
+
+  msgPtr.u =  busPtr->u;
+  msgPtr.v =  busPtr->v;
+}
+
+void convertToBus(SL_Bus_visualization_msgs_UVCoordinate* busPtr, const visualization_msgs::msg::UVCoordinate& msgPtr)
+{
+  const std::string rosMessageType("visualization_msgs/UVCoordinate");
+
+  busPtr->u =  msgPtr.u;
+  busPtr->v =  msgPtr.v;
 }
 

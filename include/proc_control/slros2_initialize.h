@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 30-Nov-2025 18:44:21
+// Generated 02-Dec-2025 01:29:46
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -63,6 +63,10 @@ extern SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
+// proc_control/Subsystem ProcNav/SLAM Measurements/Subsystem/Publish
+extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_1672;
+// proc_control/Subsystem ProcNav/SLAM Measurements/Subsystem1/Publish
+extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_1681;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 extern SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -91,14 +95,16 @@ extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_pr
 extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
 // proc_control/Sensors Input/Simulation/proc_simulation imu_info
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
+// proc_control/Sensors Input/Subscribe
+extern SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_209_1529;
+// proc_control/Sensors Input/Subscribe1
+extern SimulinkSubscriber<visualization_msgs::msg::MarkerArray,SL_Bus_visualization_msgs_MarkerArray> Sub_proc_control_209_1530;
+// proc_control/Sensors Input/Subscribe2
+extern SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_209_1531;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe
 extern SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
 extern SimulinkSubscriber<std_msgs::msg::Float64MultiArray,SL_Bus_std_msgs_Float64MultiArray> Sub_proc_control_781;
-// proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem/Subscribe
-extern SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_1492;
-// proc_control/Subsystem ProcNav/Enabled Subsystem/Subsystem1/Subscribe
-extern SimulinkSubscriber<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Sub_proc_control_1501;
 // proc_control/Subsystem Trajectory/Subsystem/Subscribe
 extern SimulinkSubscriber<geometry_msgs::msg::Twist,SL_Bus_geometry_msgs_Twist> Sub_proc_control_532;
 // proc_control/Subsystem Trajectory/Subsystem1/Subscribe

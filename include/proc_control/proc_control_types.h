@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.6
+// Model version                  : 2.31
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sun Nov 30 18:43:51 2025
+// C/C++ source code generated on : Tue Dec  2 01:29:15 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -20,6 +20,17 @@
 #define proc_control_types_h_
 #include "rtwtypes.h"
 #include "coder_bounded_array.h"
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
+
+// MsgType=std_msgs/Bool
+struct SL_Bus_std_msgs_Bool
+{
+  boolean_T data;
+};
+
+#endif
+
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 
@@ -28,142 +39,6 @@ struct SL_Bus_builtin_interfaces_Time
 {
   int32_T sec;
   uint32_T nanosec;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_Default_
-#define DEFINED_TYPEDEF_FOR_Default_
-
-struct Default
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C10_
-#define DEFINED_TYPEDEF_FOR_C10_
-
-struct C10
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C11_
-#define DEFINED_TYPEDEF_FOR_C11_
-
-struct C11
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_C19_
-#define DEFINED_TYPEDEF_FOR_C19_
-
-struct C19
-{
-  real_T OV[13];
-  real_T MV[8];
-  real_T MVR[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
-#define DEFINED_TYPEDEF_FOR_NoDvl_
-
-struct NoDvl
-{
-  real_T MV[8];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_Gains_
-#define DEFINED_TYPEDEF_FOR_Gains_
-
-struct Gains
-{
-  Default predefined;
-  C10 c10;
-  C11 c11;
-  C19 c19;
-  NoDvl noDvl;
-  real_T p;
-  real_T m;
-  real_T tmax;
-  real_T tmin;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
-#define DEFINED_TYPEDEF_FOR_TargetReached_
-
-struct TargetReached
-{
-  real_T linearTol;
-  real_T angularTol;
-  real_T timeInTol;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
-#define DEFINED_TYPEDEF_FOR_mpcParams_
-
-struct mpcParams
-{
-  Gains gains;
-  TargetReached targetReached;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
-#define DEFINED_TYPEDEF_FOR_physicsConstants_
-
-struct physicsConstants
-{
-  real_T rho;
-  real_T g;
-  real_T mass;
-  real_T volume;
-  real_T sub_height;
-  real_T rg[3];
-  real_T rb[3];
-  real_T cdl[6];
-  real_T cdq[6];
-  real_T added_mass[6];
-  real_T I[9];
-  real_T depth_pose[3];
-  real_T hydro_pose[3];
-  real_T sonar_pose[3];
-  real_T dvl_rotation[3];
-  real_T thrusters[48];
-  real_T dvl_lost_override;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
-
-// MsgType=std_msgs/Bool
-struct SL_Bus_std_msgs_Bool
-{
-  boolean_T data;
 };
 
 #endif
@@ -494,24 +369,177 @@ struct SL_Bus_sensor_msgs_Imu
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_ColorRGBA_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_ColorRGBA_
 
-// MsgType=std_msgs/UInt8
-struct SL_Bus_std_msgs_UInt8
+// MsgType=std_msgs/ColorRGBA
+struct SL_Bus_std_msgs_ColorRGBA
 {
-  uint8_T data;
+  real32_T r;
+  real32_T g;
+  real32_T b;
+  real32_T a;
 };
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
 
-// MsgType=sonia_common_ros2/KillStatus
-struct SL_Bus_sonia_common_ros2_KillStatus
+// MsgType=builtin_interfaces/Duration
+struct SL_Bus_builtin_interfaces_Duration
 {
-  boolean_T status;
+  int32_T sec;
+  uint32_T nanosec;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_CompressedImage_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_CompressedImage_
+
+// MsgType=sensor_msgs/CompressedImage
+struct SL_Bus_sensor_msgs_CompressedImage
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=format_SL_Info:TruncateAction=warn 
+  uint8_T format[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=format
+  SL_Bus_ROSVariableLengthArrayInfo format_SL_Info;
+
+  // IsVarLen=1:VarLenCategory=data:VarLenElem=data_SL_Info:TruncateAction=warn
+  uint8_T data[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=data
+  SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_UVCoordinate_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_UVCoordinate_
+
+// MsgType=visualization_msgs/UVCoordinate
+struct SL_Bus_visualization_msgs_UVCoordinate
+{
+  real32_T u;
+  real32_T v;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_MeshFile_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_MeshFile_
+
+// MsgType=visualization_msgs/MeshFile
+struct SL_Bus_visualization_msgs_MeshFile
+{
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=filename_SL_Info:TruncateAction=warn 
+  uint8_T filename[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=filename
+  SL_Bus_ROSVariableLengthArrayInfo filename_SL_Info;
+
+  // IsVarLen=1:VarLenCategory=data:VarLenElem=data_SL_Info:TruncateAction=warn
+  uint8_T data[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=data
+  SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_Marker_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_Marker_
+
+// MsgType=visualization_msgs/Marker
+struct SL_Bus_visualization_msgs_Marker
+{
+  // MsgType=std_msgs/Header
+  SL_Bus_std_msgs_Header header;
+
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=ns_SL_Info:TruncateAction=warn 
+  uint8_T ns[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=ns
+  SL_Bus_ROSVariableLengthArrayInfo ns_SL_Info;
+  int32_T id;
+  int32_T type;
+  int32_T action;
+
+  // MsgType=geometry_msgs/Pose
+  SL_Bus_geometry_msgs_Pose pose;
+
+  // MsgType=geometry_msgs/Vector3
+  SL_Bus_geometry_msgs_Vector3 scale;
+
+  // MsgType=std_msgs/ColorRGBA
+  SL_Bus_std_msgs_ColorRGBA color;
+
+  // MsgType=builtin_interfaces/Duration
+  SL_Bus_builtin_interfaces_Duration lifetime;
+  boolean_T frame_locked;
+
+  // MsgType=geometry_msgs/Point:IsVarLen=1:VarLenCategory=data:VarLenElem=points_SL_Info:TruncateAction=warn 
+  SL_Bus_geometry_msgs_Point points[16];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=points
+  SL_Bus_ROSVariableLengthArrayInfo points_SL_Info;
+
+  // MsgType=std_msgs/ColorRGBA:IsVarLen=1:VarLenCategory=data:VarLenElem=colors_SL_Info:TruncateAction=warn 
+  SL_Bus_std_msgs_ColorRGBA colors[16];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=colors
+  SL_Bus_ROSVariableLengthArrayInfo colors_SL_Info;
+
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=texture_resource_SL_Info:TruncateAction=warn 
+  uint8_T texture_resource[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=texture_resource
+  SL_Bus_ROSVariableLengthArrayInfo texture_resource_SL_Info;
+
+  // MsgType=sensor_msgs/CompressedImage
+  SL_Bus_sensor_msgs_CompressedImage texture;
+
+  // MsgType=visualization_msgs/UVCoordinate:IsVarLen=1:VarLenCategory=data:VarLenElem=uv_coordinates_SL_Info:TruncateAction=warn 
+  SL_Bus_visualization_msgs_UVCoordinate uv_coordinates[16];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=uv_coordinates
+  SL_Bus_ROSVariableLengthArrayInfo uv_coordinates_SL_Info;
+
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=text_SL_Info:TruncateAction=warn 
+  uint8_T text[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=text
+  SL_Bus_ROSVariableLengthArrayInfo text_SL_Info;
+
+  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=mesh_resource_SL_Info:TruncateAction=warn 
+  uint8_T mesh_resource[128];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=mesh_resource
+  SL_Bus_ROSVariableLengthArrayInfo mesh_resource_SL_Info;
+
+  // MsgType=visualization_msgs/MeshFile
+  SL_Bus_visualization_msgs_MeshFile mesh_file;
+  boolean_T mesh_use_embedded_materials;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_MarkerArray_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_visualization_msgs_MarkerArray_
+
+// MsgType=visualization_msgs/MarkerArray
+struct SL_Bus_visualization_msgs_MarkerArray
+{
+  // MsgType=visualization_msgs/Marker:IsVarLen=1:VarLenCategory=data:VarLenElem=markers_SL_Info:TruncateAction=warn 
+  SL_Bus_visualization_msgs_Marker markers[16];
+
+  // IsVarLen=1:VarLenCategory=length:VarLenElem=markers
+  SL_Bus_ROSVariableLengthArrayInfo markers_SL_Info;
 };
 
 #endif
@@ -545,18 +573,6 @@ struct SL_Bus_geometry_msgs_Transform
 
   // MsgType=geometry_msgs/Quaternion
   SL_Bus_geometry_msgs_Quaternion rotation;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
-
-// MsgType=builtin_interfaces/Duration
-struct SL_Bus_builtin_interfaces_Duration
-{
-  int32_T sec;
-  uint32_T nanosec;
 };
 
 #endif
@@ -607,6 +623,153 @@ struct SL_Bus_sonia_common_ros2_Pose
   SL_Bus_geometry_msgs_Vector3 orientation;
   real_T fine;
   boolean_T rotation;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Default_
+#define DEFINED_TYPEDEF_FOR_Default_
+
+struct Default
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C10_
+#define DEFINED_TYPEDEF_FOR_C10_
+
+struct C10
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C11_
+#define DEFINED_TYPEDEF_FOR_C11_
+
+struct C11
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_C19_
+#define DEFINED_TYPEDEF_FOR_C19_
+
+struct C19
+{
+  real_T OV[13];
+  real_T MV[8];
+  real_T MVR[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_NoDvl_
+#define DEFINED_TYPEDEF_FOR_NoDvl_
+
+struct NoDvl
+{
+  real_T MV[8];
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Gains_
+#define DEFINED_TYPEDEF_FOR_Gains_
+
+struct Gains
+{
+  Default predefined;
+  C10 c10;
+  C11 c11;
+  C19 c19;
+  NoDvl noDvl;
+  real_T p;
+  real_T m;
+  real_T tmax;
+  real_T tmin;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_TargetReached_
+#define DEFINED_TYPEDEF_FOR_TargetReached_
+
+struct TargetReached
+{
+  real_T linearTol;
+  real_T angularTol;
+  real_T timeInTol;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_mpcParams_
+#define DEFINED_TYPEDEF_FOR_mpcParams_
+
+struct mpcParams
+{
+  Gains gains;
+  TargetReached targetReached;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_physicsConstants_
+#define DEFINED_TYPEDEF_FOR_physicsConstants_
+
+struct physicsConstants
+{
+  real_T rho;
+  real_T g;
+  real_T mass;
+  real_T volume;
+  real_T sub_height;
+  real_T rg[3];
+  real_T rb[3];
+  real_T cdl[6];
+  real_T cdq[6];
+  real_T added_mass[6];
+  real_T I[9];
+  real_T depth_pose[3];
+  real_T hydro_pose[3];
+  real_T sonar_pose[3];
+  real_T dvl_rotation[3];
+  real_T thrusters[48];
+  real_T dvl_lost_override;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
+
+// MsgType=std_msgs/UInt8
+struct SL_Bus_std_msgs_UInt8
+{
+  uint8_T data;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
+
+// MsgType=sonia_common_ros2/KillStatus
+struct SL_Bus_sonia_common_ros2_KillStatus
+{
+  boolean_T status;
 };
 
 #endif
@@ -806,7 +969,7 @@ struct ros_slros2_internal_block_Cur_T
 
 #endif                                // struct_ros_slros2_internal_block_Cur_T
 
-// Custom Type definition for MATLABSystem: '<S329>/SourceBlock'
+// Custom Type definition for MATLABSystem: '<S341>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -866,7 +1029,17 @@ struct ros_slros2_internal_block_Sub_T
 
 #endif                                // struct_ros_slros2_internal_block_Sub_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+#ifndef struct_SlamVisCombine_proc_control_T
+#define struct_SlamVisCombine_proc_control_T
+
+struct SlamVisCombine_proc_control_T
+{
+  int32_T isInitialized;
+};
+
+#endif                                 // struct_SlamVisCombine_proc_control_T
+
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 #define struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 
@@ -926,6 +1099,17 @@ struct matlabshared_tracking_inter_p_T
 };
 
 #endif                                // struct_matlabshared_tracking_inter_p_T
+
+#ifndef struct_SlamFreshCheck_proc_control_T
+#define struct_SlamFreshCheck_proc_control_T
+
+struct SlamFreshCheck_proc_control_T
+{
+  boolean_T mEnabledFlag;
+  real_T mInternalCounter;
+};
+
+#endif                                 // struct_SlamFreshCheck_proc_control_T
 
 #ifndef struct_quaternion_proc_control_T
 #define struct_quaternion_proc_control_T
@@ -1062,7 +1246,7 @@ struct OpenLoopController_proc_contr_T
 
 #endif                                // struct_OpenLoopController_proc_contr_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_somzaGboVhDG7PNQS6E98jD_proc__T
 #define struct_somzaGboVhDG7PNQS6E98jD_proc__T
 
@@ -1216,7 +1400,7 @@ struct robotics_slcore_internal_bl_p_T
 
 #endif                                // struct_robotics_slcore_internal_bl_p_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 #define struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 
@@ -1265,7 +1449,7 @@ struct s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 
 #endif                                // struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 #define struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 
@@ -1278,7 +1462,7 @@ struct s_z8miyzCNLMZx998HtZciUB_proc_T
 
 #endif                                // struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 #define struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
@@ -1326,7 +1510,7 @@ struct s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
 #endif                                // struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 #define struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
@@ -1348,7 +1532,7 @@ struct s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
 #endif                                // struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 #define struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 
@@ -1385,7 +1569,7 @@ struct s_962gqykB8vLiRVqsLdGQIG_proc_T
 
 #endif                                // struct_s_962gqykB8vLiRVqsLdGQIG_proc_T
 
-// Custom Type definition for MATLAB Function: '<S217>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S225>/NLMPC'
 #ifndef struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 #define struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 

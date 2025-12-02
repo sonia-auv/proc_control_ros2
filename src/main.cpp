@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 2.6
+// Model version                  : 2.31
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sun Nov 30 18:44:22 2025
+// C/C++ source code generated on : Tue Dec 02 01:29:48 2025
 //
 #include "ros2nodeinterface.h"
 rclcpp::Node::SharedPtr SLROSNodePtr;
