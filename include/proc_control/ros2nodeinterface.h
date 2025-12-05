@@ -6,7 +6,7 @@
 //
 // Model version                  : 2.47
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Dec 05 08:30:36 2025
+// C/C++ source code generated on : Fri Dec 05 09:21:46 2025
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
