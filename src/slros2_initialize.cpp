@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 02-Dec-2025 01:29:46
+// Generated 05-Dec-2025 01:23:41
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -147,3 +147,5 @@ SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_170;
 SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_194;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Volume
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter
+SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_1711;
