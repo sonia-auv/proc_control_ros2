@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.259
+// Model version                  : 1.265
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Jan 30 11:43:28 2026
+// C/C++ source code generated on : Fri Jan 30 15:43:53 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -814,16 +814,23 @@ struct struct_ovWlOQLLs0y1mSxaL5ZDmG
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_struct_Kmbmt8Jru1SjaG1rAQ9i3E_
-#define DEFINED_TYPEDEF_FOR_struct_Kmbmt8Jru1SjaG1rAQ9i3E_
+#ifndef DEFINED_TYPEDEF_FOR_struct_jtj4emA9aGR4epXTPIDOoC_
+#define DEFINED_TYPEDEF_FOR_struct_jtj4emA9aGR4epXTPIDOoC_
 
-struct struct_Kmbmt8Jru1SjaG1rAQ9i3E
+struct struct_jtj4emA9aGR4epXTPIDOoC
 {
   boolean_T has_dvl;
   real_T imu_VN_linear_acceleration_bias[3];
   real_T imu_VN_acceleration_threshold[3];
   real_T imu_ZED_linear_acceleration_bias[3];
   real_T imu_ZED_acceleration_threshold[3];
+  real_T accel_conv_static_window;
+  real_T accel_conv_thruster_Newton_upper_limit[4];
+  real_T accel_conv_thruster_Newton_lower_limit[4];
+  real_T accel_conv_VN_accel_bounds[3];
+  real_T accel_conv_VN_gyro_bounds[3];
+  real_T accel_conv_ZED_accel_bounds[3];
+  real_T accel_conv_ZED_gyro_bounds[3];
 };
 
 #endif
@@ -890,6 +897,16 @@ struct matlabshared_tracking_interna_T
 };
 
 #endif                                // struct_matlabshared_tracking_interna_T
+
+#ifndef struct_ZUPT_proc_control_T
+#define struct_ZUPT_proc_control_T
+
+struct ZUPT_proc_control_T
+{
+  uint8_T staticTicks;
+};
+
+#endif                                 // struct_ZUPT_proc_control_T
 
 // Custom Type definition for MATLABSystem: '<S351>/SourceBlock'
 #include "rmw/qos_profiles.h"
@@ -1002,16 +1019,6 @@ struct matlabshared_tracking_inter_p_T
 
 #endif                                // struct_matlabshared_tracking_inter_p_T
 
-#ifndef struct_ZUPT_proc_control_T
-#define struct_ZUPT_proc_control_T
-
-struct ZUPT_proc_control_T
-{
-  uint8_T staticTicks;
-};
-
-#endif                                 // struct_ZUPT_proc_control_T
-
 #ifndef struct_quaternion_proc_control_T
 #define struct_quaternion_proc_control_T
 
@@ -1087,6 +1094,16 @@ struct Vector2DoubleArray_proc__pr35_T
 };
 
 #endif                                // struct_Vector2DoubleArray_proc__pr35_T
+
+#ifndef struct_Vector2DoubleArray_proc_pr351_T
+#define struct_Vector2DoubleArray_proc_pr351_T
+
+struct Vector2DoubleArray_proc_pr351_T
+{
+  real_T lastValues[4];
+};
+
+#endif                                // struct_Vector2DoubleArray_proc_pr351_T
 
 #ifndef struct_rosCommandManager_proc_contro_T
 #define struct_rosCommandManager_proc_contro_T

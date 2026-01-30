@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.259
+// Model version                  : 1.265
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Jan 30 11:43:28 2026
+// C/C++ source code generated on : Fri Jan 30 15:43:53 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -222,19 +222,19 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dSeedX
   //  Referenced by: '<S27>/Drift'
 
-  1.0,
+  10.0,
 
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.24517211814783046, 0.19605772758173773, 0.0050640611909095858,
-    0.0046832578754797188, 0.032704854943245133, 0.02554865856833425 },
+  { 0.49837848572036858, 0.31469513102394647, 0.037480724682148671,
+    0.055412295793058224, 0.071778180591822865, 0.068352087548716758 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.17537491285109436, -1.2834584841689622, -0.078081517250222818,
-    -0.0177139357432901, -0.080681088687055133, -0.028338528786520958 },
+  { -0.23882695401285642, -0.81901288189039279, -0.098172990180966924,
+    -0.0098377874126902923, -0.054424549266259115, -0.091929474667450148 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -78139,6 +78139,54 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     0.0                                // m
   },
 
+  // Computed Parameter: SensorParams_Y0
+  //  Referenced by: '<S93>/SensorParams'
+
+  {
+    false,                             // has_dvl
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // imu_VN_linear_acceleration_bias
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // imu_VN_acceleration_threshold
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // imu_ZED_linear_acceleration_bias
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // imu_ZED_acceleration_threshold
+    0.0,                               // accel_conv_static_window
+
+    {
+      0.0, 0.0, 0.0, 0.0 }
+    ,                                 // accel_conv_thruster_Newton_upper_limit
+
+    {
+      0.0, 0.0, 0.0, 0.0 }
+    ,                                 // accel_conv_thruster_Newton_lower_limit
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // accel_conv_VN_accel_bounds
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // accel_conv_VN_gyro_bounds
+
+    {
+      0.0, 0.0, 0.0 }
+    ,                                  // accel_conv_ZED_accel_bounds
+
+    {
+      0.0, 0.0, 0.0 }
+    // accel_conv_ZED_gyro_bounds
+  },
+
   // Computed Parameter: Constant_Value_d
   //  Referenced by: '<S84>/Constant'
 
@@ -78427,29 +78475,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
         0.0, 0.0, 0.0 }
       // Angular_Rate
     }                                  // v
-  },
-
-  // Computed Parameter: SensorParams_Y0
-  //  Referenced by: '<S93>/SensorParams'
-
-  {
-    false,                             // has_dvl
-
-    {
-      0.0, 0.0, 0.0 }
-    ,                                  // imu_VN_linear_acceleration_bias
-
-    {
-      0.0, 0.0, 0.0 }
-    ,                                  // imu_VN_acceleration_threshold
-
-    {
-      0.0, 0.0, 0.0 }
-    ,                                  // imu_ZED_linear_acceleration_bias
-
-    {
-      0.0, 0.0, 0.0 }
-    // imu_ZED_acceleration_threshold
   },
 
   // Computed Parameter: Out1_Y0_d0

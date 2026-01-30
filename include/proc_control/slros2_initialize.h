@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 30-Jan-2026 11:44:03
+// Generated 30-Jan-2026 15:44:28
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -177,12 +177,26 @@ extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_170;
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_194;
 // For Block proc_control/Ros Command/Get_ROS_param/Physics Constants/Volume
 extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_169;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion Static Window
+extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_1744;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion Thruster Newton Lower Limtit
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1746;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion Thruster Newton Upper Limtit
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1745;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion VN Accel Bounds
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1747;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion VN Gyro Bounds
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1748;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion ZED Accel Bounds
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1749;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Accel Conversion ZED Gyro Bounds
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1750;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1642;
-// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Get Parameter1
-extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1674;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Has DVL
 extern SimulinkParameterGetter<boolean_T,bool> ParamGet_proc_control_1598;
+// For Block proc_control/Ros Command/Get_ROS_param/Subsystem/IMU Zed ACCEL Thresh
+extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1674;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Linear Accel Bias
 extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control_1599;
 // For Block proc_control/Ros Command/Get_ROS_param/Subsystem/Linear Accel Bias1
