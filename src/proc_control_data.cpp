@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.247
+// Model version                  : 1.259
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Wed Aug 13 04:01:57 2025
+// C/C++ source code generated on : Fri Jan 30 11:43:28 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -227,14 +227,14 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.38086679195243039, 0.0089467594330189248, 0.044914247055560574,
-    0.071489878941308482, 0.087208963310172471, 0.074251889336008375 },
+  { 0.24517211814783046, 0.19605772758173773, 0.0050640611909095858,
+    0.0046832578754797188, 0.032704854943245133, 0.02554865856833425 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.11457926509162736, -0.19677412556303414, -0.082604458722938562,
-    -0.060103754559643258, -0.023428687885074864, -0.023006323606625967 },
+  { -0.17537491285109436, -1.2834584841689622, -0.078081517250222818,
+    -0.0177139357432901, -0.080681088687055133, -0.028338528786520958 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -313,7 +313,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   0.0,
 
   // Mask Parameter: DiscreteDerivative_ICPrevScal_j
-  //  Referenced by: '<S312>/UD'
+  //  Referenced by: '<S311>/UD'
 
   0.0,
 
@@ -357,12 +357,12 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   false,
 
   // Mask Parameter: DetectRisePositive_vinit
-  //  Referenced by: '<S340>/Delay Input1'
+  //  Referenced by: '<S339>/Delay Input1'
 
   false,
 
   // Computed Parameter: Out1_Y0
-  //  Referenced by: '<S348>/Out1'
+  //  Referenced by: '<S347>/Out1'
 
   {
     {
@@ -38287,7 +38287,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value
-  //  Referenced by: '<S347>/Constant'
+  //  Referenced by: '<S346>/Constant'
 
   {
     {
@@ -78453,7 +78453,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Out1_Y0_d0
-  //  Referenced by: '<S355>/Out1'
+  //  Referenced by: '<S354>/Out1'
 
   {
     0U,                                // frame
@@ -78475,7 +78475,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value_f4
-  //  Referenced by: '<S352>/Constant'
+  //  Referenced by: '<S351>/Constant'
 
   {
     0U,                                // frame
@@ -78551,7 +78551,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value_o1
-  //  Referenced by: '<S342>/Constant'
+  //  Referenced by: '<S341>/Constant'
 
   {
     {
@@ -78566,42 +78566,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
       0.0,                             // z
       0.0                              // w
     }                                  // orientation
-  },
-
-  // Computed Parameter: Out1_Y0_a1
-  //  Referenced by: '<S300>/Out1'
-
-  {
-    {
-      0.0,                             // x
-      0.0,                             // y
-      0.0                              // z
-    },                                 // translation
-
-    {
-      0.0,                             // x
-      0.0,                             // y
-      0.0,                             // z
-      0.0                              // w
-    }                                  // rotation
-  },
-
-  // Computed Parameter: Constant_Value_ez
-  //  Referenced by: '<S299>/Constant'
-
-  {
-    {
-      0.0,                             // x
-      0.0,                             // y
-      0.0                              // z
-    },                                 // translation
-
-    {
-      0.0,                             // x
-      0.0,                             // y
-      0.0,                             // z
-      0.0                              // w
-    }                                  // rotation
   },
 
   // Computed Parameter: DVLMeasurements_Y0
@@ -78619,7 +78583,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Out1_Y0_f
-  //  Referenced by: '<S346>/Out1'
+  //  Referenced by: '<S345>/Out1'
 
   {
     {
@@ -78636,7 +78600,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   },
 
   // Computed Parameter: Constant_Value_oo
-  //  Referenced by: '<S345>/Constant'
+  //  Referenced by: '<S344>/Constant'
 
   {
     {
@@ -78650,6 +78614,20 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
       0.0,                             // y
       0.0                              // z
     }                                  // angular
+  },
+
+  // Computed Parameter: Constant_Value_m
+  //  Referenced by: '<S20>/Constant'
+
+  {
+    0.0F,                              // motor1
+    0.0F,                              // motor2
+    0.0F,                              // motor3
+    0.0F,                              // motor4
+    0.0F,                              // motor5
+    0.0F,                              // motor6
+    0.0F,                              // motor7
+    0.0F                               // motor8
   },
 
   // Computed Parameter: Out1_Y0_j
@@ -78670,26 +78648,8 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     0.0                                // z
   },
 
-  // Computed Parameter: Constant_Value_m
+  // Computed Parameter: Constant_Value_mc
   //  Referenced by: '<S58>/Constant'
-
-  {
-    0.0,                               // x
-    0.0,                               // y
-    0.0                                // z
-  },
-
-  // Computed Parameter: Constant_Value_cg
-  //  Referenced by: '<S269>/Constant'
-
-  {
-    0.0,                               // x
-    0.0,                               // y
-    0.0                                // z
-  },
-
-  // Computed Parameter: Constant_Value_gb
-  //  Referenced by: '<S271>/Constant'
 
   {
     0.0,                               // x
@@ -78699,20 +78659,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   // Computed Parameter: Constant_Value_ki
   //  Referenced by: '<S19>/Constant'
-
-  {
-    0U,                                // motor1
-    0U,                                // motor2
-    0U,                                // motor3
-    0U,                                // motor4
-    0U,                                // motor5
-    0U,                                // motor6
-    0U,                                // motor7
-    0U                                 // motor8
-  },
-
-  // Computed Parameter: Constant_Value_mv
-  //  Referenced by: '<S20>/Constant'
 
   {
     0U,                                // motor1
@@ -79877,7 +79823,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   0.0,
 
   // Computed Parameter: Quat_Y0
-  //  Referenced by: '<S304>/Quat'
+  //  Referenced by: '<S303>/Quat'
 
   0.0,
 
@@ -79887,12 +79833,12 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   10.0,
 
   // Expression: 0
-  //  Referenced by: '<S301>/Constant'
+  //  Referenced by: '<S300>/Constant'
 
   0.0,
 
   // Expression: 1
-  //  Referenced by: '<S301>/Delay'
+  //  Referenced by: '<S300>/Delay'
 
   1.0,
 
@@ -79902,27 +79848,27 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   0.0,
 
   // Expression: 2
-  //  Referenced by: '<S317>/Gain'
+  //  Referenced by: '<S316>/Gain'
 
   2.0,
 
   // Expression: 2
-  //  Referenced by: '<S317>/Gain1'
+  //  Referenced by: '<S316>/Gain1'
 
   2.0,
 
   // Expression: 0.5
-  //  Referenced by: '<S317>/Constant'
+  //  Referenced by: '<S316>/Constant'
 
   0.5,
 
   // Expression: 2
-  //  Referenced by: '<S317>/Gain2'
+  //  Referenced by: '<S316>/Gain2'
 
   2.0,
 
   // Computed Parameter: TSamp_WtEt_g
-  //  Referenced by: '<S312>/TSamp'
+  //  Referenced by: '<S311>/TSamp'
 
   50.0,
 
@@ -79947,7 +79893,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   0.0,
 
   // Expression: p.Q
-  //  Referenced by: '<S320>/Q'
+  //  Referenced by: '<S319>/Q'
 
   { 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0,
@@ -79963,29 +79909,27 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     0.0, 0.0, 0.0, 10.0 },
 
   // Expression: p.R{3}
-  //  Referenced by: '<S320>/R3'
+  //  Referenced by: '<S319>/R3'
 
   { 0.31622776601683794, 0.0, 0.0, 0.1 },
 
   // Expression: 1
-  //  Referenced by: '<S320>/MeasurementFcn3Inputs'
+  //  Referenced by: '<S319>/MeasurementFcn3Inputs'
 
   1.0,
 
   // Expression: p.R{2}
-  //  Referenced by: '<S320>/R2'
+  //  Referenced by: '<S319>/R2'
 
-  { 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.1 },
+  { 0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1 },
 
   // Expression: 1
-  //  Referenced by: '<S320>/MeasurementFcn2Inputs'
+  //  Referenced by: '<S319>/MeasurementFcn2Inputs'
 
   1.0,
 
   // Expression: p.R{1}
-  //  Referenced by: '<S320>/R1'
+  //  Referenced by: '<S319>/R1'
 
   { 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -79998,12 +79942,12 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     0.31622776601683794 },
 
   // Expression: 0
-  //  Referenced by: '<S320>/MeasurementFcn1Inputs'
+  //  Referenced by: '<S319>/MeasurementFcn1Inputs'
 
   0.0,
 
   // Expression: p.InitialCovariance
-  //  Referenced by: '<S320>/DataStoreMemory - P'
+  //  Referenced by: '<S319>/DataStoreMemory - P'
 
   { 3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -80022,97 +79966,97 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     3.1622776601683795 },
 
   // Expression: p.InitialState
-  //  Referenced by: '<S320>/DataStoreMemory - x'
+  //  Referenced by: '<S319>/DataStoreMemory - x'
 
   { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: [0 0 0 1 0 0 0]
-  //  Referenced by: '<S335>/Constant'
+  //  Referenced by: '<S334>/Constant'
 
   { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 },
 
   // Expression: MPC.p
-  //  Referenced by: '<S335>/Constant1'
+  //  Referenced by: '<S334>/Constant1'
 
   10.0,
 
   // Computed Parameter: Out1_Y0_j3
-  //  Referenced by: '<S349>/Out1'
+  //  Referenced by: '<S348>/Out1'
 
   0.0,
 
   // Expression: .25
-  //  Referenced by: '<S338>/MATLAB System1'
+  //  Referenced by: '<S337>/MATLAB System1'
 
   0.25,
 
   // Expression: .22
-  //  Referenced by: '<S338>/MATLAB System1'
+  //  Referenced by: '<S337>/MATLAB System1'
 
   0.22,
 
   // Expression: 2
-  //  Referenced by: '<S338>/MATLAB System1'
+  //  Referenced by: '<S337>/MATLAB System1'
 
   2.0,
 
   // Computed Parameter: linWpts_Y0
-  //  Referenced by: '<S350>/linWpts'
+  //  Referenced by: '<S349>/linWpts'
 
   0.0,
 
   // Computed Parameter: RotWpts_Y0
-  //  Referenced by: '<S350>/RotWpts'
+  //  Referenced by: '<S349>/RotWpts'
 
   0.0,
 
   // Computed Parameter: time_Y0
-  //  Referenced by: '<S350>/time'
+  //  Referenced by: '<S349>/time'
 
   0.0,
 
   // Computed Parameter: target_Y0
-  //  Referenced by: '<S350>/target'
+  //  Referenced by: '<S349>/target'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S350>/Constant'
+  //  Referenced by: '<S349>/Constant'
 
   0.0,
 
   // Expression: zeros( 3, 2 )
-  //  Referenced by: '<S354>/Polynomial Trajectory'
+  //  Referenced by: '<S353>/Polynomial Trajectory'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 1
-  //  Referenced by: '<S351>/Constant'
+  //  Referenced by: '<S350>/Constant'
 
   1.0,
 
   // Computed Parameter: DiscreteTimeIntegrator_gainva_g
-  //  Referenced by: '<S351>/Discrete-Time Integrator'
+  //  Referenced by: '<S350>/Discrete-Time Integrator'
 
   0.01,
 
   // Expression: 0
-  //  Referenced by: '<S351>/Discrete-Time Integrator'
+  //  Referenced by: '<S350>/Discrete-Time Integrator'
 
   0.0,
 
   // Expression: 0
-  //  Referenced by: '<S338>/Constant'
+  //  Referenced by: '<S337>/Constant'
 
   0.0,
 
   // Expression: [0,0,0.3,1,0,0,0,0,0,0,0,0,0]
-  //  Referenced by: '<S331>/Constant'
+  //  Referenced by: '<S330>/Constant'
 
   { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: MPC.p
-  //  Referenced by: '<S331>/Constant1'
+  //  Referenced by: '<S330>/Constant1'
 
   10.0,
 
@@ -80132,112 +80076,17 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 0.5
-  //  Referenced by: '<S282>/Constant'
-
-  0.5,
-
-  // Expression: 2
-  //  Referenced by: '<S282>/Gain2'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S282>/Gain'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S282>/Gain1'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S283>/Gain'
-
-  2.0,
-
-  // Expression: 0.5
-  //  Referenced by: '<S283>/Constant'
-
-  0.5,
-
-  // Expression: 2
-  //  Referenced by: '<S283>/Gain2'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S283>/Gain1'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S284>/Gain'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S284>/Gain1'
-
-  2.0,
-
-  // Expression: 0.5
-  //  Referenced by: '<S284>/Constant'
-
-  0.5,
-
-  // Expression: 2
-  //  Referenced by: '<S284>/Gain2'
-
-  2.0,
-
-  // Expression: [0 0 0.107]
-  //  Referenced by: '<S248>/VN IMU POS'
-
-  { 0.0, 0.0, 0.107 },
-
-  // Computed Parameter: DiscreteTimeIntegrator_gainva_d
-  //  Referenced by: '<S248>/Discrete-Time Integrator'
-
-  0.01,
-
-  // Expression: 0
-  //  Referenced by: '<S248>/Discrete-Time Integrator'
-
-  0.0,
-
-  // Expression: 0.5
-  //  Referenced by: '<S294>/Constant'
-
-  0.5,
-
-  // Expression: 2
-  //  Referenced by: '<S294>/Gain2'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S294>/Gain'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S294>/Gain1'
-
-  2.0,
-
-  // Expression: 2
-  //  Referenced by: '<S295>/Gain'
-
-  2.0,
-
-  // Expression: 0.5
   //  Referenced by: '<S295>/Constant'
 
   0.5,
 
   // Expression: 2
   //  Referenced by: '<S295>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S295>/Gain'
 
   2.0,
 
@@ -80251,11 +80100,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   2.0,
 
-  // Expression: 2
-  //  Referenced by: '<S296>/Gain1'
-
-  2.0,
-
   // Expression: 0.5
   //  Referenced by: '<S296>/Constant'
 
@@ -80263,6 +80107,31 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   // Expression: 2
   //  Referenced by: '<S296>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S296>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S297>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S297>/Gain1'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S297>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S297>/Gain2'
 
   2.0,
 
@@ -80281,13 +80150,94 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   { 0.14715, -0.03, 0.03522 },
 
-  // Computed Parameter: DiscreteTimeIntegrator1_gainv_j
-  //  Referenced by: '<S248>/Discrete-Time Integrator1'
+  // Expression: p.R{2}
+  //  Referenced by: '<S255>/R2'
 
-  0.01,
+  { 1.7320508075688772, 0.0, 0.0, 0.0, 1.7320508075688772, 0.0, 0.0, 0.0,
+    1.7320508075688772 },
+
+  // Expression: 1
+  //  Referenced by: '<S255>/MeasurementFcn2Inputs'
+
+  1.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S283>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S283>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S283>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S283>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S284>/Gain'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S284>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S284>/Gain2'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S284>/Gain1'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S285>/Gain'
+
+  2.0,
+
+  // Expression: 2
+  //  Referenced by: '<S285>/Gain1'
+
+  2.0,
+
+  // Expression: 0.5
+  //  Referenced by: '<S285>/Constant'
+
+  0.5,
+
+  // Expression: 2
+  //  Referenced by: '<S285>/Gain2'
+
+  2.0,
+
+  // Expression: [0 0 0.107]
+  //  Referenced by: '<S248>/VN IMU POS'
+
+  { 0.0, 0.0, 0.107 },
+
+  // Expression: p.R{1}
+  //  Referenced by: '<S255>/R1'
+
+  { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 },
 
   // Expression: 0
-  //  Referenced by: '<S248>/Discrete-Time Integrator1'
+  //  Referenced by: '<S255>/MeasurementFcn1Inputs'
+
+  0.0,
+
+  // Expression: 0.0
+  //  Referenced by: '<S248>/Delay'
 
   0.0,
 
@@ -80297,7 +80247,7 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   0.0,
 
   // Expression: -1
-  //  Referenced by: '<S336>/Gain'
+  //  Referenced by: '<S335>/Gain'
 
   -1.0,
 
@@ -80305,6 +80255,39 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   //  Referenced by: '<S10>/Merge'
 
   0.0,
+
+  // Expression: [simulink.sampletime]
+  //  Referenced by: '<S248>/Constant1'
+
+  0.02,
+
+  // Expression: p.Q
+  //  Referenced by: '<S255>/Q'
+
+  { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0, 1.0 },
+
+  // Expression: p.InitialCovariance
+  //  Referenced by: '<S255>/DataStoreMemory - P'
+
+  { 3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+    3.1622776601683795 },
+
+  // Expression: p.InitialState
+  //  Referenced by: '<S255>/DataStoreMemory - x'
+
+  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Computed Parameter: Merge_4_InitialOutput
   //  Referenced by: '<S10>/Merge'
@@ -80431,74 +80414,79 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
     false, false, false, false, false, false },
 
   // Computed Parameter: yBlockOrdering_Y0
-  //  Referenced by: '<S322>/yBlockOrdering'
+  //  Referenced by: '<S321>/yBlockOrdering'
 
   false,
 
   // Computed Parameter: yBlockOrdering_Y0_l
-  //  Referenced by: '<S323>/yBlockOrdering'
+  //  Referenced by: '<S322>/yBlockOrdering'
 
   false,
 
   // Computed Parameter: yBlockOrdering_Y0_h
-  //  Referenced by: '<S324>/yBlockOrdering'
+  //  Referenced by: '<S323>/yBlockOrdering'
 
   false,
 
   // Expression: true()
-  //  Referenced by: '<S320>/BlockOrdering'
+  //  Referenced by: '<S319>/BlockOrdering'
 
   true,
 
   // Expression: true()
-  //  Referenced by: '<S320>/Enable1'
+  //  Referenced by: '<S319>/Enable1'
 
   true,
 
   // Expression: true()
-  //  Referenced by: '<S320>/Enable2'
+  //  Referenced by: '<S319>/Enable2'
 
   true,
 
   // Expression: true()
-  //  Referenced by: '<S320>/Enable3'
+  //  Referenced by: '<S319>/Enable3'
 
   true,
 
   // Expression: false
-  //  Referenced by: '<S335>/Constant2'
+  //  Referenced by: '<S334>/Constant2'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S335>/Constant3'
+  //  Referenced by: '<S334>/Constant3'
 
   false,
 
   // Computed Parameter: Constant_Value_pl
-  //  Referenced by: '<S341>/Constant'
+  //  Referenced by: '<S340>/Constant'
 
   false,
 
-  // Computed Parameter: Delay_InitialCondition_az
-  //  Referenced by: '<S338>/Delay'
-
-  false,
-
-  // Expression: false
-  //  Referenced by: '<S338>/Constant1'
+  // Computed Parameter: Delay_InitialCondition_az4
+  //  Referenced by: '<S337>/Delay'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S331>/Constant2'
+  //  Referenced by: '<S337>/Constant1'
 
   false,
 
   // Expression: false
-  //  Referenced by: '<S331>/Constant3'
+  //  Referenced by: '<S330>/Constant2'
 
   false,
+
+  // Expression: false
+  //  Referenced by: '<S330>/Constant3'
+
+  false,
+
+  // Expression: true()
+  //  Referenced by: '<S255>/BlockOrdering'
+
+  true,
 
   // Computed Parameter: Merge_2_InitialOutput
   //  Referenced by: '<S10>/Merge'
@@ -80523,7 +80511,27 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Computed Parameter: Merge_2_InitialOutput_i
   //  Referenced by: '<S140>/Merge'
 
-  0
+  0,
+
+  // Start of '<S255>/Correct2'
+  {
+    // Computed Parameter: yBlockOrdering_Y0
+    //  Referenced by: '<S270>/yBlockOrdering'
+
+    false
+  }
+  ,
+
+  // End of '<S255>/Correct2'
+
+  // Start of '<S255>/Correct1'
+  {
+    // Computed Parameter: yBlockOrdering_Y0
+    //  Referenced by: '<S269>/yBlockOrdering'
+
+    false
+  }
+  // End of '<S255>/Correct1'
 };
 
 //

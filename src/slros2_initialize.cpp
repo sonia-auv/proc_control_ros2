@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 13-Aug-2025 04:02:28
+// Generated 30-Jan-2026 11:44:03
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -10,7 +10,7 @@ SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros2_MpcIn
 // proc_control/Enabled Subsystem1/provider_thruster thruster_pwm
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1380;
 // proc_control/Enabled Subsystem1/telemetry thruster_newton
-SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1386;
+SimulinkPublisher<sonia_common_ros2::msg::MotorNewton,SL_Bus_sonia_common_ros2_MotorNewton> Pub_proc_control_1386;
 // proc_control/Model System/Modele Thruster (Approximation)/Send RPM to unity/Publish
 SimulinkPublisher<std_msgs::msg::Int16MultiArray,SL_Bus_std_msgs_Int16MultiArray> Pub_proc_control_1184;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Publish
@@ -25,10 +25,6 @@ SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_control
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel/Publish
-SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1583;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish IMU Vel1/Publish
-SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1701;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
@@ -63,8 +59,6 @@ SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_cont
 SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
 SimulinkSubscriber<std_msgs::msg::Float64MultiArray,SL_Bus_std_msgs_Float64MultiArray> Sub_proc_control_781;
-// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Subsystem/Subscribe
-SimulinkSubscriber<geometry_msgs::msg::Transform,SL_Bus_geometry_msgs_Transform> Sub_proc_control_1705;
 // proc_control/Subsystem Trajectory/Subsystem/Subscribe
 SimulinkSubscriber<geometry_msgs::msg::Twist,SL_Bus_geometry_msgs_Twist> Sub_proc_control_532;
 // proc_control/Subsystem Trajectory/Subsystem1/Subscribe

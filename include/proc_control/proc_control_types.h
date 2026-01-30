@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.247
+// Model version                  : 1.259
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Wed Aug 13 04:01:57 2025
+// C/C++ source code generated on : Fri Jan 30 11:43:28 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -331,6 +331,24 @@ struct SL_Bus_sonia_common_ros2_MotorPwm
   uint16_T motor6;
   uint16_T motor7;
   uint16_T motor8;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorNewton_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorNewton_
+
+// MsgType=sonia_common_ros2/MotorNewton
+struct SL_Bus_sonia_common_ros2_MotorNewton
+{
+  real32_T motor1;
+  real32_T motor2;
+  real32_T motor3;
+  real32_T motor4;
+  real32_T motor5;
+  real32_T motor6;
+  real32_T motor7;
+  real32_T motor8;
 };
 
 #endif
@@ -863,7 +881,17 @@ struct ros_slros2_internal_block_Cur_T
 
 #endif                                // struct_ros_slros2_internal_block_Cur_T
 
-// Custom Type definition for MATLABSystem: '<S352>/SourceBlock'
+#ifndef struct_matlabshared_tracking_interna_T
+#define struct_matlabshared_tracking_interna_T
+
+struct matlabshared_tracking_interna_T
+{
+  int32_T isInitialized;
+};
+
+#endif                                // struct_matlabshared_tracking_interna_T
+
+// Custom Type definition for MATLABSystem: '<S351>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -964,16 +992,6 @@ struct s7RdrPWkr8UPAUyTdDJkLaG_proc__T
 
 #endif                                // struct_s7RdrPWkr8UPAUyTdDJkLaG_proc__T
 
-#ifndef struct_matlabshared_tracking_interna_T
-#define struct_matlabshared_tracking_interna_T
-
-struct matlabshared_tracking_interna_T
-{
-  int32_T isInitialized;
-};
-
-#endif                                // struct_matlabshared_tracking_interna_T
-
 #ifndef struct_matlabshared_tracking_inter_p_T
 #define struct_matlabshared_tracking_inter_p_T
 
@@ -983,6 +1001,16 @@ struct matlabshared_tracking_inter_p_T
 };
 
 #endif                                // struct_matlabshared_tracking_inter_p_T
+
+#ifndef struct_ZUPT_proc_control_T
+#define struct_ZUPT_proc_control_T
+
+struct ZUPT_proc_control_T
+{
+  uint8_T staticTicks;
+};
+
+#endif                                 // struct_ZUPT_proc_control_T
 
 #ifndef struct_quaternion_proc_control_T
 #define struct_quaternion_proc_control_T

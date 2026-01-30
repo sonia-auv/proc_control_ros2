@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.247
+// Model version                  : 1.259
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Wed Aug 13 04:02:30 2025
+// C/C++ source code generated on : Fri Jan 30 11:44:05 2026
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -31,13 +31,13 @@ class proc_control;
 #include "rtwtypes.h"
 #include "slros_busmsg_conversion.h"
 #include "geometry_msgs/msg/pose.hpp"
-#include "geometry_msgs/msg/transform.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/vector3.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "sonia_common_ros2/msg/body_velocity_dvl.hpp"
 #include "sonia_common_ros2/msg/kill_status.hpp"
+#include "sonia_common_ros2/msg/motor_newton.hpp"
 #include "sonia_common_ros2/msg/motor_pwm.hpp"
 #include "sonia_common_ros2/msg/mpc_gains.hpp"
 #include "sonia_common_ros2/msg/mpc_info.hpp"

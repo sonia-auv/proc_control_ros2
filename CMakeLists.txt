@@ -118,21 +118,6 @@ target_include_directories(proc_control PUBLIC
 install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
-
-install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}
-)
-
-install(
-  DIRECTORY config
-  DESTINATION share/${PROJECT_NAME}
-)
-
-install(TARGETS
-  ${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
-)
 ament_export_include_directories(
   include
 )
@@ -151,4 +136,4 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
-# Generated on Wed Aug 13 04:02:39 2025
+# Generated on Fri Jan 30 11:44:17 2026
