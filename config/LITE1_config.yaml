@@ -135,8 +135,8 @@
         imu_ZED_accel_thresh: [0.1, 0.1, 0.1]
 
         accel_conv:
-          newton_upper_limit: [0.5, 0.5, 0.5]
-          newton_lower_limit: [-0.5, -0.5, -0.5]
+          newton_upper_limit: [1.5, 1.5, 1.5]
+          newton_lower_limit: [-1.5, -1.5, -1.5]
           VN_accel_bounds: [0.7, 0.5, 0.5]
           ZED_accel_bounds: [0.7, 0.5, 0.5]
           VN_gyro_bounds: [0.1, 0.1, 0.1]

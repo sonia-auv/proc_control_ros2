@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.265
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Jan 30 15:43:53 2026
+// C/C++ source code generated on : Fri Jan 30 23:45:55 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -898,17 +898,7 @@ struct matlabshared_tracking_interna_T
 
 #endif                                // struct_matlabshared_tracking_interna_T
 
-#ifndef struct_ZUPT_proc_control_T
-#define struct_ZUPT_proc_control_T
-
-struct ZUPT_proc_control_T
-{
-  uint8_T staticTicks;
-};
-
-#endif                                 // struct_ZUPT_proc_control_T
-
-// Custom Type definition for MATLABSystem: '<S351>/SourceBlock'
+// Custom Type definition for MATLABSystem: '<S354>/SourceBlock'
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -1018,6 +1008,16 @@ struct matlabshared_tracking_inter_p_T
 };
 
 #endif                                // struct_matlabshared_tracking_inter_p_T
+
+#ifndef struct_ZUPT_proc_control_T
+#define struct_ZUPT_proc_control_T
+
+struct ZUPT_proc_control_T
+{
+  uint8_T staticTicks;
+};
+
+#endif                                 // struct_ZUPT_proc_control_T
 
 #ifndef struct_quaternion_proc_control_T
 #define struct_quaternion_proc_control_T

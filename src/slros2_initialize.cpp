@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 30-Jan-2026 15:44:28
+// Generated 30-Jan-2026 23:46:28
 #include "slros2_initialize.h"
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
@@ -25,6 +25,10 @@ SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_control
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
+// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_1780;
+// proc_control/Subsystem ProcNav/AHRS//Detph Mesurments/Publish1
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_1784;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
 // proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
