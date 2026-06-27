@@ -3,19 +3,19 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: all_aWPrU3Xb.cpp
+// File: all_Dt0A7QFv.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "all_aWPrU3Xb.h"
+#include "all_Dt0A7QFv.h"
 
 // Function for MATLAB Function: '<S217>/NLMPC'
-void all_aWPrU3Xb(const boolean_T x[130], boolean_T y[13])
+void all_Dt0A7QFv(const boolean_T x[130], boolean_T y[13])
 {
   int32_T i2;
   i2 = 1;

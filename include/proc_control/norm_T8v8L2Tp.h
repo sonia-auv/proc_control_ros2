@@ -3,7 +3,7 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: plook_u32u16_binckan.h
+// File: norm_T8v8L2Tp.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
@@ -11,14 +11,13 @@
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
 // C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
-#ifndef plook_u32u16_binckan_h_
-#define plook_u32u16_binckan_h_
+#ifndef norm_T8v8L2Tp_h_
+#define norm_T8v8L2Tp_h_
 #include "rtwtypes.h"
 
-extern uint32_T plook_u32u16_binckan(uint16_T u, const uint16_T bp[], uint32_T
-  maxIndex);
+extern real_T norm_T8v8L2Tp(const real_T x[169]);
 
-#endif                                 // plook_u32u16_binckan_h_
+#endif                                 // norm_T8v8L2Tp_h_
 
 //
 // File trailer for generated code.

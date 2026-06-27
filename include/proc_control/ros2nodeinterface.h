@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.205
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Aug 08 18:07:33 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:27:32 2026
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -26,10 +26,14 @@
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif //_MSC_VER
 #include "rclcpp/rclcpp.hpp"
+namespace rclcpp{
+namespace executors{
+class SLMultiThreadedExecutor;
+}
+}
 class proc_control;
 #include "proc_control_types.h"
 #include "rtwtypes.h"
-#include "slros_busmsg_conversion.h"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/vector3.hpp"
@@ -82,7 +86,7 @@ namespace matlab {
     //
     rclcpp::Node::SharedPtr mNode;
     std::shared_ptr<proc_control> mModel;
-    rclcpp::executors::MultiThreadedExecutor::SharedPtr mExec;
+    std::shared_ptr<rclcpp::executors::SLMultiThreadedExecutor> mExec;
     //
     Semaphore mBaseRateSem;
     std::shared_ptr<std::thread> mBaseRateThread;

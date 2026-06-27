@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: checkVectorNonFinite_2YVslTT4.cpp
+// File: checkVectorNonFinite_R8rA6F1f.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "checkVectorNonFinite_2YVslTT4.h"
+#include "checkVectorNonFinite_R8rA6F1f.h"
 #include <cmath>
 #include "cmath"
 
 // Function for MATLAB Function: '<S217>/NLMPC'
-int32_T checkVectorNonFinite_2YVslTT4(const real_T vec[130])
+int32_T checkVectorNonFinite_R8rA6F1f(const real_T vec[130])
 {
   int32_T idx_current;
   int32_T status;

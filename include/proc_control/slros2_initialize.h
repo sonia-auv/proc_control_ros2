@@ -1,5 +1,5 @@
-// Copyright 2022-2024 The MathWorks, Inc.
-// Generated 08-Aug-2025 18:07:31
+// Copyright 2022-2025 The MathWorks, Inc.
+// Generated 27-Jun-2026 16:27:29
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -25,19 +25,13 @@
         qosStruct.avoid_ros_namespace_conventions = _avoid_ros_namespace_conventions;    \
     }
 #endif
+// Get QOS Settings from RMW
 inline rclcpp::QoS getQOSSettingsFromRMW(const rmw_qos_profile_t& qosProfile) {
-    rclcpp::QoS qos(rclcpp::QoSInitialization::from_rmw(qosProfile));
-    if (RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL == qosProfile.durability) {
-        qos.transient_local();
-    } else {
-        qos.durability_volatile();
-    }
-    if (RMW_QOS_POLICY_RELIABILITY_RELIABLE == qosProfile.reliability) {
-        qos.reliable();
-    } else {
-        qos.best_effort();
-    }
-    return qos;
+  // pull in history & depth
+  auto init = rclcpp::QoSInitialization::from_rmw(qosProfile);
+  // set durability, reliability, deadline, liveliness policy, liveliness lease duration and avoid ROS namespace convention
+  rclcpp::QoS qos(init, qosProfile);
+  return qos;
 }
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;

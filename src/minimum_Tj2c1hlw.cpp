@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: minimum_FuPUSFQR.cpp
+// File: minimum_Tj2c1hlw.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "minimum_FuPUSFQR.h"
+#include "minimum_Tj2c1hlw.h"
 #include <cmath>
 #include "cmath"
 
 // Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
-real_T minimum_FuPUSFQR(const real_T x[9])
+real_T minimum_Tj2c1hlw(const real_T x[9])
 {
   real_T ex;
   int32_T idx;

@@ -3,16 +3,16 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: norm_bB8YUzwT.cpp
+// File: norm_T8v8L2Tp.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "norm_bB8YUzwT.h"
+#include "norm_T8v8L2Tp.h"
 #include <cmath>
 
 extern "C"
@@ -25,7 +25,7 @@ extern "C"
 #include "cmath"
 
 // Function for MATLAB Function: '<S141>/MATLAB Function'
-real_T norm_bB8YUzwT(const real_T x[169])
+real_T norm_T8v8L2Tp(const real_T x[169])
 {
   real_T y;
   int32_T j;

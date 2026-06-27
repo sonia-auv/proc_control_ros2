@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: norm_sA0IlwP6.h
+// File: log2_td5QA1jf.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
-#ifndef norm_sA0IlwP6_h_
-#define norm_sA0IlwP6_h_
+#ifndef log2_td5QA1jf_h_
+#define log2_td5QA1jf_h_
 #include "rtwtypes.h"
 
-extern real_T norm_sA0IlwP6(const real_T x[4]);
+extern real_T log2_td5QA1jf(real_T x);
 
-#endif                                 // norm_sA0IlwP6_h_
+#endif                                 // log2_td5QA1jf_h_
 
 //
 // File trailer for generated code.

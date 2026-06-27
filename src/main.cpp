@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.205
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Aug 08 18:07:33 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:27:32 2026
 //
 #include "ros2nodeinterface.h"
 rclcpp::Node::SharedPtr SLROSNodePtr;
@@ -19,6 +19,13 @@ namespace matlab {
 } //namespace matlab
 } //namespace ros2
 int main(int argc, char* argv[]) {
+#ifdef MW_DEBUG_LOG
+  #ifdef ROS2_DISTRO_JAZZY //jazzy
+   std::cout<<"\nThis application is built for ROS 2 Jazzy\n\n";
+  #elif defined(ROS2_DISTRO_HUMBLE) //humble
+   std::cout<<"\nThis application is built for ROS 2 Humble\n\n";
+  #endif
+#endif
     ros2::matlab::gMatlabNodeIntr = std::make_shared<ros2::matlab::NodeInterface>();
     ros2::matlab::gMatlabNodeIntr->initialize(argc, argv);
     auto ret = ros2::matlab::gMatlabNodeIntr->run();

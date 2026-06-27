@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: isfinite_tbtZO0of.cpp
+// File: isfinite_2ZoJfJwq.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "isfinite_tbtZO0of.h"
+#include "isfinite_2ZoJfJwq.h"
 #include <cmath>
 #include "cmath"
 
 // Function for MATLAB Function: '<S217>/NLMPC'
-void isfinite_tbtZO0of(const real_T x[8], boolean_T b[8])
+void isfinite_2ZoJfJwq(const real_T x[8], boolean_T b[8])
 {
   for (int32_T i{0}; i < 8; i++) {
     real_T x_0;

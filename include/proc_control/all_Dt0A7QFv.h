@@ -3,7 +3,7 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: plook_u32u16_binckan.h
+// File: all_Dt0A7QFv.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
@@ -11,14 +11,13 @@
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
 // C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
-#ifndef plook_u32u16_binckan_h_
-#define plook_u32u16_binckan_h_
+#ifndef all_Dt0A7QFv_h_
+#define all_Dt0A7QFv_h_
 #include "rtwtypes.h"
 
-extern uint32_T plook_u32u16_binckan(uint16_T u, const uint16_T bp[], uint32_T
-  maxIndex);
+extern void all_Dt0A7QFv(const boolean_T x[130], boolean_T y[13]);
 
-#endif                                 // plook_u32u16_binckan_h_
+#endif                                 // all_Dt0A7QFv_h_
 
 //
 // File trailer for generated code.

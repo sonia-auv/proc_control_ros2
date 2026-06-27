@@ -3,21 +3,21 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: log2_oa8AMOVy.h
+// File: norm_ncQhwrEv.h
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
-#ifndef log2_oa8AMOVy_h_
-#define log2_oa8AMOVy_h_
+#ifndef norm_ncQhwrEv_h_
+#define norm_ncQhwrEv_h_
 #include "rtwtypes.h"
 
-extern real_T log2_oa8AMOVy(real_T x);
+extern real_T norm_ncQhwrEv(const real_T x[9]);
 
-#endif                                 // log2_oa8AMOVy_h_
+#endif                                 // norm_ncQhwrEv_h_
 
 //
 // File trailer for generated code.

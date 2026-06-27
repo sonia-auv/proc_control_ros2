@@ -1,6 +1,7 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 08-Aug-2025 18:07:32
+// Generated 27-Jun-2026 16:27:29
 #include "slros2_initialize.h"
+const std::string SLROSNodeName("proc_control");
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_500;
 // proc_control/Enabled Subsystem/Send auv states/proc_nav auv_states

@@ -3,19 +3,19 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: trisolve_welyRBjd.cpp
+// File: trisolve_sFlGkFFn.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.186
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sat Jun 21 18:59:37 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
 //
 #include "rtwtypes.h"
-#include "trisolve_welyRBjd.h"
+#include "trisolve_sFlGkFFn.h"
 
 // Function for MATLAB Function: '<S212>/FixedHorizonOptimizer'
-void trisolve_welyRBjd(const real_T b_A[81], real_T b_B[81])
+void trisolve_sFlGkFFn(const real_T b_A[81], real_T b_B[81])
 {
   for (int32_T j{0}; j < 9; j++) {
     int32_T jBcol;

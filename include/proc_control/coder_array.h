@@ -571,6 +571,7 @@ class array_base {
         if(_other.data_.is_owner()){
             data_.copy(_other.data_);
         }else{
+            data_.clear();
             data_.shallow_copy(_other.data_);
         }
         (void)std::copy(_other.size_, _other.size_ + N, size_);

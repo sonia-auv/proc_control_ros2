@@ -1,9 +1,22 @@
-/* Copyright 2022 The MathWorks, Inc. */
+/* Copyright 2022-2025 The MathWorks, Inc. */
 
 #ifndef _SLROS2_GENERIC_PARAM_H_
 #define _SLROS2_GENERIC_PARAM_H_
 
 #include "rclcpp/rclcpp.hpp"
+
+#ifndef _SL_ROS2_CONTROL_PLUGIN_
+// Use shared pointer for standard/component node generation
+extern rclcpp::Node::SharedPtr SLROSNodePtr;
+#define NodePtr_Type rclcpp::Node::SharedPtr
+#endif
+
+#ifdef _SL_ROS2_CONTROL_PLUGIN_
+#include "rclcpp_lifecycle/lifecycle_node.hpp"
+// Use lifecycle node for ROS 2 control plugin generation
+extern rclcpp_lifecycle::LifecycleNode::SharedPtr SLROSNodePtr;
+#define NodePtr_Type rclcpp_lifecycle::LifecycleNode::SharedPtr
+#endif
 
 /**
  * Base class for getting ROS 2 parameters in C++.
@@ -15,7 +28,7 @@ class SimulinkParameterGetterBase {
   public:
     void initParam(const std::string& pName);
   protected:
-    rclcpp::Node::SharedPtr nodePtr; ///< Pointer to node handle (node will be used to connect to parameter server)
+    NodePtr_Type nodePtr; ///< Pointer to node handle (node will be used to connect to parameter server)
     std::string paramName; ///< The name of the parameter
 };
 

@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.205
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Fri Aug  8 18:07:04 2025
+// Model version                  : 4.0
+// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
+// C/C++ source code generated on : Sat Jun 27 16:27:14 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -204,14 +204,14 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   // Variable: dmax
   //  Referenced by: '<S27>/Drift'
 
-  { 0.24784227329089603, 0.28571572806427248, 0.043002737921836412,
-    0.061019996769746, 0.098031371372109419, 0.010333517349659906 },
+  { 0.337816193958063, 0.12643072109275794, 0.051182664189423369,
+    0.0025496952611057224, 0.00055919720919769269, 0.00074130245397064927 },
 
   // Variable: dmin
   //  Referenced by: '<S27>/Drift'
 
-  { -0.12151274809639689, -0.65380579191240629, -0.087960011620235951,
-    -0.090229099381998579, -0.024924269561752022, -0.058698174008415677 },
+  { -0.13962523170523966, -0.84967577692104934, -0.022096107515960573,
+    -0.036569453346723346, -0.015356688908682704, -0.00092514455941544727 },
 
   // Variable: waveDiscreteFrequency
   //  Referenced by: '<S27>/Sine Wave'
@@ -79032,11 +79032,6 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   0.001,
 
-  // Expression: -1
-  //  Referenced by: '<S48>/Gain3'
-
-  -1.0,
-
   // Expression: 0.5
   //  Referenced by: '<S75>/Constant'
 
@@ -79106,6 +79101,16 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
   //  Referenced by: '<S89>/Constant1'
 
   1.0,
+
+  // Expression: -1
+  //  Referenced by: '<S83>/Multiply'
+
+  -1.0,
+
+  // Expression: -1
+  //  Referenced by: '<S82>/Multiply'
+
+  -1.0,
 
   // Computed Parameter: y_Y0
   //  Referenced by: '<S118>/y'
@@ -79941,10 +79946,10 @@ proc_control::P_proc_control_T proc_control::proc_control_P{
 
   0.0,
 
-  // Expression: 0
+  // Expression: 1
   //  Referenced by: '<Root>/Constant'
 
-  0.0,
+  1.0,
 
   // Expression: [0,0,0,0,0,0,0,0]
   //  Referenced by: '<S250>/Delay'
