@@ -24,7 +24,6 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 #include <std_msgs/msg/header.hpp>
-#include <std_msgs/msg/int16_multi_array.hpp>
 #include <std_msgs/msg/multi_array_dimension.hpp>
 #include <std_msgs/msg/multi_array_layout.hpp>
 #include <std_msgs/msg/u_int8.hpp>
@@ -98,9 +97,6 @@
 
 [[maybe_unused]] static void convertFromBus(std_msgs::msg::Header& msgPtr, SL_Bus_std_msgs_Header const* busPtr);
 [[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Int16MultiArray& msgPtr, SL_Bus_std_msgs_Int16MultiArray const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Int16MultiArray* busPtr, const std_msgs::msg::Int16MultiArray& msgPtr);
 
 [[maybe_unused]] static void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr);
 [[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_MultiArrayDimension* busPtr, const std_msgs::msg::MultiArrayDimension& msgPtr);
@@ -597,25 +593,6 @@
 
   convertToBusVariablePrimitiveArray(busPtr->frame_id, busPtr->frame_id_SL_Info, msgPtr.frame_id, slros::EnabledWarning(rosMessageType, "frame_id"));
   convertToBus(&busPtr->stamp, msgPtr.stamp);
-}
-
-
-// Conversions between SL_Bus_std_msgs_Int16MultiArray and std_msgs::msg::Int16MultiArray
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Int16MultiArray& msgPtr, SL_Bus_std_msgs_Int16MultiArray const* busPtr)
-{
-  const std::string rosMessageType("std_msgs/Int16MultiArray");
-
-  convertFromBusVariablePrimitiveArray(msgPtr.data, busPtr->data, busPtr->data_SL_Info);
-  convertFromBus(msgPtr.layout, &busPtr->layout);
-}
-
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Int16MultiArray* busPtr, const std_msgs::msg::Int16MultiArray& msgPtr)
-{
-  const std::string rosMessageType("std_msgs/Int16MultiArray");
-
-  convertToBusVariablePrimitiveArray(busPtr->data, busPtr->data_SL_Info, msgPtr.data, slros::EnabledWarning(rosMessageType, "data"));
-  convertToBus(&busPtr->layout, msgPtr.layout);
 }
 
 

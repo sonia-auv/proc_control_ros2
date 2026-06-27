@@ -6,7 +6,7 @@
 //
 // Model version                  : 4.0
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Sat Jun 27 16:27:32 2026
+// C/C++ source code generated on : Sat Jun 27 17:13:27 2026
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -36,7 +36,6 @@ class proc_control;
 #include "rtwtypes.h"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/twist.hpp"
-#include "geometry_msgs/msg/vector3.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "sonia_common_ros2/msg/body_velocity_dvl.hpp"
@@ -48,7 +47,6 @@ class proc_control;
 #include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-#include "std_msgs/msg/int16_multi_array.hpp"
 #include "std_msgs/msg/u_int8.hpp"
 #include "trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp"
 namespace ros2 {

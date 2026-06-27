@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 27-Jun-2026 16:27:29
+// Generated 27-Jun-2026 17:13:24
 #include "slros2_initialize.h"
 const std::string SLROSNodeName("proc_control");
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
@@ -12,24 +12,10 @@ SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros2_MpcIn
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1380;
 // proc_control/Enabled Subsystem1/telemetry thruster_newton
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1386;
-// proc_control/Model System/Modele Thruster (Approximation)/Send RPM to unity/Publish
-SimulinkPublisher<std_msgs::msg::Int16MultiArray,SL_Bus_std_msgs_Int16MultiArray> Pub_proc_control_1184;
-// proc_control/Model System/Sensor Model/Hydrophones Model/Publish
-SimulinkPublisher<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Pub_proc_control_1280;
-// proc_control/ROS Output/Send DVL msg/Publish
-SimulinkPublisher<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Pub_proc_control_1347;
-// proc_control/ROS Output/Send Depth msg/Publish
-SimulinkPublisher<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Pub_proc_control_1353;
-// proc_control/ROS Output/Send IMU Msg/Publish
-SimulinkPublisher<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Pub_proc_control_1342;
-// proc_control/ROS Output/Send to Unity/Publish
-SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_1321;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_671;
-// proc_control/Model System/Sensor Model/Hydrophones Model/Subscribe
-SimulinkSubscriber<geometry_msgs::msg::Vector3,SL_Bus_geometry_msgs_Vector3> Sub_proc_control_1278;
 // proc_control/Ros Command/Ros Command Manager/proc_control reset_trajectory
 SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_16;
 // proc_control/Ros Command/Ros Command Manager/proc_control set_mode
