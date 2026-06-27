@@ -9,7 +9,7 @@
 //
 // Model version                  : 4.0
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Sat Jun 27 17:13:10 2026
+// C/C++ source code generated on : Sat Jun 27 18:03:28 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -41094,11 +41094,11 @@ void proc_control::Subscriber_setu_pr351ewpk3k4u0o(const
   // Start for MATLABSystem: '<S246>/SourceBlock'
   proc_control_B.deadline.sec = 0.0;
   proc_control_B.deadline.nsec = 0.0;
-  lifespan.sec = 5.0;
+  lifespan.sec = 0.0;
   lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 5.0;
+  liveliness_lease_duration.sec = 0.0;
   liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)10.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE, proc_control_B.deadline,
                  lifespan, RMW_QOS_POLICY_LIVELINESS_AUTOMATIC,
