@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 4.0
+// Model version                  : 3.175
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Sat Jun 27 16:04:42 2026
+// C/C++ source code generated on : Mon Jul  6 20:31:07 2026
 //
 #ifndef rt_defines_h_
 #define rt_defines_h_

@@ -3,7 +3,7 @@
 // course requirements at degree granting institutions only.  Not for
 // government, commercial, or other organizational use.
 //
-// File: div_nde_s32_floor.h
+// File: rtGetNaN.cpp
 //
 // Code generated for Simulink model 'proc_control'.
 //
@@ -11,13 +11,29 @@
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
 // C/C++ source code generated on : Mon Jul  6 20:31:07 2026
 //
-#ifndef div_nde_s32_floor_h_
-#define div_nde_s32_floor_h_
 #include "rtwtypes.h"
 
-extern int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator);
+extern "C"
+{
 
-#endif                                 // div_nde_s32_floor_h_
+#include "rtGetNaN.h"
+
+}
+
+extern "C"
+{
+  // Return rtNaN needed by the generated code.
+  real_T rtGetNaN(void)
+  {
+    return rtNaN;
+  }
+
+  // Return rtNaNF needed by the generated code.
+  real32_T rtGetNaNF(void)
+  {
+    return rtNaNF;
+  }
+}
 
 //
 // File trailer for generated code.

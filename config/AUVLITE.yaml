@@ -1,0 +1,133 @@
+# AUVLITE proc_control parameters
+# Alexandre Lamarre - 2023
+# Matlab codegen does not support array for rosparam. the array must be declare as string
+
+#***For safety concern, proc_control update the parameter only when soft kill (mode 0) is selected. ***
+#=========================================================================================================
+
+proc_control:
+  mpc:
+    # Thrusters effort.
+    # must be double.
+    tmax: 20.0 # max thrust Newton
+    tmin: -15.0 # min thrust Newtons
+    # MPC horizon
+    # See properties section here : https://www.mathworks.com/help/mpc/ref/mpc.html
+    # must be integers
+    p: 10 # prediction horizon MAX 10.
+    m: 1 # control horizon (m<=P otherwise crash).
+    #=========================================================================================================
+    ## MPC gains
+    # gains definition : see properties section under weight : https://www.mathworks.com/help/mpc/ref/mpc.html
+    # tips for tunning : https://www.mathworks.com/help/mpc/ug/tuning-weights.html
+    # must be defined as strings.
+    #=========================================================================================================
+    gains:
+      #MPC Gains Default
+      default:
+        ov: "70,60,70,90,90,90,90,0,0,0,0,0,0"
+        mv: "0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2"
+        mvr: "0.1,0.1,0.1,0.1,0.3,0.3,0.3,0.3"
+      #MPC Gain Mode 10
+      c10:
+        ov: "30,30,30,30,45,45,45,0,0,0,0,0,0"
+        mv: "0.0,0.0,0.0,0.0,0.0,0.0,0.0,0."
+        mvr: "0.4,0.4,0.4,0.4,0.5,0.5,0.5,0.5"
+      #MPC Gain Mode 11
+      c11:
+        ov: "30,30,30,45,45,45,45,0,0,0,0,0,0"
+        mv: "0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0"
+        mvr: "0.4,0.4,0.4,0.4,0.5,0.5,0.5,0.5"
+      #MPC Gain Mode 19
+      c19:
+        ov: "0,0,0,0,0,0,0,20,20,20,20,20,20"
+        mv: "0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2"
+        mvr: "0.1,0.1,0.1,0.1,0.3,0.3,0.3,0.3"
+      #MPC no dvl Gains
+      noDvl:
+        mv: "0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2"
+  # TargetReached.
+  # must be double.
+  target_reached:
+    linear_tolerance: 0.2 # meters
+    angular_tolerance: 0.3 # radians
+    time_in_tolerance: 3.0 # seconds
+  #=========================================================================================================
+  # physical constants
+  #
+  # The AUV model use the MKS (Meters, Kilograms, Second) standard.
+  #=========================================================================================================
+  physics:
+    # Basic constants
+    #---------------------------------------------------------------------------------------------------------
+    rho: 998 # kg/m^3
+    g: 9.81 # m/s^2
+    # AUV Constant
+    #---------------------------------------------------------------------------------------------------------
+    mass: 26.0 #Kg
+    volume: 0.029 # M^3
+    sub_height: .34 # m
+    # Inertia tensor matrix define as:
+    # Ixx Ixy Ixz
+    # Iyx Iyy Iyz
+    # Izx Izy Izz
+    # This matrix is define with solidwork.
+    I: [0.5020, -0.0013, -0.0094, -0.0013, 1.5266, -0.0021, -0.0094, -0.0021, 1.6682]
+    # Center of mass              x     y     z
+    # This vector is define with solidwork.
+    rg: [0.0028, 0.0001, 0.0222] # distance (m) between center of mass and the geometric center of the sub.
+
+    # Center of boyency           x     y     z
+    # This vector is define with solidwork.
+    rb: [0.003, -0.0002, 0.021] # distance (m) between center of boyency and the geometric center of the sub.
+
+    # Drag linear constants
+    # This vector is guess
+    cdl: [15, 20, 23.3, 3.33, 2.33, 5] # dimensionless
+
+    # Drag quadratic constants
+    # This vector is guess
+    cdq: [1.17, 0.82, 0.756, 0.167, 0.1, 0.102] # dimensionless
+
+    # Added mass
+    # This vector is guess
+    added_mass: [-1.4648, -6.6156, -15.7695, -0.1164, -0.3493, -0.3493] # dimensionless
+
+    # thusters definition
+    # each row reprensent a thurster and each colunm reprensent an DOF
+    #                                    x      y      z    yaw  roll pitch
+    thrusters: "0.292, 0.173, 0.082, -45,-90, 0,-0.292, 0.173, 0.082, 45,-90, 0,-0.292, -0.173, 0.082,-45,-90, 0,0.292, -0.173, 0.082, 45,-90, 0,0.181, 0.159, 0.082,  0,  0, 0,-0.181, 0.159, 0.082,  0,180, 0,-0.181, -0.159, 0.082,  0,  0, 0,0.181, -0.159, 0.082,  0,180, 0"
+
+    # Sensors Definition
+    #---------------------------------------------------------------------------------------------------------
+    # Force dvl ON even when data is invalid
+    # (If Set to TRUE, when dvl is lost, kalman filter will assume DVL return 0m/s)
+    # (If set to FALSE' when dvl is lost Kalman will use the theorectical model)
+    dvl_lost_override: TRUE # Boolean
+
+    # transformation of the DVL frame to body frame
+    dvl_rotation: "0, 3.14159265359, 1.57079632679" # rad
+
+    # hydrophones distance acording to auv center
+    hydro_pose: "0.160, 0.0, 0.155" # m
+
+    # sonar distance acording to auv center
+    sonar_pose: "0.200, 0, -0.155" # m
+
+    # depth sensor distance according to the geometric center
+    depth_pose: "0.0, -0.136, 0.178" # m
+
+  sensors:
+    has_dvl: FALSE
+    imu_VN_linear_acceleration_bias: "0.0, 0.0, -10.165871670815797"
+    imu_ZED_linear_acceleration_bias: "0.0, 0.0, -9.79"
+    imu_VN_accel_thresh: "0.1, 0.1, 0.1"
+    imu_ZED_accel_thresh: "0.1, 0.1, 0.1"
+
+    accel_conv:
+      newton_upper_limit: "0.5, 0.5, 0.5"
+      newton_lower_limit: "-0.5, -0.5, -0.5"
+      VN_accel_bounds: "0.7 0.5 0.5"
+      ZED_accel_bounds: "0.7 0.5 0.5"
+      VN_gyro_bounds: "0.1 0.1 0.1"
+      ZED_gyro_bounds: "0.1 0.1 0.1"

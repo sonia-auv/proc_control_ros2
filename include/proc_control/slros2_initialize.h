@@ -1,5 +1,5 @@
 // Copyright 2022-2025 The MathWorks, Inc.
-// Generated 27-Jun-2026 18:03:43
+// Generated 06-Jul-2026 20:31:25
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -43,6 +43,8 @@ extern SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros
 extern SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1380;
 // proc_control/Enabled Subsystem1/telemetry thruster_newton
 extern SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1386;
+// proc_control/Sensors Input/Simulation/Publish
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2668;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 extern SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
@@ -65,12 +67,18 @@ extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_pr
 extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
 // proc_control/Sensors Input/AUV/provider_imu imu_info
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
+// proc_control/Sensors Input/AUV/provider_imu imu_info1
+extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_2508;
+// proc_control/Sensors Input/AUV/provider_imu imu_info2
+extern SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_209_2543;
 // proc_control/Sensors Input/Simulation/proc_simulation depth
 extern SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
 // proc_control/Sensors Input/Simulation/proc_simulation dvl_velocity
 extern SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
 // proc_control/Sensors Input/Simulation/proc_simulation imu_info
 extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
+// proc_control/Sensors Input/Simulation/provider_imu imu_info1
+extern SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_2511;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe
 extern SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
@@ -110,7 +118,7 @@ extern SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/M
 extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/P
-extern SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_140;
+extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_140;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Max
 extern SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_144;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Min

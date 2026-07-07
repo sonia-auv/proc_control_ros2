@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 4.0
+// Model version                  : 3.175
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Sat Jun 27 18:03:28 2026
+// C/C++ source code generated on : Mon Jul  6 20:31:07 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -672,6 +672,16 @@ struct struct_x7JWpgYpPywnYpZFC6VmZH
 
 #endif
 
+#ifndef DEFINED_TYPEDEF_FOR_struct_lestj3Cmqe3cAicxMA7epG_
+#define DEFINED_TYPEDEF_FOR_struct_lestj3Cmqe3cAicxMA7epG_
+
+struct struct_lestj3Cmqe3cAicxMA7epG
+{
+  real_T dvl;
+};
+
+#endif
+
 #ifndef DEFINED_TYPEDEF_FOR_struct_dhOFexlPAOq1XLxIBHN1J_
 #define DEFINED_TYPEDEF_FOR_struct_dhOFexlPAOq1XLxIBHN1J_
 
@@ -715,6 +725,166 @@ struct struct_TOFpsJJYcOBczOpEd57stD
 };
 
 #endif
+
+#ifndef struct_b_dsp_SOSFilter_0_proc_contro_T
+#define struct_b_dsp_SOSFilter_0_proc_contro_T
+
+struct b_dsp_SOSFilter_0_proc_contro_T
+{
+  int32_T S0_isInitialized;
+  real_T W0_ZERO_STATES[10];
+  real_T W1_POLE_STATES[10];
+  int32_T W2_PreviousNumChannels;
+  real_T P0_ICRTP;
+  real_T P1_RTP1COEFF[15];
+  real_T P2_RTP2COEFF[15];
+  real_T P3_RTP3COEFF[6];
+  real_T P4_IC2RTP;
+};
+
+#endif                                // struct_b_dsp_SOSFilter_0_proc_contro_T
+
+#ifndef struct_b_dsp_SOSFilter_proc_control_T
+#define struct_b_dsp_SOSFilter_proc_control_T
+
+struct b_dsp_SOSFilter_proc_control_T
+{
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  b_dsp_SOSFilter_0_proc_contro_T cSFunObject;
+};
+
+#endif                                 // struct_b_dsp_SOSFilter_proc_control_T
+
+#ifndef struct_cell_wrap_proc_control_T
+#define struct_cell_wrap_proc_control_T
+
+struct cell_wrap_proc_control_T
+{
+  uint32_T f1[8];
+};
+
+#endif                                 // struct_cell_wrap_proc_control_T
+
+#ifndef struct_dsp_simulink_HighpassFilter_p_T
+#define struct_dsp_simulink_HighpassFilter_p_T
+
+struct dsp_simulink_HighpassFilter_p_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  cell_wrap_proc_control_T inputVarSize;
+  int32_T NumChannels;
+  b_dsp_SOSFilter_proc_control_T *FilterObj;
+  b_dsp_SOSFilter_proc_control_T coder_buffer_pobj0;
+};
+
+#endif                                // struct_dsp_simulink_HighpassFilter_p_T
+
+#ifndef struct_b_dsp_FIRFilter_0_proc_contro_T
+#define struct_b_dsp_FIRFilter_0_proc_contro_T
+
+struct b_dsp_FIRFilter_0_proc_contro_T
+{
+  int32_T S0_isInitialized;
+  real_T W0_states[139];
+  real_T W1_simContextBuf[278];
+  real_T W2_simRevCoeff[140];
+  int32_T W3_halideSimTBBGrainSize;
+  real_T P0_InitialStates;
+  real_T P1_Coefficients[140];
+};
+
+#endif                                // struct_b_dsp_FIRFilter_0_proc_contro_T
+
+#ifndef struct_b_dsp_FIRFilter_proc_control_T
+#define struct_b_dsp_FIRFilter_proc_control_T
+
+struct b_dsp_FIRFilter_proc_control_T
+{
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  b_dsp_FIRFilter_0_proc_contro_T cSFunObject;
+};
+
+#endif                                 // struct_b_dsp_FIRFilter_proc_control_T
+
+#ifndef struct_dsp_simulink_LowpassFilter_pr_T
+#define struct_dsp_simulink_LowpassFilter_pr_T
+
+struct dsp_simulink_LowpassFilter_pr_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  cell_wrap_proc_control_T inputVarSize;
+  int32_T NumChannels;
+  b_dsp_FIRFilter_proc_control_T *FilterObj;
+  b_dsp_FIRFilter_proc_control_T coder_buffer_pobj0;
+};
+
+#endif                                // struct_dsp_simulink_LowpassFilter_pr_T
+
+#ifndef struct_dsp_simulink_MovingAverage_pr_T
+#define struct_dsp_simulink_MovingAverage_pr_T
+
+struct dsp_simulink_MovingAverage_pr_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  boolean_T TunablePropsChanged;
+  cell_wrap_proc_control_T inputVarSize;
+  int32_T NumChannels;
+  int32_T FrameLength;
+  real_T pCumSum;
+  real_T pCumSumRev[9];
+  real_T pCumRevIndex;
+  real_T pModValueRev;
+};
+
+#endif                                // struct_dsp_simulink_MovingAverage_pr_T
+
+#ifndef struct_dsp_simulink_MovingAverage_e_T
+#define struct_dsp_simulink_MovingAverage_e_T
+
+struct dsp_simulink_MovingAverage_e_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  boolean_T TunablePropsChanged;
+  cell_wrap_proc_control_T inputVarSize;
+  int32_T NumChannels;
+  int32_T FrameLength;
+  real_T pCumSum;
+  real_T pCumSumRev[4];
+  real_T pCumRevIndex;
+  real_T pModValueRev;
+};
+
+#endif                                 // struct_dsp_simulink_MovingAverage_e_T
+
+#ifndef struct_dsp_simulink_MovingAverage_e3_T
+#define struct_dsp_simulink_MovingAverage_e3_T
+
+struct dsp_simulink_MovingAverage_e3_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  boolean_T TunablePropsChanged;
+  cell_wrap_proc_control_T inputVarSize;
+  int32_T NumChannels;
+  int32_T FrameLength;
+  real_T pCumSum;
+  real_T pCumSumRev[49];
+  real_T pCumRevIndex;
+  real_T pModValueRev;
+};
+
+#endif                                // struct_dsp_simulink_MovingAverage_e3_T
 
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -789,7 +959,7 @@ struct ros_slros2_internal_block_Sub_T
 
 #endif                                // struct_ros_slros2_internal_block_Sub_T
 
-// Custom Type definition for MATLAB Function: '<S147>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S160>/NLMPC'
 #ifndef struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 #define struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 
@@ -1077,29 +1247,6 @@ struct TrajectoryManager_proc_contro_T
 
 #endif                                // struct_TrajectoryManager_proc_contro_T
 
-#ifndef struct_cell_wrap_proc_control_T
-#define struct_cell_wrap_proc_control_T
-
-struct cell_wrap_proc_control_T
-{
-  uint32_T f1[8];
-};
-
-#endif                                 // struct_cell_wrap_proc_control_T
-
-#ifndef struct_robotics_slcore_internal_bloc_T
-#define struct_robotics_slcore_internal_bloc_T
-
-struct robotics_slcore_internal_bloc_T
-{
-  int32_T isInitialized;
-  boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize[4];
-  real_T TimeScaling[33];
-};
-
-#endif                                // struct_robotics_slcore_internal_bloc_T
-
 #ifndef struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T
 #define struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T
 
@@ -1121,26 +1268,6 @@ struct cell_proc_control_T
 };
 
 #endif                                 // struct_cell_proc_control_T
-
-#ifndef struct_robotics_slcore_internal_bl_p_T
-#define struct_robotics_slcore_internal_bl_p_T
-
-struct robotics_slcore_internal_bl_p_T
-{
-  boolean_T tunablePropertyChanged[5];
-  int32_T isInitialized;
-  boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize[3];
-  real_T VelocityBoundaryCondition[6];
-  real_T AccelerationBoundaryCondition[10];
-  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPStruct;
-  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDStruct;
-  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDDStruct;
-  cell_proc_control_T PrevOptInputs;
-  boolean_T PPFormUpdatedNeeded;
-};
-
-#endif                                // struct_robotics_slcore_internal_bl_p_T
 
 #ifndef struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 #define struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
@@ -1493,6 +1620,39 @@ struct s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
 };
 
 #endif                                // struct_s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
+
+#ifndef struct_robotics_slcore_internal_bloc_T
+#define struct_robotics_slcore_internal_bloc_T
+
+struct robotics_slcore_internal_bloc_T
+{
+  int32_T isInitialized;
+  boolean_T TunablePropsChanged;
+  cell_wrap_proc_control_T inputVarSize[4];
+  real_T TimeScaling[33];
+};
+
+#endif                                // struct_robotics_slcore_internal_bloc_T
+
+#ifndef struct_robotics_slcore_internal_bl_p_T
+#define struct_robotics_slcore_internal_bl_p_T
+
+struct robotics_slcore_internal_bl_p_T
+{
+  boolean_T tunablePropertyChanged[5];
+  int32_T isInitialized;
+  boolean_T TunablePropsChanged;
+  cell_wrap_proc_control_T inputVarSize[3];
+  real_T VelocityBoundaryCondition[6];
+  real_T AccelerationBoundaryCondition[10];
+  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPStruct;
+  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDStruct;
+  sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDDStruct;
+  cell_proc_control_T PrevOptInputs;
+  boolean_T PPFormUpdatedNeeded;
+};
+
+#endif                                // struct_robotics_slcore_internal_bl_p_T
 #endif                                 // proc_control_types_h_
 
 //
