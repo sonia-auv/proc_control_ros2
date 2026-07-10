@@ -1,5 +1,5 @@
 // Copyright 2022-2025 The MathWorks, Inc.
-// Generated 06-Jul-2026 20:31:25
+// Generated 10-Jul-2026 19:00:09
 #ifndef _SLROS2_INITIALIZE_H_
 #define _SLROS2_INITIALIZE_H_
 #include "proc_control_types.h"
@@ -43,6 +43,16 @@ extern SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros
 extern SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1380;
 // proc_control/Enabled Subsystem1/telemetry thruster_newton
 extern SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1386;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2936;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish1
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2939;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish2
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2942;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish3
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2945;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish4
+extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2936;
 // proc_control/Sensors Input/Simulation/Publish
 extern SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2668;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish

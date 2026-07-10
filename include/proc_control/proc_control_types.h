@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 3.175
+// Model version                  : 3.184
 // Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Mon Jul  6 20:31:07 2026
+// C/C++ source code generated on : Fri Jul 10 18:59:51 2026
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
@@ -606,16 +606,15 @@ struct struct_qfomatEQOl7mLQ02Mpt2VE
 
 #endif
 
-#ifndef DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
-#define DEFINED_TYPEDEF_FOR_struct_PHAFHl5XyXX1OaeSBzWbKD_
+#ifndef DEFINED_TYPEDEF_FOR_struct_72FZU0bzvPLwZ2S2uz9PiD_
+#define DEFINED_TYPEDEF_FOR_struct_72FZU0bzvPLwZ2S2uz9PiD_
 
-struct struct_PHAFHl5XyXX1OaeSBzWbKD
+struct struct_72FZU0bzvPLwZ2S2uz9PiD
 {
   real_T mass;
   real_T volume;
   real_T rho;
   real_T g;
-  real_T dvlCenterDist;
   real_T height;
   real_T I[9];
   real_T RG[3];
@@ -725,6 +724,30 @@ struct struct_TOFpsJJYcOBczOpEd57stD
 };
 
 #endif
+
+#ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
+#define struct_sJ4ih70VmKcvCeguWN0mNVF
+
+struct sJ4ih70VmKcvCeguWN0mNVF
+{
+  real_T sec;
+  real_T nsec;
+};
+
+#endif                                 // struct_sJ4ih70VmKcvCeguWN0mNVF
+
+#ifndef struct_ros_slros2_internal_block_Pub_T
+#define struct_ros_slros2_internal_block_Pub_T
+
+struct ros_slros2_internal_block_Pub_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  boolean_T QOSAvoidROSNamespaceConventions;
+};
+
+#endif                                // struct_ros_slros2_internal_block_Pub_T
 
 #ifndef struct_b_dsp_SOSFilter_0_proc_contro_T
 #define struct_b_dsp_SOSFilter_0_proc_contro_T
@@ -886,30 +909,6 @@ struct dsp_simulink_MovingAverage_e3_T
 
 #endif                                // struct_dsp_simulink_MovingAverage_e3_T
 
-#ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
-#define struct_sJ4ih70VmKcvCeguWN0mNVF
-
-struct sJ4ih70VmKcvCeguWN0mNVF
-{
-  real_T sec;
-  real_T nsec;
-};
-
-#endif                                 // struct_sJ4ih70VmKcvCeguWN0mNVF
-
-#ifndef struct_ros_slros2_internal_block_Pub_T
-#define struct_ros_slros2_internal_block_Pub_T
-
-struct ros_slros2_internal_block_Pub_T
-{
-  boolean_T matlabCodegenIsDeleted;
-  int32_T isInitialized;
-  boolean_T isSetupComplete;
-  boolean_T QOSAvoidROSNamespaceConventions;
-};
-
-#endif                                // struct_ros_slros2_internal_block_Pub_T
-
 #ifndef struct_e_robotics_slcore_internal_bl_T
 #define struct_e_robotics_slcore_internal_bl_T
 
@@ -959,7 +958,7 @@ struct ros_slros2_internal_block_Sub_T
 
 #endif                                // struct_ros_slros2_internal_block_Sub_T
 
-// Custom Type definition for MATLAB Function: '<S160>/NLMPC'
+// Custom Type definition for MATLAB Function: '<S170>/NLMPC'
 #ifndef struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 #define struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 

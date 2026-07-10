@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 27-Jun-2026 18:03:43
+// Generated 10-Jul-2026 19:00:09
 #include "slros2_initialize.h"
 const std::string SLROSNodeName("proc_control");
 // proc_control/Enabled Subsystem/Send Sensor On/proc_control sensor_on
@@ -12,6 +12,18 @@ SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros2_MpcIn
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1380;
 // proc_control/Enabled Subsystem1/telemetry thruster_newton
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_1386;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2936;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish1
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2939;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish2
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2942;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish3
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2945;
+// proc_control/Sensors Input/Enabled Subsystem1/Publish4
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2936;
+// proc_control/Sensors Input/Simulation/Publish
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_209_2668;
 // proc_control/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_913;
 // proc_control/Subsystem Trajectory/Send Current Target/Publish
@@ -34,12 +46,18 @@ SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_cont
 SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_5;
 // proc_control/Sensors Input/AUV/provider_imu imu_info
 SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_4;
+// proc_control/Sensors Input/AUV/provider_imu imu_info1
+SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_2508;
+// proc_control/Sensors Input/AUV/provider_imu imu_info2
+SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_209_2543;
 // proc_control/Sensors Input/Simulation/proc_simulation depth
 SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_control_209_85;
 // proc_control/Sensors Input/Simulation/proc_simulation dvl_velocity
 SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_209_84;
 // proc_control/Sensors Input/Simulation/proc_simulation imu_info
 SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_83;
+// proc_control/Sensors Input/Simulation/provider_imu imu_info1
+SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_209_2511;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe
 SimulinkSubscriber<sonia_common_ros2::msg::MpcGains,SL_Bus_sonia_common_ros2_MpcGains> Sub_proc_control_780;
 // proc_control/Subsystem Controller/If Action Subsystem/Subscribe1
@@ -79,7 +97,7 @@ SimulinkParameterArrayGetter<real64_T,std::vector<double>> ParamGet_proc_control
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/M
 SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_143;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/P
-SimulinkParameterGetter<int64_T,int64_t> ParamGet_proc_control_140;
+SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_140;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Max
 SimulinkParameterGetter<real64_T,double> ParamGet_proc_control_144;
 // For Block proc_control/Ros Command/Get_ROS_param/MPC Parameters/MPC Gains/T Min
