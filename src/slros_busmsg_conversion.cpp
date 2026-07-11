@@ -1,120 +1,9 @@
-#ifndef _SLROS_BUSMSG_CONVERSION_H_
-#define _SLROS_BUSMSG_CONVERSION_H_
-
-#include "rclcpp/rclcpp.hpp"
-#include <builtin_interfaces/msg/duration.hpp>
-#include <builtin_interfaces/msg/time.hpp>
-#include <geometry_msgs/msg/point.hpp>
-#include <geometry_msgs/msg/pose.hpp>
-#include <geometry_msgs/msg/pose_with_covariance.hpp>
-#include <geometry_msgs/msg/quaternion.hpp>
-#include <geometry_msgs/msg/transform.hpp>
-#include <geometry_msgs/msg/twist.hpp>
-#include <geometry_msgs/msg/twist_with_covariance.hpp>
-#include <geometry_msgs/msg/vector3.hpp>
-#include <nav_msgs/msg/odometry.hpp>
-#include <sensor_msgs/msg/imu.hpp>
-#include <sonia_common_ros2/msg/body_velocity_dvl.hpp>
-#include <sonia_common_ros2/msg/kill_status.hpp>
-#include <sonia_common_ros2/msg/motor_pwm.hpp>
-#include <sonia_common_ros2/msg/mpc_gains.hpp>
-#include <sonia_common_ros2/msg/mpc_info.hpp>
-#include <sonia_common_ros2/msg/pose.hpp>
-#include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float64_multi_array.hpp>
-#include <std_msgs/msg/header.hpp>
-#include <std_msgs/msg/multi_array_dimension.hpp>
-#include <std_msgs/msg/multi_array_layout.hpp>
-#include <std_msgs/msg/u_int8.hpp>
-#include <trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp>
-#include "proc_control_types.h"
-#include "slros_msgconvert_utils.h"
-
-
-[[maybe_unused]] static void convertFromBus(builtin_interfaces::msg::Duration& msgPtr, SL_Bus_builtin_interfaces_Duration const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_builtin_interfaces_Duration* busPtr, const builtin_interfaces::msg::Duration& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(builtin_interfaces::msg::Time& msgPtr, SL_Bus_builtin_interfaces_Time const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_builtin_interfaces_Time* busPtr, const builtin_interfaces::msg::Time& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Point& msgPtr, SL_Bus_geometry_msgs_Point const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Point* busPtr, const geometry_msgs::msg::Point& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Pose& msgPtr, SL_Bus_geometry_msgs_Pose const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Pose* busPtr, const geometry_msgs::msg::Pose& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::PoseWithCovariance& msgPtr, SL_Bus_geometry_msgs_PoseWithCovariance const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_PoseWithCovariance* busPtr, const geometry_msgs::msg::PoseWithCovariance& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Quaternion& msgPtr, SL_Bus_geometry_msgs_Quaternion const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Quaternion* busPtr, const geometry_msgs::msg::Quaternion& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Transform& msgPtr, SL_Bus_geometry_msgs_Transform const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Transform* busPtr, const geometry_msgs::msg::Transform& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Twist& msgPtr, SL_Bus_geometry_msgs_Twist const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Twist* busPtr, const geometry_msgs::msg::Twist& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::TwistWithCovariance& msgPtr, SL_Bus_geometry_msgs_TwistWithCovariance const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_TwistWithCovariance* busPtr, const geometry_msgs::msg::TwistWithCovariance& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Vector3& msgPtr, SL_Bus_geometry_msgs_Vector3 const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Vector3* busPtr, const geometry_msgs::msg::Vector3& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(nav_msgs::msg::Odometry& msgPtr, SL_Bus_nav_msgs_Odometry const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_nav_msgs_Odometry* busPtr, const nav_msgs::msg::Odometry& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sensor_msgs::msg::Imu& msgPtr, SL_Bus_sensor_msgs_Imu const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sensor_msgs_Imu* busPtr, const sensor_msgs::msg::Imu& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::BodyVelocityDVL& msgPtr, SL_Bus_sonia_common_ros2_BodyVelocityDVL const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_BodyVelocityDVL* busPtr, const sonia_common_ros2::msg::BodyVelocityDVL& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::KillStatus& msgPtr, SL_Bus_sonia_common_ros2_KillStatus const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_KillStatus* busPtr, const sonia_common_ros2::msg::KillStatus& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MotorPwm& msgPtr, SL_Bus_sonia_common_ros2_MotorPwm const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MotorPwm* busPtr, const sonia_common_ros2::msg::MotorPwm& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MpcGains& msgPtr, SL_Bus_sonia_common_ros2_MpcGains const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MpcGains* busPtr, const sonia_common_ros2::msg::MpcGains& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MpcInfo& msgPtr, SL_Bus_sonia_common_ros2_MpcInfo const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MpcInfo* busPtr, const sonia_common_ros2::msg::MpcInfo& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::Pose& msgPtr, SL_Bus_sonia_common_ros2_Pose const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_Pose* busPtr, const sonia_common_ros2::msg::Pose& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Bool& msgPtr, SL_Bus_std_msgs_Bool const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Bool* busPtr, const std_msgs::msg::Bool& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Float32& msgPtr, SL_Bus_std_msgs_Float32 const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Float32* busPtr, const std_msgs::msg::Float32& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Float64MultiArray& msgPtr, SL_Bus_std_msgs_Float64MultiArray const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Float64MultiArray* busPtr, const std_msgs::msg::Float64MultiArray& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Header& msgPtr, SL_Bus_std_msgs_Header const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_MultiArrayDimension* busPtr, const std_msgs::msg::MultiArrayDimension& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::MultiArrayLayout& msgPtr, SL_Bus_std_msgs_MultiArrayLayout const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_MultiArrayLayout* busPtr, const std_msgs::msg::MultiArrayLayout& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::UInt8& msgPtr, SL_Bus_std_msgs_UInt8 const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_UInt8* busPtr, const std_msgs::msg::UInt8& msgPtr);
-
-[[maybe_unused]] static void convertFromBus(trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr, SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint const* busPtr);
-[[maybe_unused]] static void convertToBus(SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint* busPtr, const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr);
-
+#include "slros_busmsg_conversion.h"
 
 
 // Conversions between SL_Bus_builtin_interfaces_Duration and builtin_interfaces::msg::Duration
 
-[[maybe_unused]] static void convertFromBus(builtin_interfaces::msg::Duration& msgPtr, SL_Bus_builtin_interfaces_Duration const* busPtr)
+void convertFromBus(builtin_interfaces::msg::Duration& msgPtr, SL_Bus_builtin_interfaces_Duration const* busPtr)
 {
   const std::string rosMessageType("builtin_interfaces/Duration");
 
@@ -122,7 +11,7 @@
   msgPtr.sec =  busPtr->sec;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_builtin_interfaces_Duration* busPtr, const builtin_interfaces::msg::Duration& msgPtr)
+void convertToBus(SL_Bus_builtin_interfaces_Duration* busPtr, const builtin_interfaces::msg::Duration& msgPtr)
 {
   const std::string rosMessageType("builtin_interfaces/Duration");
 
@@ -133,7 +22,7 @@
 
 // Conversions between SL_Bus_builtin_interfaces_Time and builtin_interfaces::msg::Time
 
-[[maybe_unused]] static void convertFromBus(builtin_interfaces::msg::Time& msgPtr, SL_Bus_builtin_interfaces_Time const* busPtr)
+void convertFromBus(builtin_interfaces::msg::Time& msgPtr, SL_Bus_builtin_interfaces_Time const* busPtr)
 {
   const std::string rosMessageType("builtin_interfaces/Time");
 
@@ -141,7 +30,7 @@
   msgPtr.sec =  busPtr->sec;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_builtin_interfaces_Time* busPtr, const builtin_interfaces::msg::Time& msgPtr)
+void convertToBus(SL_Bus_builtin_interfaces_Time* busPtr, const builtin_interfaces::msg::Time& msgPtr)
 {
   const std::string rosMessageType("builtin_interfaces/Time");
 
@@ -152,7 +41,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Point and geometry_msgs::msg::Point
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Point& msgPtr, SL_Bus_geometry_msgs_Point const* busPtr)
+void convertFromBus(geometry_msgs::msg::Point& msgPtr, SL_Bus_geometry_msgs_Point const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Point");
 
@@ -161,7 +50,7 @@
   msgPtr.z =  busPtr->z;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Point* busPtr, const geometry_msgs::msg::Point& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Point* busPtr, const geometry_msgs::msg::Point& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Point");
 
@@ -173,7 +62,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Pose and geometry_msgs::msg::Pose
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Pose& msgPtr, SL_Bus_geometry_msgs_Pose const* busPtr)
+void convertFromBus(geometry_msgs::msg::Pose& msgPtr, SL_Bus_geometry_msgs_Pose const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Pose");
 
@@ -181,7 +70,7 @@
   convertFromBus(msgPtr.position, &busPtr->position);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Pose* busPtr, const geometry_msgs::msg::Pose& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Pose* busPtr, const geometry_msgs::msg::Pose& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Pose");
 
@@ -192,7 +81,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_PoseWithCovariance and geometry_msgs::msg::PoseWithCovariance
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::PoseWithCovariance& msgPtr, SL_Bus_geometry_msgs_PoseWithCovariance const* busPtr)
+void convertFromBus(geometry_msgs::msg::PoseWithCovariance& msgPtr, SL_Bus_geometry_msgs_PoseWithCovariance const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/PoseWithCovariance");
 
@@ -200,7 +89,7 @@
   convertFromBus(msgPtr.pose, &busPtr->pose);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_PoseWithCovariance* busPtr, const geometry_msgs::msg::PoseWithCovariance& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_PoseWithCovariance* busPtr, const geometry_msgs::msg::PoseWithCovariance& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/PoseWithCovariance");
 
@@ -211,7 +100,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Quaternion and geometry_msgs::msg::Quaternion
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Quaternion& msgPtr, SL_Bus_geometry_msgs_Quaternion const* busPtr)
+void convertFromBus(geometry_msgs::msg::Quaternion& msgPtr, SL_Bus_geometry_msgs_Quaternion const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Quaternion");
 
@@ -221,7 +110,7 @@
   msgPtr.z =  busPtr->z;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Quaternion* busPtr, const geometry_msgs::msg::Quaternion& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Quaternion* busPtr, const geometry_msgs::msg::Quaternion& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Quaternion");
 
@@ -234,7 +123,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Transform and geometry_msgs::msg::Transform
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Transform& msgPtr, SL_Bus_geometry_msgs_Transform const* busPtr)
+void convertFromBus(geometry_msgs::msg::Transform& msgPtr, SL_Bus_geometry_msgs_Transform const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Transform");
 
@@ -242,7 +131,7 @@
   convertFromBus(msgPtr.translation, &busPtr->translation);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Transform* busPtr, const geometry_msgs::msg::Transform& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Transform* busPtr, const geometry_msgs::msg::Transform& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Transform");
 
@@ -253,7 +142,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Twist and geometry_msgs::msg::Twist
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Twist& msgPtr, SL_Bus_geometry_msgs_Twist const* busPtr)
+void convertFromBus(geometry_msgs::msg::Twist& msgPtr, SL_Bus_geometry_msgs_Twist const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Twist");
 
@@ -261,7 +150,7 @@
   convertFromBus(msgPtr.linear, &busPtr->linear);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Twist* busPtr, const geometry_msgs::msg::Twist& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Twist* busPtr, const geometry_msgs::msg::Twist& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Twist");
 
@@ -272,7 +161,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_TwistWithCovariance and geometry_msgs::msg::TwistWithCovariance
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::TwistWithCovariance& msgPtr, SL_Bus_geometry_msgs_TwistWithCovariance const* busPtr)
+void convertFromBus(geometry_msgs::msg::TwistWithCovariance& msgPtr, SL_Bus_geometry_msgs_TwistWithCovariance const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/TwistWithCovariance");
 
@@ -280,7 +169,7 @@
   convertFromBus(msgPtr.twist, &busPtr->twist);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_TwistWithCovariance* busPtr, const geometry_msgs::msg::TwistWithCovariance& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_TwistWithCovariance* busPtr, const geometry_msgs::msg::TwistWithCovariance& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/TwistWithCovariance");
 
@@ -291,7 +180,7 @@
 
 // Conversions between SL_Bus_geometry_msgs_Vector3 and geometry_msgs::msg::Vector3
 
-[[maybe_unused]] static void convertFromBus(geometry_msgs::msg::Vector3& msgPtr, SL_Bus_geometry_msgs_Vector3 const* busPtr)
+void convertFromBus(geometry_msgs::msg::Vector3& msgPtr, SL_Bus_geometry_msgs_Vector3 const* busPtr)
 {
   const std::string rosMessageType("geometry_msgs/Vector3");
 
@@ -300,7 +189,7 @@
   msgPtr.z =  busPtr->z;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_geometry_msgs_Vector3* busPtr, const geometry_msgs::msg::Vector3& msgPtr)
+void convertToBus(SL_Bus_geometry_msgs_Vector3* busPtr, const geometry_msgs::msg::Vector3& msgPtr)
 {
   const std::string rosMessageType("geometry_msgs/Vector3");
 
@@ -312,7 +201,7 @@
 
 // Conversions between SL_Bus_nav_msgs_Odometry and nav_msgs::msg::Odometry
 
-[[maybe_unused]] static void convertFromBus(nav_msgs::msg::Odometry& msgPtr, SL_Bus_nav_msgs_Odometry const* busPtr)
+void convertFromBus(nav_msgs::msg::Odometry& msgPtr, SL_Bus_nav_msgs_Odometry const* busPtr)
 {
   const std::string rosMessageType("nav_msgs/Odometry");
 
@@ -322,7 +211,7 @@
   convertFromBus(msgPtr.twist, &busPtr->twist);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_nav_msgs_Odometry* busPtr, const nav_msgs::msg::Odometry& msgPtr)
+void convertToBus(SL_Bus_nav_msgs_Odometry* busPtr, const nav_msgs::msg::Odometry& msgPtr)
 {
   const std::string rosMessageType("nav_msgs/Odometry");
 
@@ -335,7 +224,7 @@
 
 // Conversions between SL_Bus_sensor_msgs_Imu and sensor_msgs::msg::Imu
 
-[[maybe_unused]] static void convertFromBus(sensor_msgs::msg::Imu& msgPtr, SL_Bus_sensor_msgs_Imu const* busPtr)
+void convertFromBus(sensor_msgs::msg::Imu& msgPtr, SL_Bus_sensor_msgs_Imu const* busPtr)
 {
   const std::string rosMessageType("sensor_msgs/Imu");
 
@@ -348,7 +237,7 @@
   convertFromBusFixedPrimitiveArray(msgPtr.orientation_covariance, busPtr->orientation_covariance);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sensor_msgs_Imu* busPtr, const sensor_msgs::msg::Imu& msgPtr)
+void convertToBus(SL_Bus_sensor_msgs_Imu* busPtr, const sensor_msgs::msg::Imu& msgPtr)
 {
   const std::string rosMessageType("sensor_msgs/Imu");
 
@@ -364,7 +253,7 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_BodyVelocityDVL and sonia_common_ros2::msg::BodyVelocityDVL
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::BodyVelocityDVL& msgPtr, SL_Bus_sonia_common_ros2_BodyVelocityDVL const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::BodyVelocityDVL& msgPtr, SL_Bus_sonia_common_ros2_BodyVelocityDVL const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/BodyVelocityDVL");
 
@@ -379,7 +268,7 @@
   msgPtr.z_vel_btm =  busPtr->z_vel_btm;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_BodyVelocityDVL* busPtr, const sonia_common_ros2::msg::BodyVelocityDVL& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_BodyVelocityDVL* busPtr, const sonia_common_ros2::msg::BodyVelocityDVL& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/BodyVelocityDVL");
 
@@ -397,14 +286,14 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_KillStatus and sonia_common_ros2::msg::KillStatus
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::KillStatus& msgPtr, SL_Bus_sonia_common_ros2_KillStatus const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::KillStatus& msgPtr, SL_Bus_sonia_common_ros2_KillStatus const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/KillStatus");
 
   msgPtr.status =  busPtr->status;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_KillStatus* busPtr, const sonia_common_ros2::msg::KillStatus& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_KillStatus* busPtr, const sonia_common_ros2::msg::KillStatus& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/KillStatus");
 
@@ -414,7 +303,7 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_MotorPwm and sonia_common_ros2::msg::MotorPwm
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MotorPwm& msgPtr, SL_Bus_sonia_common_ros2_MotorPwm const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::MotorPwm& msgPtr, SL_Bus_sonia_common_ros2_MotorPwm const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MotorPwm");
 
@@ -428,7 +317,7 @@
   msgPtr.motor8 =  busPtr->motor8;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MotorPwm* busPtr, const sonia_common_ros2::msg::MotorPwm& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_MotorPwm* busPtr, const sonia_common_ros2::msg::MotorPwm& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MotorPwm");
 
@@ -445,7 +334,7 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_MpcGains and sonia_common_ros2::msg::MpcGains
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MpcGains& msgPtr, SL_Bus_sonia_common_ros2_MpcGains const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::MpcGains& msgPtr, SL_Bus_sonia_common_ros2_MpcGains const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MpcGains");
 
@@ -456,7 +345,7 @@
   convertFromBusVariablePrimitiveArray(msgPtr.ov, busPtr->ov, busPtr->ov_SL_Info);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MpcGains* busPtr, const sonia_common_ros2::msg::MpcGains& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_MpcGains* busPtr, const sonia_common_ros2::msg::MpcGains& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MpcGains");
 
@@ -470,7 +359,7 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_MpcInfo and sonia_common_ros2::msg::MpcInfo
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::MpcInfo& msgPtr, SL_Bus_sonia_common_ros2_MpcInfo const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::MpcInfo& msgPtr, SL_Bus_sonia_common_ros2_MpcInfo const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MpcInfo");
 
@@ -483,7 +372,7 @@
   convertFromBusVariablePrimitiveArray(msgPtr.thrusters_status, busPtr->thrusters_status, busPtr->thrusters_status_SL_Info);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_MpcInfo* busPtr, const sonia_common_ros2::msg::MpcInfo& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_MpcInfo* busPtr, const sonia_common_ros2::msg::MpcInfo& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/MpcInfo");
 
@@ -499,7 +388,7 @@
 
 // Conversions between SL_Bus_sonia_common_ros2_Pose and sonia_common_ros2::msg::Pose
 
-[[maybe_unused]] static void convertFromBus(sonia_common_ros2::msg::Pose& msgPtr, SL_Bus_sonia_common_ros2_Pose const* busPtr)
+void convertFromBus(sonia_common_ros2::msg::Pose& msgPtr, SL_Bus_sonia_common_ros2_Pose const* busPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/Pose");
 
@@ -511,7 +400,7 @@
   msgPtr.speed =  busPtr->speed;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_sonia_common_ros2_Pose* busPtr, const sonia_common_ros2::msg::Pose& msgPtr)
+void convertToBus(SL_Bus_sonia_common_ros2_Pose* busPtr, const sonia_common_ros2::msg::Pose& msgPtr)
 {
   const std::string rosMessageType("sonia_common_ros2/Pose");
 
@@ -526,14 +415,14 @@
 
 // Conversions between SL_Bus_std_msgs_Bool and std_msgs::msg::Bool
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Bool& msgPtr, SL_Bus_std_msgs_Bool const* busPtr)
+void convertFromBus(std_msgs::msg::Bool& msgPtr, SL_Bus_std_msgs_Bool const* busPtr)
 {
   const std::string rosMessageType("std_msgs/Bool");
 
   msgPtr.data =  busPtr->data;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Bool* busPtr, const std_msgs::msg::Bool& msgPtr)
+void convertToBus(SL_Bus_std_msgs_Bool* busPtr, const std_msgs::msg::Bool& msgPtr)
 {
   const std::string rosMessageType("std_msgs/Bool");
 
@@ -543,14 +432,14 @@
 
 // Conversions between SL_Bus_std_msgs_Float32 and std_msgs::msg::Float32
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Float32& msgPtr, SL_Bus_std_msgs_Float32 const* busPtr)
+void convertFromBus(std_msgs::msg::Float32& msgPtr, SL_Bus_std_msgs_Float32 const* busPtr)
 {
   const std::string rosMessageType("std_msgs/Float32");
 
   msgPtr.data =  busPtr->data;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Float32* busPtr, const std_msgs::msg::Float32& msgPtr)
+void convertToBus(SL_Bus_std_msgs_Float32* busPtr, const std_msgs::msg::Float32& msgPtr)
 {
   const std::string rosMessageType("std_msgs/Float32");
 
@@ -560,7 +449,7 @@
 
 // Conversions between SL_Bus_std_msgs_Float64MultiArray and std_msgs::msg::Float64MultiArray
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Float64MultiArray& msgPtr, SL_Bus_std_msgs_Float64MultiArray const* busPtr)
+void convertFromBus(std_msgs::msg::Float64MultiArray& msgPtr, SL_Bus_std_msgs_Float64MultiArray const* busPtr)
 {
   const std::string rosMessageType("std_msgs/Float64MultiArray");
 
@@ -568,7 +457,7 @@
   convertFromBus(msgPtr.layout, &busPtr->layout);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Float64MultiArray* busPtr, const std_msgs::msg::Float64MultiArray& msgPtr)
+void convertToBus(SL_Bus_std_msgs_Float64MultiArray* busPtr, const std_msgs::msg::Float64MultiArray& msgPtr)
 {
   const std::string rosMessageType("std_msgs/Float64MultiArray");
 
@@ -579,7 +468,7 @@
 
 // Conversions between SL_Bus_std_msgs_Header and std_msgs::msg::Header
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::Header& msgPtr, SL_Bus_std_msgs_Header const* busPtr)
+void convertFromBus(std_msgs::msg::Header& msgPtr, SL_Bus_std_msgs_Header const* busPtr)
 {
   const std::string rosMessageType("std_msgs/Header");
 
@@ -587,7 +476,7 @@
   convertFromBus(msgPtr.stamp, &busPtr->stamp);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& msgPtr)
+void convertToBus(SL_Bus_std_msgs_Header* busPtr, const std_msgs::msg::Header& msgPtr)
 {
   const std::string rosMessageType("std_msgs/Header");
 
@@ -598,7 +487,7 @@
 
 // Conversions between SL_Bus_std_msgs_MultiArrayDimension and std_msgs::msg::MultiArrayDimension
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr)
+void convertFromBus(std_msgs::msg::MultiArrayDimension& msgPtr, SL_Bus_std_msgs_MultiArrayDimension const* busPtr)
 {
   const std::string rosMessageType("std_msgs/MultiArrayDimension");
 
@@ -607,7 +496,7 @@
   msgPtr.stride =  busPtr->stride;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_MultiArrayDimension* busPtr, const std_msgs::msg::MultiArrayDimension& msgPtr)
+void convertToBus(SL_Bus_std_msgs_MultiArrayDimension* busPtr, const std_msgs::msg::MultiArrayDimension& msgPtr)
 {
   const std::string rosMessageType("std_msgs/MultiArrayDimension");
 
@@ -619,7 +508,7 @@
 
 // Conversions between SL_Bus_std_msgs_MultiArrayLayout and std_msgs::msg::MultiArrayLayout
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::MultiArrayLayout& msgPtr, SL_Bus_std_msgs_MultiArrayLayout const* busPtr)
+void convertFromBus(std_msgs::msg::MultiArrayLayout& msgPtr, SL_Bus_std_msgs_MultiArrayLayout const* busPtr)
 {
   const std::string rosMessageType("std_msgs/MultiArrayLayout");
 
@@ -627,7 +516,7 @@
   convertFromBusVariableNestedArray(msgPtr.dim, busPtr->dim, busPtr->dim_SL_Info);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_MultiArrayLayout* busPtr, const std_msgs::msg::MultiArrayLayout& msgPtr)
+void convertToBus(SL_Bus_std_msgs_MultiArrayLayout* busPtr, const std_msgs::msg::MultiArrayLayout& msgPtr)
 {
   const std::string rosMessageType("std_msgs/MultiArrayLayout");
 
@@ -638,14 +527,14 @@
 
 // Conversions between SL_Bus_std_msgs_UInt8 and std_msgs::msg::UInt8
 
-[[maybe_unused]] static void convertFromBus(std_msgs::msg::UInt8& msgPtr, SL_Bus_std_msgs_UInt8 const* busPtr)
+void convertFromBus(std_msgs::msg::UInt8& msgPtr, SL_Bus_std_msgs_UInt8 const* busPtr)
 {
   const std::string rosMessageType("std_msgs/UInt8");
 
   msgPtr.data =  busPtr->data;
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_std_msgs_UInt8* busPtr, const std_msgs::msg::UInt8& msgPtr)
+void convertToBus(SL_Bus_std_msgs_UInt8* busPtr, const std_msgs::msg::UInt8& msgPtr)
 {
   const std::string rosMessageType("std_msgs/UInt8");
 
@@ -655,7 +544,7 @@
 
 // Conversions between SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint and trajectory_msgs::msg::MultiDOFJointTrajectoryPoint
 
-[[maybe_unused]] static void convertFromBus(trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr, SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint const* busPtr)
+void convertFromBus(trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr, SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint const* busPtr)
 {
   const std::string rosMessageType("trajectory_msgs/MultiDOFJointTrajectoryPoint");
 
@@ -665,7 +554,7 @@
   convertFromBusVariableNestedArray(msgPtr.velocities, busPtr->velocities, busPtr->velocities_SL_Info);
 }
 
-[[maybe_unused]] static void convertToBus(SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint* busPtr, const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr)
+void convertToBus(SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint* busPtr, const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msgPtr)
 {
   const std::string rosMessageType("trajectory_msgs/MultiDOFJointTrajectoryPoint");
 
@@ -675,6 +564,3 @@
   convertToBusVariableNestedArray(busPtr->velocities, busPtr->velocities_SL_Info, msgPtr.velocities, slros::EnabledWarning(rosMessageType, "velocities"));
 }
 
-
-
-#endif

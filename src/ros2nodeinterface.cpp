@@ -2,11 +2,11 @@
 //
 // File ros2nodeinterface.cpp
 //
-// Code generated for Simulink model 'proc_control'.
+// Code generated for Simulink model 'proc_control_lite'.
 //
-// Model version                  : 3.184
-// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Fri Jul 10 19:00:11 2026
+// Model version                  : 1.3
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Sat Jul 11 01:55:43 2026
 //
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -26,7 +26,7 @@
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif //_MSC_VER
 #include "rclcpp/rclcpp.hpp"
-#include "proc_control.h"
+#include "proc_control_lite.h"
 #include "ros2nodeinterface.h"
 #include <thread>
 #include <chrono>
@@ -34,16 +34,11 @@
 #undef ROS_SET_RTM_ERROR_STATUS
 #undef ROS_GET_RTM_ERROR_STATUS
 #undef ROS_RTM_STEP_TASK
-#define ROS_SET_RTM_ERROR_STATUS(status) mModel->getRTM()->setErrorStatus(status)
-#define ROS_GET_RTM_ERROR_STATUS()       mModel->getRTM()->getErrorStatus()
-#define ROS_RTM_STEP_TASK(id)            mModel->getRTM()->StepTask(id)
-#include "slros2_multi_threaded_executor.h"
-std::vector<rclcpp::SubscriptionBase*> SLROSSubscribers;
+#define ROS_SET_RTM_ERROR_STATUS(status)  rtmSetErrorStatus(mModel->getRTM(),status);
+#define ROS_GET_RTM_ERROR_STATUS()        rtmGetErrorStatus(mModel->getRTM())
+#define ROS_RTM_STEP_TASK(id)             rtmStepTask(mModel->getRTM(),id)
+const std::string SLROSNodeName("proc_control_lite");
 extern rclcpp::Node::SharedPtr SLROSNodePtr;
-#ifndef RT_MEMORY_ALLOCATION_ERROR_DEF
-#define RT_MEMORY_ALLOCATION_ERROR_DEF
-const char *RT_MEMORY_ALLOCATION_ERROR = "memory allocation error";
-#endif
 namespace ros2 {
 namespace matlab {
 NodeInterface::NodeInterface()
@@ -64,15 +59,15 @@ void NodeInterface::initialize(int argc, char * const argv[]) {
         std::vector<char *> args(argv, argv + argc);
         rclcpp::init(static_cast<int>(args.size()), args.data());
         //create the Node specified in Model
-        std::string NodeName("proc_control");
+        std::string NodeName("proc_control_lite");
         SLROSNodePtr = std::make_shared<rclcpp::Node>(NodeName);
-        RCLCPP_INFO(SLROSNodePtr->get_logger(),"** Starting the model \"proc_control\" **\n");
-        mExec = std::make_shared<rclcpp::executors::SLMultiThreadedExecutor>();
+        RCLCPP_INFO(SLROSNodePtr->get_logger(),"** Starting the model \"proc_control_lite\" **\n");
+        mExec = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
         mExec->add_node(SLROSNodePtr);
         //initialize the model which will initialize the publishers and subscribers
-        mModel = std::make_shared<proc_control>(
+        mModel = std::make_shared<proc_control_lite>(
         );
-        ROS_SET_RTM_ERROR_STATUS(NULL);
+		ROS_SET_RTM_ERROR_STATUS(NULL);
         mModel->initialize();
         //create the threads for the rates in the Model
         mBaseRateThread = std::make_shared<std::thread>(&NodeInterface::baseRateTask, this);
@@ -80,9 +75,6 @@ void NodeInterface::initialize(int argc, char * const argv[]) {
         // it from being executed in parallel.
 		mSchedulerGroup = SLROSNodePtr->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 		mSchedulerTimer = SLROSNodePtr->create_wall_timer(std::chrono::nanoseconds(20000000),std::bind(&NodeInterface::schedulerThreadCallback,this),mSchedulerGroup);
-		for(size_t ctr = 0; ctr<SLROSSubscribers.size();ctr++){
-           mExec->stopSubscriberCallback(SLROSSubscribers[ctr]);
-       }
     }
     catch (std::exception& ex) {
         std::cout << ex.what() << std::endl;

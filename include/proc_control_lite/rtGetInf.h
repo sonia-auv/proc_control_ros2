@@ -1,5 +1,5 @@
 /*
- * rtGetNaN.cpp
+ * rtGetInf.h
  *
  * Academic License - for use in teaching, academic research, and meeting
  * course requirements at degree granting institutions only.  Not for
@@ -12,26 +12,32 @@
  * C++ source code generated on : Fri Jul 10 23:27:37 2026
  */
 
+#ifndef rtGetInf_h_
+#define rtGetInf_h_
+
+extern "C"
+{
+
+#include "rt_nonfinite.h"
+
+}
+
 #include "rtwtypes.h"
+#ifdef __cplusplus
 
 extern "C"
 {
 
-#include "rtGetNaN.h"
+#endif
 
-}
+  extern real_T rtGetInf(void);
+  extern real32_T rtGetInfF(void);
+  extern real_T rtGetMinusInf(void);
+  extern real32_T rtGetMinusInfF(void);
 
-extern "C"
-{
-  /* Return rtNaN needed by the generated code. */
-  real_T rtGetNaN(void)
-  {
-    return rtNaN;
-  }
+#ifdef __cplusplus
 
-  /* Return rtNaNF needed by the generated code. */
-  real32_T rtGetNaNF(void)
-  {
-    return rtNaNF;
-  }
-}
+}                                      /* extern "C" */
+
+#endif
+#endif                                 /* rtGetInf_h_ */

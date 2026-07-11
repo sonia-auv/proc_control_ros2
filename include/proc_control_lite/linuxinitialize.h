@@ -1,4 +1,4 @@
-/* Copyright 2013-2024 The MathWorks, Inc. */
+/* Copyright 2013-2018 The MathWorks, Inc. */
 #ifndef _LINUXINITIALIZE_H_
 #define _LINUXINITIALIZE_H_
 #ifndef _GNU_SOURCE
@@ -17,13 +17,8 @@
 #include <signal.h>
 #include <time.h>
 
-#ifndef CHECK_STATUS
 #define CHECK_STATUS(status, expStatus, fcn) if (status != expStatus) {fprintf(stderr, "Call to %s returned error status (%d).\n", fcn, status); perror(fcn); fflush(stderr); exit(EXIT_FAILURE);}
-#endif
-
-#ifndef CHECK_STATUS_NOT
 #define CHECK_STATUS_NOT(status, errStatus, fcn) if (status == errStatus) {fprintf(stderr, "Call to %s returned error status (%d).\n", fcn, status); perror(fcn); fflush(stderr); exit(EXIT_FAILURE);}
-#endif 
 
 int mw_CreateArmedTimer(double periodInSeconds);
 int mw_CreateUnarmedTimer(double periodInSeconds, int idx);

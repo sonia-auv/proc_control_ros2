@@ -1,5 +1,5 @@
 /*
- * div_nde_s32_floor.cpp
+ * rt_urand_Upu32_Yd_f_pw_snf.h
  *
  * Academic License - for use in teaching, academic research, and meeting
  * course requirements at degree granting institutions only.  Not for
@@ -13,12 +13,10 @@
  * Created for block: proc_control_lite
  */
 
-#include "div_nde_s32_floor.h"
-#include <string>
+#ifndef rt_urand_Upu32_Yd_f_pw_snf_h_
+#define rt_urand_Upu32_Yd_f_pw_snf_h_
 #include "rtwtypes.h"
 
-int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
-{
-  return (((numerator < 0) != (denominator < 0)) && (numerator % denominator !=
-           0) ? -1 : 0) + numerator / denominator;
-}
+extern real_T rt_urand_Upu32_Yd_f_pw_snf(uint32_T *u);
+
+#endif                                 /* rt_urand_Upu32_Yd_f_pw_snf_h_ */

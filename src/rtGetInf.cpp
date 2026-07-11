@@ -1,16 +1,17 @@
-//
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-//
-// File: rtGetInf.cpp
-//
-// Code generated for Simulink model 'proc_control'.
-//
-// Model version                  : 3.175
-// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Mon Jul  6 20:31:07 2026
-//
+/*
+ * rtGetInf.cpp
+ *
+ * Academic License - for use in teaching, academic research, and meeting
+ * course requirements at degree granting institutions only.  Not for
+ * government, commercial, or other organizational use.
+ *
+ * Code generation for model "proc_control_lite".
+ *
+ * Model version              : 1.2
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C++ source code generated on : Fri Jul 10 23:27:37 2026
+ */
+
 #include "rtwtypes.h"
 
 extern "C"
@@ -22,33 +23,27 @@ extern "C"
 
 extern "C"
 {
-  // Return rtInf needed by the generated code.
+  /* Return rtInf needed by the generated code. */
   real_T rtGetInf(void)
   {
     return rtInf;
   }
 
-  // Get rtInfF needed by the generated code.
+  /* Get rtInfF needed by the generated code. */
   real32_T rtGetInfF(void)
   {
     return rtInfF;
   }
 
-  // Return rtMinusInf needed by the generated code.
+  /* Return rtMinusInf needed by the generated code. */
   real_T rtGetMinusInf(void)
   {
     return rtMinusInf;
   }
 
-  // Return rtMinusInfF needed by the generated code.
+  /* Return rtMinusInfF needed by the generated code. */
   real32_T rtGetMinusInfF(void)
   {
     return rtMinusInfF;
   }
 }
-
-//
-// File trailer for generated code.
-//
-// [EOF]
-//

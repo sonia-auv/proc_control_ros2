@@ -1,16 +1,18 @@
-//
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-//
-// File: plook_u32d_binckpang.cpp
-//
-// Code generated for Simulink model 'proc_control'.
-//
-// Model version                  : 3.175
-// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Mon Jul  6 20:31:07 2026
-//
+/*
+ * plook_u32d_binckpang.cpp
+ *
+ * Academic License - for use in teaching, academic research, and meeting
+ * course requirements at degree granting institutions only.  Not for
+ * government, commercial, or other organizational use.
+ *
+ * Code generation for model "proc_control_lite".
+ *
+ * Model version              : 1.2
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C++ source code generated on : Fri Jul 10 23:27:37 2026
+ * Created for block: proc_control_lite
+ */
+
 #include "plook_u32d_binckpang.h"
 #include "binsearch_u32d_prevIdx.h"
 #include <string>
@@ -21,13 +23,13 @@ uint32_T plook_u32d_binckpang(real_T u, const real_T bp[], uint32_T maxIndex,
 {
   uint32_T bpIndex;
 
-  // Prelookup - Index only
-  // Index Search method: 'binary'
-  // Interpolation method: 'Use nearest'
-  // Use previous index: 'on'
-  // Use last breakpoint for index at or above upper limit: 'on'
-  // Remove protection against out-of-range input in generated code: 'on'
-
+  /* Prelookup - Index only
+     Index Search method: 'binary'
+     Interpolation method: 'Use nearest'
+     Use previous index: 'on'
+     Use last breakpoint for index at or above upper limit: 'on'
+     Remove protection against out-of-range input in generated code: 'on'
+   */
   if (u < bp[maxIndex]) {
     bpIndex = binsearch_u32d_prevIdx(u, bp, *prevIndex, maxIndex);
     if ((bpIndex < maxIndex) && (bp[bpIndex + 1U] - u <= u - bp[bpIndex])) {
@@ -40,9 +42,3 @@ uint32_T plook_u32d_binckpang(real_T u, const real_T bp[], uint32_T maxIndex,
   *prevIndex = bpIndex;
   return bpIndex;
 }
-
-//
-// File trailer for generated code.
-//
-// [EOF]
-//

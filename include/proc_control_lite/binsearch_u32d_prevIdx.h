@@ -1,5 +1,5 @@
 /*
- * div_nde_s32_floor.cpp
+ * binsearch_u32d_prevIdx.h
  *
  * Academic License - for use in teaching, academic research, and meeting
  * course requirements at degree granting institutions only.  Not for
@@ -13,12 +13,11 @@
  * Created for block: proc_control_lite
  */
 
-#include "div_nde_s32_floor.h"
-#include <string>
+#ifndef binsearch_u32d_prevIdx_h_
+#define binsearch_u32d_prevIdx_h_
 #include "rtwtypes.h"
 
-int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
-{
-  return (((numerator < 0) != (denominator < 0)) && (numerator % denominator !=
-           0) ? -1 : 0) + numerator / denominator;
-}
+extern uint32_T binsearch_u32d_prevIdx(real_T u, const real_T bp[], uint32_T
+  startIndex, uint32_T maxIndex);
+
+#endif                                 /* binsearch_u32d_prevIdx_h_ */

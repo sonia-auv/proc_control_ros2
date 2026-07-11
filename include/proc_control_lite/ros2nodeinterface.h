@@ -2,11 +2,11 @@
 //
 // File ros2nodeinterface.h
 //
-// Code generated for Simulink model 'proc_control'.
+// Code generated for Simulink model 'proc_control_lite'.
 //
-// Model version                  : 3.184
-// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Fri Jul 10 19:00:11 2026
+// Model version                  : 1.3
+// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+// C/C++ source code generated on : Sat Jul 11 01:55:43 2026
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -26,14 +26,10 @@
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif //_MSC_VER
 #include "rclcpp/rclcpp.hpp"
-namespace rclcpp{
-namespace executors{
-class SLMultiThreadedExecutor;
-}
-}
-class proc_control;
-#include "proc_control_types.h"
+class proc_control_lite;
+#include "proc_control_lite_types.h"
 #include "rtwtypes.h"
+#include "slros_busmsg_conversion.h"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
@@ -83,8 +79,8 @@ namespace matlab {
     NodeInterface& operator=(const NodeInterface& );
     //
     rclcpp::Node::SharedPtr mNode;
-    std::shared_ptr<proc_control> mModel;
-    std::shared_ptr<rclcpp::executors::SLMultiThreadedExecutor> mExec;
+    std::shared_ptr<proc_control_lite> mModel;
+    rclcpp::executors::MultiThreadedExecutor::SharedPtr mExec;
     //
     Semaphore mBaseRateSem;
     std::shared_ptr<std::thread> mBaseRateThread;
@@ -111,7 +107,7 @@ namespace matlab {
       return mNode;
     }
     //
-    std::shared_ptr<proc_control> getModel() {
+    std::shared_ptr<proc_control_lite> getModel() {
       return mModel;
     }
   }; //class NodeInterface

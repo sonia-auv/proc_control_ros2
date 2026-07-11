@@ -1,5 +1,5 @@
 /*
- * div_nde_s32_floor.cpp
+ * rtGetNaN.h
  *
  * Academic License - for use in teaching, academic research, and meeting
  * course requirements at degree granting institutions only.  Not for
@@ -10,15 +10,32 @@
  * Model version              : 1.2
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
  * C++ source code generated on : Fri Jul 10 23:27:37 2026
- * Created for block: proc_control_lite
  */
 
-#include "div_nde_s32_floor.h"
-#include <string>
-#include "rtwtypes.h"
+#ifndef rtGetNaN_h_
+#define rtGetNaN_h_
 
-int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator)
+extern "C"
 {
-  return (((numerator < 0) != (denominator < 0)) && (numerator % denominator !=
-           0) ? -1 : 0) + numerator / denominator;
+
+#include "rt_nonfinite.h"
+
 }
+
+#include "rtwtypes.h"
+#ifdef __cplusplus
+
+extern "C"
+{
+
+#endif
+
+  extern real_T rtGetNaN(void);
+  extern real32_T rtGetNaNF(void);
+
+#ifdef __cplusplus
+
+}                                      /* extern "C" */
+
+#endif
+#endif                                 /* rtGetNaN_h_ */

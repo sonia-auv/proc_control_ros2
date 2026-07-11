@@ -1,29 +1,30 @@
-//
-// Academic License - for use in teaching, academic research, and meeting
-// course requirements at degree granting institutions only.  Not for
-// government, commercial, or other organizational use.
-//
-// File: proc_control_types.h
-//
-// Code generated for Simulink model 'proc_control'.
-//
-// Model version                  : 3.184
-// Simulink Coder version         : 25.2 (R2025b) 28-Jul-2025
-// C/C++ source code generated on : Fri Jul 10 18:59:51 2026
-//
-// Target selection: ert.tlc
-// Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
-// Code generation objectives: Unspecified
-// Validation result: Not run
-//
-#ifndef proc_control_types_h_
-#define proc_control_types_h_
+/*
+ * proc_control_lite_types.h
+ *
+ * Academic License - for use in teaching, academic research, and meeting
+ * course requirements at degree granting institutions only.  Not for
+ * government, commercial, or other organizational use.
+ *
+ * Code generation for model "proc_control_lite".
+ *
+ * Model version              : 1.3
+ * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
+ * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ *
+ * Target selection: ert.tlc
+ * Note: GRT includes extra infrastructure and instrumentation for prototyping
+ * Embedded hardware selection: ARM Compatible->ARM 64-bit (LLP64)
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
+ */
+
+#ifndef proc_control_lite_types_h_
+#define proc_control_lite_types_h_
 #include "rtwtypes.h"
 #include "coder_bounded_array.h"
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Time_
 
-// MsgType=builtin_interfaces/Time
 struct SL_Bus_builtin_interfaces_Time
 {
   int32_T sec;
@@ -160,7 +161,6 @@ struct physicsConstants
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Bool_
 
-// MsgType=std_msgs/Bool
 struct SL_Bus_std_msgs_Bool
 {
   boolean_T data;
@@ -182,16 +182,10 @@ struct SL_Bus_ROSVariableLengthArrayInfo
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Header_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Header_
 
-// MsgType=std_msgs/Header
 struct SL_Bus_std_msgs_Header
 {
-  // MsgType=builtin_interfaces/Time
   SL_Bus_builtin_interfaces_Time stamp;
-
-  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=frame_id_SL_Info:TruncateAction=warn 
   uint8_T frame_id[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=frame_id
   SL_Bus_ROSVariableLengthArrayInfo frame_id_SL_Info;
 };
 
@@ -200,7 +194,6 @@ struct SL_Bus_std_msgs_Header
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Point_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Point_
 
-// MsgType=geometry_msgs/Point
 struct SL_Bus_geometry_msgs_Point
 {
   real_T x;
@@ -213,7 +206,6 @@ struct SL_Bus_geometry_msgs_Point
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Quaternion_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Quaternion_
 
-// MsgType=geometry_msgs/Quaternion
 struct SL_Bus_geometry_msgs_Quaternion
 {
   real_T x;
@@ -227,13 +219,9 @@ struct SL_Bus_geometry_msgs_Quaternion
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Pose_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Pose_
 
-// MsgType=geometry_msgs/Pose
 struct SL_Bus_geometry_msgs_Pose
 {
-  // MsgType=geometry_msgs/Point
   SL_Bus_geometry_msgs_Point position;
-
-  // MsgType=geometry_msgs/Quaternion
   SL_Bus_geometry_msgs_Quaternion orientation;
 };
 
@@ -242,10 +230,8 @@ struct SL_Bus_geometry_msgs_Pose
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_PoseWithCovariance_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_PoseWithCovariance_
 
-// MsgType=geometry_msgs/PoseWithCovariance
 struct SL_Bus_geometry_msgs_PoseWithCovariance
 {
-  // MsgType=geometry_msgs/Pose
   SL_Bus_geometry_msgs_Pose pose;
   real_T covariance[36];
 };
@@ -255,7 +241,6 @@ struct SL_Bus_geometry_msgs_PoseWithCovariance
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Vector3_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Vector3_
 
-// MsgType=geometry_msgs/Vector3
 struct SL_Bus_geometry_msgs_Vector3
 {
   real_T x;
@@ -268,13 +253,9 @@ struct SL_Bus_geometry_msgs_Vector3
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Twist_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Twist_
 
-// MsgType=geometry_msgs/Twist
 struct SL_Bus_geometry_msgs_Twist
 {
-  // MsgType=geometry_msgs/Vector3
   SL_Bus_geometry_msgs_Vector3 linear;
-
-  // MsgType=geometry_msgs/Vector3
   SL_Bus_geometry_msgs_Vector3 angular;
 };
 
@@ -283,10 +264,8 @@ struct SL_Bus_geometry_msgs_Twist
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_TwistWithCovariance_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_TwistWithCovariance_
 
-// MsgType=geometry_msgs/TwistWithCovariance
 struct SL_Bus_geometry_msgs_TwistWithCovariance
 {
-  // MsgType=geometry_msgs/Twist
   SL_Bus_geometry_msgs_Twist twist;
   real_T covariance[36];
 };
@@ -296,22 +275,12 @@ struct SL_Bus_geometry_msgs_TwistWithCovariance
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_nav_msgs_Odometry_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_nav_msgs_Odometry_
 
-// MsgType=nav_msgs/Odometry
 struct SL_Bus_nav_msgs_Odometry
 {
-  // MsgType=std_msgs/Header
   SL_Bus_std_msgs_Header header;
-
-  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=child_frame_id_SL_Info:TruncateAction=warn 
   uint8_T child_frame_id[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=child_frame_id
   SL_Bus_ROSVariableLengthArrayInfo child_frame_id_SL_Info;
-
-  // MsgType=geometry_msgs/PoseWithCovariance
   SL_Bus_geometry_msgs_PoseWithCovariance pose;
-
-  // MsgType=geometry_msgs/TwistWithCovariance
   SL_Bus_geometry_msgs_TwistWithCovariance twist;
 };
 
@@ -320,7 +289,6 @@ struct SL_Bus_nav_msgs_Odometry
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorPwm_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorPwm_
 
-// MsgType=sonia_common_ros2/MotorPwm
 struct SL_Bus_sonia_common_ros2_MotorPwm
 {
   uint16_T motor1;
@@ -338,25 +306,13 @@ struct SL_Bus_sonia_common_ros2_MotorPwm
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcGains_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcGains_
 
-// MsgType=sonia_common_ros2/MpcGains
 struct SL_Bus_sonia_common_ros2_MpcGains
 {
-  // IsVarLen=1:VarLenCategory=data:VarLenElem=ov_SL_Info:TruncateAction=warn
   real_T ov[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=ov
   SL_Bus_ROSVariableLengthArrayInfo ov_SL_Info;
-
-  // IsVarLen=1:VarLenCategory=data:VarLenElem=mv_SL_Info:TruncateAction=warn
   real_T mv[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=mv
   SL_Bus_ROSVariableLengthArrayInfo mv_SL_Info;
-
-  // IsVarLen=1:VarLenCategory=data:VarLenElem=mvr_SL_Info:TruncateAction=warn
   real_T mvr[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=mvr
   SL_Bus_ROSVariableLengthArrayInfo mvr_SL_Info;
   real_T max_thrust;
   real_T min_thrust;
@@ -367,22 +323,15 @@ struct SL_Bus_sonia_common_ros2_MpcGains
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcInfo_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MpcInfo_
 
-// MsgType=sonia_common_ros2/MpcInfo
 struct SL_Bus_sonia_common_ros2_MpcInfo
 {
   boolean_T is_mpc_alive;
   boolean_T target_reached;
   boolean_T is_trajectory_done;
-
-  // IsVarLen=1:VarLenCategory=data:VarLenElem=thrusters_status_SL_Info:TruncateAction=warn 
   boolean_T thrusters_status[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=thrusters_status
   SL_Bus_ROSVariableLengthArrayInfo thrusters_status_SL_Info;
   int8_T mpc_status;
   uint8_T mpc_mode;
-
-  // MsgType=sonia_common_ros2/MpcGains
   SL_Bus_sonia_common_ros2_MpcGains current_gains;
 };
 
@@ -391,7 +340,6 @@ struct SL_Bus_sonia_common_ros2_MpcInfo
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_UInt8_
 
-// MsgType=std_msgs/UInt8
 struct SL_Bus_std_msgs_UInt8
 {
   uint8_T data;
@@ -402,7 +350,6 @@ struct SL_Bus_std_msgs_UInt8
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_KillStatus_
 
-// MsgType=sonia_common_ros2/KillStatus
 struct SL_Bus_sonia_common_ros2_KillStatus
 {
   boolean_T status;
@@ -410,10 +357,99 @@ struct SL_Bus_sonia_common_ros2_KillStatus
 
 #endif
 
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
+
+struct SL_Bus_std_msgs_MultiArrayDimension
+{
+  uint8_T label[128];
+  SL_Bus_ROSVariableLengthArrayInfo label_SL_Info;
+  uint32_T size;
+  uint32_T stride;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayLayout_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayLayout_
+
+struct SL_Bus_std_msgs_MultiArrayLayout
+{
+  SL_Bus_std_msgs_MultiArrayDimension dim[16];
+  SL_Bus_ROSVariableLengthArrayInfo dim_SL_Info;
+  uint32_T data_offset;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float64MultiArray_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float64MultiArray_
+
+struct SL_Bus_std_msgs_Float64MultiArray
+{
+  SL_Bus_std_msgs_MultiArrayLayout layout;
+  real_T data[128];
+  SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Transform_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Transform_
+
+struct SL_Bus_geometry_msgs_Transform
+{
+  SL_Bus_geometry_msgs_Vector3 translation;
+  SL_Bus_geometry_msgs_Quaternion rotation;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
+
+struct SL_Bus_builtin_interfaces_Duration
+{
+  int32_T sec;
+  uint32_T nanosec;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint_
+
+struct SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint
+{
+  SL_Bus_geometry_msgs_Transform transforms[1024];
+  SL_Bus_ROSVariableLengthArrayInfo transforms_SL_Info;
+  SL_Bus_geometry_msgs_Twist velocities[1024];
+  SL_Bus_ROSVariableLengthArrayInfo velocities_SL_Info;
+  SL_Bus_geometry_msgs_Twist accelerations[1024];
+  SL_Bus_ROSVariableLengthArrayInfo accelerations_SL_Info;
+  SL_Bus_builtin_interfaces_Duration time_from_start;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_Pose_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_Pose_
+
+struct SL_Bus_sonia_common_ros2_Pose
+{
+  uint8_T frame;
+  uint8_T speed;
+  SL_Bus_geometry_msgs_Point position;
+  SL_Bus_geometry_msgs_Vector3 orientation;
+  real_T fine;
+  boolean_T rotation;
+};
+
+#endif
+
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float32_
 
-// MsgType=std_msgs/Float32
 struct SL_Bus_std_msgs_Float32
 {
   real32_T data;
@@ -424,10 +460,8 @@ struct SL_Bus_std_msgs_Float32
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_BodyVelocityDVL_
 
-// MsgType=sonia_common_ros2/BodyVelocityDVL
 struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
 {
-  // MsgType=std_msgs/Header
   SL_Bus_std_msgs_Header header;
   real_T x_vel_btm;
   real_T y_vel_btm;
@@ -444,151 +478,15 @@ struct SL_Bus_sonia_common_ros2_BodyVelocityDVL
 #ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 #define DEFINED_TYPEDEF_FOR_SL_Bus_sensor_msgs_Imu_
 
-// MsgType=sensor_msgs/Imu
 struct SL_Bus_sensor_msgs_Imu
 {
-  // MsgType=std_msgs/Header
   SL_Bus_std_msgs_Header header;
-
-  // MsgType=geometry_msgs/Quaternion
   SL_Bus_geometry_msgs_Quaternion orientation;
   real_T orientation_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
   SL_Bus_geometry_msgs_Vector3 angular_velocity;
   real_T angular_velocity_covariance[9];
-
-  // MsgType=geometry_msgs/Vector3
   SL_Bus_geometry_msgs_Vector3 linear_acceleration;
   real_T linear_acceleration_covariance[9];
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayDimension_
-
-// MsgType=std_msgs/MultiArrayDimension
-struct SL_Bus_std_msgs_MultiArrayDimension
-{
-  // PrimitiveROSType=string:IsVarLen=1:VarLenCategory=data:VarLenElem=label_SL_Info:TruncateAction=warn 
-  uint8_T label[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=label
-  SL_Bus_ROSVariableLengthArrayInfo label_SL_Info;
-  uint32_T size;
-  uint32_T stride;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayLayout_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_MultiArrayLayout_
-
-// MsgType=std_msgs/MultiArrayLayout
-struct SL_Bus_std_msgs_MultiArrayLayout
-{
-  // MsgType=std_msgs/MultiArrayDimension:IsVarLen=1:VarLenCategory=data:VarLenElem=dim_SL_Info:TruncateAction=warn 
-  SL_Bus_std_msgs_MultiArrayDimension dim[16];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=dim
-  SL_Bus_ROSVariableLengthArrayInfo dim_SL_Info;
-  uint32_T data_offset;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float64MultiArray_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_std_msgs_Float64MultiArray_
-
-// MsgType=std_msgs/Float64MultiArray
-struct SL_Bus_std_msgs_Float64MultiArray
-{
-  // MsgType=std_msgs/MultiArrayLayout
-  SL_Bus_std_msgs_MultiArrayLayout layout;
-
-  // IsVarLen=1:VarLenCategory=data:VarLenElem=data_SL_Info:TruncateAction=warn
-  real_T data[128];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=data
-  SL_Bus_ROSVariableLengthArrayInfo data_SL_Info;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Transform_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_geometry_msgs_Transform_
-
-// MsgType=geometry_msgs/Transform
-struct SL_Bus_geometry_msgs_Transform
-{
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 translation;
-
-  // MsgType=geometry_msgs/Quaternion
-  SL_Bus_geometry_msgs_Quaternion rotation;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_builtin_interfaces_Duration_
-
-// MsgType=builtin_interfaces/Duration
-struct SL_Bus_builtin_interfaces_Duration
-{
-  int32_T sec;
-  uint32_T nanosec;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint_
-
-// MsgType=trajectory_msgs/MultiDOFJointTrajectoryPoint
-struct SL_Bus_trajectory_msgs_MultiDOFJointTrajectoryPoint
-{
-  // MsgType=geometry_msgs/Transform:IsVarLen=1:VarLenCategory=data:VarLenElem=transforms_SL_Info:TruncateAction=warn 
-  SL_Bus_geometry_msgs_Transform transforms[1024];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=transforms
-  SL_Bus_ROSVariableLengthArrayInfo transforms_SL_Info;
-
-  // MsgType=geometry_msgs/Twist:IsVarLen=1:VarLenCategory=data:VarLenElem=velocities_SL_Info:TruncateAction=warn 
-  SL_Bus_geometry_msgs_Twist velocities[1024];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=velocities
-  SL_Bus_ROSVariableLengthArrayInfo velocities_SL_Info;
-
-  // MsgType=geometry_msgs/Twist:IsVarLen=1:VarLenCategory=data:VarLenElem=accelerations_SL_Info:TruncateAction=warn 
-  SL_Bus_geometry_msgs_Twist accelerations[1024];
-
-  // IsVarLen=1:VarLenCategory=length:VarLenElem=accelerations
-  SL_Bus_ROSVariableLengthArrayInfo accelerations_SL_Info;
-
-  // MsgType=builtin_interfaces/Duration
-  SL_Bus_builtin_interfaces_Duration time_from_start;
-};
-
-#endif
-
-#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_Pose_
-#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_Pose_
-
-// MsgType=sonia_common_ros2/Pose
-struct SL_Bus_sonia_common_ros2_Pose
-{
-  uint8_T frame;
-  uint8_T speed;
-
-  // MsgType=geometry_msgs/Point
-  SL_Bus_geometry_msgs_Point position;
-
-  // MsgType=geometry_msgs/Vector3
-  SL_Bus_geometry_msgs_Vector3 orientation;
-  real_T fine;
-  boolean_T rotation;
 };
 
 #endif
@@ -725,30 +623,6 @@ struct struct_TOFpsJJYcOBczOpEd57stD
 
 #endif
 
-#ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
-#define struct_sJ4ih70VmKcvCeguWN0mNVF
-
-struct sJ4ih70VmKcvCeguWN0mNVF
-{
-  real_T sec;
-  real_T nsec;
-};
-
-#endif                                 // struct_sJ4ih70VmKcvCeguWN0mNVF
-
-#ifndef struct_ros_slros2_internal_block_Pub_T
-#define struct_ros_slros2_internal_block_Pub_T
-
-struct ros_slros2_internal_block_Pub_T
-{
-  boolean_T matlabCodegenIsDeleted;
-  int32_T isInitialized;
-  boolean_T isSetupComplete;
-  boolean_T QOSAvoidROSNamespaceConventions;
-};
-
-#endif                                // struct_ros_slros2_internal_block_Pub_T
-
 #ifndef struct_b_dsp_SOSFilter_0_proc_contro_T
 #define struct_b_dsp_SOSFilter_0_proc_contro_T
 
@@ -765,29 +639,29 @@ struct b_dsp_SOSFilter_0_proc_contro_T
   real_T P4_IC2RTP;
 };
 
-#endif                                // struct_b_dsp_SOSFilter_0_proc_contro_T
+#endif                              /* struct_b_dsp_SOSFilter_0_proc_contro_T */
 
-#ifndef struct_b_dsp_SOSFilter_proc_control_T
-#define struct_b_dsp_SOSFilter_proc_control_T
+#ifndef struct_b_dspcodegen_SOSFilter_proc_c_T
+#define struct_b_dspcodegen_SOSFilter_proc_c_T
 
-struct b_dsp_SOSFilter_proc_control_T
+struct b_dspcodegen_SOSFilter_proc_c_T
 {
   int32_T isInitialized;
   boolean_T isSetupComplete;
   b_dsp_SOSFilter_0_proc_contro_T cSFunObject;
 };
 
-#endif                                 // struct_b_dsp_SOSFilter_proc_control_T
+#endif                              /* struct_b_dspcodegen_SOSFilter_proc_c_T */
 
-#ifndef struct_cell_wrap_proc_control_T
-#define struct_cell_wrap_proc_control_T
+#ifndef struct_cell_wrap_proc_control_lite_T
+#define struct_cell_wrap_proc_control_lite_T
 
-struct cell_wrap_proc_control_T
+struct cell_wrap_proc_control_lite_T
 {
   uint32_T f1[8];
 };
 
-#endif                                 // struct_cell_wrap_proc_control_T
+#endif                                /* struct_cell_wrap_proc_control_lite_T */
 
 #ifndef struct_dsp_simulink_HighpassFilter_p_T
 #define struct_dsp_simulink_HighpassFilter_p_T
@@ -797,13 +671,13 @@ struct dsp_simulink_HighpassFilter_p_T
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
   boolean_T isSetupComplete;
-  cell_wrap_proc_control_T inputVarSize;
+  cell_wrap_proc_control_lite_T inputVarSize;
   int32_T NumChannels;
-  b_dsp_SOSFilter_proc_control_T *FilterObj;
-  b_dsp_SOSFilter_proc_control_T coder_buffer_pobj0;
+  b_dspcodegen_SOSFilter_proc_c_T *FilterObj;
+  b_dspcodegen_SOSFilter_proc_c_T _pobj0;
 };
 
-#endif                                // struct_dsp_simulink_HighpassFilter_p_T
+#endif                              /* struct_dsp_simulink_HighpassFilter_p_T */
 
 #ifndef struct_b_dsp_FIRFilter_0_proc_contro_T
 #define struct_b_dsp_FIRFilter_0_proc_contro_T
@@ -819,19 +693,19 @@ struct b_dsp_FIRFilter_0_proc_contro_T
   real_T P1_Coefficients[140];
 };
 
-#endif                                // struct_b_dsp_FIRFilter_0_proc_contro_T
+#endif                              /* struct_b_dsp_FIRFilter_0_proc_contro_T */
 
-#ifndef struct_b_dsp_FIRFilter_proc_control_T
-#define struct_b_dsp_FIRFilter_proc_control_T
+#ifndef struct_b_dspcodegen_FIRFilter_proc_c_T
+#define struct_b_dspcodegen_FIRFilter_proc_c_T
 
-struct b_dsp_FIRFilter_proc_control_T
+struct b_dspcodegen_FIRFilter_proc_c_T
 {
   int32_T isInitialized;
   boolean_T isSetupComplete;
   b_dsp_FIRFilter_0_proc_contro_T cSFunObject;
 };
 
-#endif                                 // struct_b_dsp_FIRFilter_proc_control_T
+#endif                              /* struct_b_dspcodegen_FIRFilter_proc_c_T */
 
 #ifndef struct_dsp_simulink_LowpassFilter_pr_T
 #define struct_dsp_simulink_LowpassFilter_pr_T
@@ -841,13 +715,13 @@ struct dsp_simulink_LowpassFilter_pr_T
   boolean_T matlabCodegenIsDeleted;
   int32_T isInitialized;
   boolean_T isSetupComplete;
-  cell_wrap_proc_control_T inputVarSize;
+  cell_wrap_proc_control_lite_T inputVarSize;
   int32_T NumChannels;
-  b_dsp_FIRFilter_proc_control_T *FilterObj;
-  b_dsp_FIRFilter_proc_control_T coder_buffer_pobj0;
+  b_dspcodegen_FIRFilter_proc_c_T *FilterObj;
+  b_dspcodegen_FIRFilter_proc_c_T _pobj0;
 };
 
-#endif                                // struct_dsp_simulink_LowpassFilter_pr_T
+#endif                              /* struct_dsp_simulink_LowpassFilter_pr_T */
 
 #ifndef struct_dsp_simulink_MovingAverage_pr_T
 #define struct_dsp_simulink_MovingAverage_pr_T
@@ -858,7 +732,7 @@ struct dsp_simulink_MovingAverage_pr_T
   int32_T isInitialized;
   boolean_T isSetupComplete;
   boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize;
+  cell_wrap_proc_control_lite_T inputVarSize;
   int32_T NumChannels;
   int32_T FrameLength;
   real_T pCumSum;
@@ -867,7 +741,7 @@ struct dsp_simulink_MovingAverage_pr_T
   real_T pModValueRev;
 };
 
-#endif                                // struct_dsp_simulink_MovingAverage_pr_T
+#endif                              /* struct_dsp_simulink_MovingAverage_pr_T */
 
 #ifndef struct_dsp_simulink_MovingAverage_e_T
 #define struct_dsp_simulink_MovingAverage_e_T
@@ -878,7 +752,7 @@ struct dsp_simulink_MovingAverage_e_T
   int32_T isInitialized;
   boolean_T isSetupComplete;
   boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize;
+  cell_wrap_proc_control_lite_T inputVarSize;
   int32_T NumChannels;
   int32_T FrameLength;
   real_T pCumSum;
@@ -887,7 +761,7 @@ struct dsp_simulink_MovingAverage_e_T
   real_T pModValueRev;
 };
 
-#endif                                 // struct_dsp_simulink_MovingAverage_e_T
+#endif                               /* struct_dsp_simulink_MovingAverage_e_T */
 
 #ifndef struct_dsp_simulink_MovingAverage_e3_T
 #define struct_dsp_simulink_MovingAverage_e3_T
@@ -898,7 +772,7 @@ struct dsp_simulink_MovingAverage_e3_T
   int32_T isInitialized;
   boolean_T isSetupComplete;
   boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize;
+  cell_wrap_proc_control_lite_T inputVarSize;
   int32_T NumChannels;
   int32_T FrameLength;
   real_T pCumSum;
@@ -907,7 +781,33 @@ struct dsp_simulink_MovingAverage_e3_T
   real_T pModValueRev;
 };
 
-#endif                                // struct_dsp_simulink_MovingAverage_e3_T
+#endif                              /* struct_dsp_simulink_MovingAverage_e3_T */
+
+/* Custom Type definition for MATLABSystem: '<S275>/SourceBlock' */
+#include "rmw/qos_profiles.h"
+#ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
+#define struct_sJ4ih70VmKcvCeguWN0mNVF
+
+struct sJ4ih70VmKcvCeguWN0mNVF
+{
+  real_T sec;
+  real_T nsec;
+};
+
+#endif                                 /* struct_sJ4ih70VmKcvCeguWN0mNVF */
+
+#ifndef struct_ros_slros2_internal_block_Pub_T
+#define struct_ros_slros2_internal_block_Pub_T
+
+struct ros_slros2_internal_block_Pub_T
+{
+  boolean_T matlabCodegenIsDeleted;
+  int32_T isInitialized;
+  boolean_T isSetupComplete;
+  boolean_T QOSAvoidROSNamespaceConventions;
+};
+
+#endif                              /* struct_ros_slros2_internal_block_Pub_T */
 
 #ifndef struct_e_robotics_slcore_internal_bl_T
 #define struct_e_robotics_slcore_internal_bl_T
@@ -917,7 +817,7 @@ struct e_robotics_slcore_internal_bl_T
   int32_T __dummy;
 };
 
-#endif                                // struct_e_robotics_slcore_internal_bl_T
+#endif                              /* struct_e_robotics_slcore_internal_bl_T */
 
 #ifndef struct_ros_slros2_internal_block_Cur_T
 #define struct_ros_slros2_internal_block_Cur_T
@@ -930,7 +830,7 @@ struct ros_slros2_internal_block_Cur_T
   e_robotics_slcore_internal_bl_T SampleTimeHandler;
 };
 
-#endif                                // struct_ros_slros2_internal_block_Cur_T
+#endif                              /* struct_ros_slros2_internal_block_Cur_T */
 
 #ifndef struct_ros_slros2_internal_block_Get_T
 #define struct_ros_slros2_internal_block_Get_T
@@ -943,7 +843,7 @@ struct ros_slros2_internal_block_Get_T
   e_robotics_slcore_internal_bl_T SampleTimeHandler;
 };
 
-#endif                                // struct_ros_slros2_internal_block_Get_T
+#endif                              /* struct_ros_slros2_internal_block_Get_T */
 
 #ifndef struct_ros_slros2_internal_block_Sub_T
 #define struct_ros_slros2_internal_block_Sub_T
@@ -956,9 +856,9 @@ struct ros_slros2_internal_block_Sub_T
   boolean_T QOSAvoidROSNamespaceConventions;
 };
 
-#endif                                // struct_ros_slros2_internal_block_Sub_T
+#endif                              /* struct_ros_slros2_internal_block_Sub_T */
 
-// Custom Type definition for MATLAB Function: '<S170>/NLMPC'
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 #define struct_sG8JZ69axY52WWR6RKyApQC_proc__T
 
@@ -982,7 +882,7 @@ struct sG8JZ69axY52WWR6RKyApQC_proc__T
   boolean_T hasObjective;
 };
 
-#endif                                // struct_sG8JZ69axY52WWR6RKyApQC_proc__T
+#endif                              /* struct_sG8JZ69axY52WWR6RKyApQC_proc__T */
 
 #ifndef struct_s7RdrPWkr8UPAUyTdDJkLaG_proc__T
 #define struct_s7RdrPWkr8UPAUyTdDJkLaG_proc__T
@@ -997,7 +897,7 @@ struct s7RdrPWkr8UPAUyTdDJkLaG_proc__T
   int32_T stepType;
 };
 
-#endif                                // struct_s7RdrPWkr8UPAUyTdDJkLaG_proc__T
+#endif                              /* struct_s7RdrPWkr8UPAUyTdDJkLaG_proc__T */
 
 #ifndef struct_matlabshared_tracking_interna_T
 #define struct_matlabshared_tracking_interna_T
@@ -1007,22 +907,22 @@ struct matlabshared_tracking_interna_T
   int32_T isInitialized;
 };
 
-#endif                                // struct_matlabshared_tracking_interna_T
+#endif                              /* struct_matlabshared_tracking_interna_T */
 
-#ifndef struct_matlabshared_tracking_inter_p_T
-#define struct_matlabshared_tracking_inter_p_T
+#ifndef struct_matlabshared_tracking_inter_h_T
+#define struct_matlabshared_tracking_inter_h_T
 
-struct matlabshared_tracking_inter_p_T
+struct matlabshared_tracking_inter_h_T
 {
   int32_T isInitialized;
 };
 
-#endif                                // struct_matlabshared_tracking_inter_p_T
+#endif                              /* struct_matlabshared_tracking_inter_h_T */
 
-#ifndef struct_quaternion_proc_control_T
-#define struct_quaternion_proc_control_T
+#ifndef struct_quaternion_proc_control_lite_T
+#define struct_quaternion_proc_control_lite_T
 
-struct quaternion_proc_control_T
+struct quaternion_proc_control_lite_T
 {
   real_T a;
   real_T b;
@@ -1030,7 +930,7 @@ struct quaternion_proc_control_T
   real_T d;
 };
 
-#endif                                 // struct_quaternion_proc_control_T
+#endif                               /* struct_quaternion_proc_control_lite_T */
 
 #ifndef struct_Vector2DoubleArray_proc_contr_T
 #define struct_Vector2DoubleArray_proc_contr_T
@@ -1040,47 +940,47 @@ struct Vector2DoubleArray_proc_contr_T
   real_T lastValues[8];
 };
 
-#endif                                // struct_Vector2DoubleArray_proc_contr_T
+#endif                              /* struct_Vector2DoubleArray_proc_contr_T */
 
-#ifndef struct_Vector2DoubleArray_proc_con_p_T
-#define struct_Vector2DoubleArray_proc_con_p_T
+#ifndef struct_Vector2DoubleArray_proc_con_h_T
+#define struct_Vector2DoubleArray_proc_con_h_T
 
-struct Vector2DoubleArray_proc_con_p_T
+struct Vector2DoubleArray_proc_con_h_T
 {
   real_T lastValues[13];
 };
 
-#endif                                // struct_Vector2DoubleArray_proc_con_p_T
+#endif                              /* struct_Vector2DoubleArray_proc_con_h_T */
 
-#ifndef struct_Vector2DoubleArray_proc_co_pr_T
-#define struct_Vector2DoubleArray_proc_co_pr_T
+#ifndef struct_Vector2DoubleArray_proc_co_hp_T
+#define struct_Vector2DoubleArray_proc_co_hp_T
 
-struct Vector2DoubleArray_proc_co_pr_T
+struct Vector2DoubleArray_proc_co_hp_T
 {
   real_T lastValues[6];
 };
 
-#endif                                // struct_Vector2DoubleArray_proc_co_pr_T
+#endif                              /* struct_Vector2DoubleArray_proc_co_hp_T */
 
-#ifndef struct_Vector2DoubleArray_proc_c_pr3_T
-#define struct_Vector2DoubleArray_proc_c_pr3_T
+#ifndef struct_Vector2DoubleArray_proc_c_hpq_T
+#define struct_Vector2DoubleArray_proc_c_hpq_T
 
-struct Vector2DoubleArray_proc_c_pr3_T
+struct Vector2DoubleArray_proc_c_hpq_T
 {
   real_T lastValues[3];
 };
 
-#endif                                // struct_Vector2DoubleArray_proc_c_pr3_T
+#endif                              /* struct_Vector2DoubleArray_proc_c_hpq_T */
 
-#ifndef struct_Vector2DoubleArray_proc__pr35_T
-#define struct_Vector2DoubleArray_proc__pr35_T
+#ifndef struct_Vector2DoubleArray_proc__hpq2_T
+#define struct_Vector2DoubleArray_proc__hpq2_T
 
-struct Vector2DoubleArray_proc__pr35_T
+struct Vector2DoubleArray_proc__hpq2_T
 {
   real_T lastValues[9];
 };
 
-#endif                                // struct_Vector2DoubleArray_proc__pr35_T
+#endif                              /* struct_Vector2DoubleArray_proc__hpq2_T */
 
 #ifndef struct_rosCommandManager_proc_contro_T
 #define struct_rosCommandManager_proc_contro_T
@@ -1098,12 +998,12 @@ struct rosCommandManager_proc_contro_T
   real_T m_notDryRun;
 };
 
-#endif                                // struct_rosCommandManager_proc_contro_T
+#endif                              /* struct_rosCommandManager_proc_contro_T */
 
-#ifndef struct_TrimPlant_proc_control_T
-#define struct_TrimPlant_proc_control_T
+#ifndef struct_TrimPlant_proc_control_lite_T
+#define struct_TrimPlant_proc_control_lite_T
 
-struct TrimPlant_proc_control_T
+struct TrimPlant_proc_control_lite_T
 {
   int32_T isInitialized;
   real_T qkm[4];
@@ -1116,7 +1016,7 @@ struct TrimPlant_proc_control_T
   real_T constValues[38];
 };
 
-#endif                                 // struct_TrimPlant_proc_control_T
+#endif                                /* struct_TrimPlant_proc_control_lite_T */
 
 #ifndef struct_OpenLoopController_proc_contr_T
 #define struct_OpenLoopController_proc_contr_T
@@ -1140,24 +1040,9 @@ struct OpenLoopController_proc_contr_T
   real_T rho;
 };
 
-#endif                                // struct_OpenLoopController_proc_contr_T
+#endif                              /* struct_OpenLoopController_proc_contr_T */
 
-#ifndef struct_sttYSJM5GCi2c1Eu0R50efC_proc__T
-#define struct_sttYSJM5GCi2c1Eu0R50efC_proc__T
-
-struct sttYSJM5GCi2c1Eu0R50efC_proc__T
-{
-  real_T iterations;
-  real_T funcCount;
-  char_T algorithm[3];
-  real_T constrviolation;
-  real_T stepsize;
-  real_T lssteplength;
-  real_T firstorderopt;
-};
-
-#endif                                // struct_sttYSJM5GCi2c1Eu0R50efC_proc__T
-
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_somzaGboVhDG7PNQS6E98jD_proc__T
 #define struct_somzaGboVhDG7PNQS6E98jD_proc__T
 
@@ -1176,12 +1061,12 @@ struct somzaGboVhDG7PNQS6E98jD_proc__T
   boolean_T IterDisplayQP;
 };
 
-#endif                                // struct_somzaGboVhDG7PNQS6E98jD_proc__T
+#endif                              /* struct_somzaGboVhDG7PNQS6E98jD_proc__T */
 
-#ifndef struct_mpcManager_proc_control_T
-#define struct_mpcManager_proc_control_T
+#ifndef struct_mpcManager_proc_control_lite_T
+#define struct_mpcManager_proc_control_lite_T
 
-struct mpcManager_proc_control_T
+struct mpcManager_proc_control_lite_T
 {
   int32_T isInitialized;
   real_T init;
@@ -1193,7 +1078,7 @@ struct mpcManager_proc_control_T
   real_T gainsList[600];
 };
 
-#endif                                 // struct_mpcManager_proc_control_T
+#endif                               /* struct_mpcManager_proc_control_lite_T */
 
 #ifndef struct_ProcPlannerManager_proc_contr_T
 #define struct_ProcPlannerManager_proc_contr_T
@@ -1211,19 +1096,19 @@ struct ProcPlannerManager_proc_contr_T
   real_T emptyArray[13];
 };
 
-#endif                                // struct_ProcPlannerManager_proc_contr_T
+#endif                              /* struct_ProcPlannerManager_proc_contr_T */
 
-#ifndef struct_AddPose_proc_control_T
-#define struct_AddPose_proc_control_T
+#ifndef struct_AddPose_proc_control_lite_T
+#define struct_AddPose_proc_control_lite_T
 
-struct AddPose_proc_control_T
+struct AddPose_proc_control_lite_T
 {
   real_T i;
   real_T poseList[18];
   real_T initcond[7];
 };
 
-#endif                                 // struct_AddPose_proc_control_T
+#endif                                 /* struct_AddPose_proc_control_lite_T */
 
 #ifndef struct_TrajectoryManager_proc_contro_T
 #define struct_TrajectoryManager_proc_contro_T
@@ -1244,7 +1129,7 @@ struct TrajectoryManager_proc_contro_T
   real_T emptyArray[13];
 };
 
-#endif                                // struct_TrajectoryManager_proc_contro_T
+#endif                              /* struct_TrajectoryManager_proc_contro_T */
 
 #ifndef struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T
 #define struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T
@@ -1255,19 +1140,20 @@ struct sqZuOXvj3QtPO9QwF8LnDoG_proc__T
   real_T coefs[36];
 };
 
-#endif                                // struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T
+#endif                              /* struct_sqZuOXvj3QtPO9QwF8LnDoG_proc__T */
 
-#ifndef struct_cell_proc_control_T
-#define struct_cell_proc_control_T
+#ifndef struct_cell_proc_control_lite_T
+#define struct_cell_proc_control_lite_T
 
-struct cell_proc_control_T
+struct cell_proc_control_lite_T
 {
   real_T f1[6];
   real_T f2[2];
 };
 
-#endif                                 // struct_cell_proc_control_T
+#endif                                 /* struct_cell_proc_control_lite_T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 #define struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
 
@@ -1314,8 +1200,9 @@ struct s_WVbWSSvCeJzx5TXXa9L1l_proc__T
   coder::bounded_array<real_T, 1829U, 1U> searchDir;
 };
 
-#endif                                // struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T
+#endif                              /* struct_s_WVbWSSvCeJzx5TXXa9L1l_proc__T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 #define struct_s_z8miyzCNLMZx998HtZciUB_proc_T
 
@@ -1326,8 +1213,9 @@ struct s_z8miyzCNLMZx998HtZciUB_proc_T
   coder::bounded_array<int32_T, 1829U, 1U> workspace_sort;
 };
 
-#endif                                // struct_s_z8miyzCNLMZx998HtZciUB_proc_T
+#endif                              /* struct_s_z8miyzCNLMZx998HtZciUB_proc_T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 #define struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
 
@@ -1373,8 +1261,9 @@ struct s_PAtG1CW05sRYOWrqzwRQyC_proc_T
   real_T SLACK0;
 };
 
-#endif                                // struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T
+#endif                              /* struct_s_PAtG1CW05sRYOWrqzwRQyC_proc_T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 #define struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
 
@@ -1394,8 +1283,9 @@ struct s_bsf2Fsale81D2LTDCKuKhG_proc_T
   real_T gammaScalar;
 };
 
-#endif                                // struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T
+#endif                              /* struct_s_bsf2Fsale81D2LTDCKuKhG_proc_T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 #define struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
 
@@ -1412,7 +1302,7 @@ struct s_o1KzuWoPqzc62zOgqamCNH_proc_T
   boolean_T usedPivoting;
 };
 
-#endif                                // struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T
+#endif                              /* struct_s_o1KzuWoPqzc62zOgqamCNH_proc_T */
 
 #ifndef struct_s_962gqykB8vLiRVqsLdGQIG_proc_T
 #define struct_s_962gqykB8vLiRVqsLdGQIG_proc_T
@@ -1430,8 +1320,9 @@ struct s_962gqykB8vLiRVqsLdGQIG_proc_T
   real_T workspace2_;
 };
 
-#endif                                // struct_s_962gqykB8vLiRVqsLdGQIG_proc_T
+#endif                              /* struct_s_962gqykB8vLiRVqsLdGQIG_proc_T */
 
+/* Custom Type definition for MATLAB Function: '<S127>/NLMPC' */
 #ifndef struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 #define struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
 
@@ -1455,7 +1346,7 @@ struct s_qYIvDqP9yRqtt40IDZ89JG_proc_T
   real_T MVScaledTarget[80];
 };
 
-#endif                                // struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T
+#endif                              /* struct_s_qYIvDqP9yRqtt40IDZ89JG_proc_T */
 
 #ifndef struct_sumhYdZsdukPgvAXm7nzHOD_proc__T
 #define struct_sumhYdZsdukPgvAXm7nzHOD_proc__T
@@ -1477,7 +1368,7 @@ struct sumhYdZsdukPgvAXm7nzHOD_proc__T
   boolean_T PassivityUsePredictedX;
 };
 
-#endif                                // struct_sumhYdZsdukPgvAXm7nzHOD_proc__T
+#endif                              /* struct_sumhYdZsdukPgvAXm7nzHOD_proc__T */
 
 #ifndef struct_s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
 #define struct_s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
@@ -1488,7 +1379,7 @@ struct s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
   sumhYdZsdukPgvAXm7nzHOD_proc__T userdata;
 };
 
-#endif                                // struct_s_xJmQKnCTzvv6aUzMZcIqsF_proc_T
+#endif                              /* struct_s_xJmQKnCTzvv6aUzMZcIqsF_proc_T */
 
 #ifndef struct_anonymous_function_proc_contr_T
 #define struct_anonymous_function_proc_contr_T
@@ -1498,7 +1389,7 @@ struct anonymous_function_proc_contr_T
   s_xJmQKnCTzvv6aUzMZcIqsF_proc_T workspace;
 };
 
-#endif                                // struct_anonymous_function_proc_contr_T
+#endif                              /* struct_anonymous_function_proc_contr_T */
 
 #ifndef struct_coder_internal_stickyStruct_1_T
 #define struct_coder_internal_stickyStruct_1_T
@@ -1508,7 +1399,7 @@ struct coder_internal_stickyStruct_1_T
   anonymous_function_proc_contr_T b_value;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_1_T
+#endif                              /* struct_coder_internal_stickyStruct_1_T */
 
 #ifndef struct_coder_internal_stickyStruct_n_T
 #define struct_coder_internal_stickyStruct_n_T
@@ -1519,7 +1410,7 @@ struct coder_internal_stickyStruct_n_T
   coder_internal_stickyStruct_1_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_n_T
+#endif                              /* struct_coder_internal_stickyStruct_n_T */
 
 #ifndef struct_coder_internal_stickyStruct_d_T
 #define struct_coder_internal_stickyStruct_d_T
@@ -1529,7 +1420,7 @@ struct coder_internal_stickyStruct_d_T
   coder_internal_stickyStruct_n_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_d_T
+#endif                              /* struct_coder_internal_stickyStruct_d_T */
 
 #ifndef struct_coder_internal_stickyStruct_f_T
 #define struct_coder_internal_stickyStruct_f_T
@@ -1540,7 +1431,7 @@ struct coder_internal_stickyStruct_f_T
   coder_internal_stickyStruct_d_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_f_T
+#endif                              /* struct_coder_internal_stickyStruct_f_T */
 
 #ifndef struct_coder_internal_stickyStruct_c_T
 #define struct_coder_internal_stickyStruct_c_T
@@ -1550,7 +1441,7 @@ struct coder_internal_stickyStruct_c_T
   coder_internal_stickyStruct_f_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_c_T
+#endif                              /* struct_coder_internal_stickyStruct_c_T */
 
 #ifndef struct_coder_internal_stickyStruct_i_T
 #define struct_coder_internal_stickyStruct_i_T
@@ -1560,7 +1451,7 @@ struct coder_internal_stickyStruct_i_T
   coder_internal_stickyStruct_c_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_i_T
+#endif                              /* struct_coder_internal_stickyStruct_i_T */
 
 #ifndef struct_coder_internal_stickyStruc_iz_T
 #define struct_coder_internal_stickyStruc_iz_T
@@ -1570,7 +1461,7 @@ struct coder_internal_stickyStruc_iz_T
   coder_internal_stickyStruct_i_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruc_iz_T
+#endif                              /* struct_coder_internal_stickyStruc_iz_T */
 
 #ifndef struct_coder_internal_stickyStruct_j_T
 #define struct_coder_internal_stickyStruct_j_T
@@ -1580,7 +1471,7 @@ struct coder_internal_stickyStruct_j_T
   coder_internal_stickyStruc_iz_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_j_T
+#endif                              /* struct_coder_internal_stickyStruct_j_T */
 
 #ifndef struct_coder_internal_stickyStruct_2_T
 #define struct_coder_internal_stickyStruct_2_T
@@ -1590,7 +1481,7 @@ struct coder_internal_stickyStruct_2_T
   coder_internal_stickyStruct_j_T next;
 };
 
-#endif                                // struct_coder_internal_stickyStruct_2_T
+#endif                              /* struct_coder_internal_stickyStruct_2_T */
 
 #ifndef struct_s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
 #define struct_s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
@@ -1618,7 +1509,7 @@ struct s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
   int32_T FiniteDifferenceType;
 };
 
-#endif                                // struct_s_FtDkUjnZiZaWW3T7JWXLsD_proc_T
+#endif                              /* struct_s_FtDkUjnZiZaWW3T7JWXLsD_proc_T */
 
 #ifndef struct_robotics_slcore_internal_bloc_T
 #define struct_robotics_slcore_internal_bloc_T
@@ -1627,35 +1518,48 @@ struct robotics_slcore_internal_bloc_T
 {
   int32_T isInitialized;
   boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize[4];
+  cell_wrap_proc_control_lite_T inputVarSize[4];
   real_T TimeScaling[33];
 };
 
-#endif                                // struct_robotics_slcore_internal_bloc_T
+#endif                              /* struct_robotics_slcore_internal_bloc_T */
 
-#ifndef struct_robotics_slcore_internal_bl_p_T
-#define struct_robotics_slcore_internal_bl_p_T
+#ifndef struct_robotics_slcore_internal_bl_h_T
+#define struct_robotics_slcore_internal_bl_h_T
 
-struct robotics_slcore_internal_bl_p_T
+struct robotics_slcore_internal_bl_h_T
 {
   boolean_T tunablePropertyChanged[5];
   int32_T isInitialized;
   boolean_T TunablePropsChanged;
-  cell_wrap_proc_control_T inputVarSize[3];
+  cell_wrap_proc_control_lite_T inputVarSize[3];
   real_T VelocityBoundaryCondition[6];
   real_T AccelerationBoundaryCondition[10];
   sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPStruct;
   sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDStruct;
   sqZuOXvj3QtPO9QwF8LnDoG_proc__T PPDDStruct;
-  cell_proc_control_T PrevOptInputs;
+  cell_proc_control_lite_T PrevOptInputs;
   boolean_T PPFormUpdatedNeeded;
 };
 
-#endif                                // struct_robotics_slcore_internal_bl_p_T
-#endif                                 // proc_control_types_h_
+#endif                              /* struct_robotics_slcore_internal_bl_h_T */
 
-//
-// File trailer for generated code.
-//
-// [EOF]
-//
+/* Parameters for system: '<S35>/Enabled Subsystem' */
+typedef struct P_EnabledSubsystem_proc_contr_T_ P_EnabledSubsystem_proc_contr_T;
+
+/* Parameters for system: '<S302>/Enabled Subsystem' */
+typedef struct P_EnabledSubsystem_proc_con_p_T_ P_EnabledSubsystem_proc_con_p_T;
+
+/* Parameters for system: '<S303>/Enabled Subsystem' */
+typedef struct P_EnabledSubsystem_proc_co_pu_T_ P_EnabledSubsystem_proc_co_pu_T;
+
+/* Parameters for system: '<S304>/Enabled Subsystem' */
+typedef struct P_EnabledSubsystem_proc_con_m_T_ P_EnabledSubsystem_proc_con_m_T;
+
+/* Parameters (default storage) */
+typedef struct P_proc_control_lite_T_ P_proc_control_lite_T;
+
+/* Forward declaration for rtModel */
+typedef struct tag_RTM_proc_control_lite_T RT_MODEL_proc_control_lite_T;
+
+#endif                                 /* proc_control_lite_types_h_ */

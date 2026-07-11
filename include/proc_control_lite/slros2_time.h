@@ -1,4 +1,4 @@
-/* Copyright 2022-2025 The MathWorks, Inc. */
+/* Copyright 2022-2024 The MathWorks, Inc. */
 
 #ifndef _SLROS2_TIME_H_
 #define _SLROS2_TIME_H_
@@ -7,16 +7,11 @@
 #include <builtin_interfaces/msg/time.hpp>
 
 #ifndef _SL_ROS2_CONTROL_PLUGIN_
-// Use shared pointer for standard/component node generation
 extern rclcpp::Node::SharedPtr SLROSNodePtr;
 #endif
-
 #ifdef _SL_ROS2_CONTROL_PLUGIN_
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
-// Use lifecycle node for ROS 2 control plugin generation
 extern rclcpp_lifecycle::LifecycleNode::SharedPtr SLROSNodePtr;
 #endif
-
 
 /**
  * Retrieve the current ROS2 time and return the information in a message bus.

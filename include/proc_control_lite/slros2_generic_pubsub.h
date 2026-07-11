@@ -1,15 +1,13 @@
-// Copyright 2022-2025 The MathWorks, Inc.
+// Copyright 2022-2024 The MathWorks, Inc.
 
 #ifndef _SLROS2_GENERIC_PUBSUB_H_
 #define _SLROS2_GENERIC_PUBSUB_H_
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/qos.hpp"
-#include "slros_busmsg_conversion.cpp"
-#include <vector>
+#include "slros_busmsg_conversion.h"
 
 #ifndef _SL_ROS2_CONTROL_PLUGIN_
-// Use shared pointer for standard/component node generation
 extern rclcpp::Node::SharedPtr SLROSNodePtr;
 #endif
 
@@ -18,11 +16,8 @@ extern rclcpp::Node::SharedPtr SLROSNodePtr;
 #include "realtime_tools/realtime_buffer.h"
 #include "realtime_tools/realtime_publisher.h"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-// Use lifecycle node for ROS 2 control plugin generation
 extern rclcpp_lifecycle::LifecycleNode::SharedPtr SLROSNodePtr;
 #endif
-
-extern std::vector<rclcpp::SubscriptionBase*> SLROSSubscribers;
 
 inline rclcpp::QoS getQOSSettingsFromRMW(const rmw_qos_profile_t& qosProfile);
 
@@ -43,16 +38,6 @@ static std::string getPolicyNameFromKind(int policyKind) {
 }
 
 /**
- * Utility class for executing the subscriber callback.
- */
-class ExecutorUtils : public rclcpp::Executor{
-	public:
-	static void executeSubscription(rclcpp::SubscriptionBase::SharedPtr subscriber){
-		rclcpp::Executor::execute_subscription(subscriber);
-	}
-};
-
-/**
  * Class for subscribing to ROS 2 messages in C++.
  *
  * This class is used by code generated from the Simulink ROS 2
@@ -70,11 +55,8 @@ class SimulinkSubscriber {
   private:
     std::shared_ptr<rclcpp::Subscription<MsgType>> _subscriber;
     bool _newMessageReceived;
-    std::unique_ptr<MsgType> _lastMsg;
+    std::shared_ptr<MsgType> _lastMsg;
     std::mutex _subMutex;
-    std::shared_ptr<rclcpp::WaitSet> wait_set;
-	std::string mTopic;
-    size_t msgCtr = 0;
 };
 
 /**
@@ -94,8 +76,7 @@ class SimulinkPublisher {
     }
   private:
     std::shared_ptr<rclcpp::Publisher<MsgType>> _publisher;
-    std::string mTopic;
-    size_t msgCtr = 0;
+    std::shared_ptr<MsgType> _lastMsg;
 };
 
 
@@ -108,9 +89,9 @@ class SimulinkPublisher {
 template <class MsgType, class BusType>
 void SimulinkSubscriber<MsgType, BusType>::createSubscriber(std::string const& topic,
                                                             const rmw_qos_profile_t& qosProfile) {
-    auto callback = [this](std::unique_ptr<MsgType> msg) {
+    auto callback = [this](std::shared_ptr<MsgType> msg) {
         std::lock_guard<std::mutex> lockMsg(_subMutex);
-        _lastMsg = std::move(msg);
+        _lastMsg = msg;
     };
 
     rclcpp::SubscriptionOptions subscription_options;
@@ -133,11 +114,6 @@ void SimulinkSubscriber<MsgType, BusType>::createSubscriber(std::string const& t
 
     _subscriber = SLROSNodePtr->create_subscription<MsgType>(
         topic, getQOSSettingsFromRMW(qosProfile), callback, subscription_options);
-    
-    // Add the subscriber to the list of subscriber
-    SLROSSubscribers.push_back(_subscriber.get());
-	
-	mTopic = topic;
 }
 
 /**
@@ -149,17 +125,9 @@ void SimulinkSubscriber<MsgType, BusType>::createSubscriber(std::string const& t
  */
 template <class MsgType, class BusType>
 bool SimulinkSubscriber<MsgType, BusType>::getLatestMessage(BusType* busPtr) {
-
-    //Execute the subscriber
-    ExecutorUtils::executeSubscription(_subscriber);
-	
-	if (_lastMsg.get()) {
+    if (_lastMsg.get()) {
         std::lock_guard<std::mutex> lockMsg(_subMutex);
         convertToBus(busPtr, *_lastMsg);
-		msgCtr++;
-#ifdef MW_DEBUG_LOG
-	    RCLCPP_INFO(SLROSNodePtr->get_logger(),"SUB-%s : %ld, msg_ptr : %p",mTopic.c_str(),msgCtr,(void*)(_lastMsg.get()));
-#endif
         _lastMsg.reset();
         return true;
     }
@@ -191,7 +159,6 @@ void SimulinkPublisher<MsgType, BusType>::createPublisher(std::string const& top
     };
 
     _publisher = SLROSNodePtr->create_publisher<MsgType>(topic, getQOSSettingsFromRMW(qosProfile), publisher_options);
-    mTopic = topic;
 }
 
 /**
@@ -203,12 +170,6 @@ template <class MsgType, class BusType>
 void SimulinkPublisher<MsgType, BusType>::publish(const BusType* inBus) {
     auto msg = std::make_unique<MsgType>();
     convertFromBus(*msg, inBus);
-    
-    msgCtr++;
-   
-#ifdef MW_DEBUG_LOG
-	RCLCPP_INFO(SLROSNodePtr->get_logger(),"PUB-%s : %ld, msg-ptr : %p",mTopic.c_str(),msgCtr,(void*)(msg.get()));
-#endif
     _publisher->publish(std::move(msg));
 }
 
