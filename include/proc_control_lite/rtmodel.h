@@ -4,7 +4,7 @@
  * Code generation for Simulink model "proc_control_lite".
  *
  * Simulink Coder version                : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ * C++ source code generated on : Sat Jul 11 03:14:05 2026
  *
  * Note that the generated code is not dependent on this header file.
  * The file is used in cojuction with the automatic build procedure.

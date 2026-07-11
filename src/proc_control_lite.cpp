@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.3
+ * Model version              : 1.4
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ * C++ source code generated on : Sat Jul 11 03:14:05 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -77,7 +77,7 @@ static void rate_scheduler(RT_MODEL_proc_control_lite_T *const
  *    '<S35>/Enabled Subsystem'
  *    '<S37>/Enabled Subsystem'
  *    '<S40>/Enabled Subsystem'
- *    '<S275>/Enabled Subsystem'
+ *    '<S285>/Enabled Subsystem'
  */
 void proc_control_lite::proc_cont_EnabledSubsystem_Init
   (B_EnabledSubsystem_proc_contr_T *localB, P_EnabledSubsystem_proc_contr_T
@@ -94,7 +94,7 @@ void proc_control_lite::proc_cont_EnabledSubsystem_Init
  *    '<S35>/Enabled Subsystem'
  *    '<S37>/Enabled Subsystem'
  *    '<S40>/Enabled Subsystem'
- *    '<S275>/Enabled Subsystem'
+ *    '<S285>/Enabled Subsystem'
  */
 void proc_control_lite::proc_control_l_EnabledSubsystem(boolean_T rtu_Enable,
   const SL_Bus_std_msgs_Bool *rtu_In1, B_EnabledSubsystem_proc_contr_T *localB)
@@ -832,7 +832,7 @@ void proc_control_lite::proc_contr_MovingAverage_h_Term
 /*
  * System initialize for enable system:
  *    '<S302>/Enabled Subsystem'
- *    '<S271>/Enabled Subsystem'
+ *    '<S281>/Enabled Subsystem'
  */
 void proc_control_lite::proc_co_EnabledSubsystem_n_Init
   (B_EnabledSubsystem_proc_con_e_T *localB, P_EnabledSubsystem_proc_con_p_T
@@ -847,7 +847,7 @@ void proc_control_lite::proc_co_EnabledSubsystem_n_Init
 /*
  * Output and update for enable system:
  *    '<S302>/Enabled Subsystem'
- *    '<S271>/Enabled Subsystem'
+ *    '<S281>/Enabled Subsystem'
  */
 void proc_control_lite::proc_control_EnabledSubsystem_h(boolean_T rtu_Enable,
   const SL_Bus_std_msgs_Float32 *rtu_In1, B_EnabledSubsystem_proc_con_e_T
@@ -867,7 +867,7 @@ void proc_control_lite::proc_control_EnabledSubsystem_h(boolean_T rtu_Enable,
 /*
  * System initialize for enable system:
  *    '<S303>/Enabled Subsystem'
- *    '<S272>/Enabled Subsystem'
+ *    '<S282>/Enabled Subsystem'
  */
 void proc_control_lite::proc_co_EnabledSubsystem_f_Init
   (B_EnabledSubsystem_proc_con_f_T *localB, P_EnabledSubsystem_proc_co_pu_T
@@ -882,7 +882,7 @@ void proc_control_lite::proc_co_EnabledSubsystem_f_Init
 /*
  * Output and update for enable system:
  *    '<S303>/Enabled Subsystem'
- *    '<S272>/Enabled Subsystem'
+ *    '<S282>/Enabled Subsystem'
  */
 void proc_control_lite::proc_control_EnabledSubsystem_l(boolean_T rtu_Enable,
   const SL_Bus_sonia_common_ros2_BodyVelocityDVL *rtu_In1,
@@ -903,8 +903,8 @@ void proc_control_lite::proc_control_EnabledSubsystem_l(boolean_T rtu_Enable,
  * System initialize for enable system:
  *    '<S304>/Enabled Subsystem'
  *    '<S305>/Enabled Subsystem'
- *    '<S273>/Enabled Subsystem'
- *    '<S274>/Enabled Subsystem'
+ *    '<S283>/Enabled Subsystem'
+ *    '<S284>/Enabled Subsystem'
  */
 void proc_control_lite::proc_co_EnabledSubsystem_a_Init
   (B_EnabledSubsystem_proc_con_a_T *localB, P_EnabledSubsystem_proc_con_m_T
@@ -920,8 +920,8 @@ void proc_control_lite::proc_co_EnabledSubsystem_a_Init
  * Output and update for enable system:
  *    '<S304>/Enabled Subsystem'
  *    '<S305>/Enabled Subsystem'
- *    '<S273>/Enabled Subsystem'
- *    '<S274>/Enabled Subsystem'
+ *    '<S283>/Enabled Subsystem'
+ *    '<S284>/Enabled Subsystem'
  */
 void proc_control_lite::proc_control_EnabledSubsystem_j(boolean_T rtu_Enable,
   const SL_Bus_sensor_msgs_Imu *rtu_In1, B_EnabledSubsystem_proc_con_a_T *localB)
@@ -1300,7 +1300,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_c(const
   sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
   qos_profile = rmw_qos_profile_default;
 
-  /* Start for MATLABSystem: '<S273>/SourceBlock' */
+  /* Start for MATLABSystem: '<S283>/SourceBlock' */
   proc_control_lite_B.deadline_nt.sec = 0.0;
   proc_control_lite_B.deadline_nt.nsec = 0.0;
   lifespan.sec = 0.0;
@@ -1314,7 +1314,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_c(const
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 23; i++) {
-    /* Start for MATLABSystem: '<S273>/SourceBlock' */
+    /* Start for MATLABSystem: '<S283>/SourceBlock' */
     proc_control_lite_B.b_zeroDelimTopic_f0[i] = b_zeroDelimTopic[i];
   }
 
@@ -1332,7 +1332,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_e(const
   sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
   qos_profile = rmw_qos_profile_default;
 
-  /* Start for MATLABSystem: '<S272>/SourceBlock' */
+  /* Start for MATLABSystem: '<S282>/SourceBlock' */
   proc_control_lite_B.deadline_j.sec = 0.0;
   proc_control_lite_B.deadline_j.nsec = 0.0;
   lifespan.sec = 0.0;
@@ -1346,7 +1346,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_e(const
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 27; i++) {
-    /* Start for MATLABSystem: '<S272>/SourceBlock' */
+    /* Start for MATLABSystem: '<S282>/SourceBlock' */
     proc_control_lite_B.b_zeroDelimTopic_h[i] = b_zeroDelimTopic[i];
   }
 
@@ -1364,7 +1364,7 @@ void proc_control_lite::Subscriber_setu_hpq2joyuiyotjyq(const
   sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
   qos_profile = rmw_qos_profile_default;
 
-  /* Start for MATLABSystem: '<S271>/SourceBlock' */
+  /* Start for MATLABSystem: '<S281>/SourceBlock' */
   proc_control_lite_B.deadline_mq.sec = 0.0;
   proc_control_lite_B.deadline_mq.nsec = 0.0;
   lifespan.sec = 0.0;
@@ -1378,7 +1378,7 @@ void proc_control_lite::Subscriber_setu_hpq2joyuiyotjyq(const
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 22; i++) {
-    /* Start for MATLABSystem: '<S271>/SourceBlock' */
+    /* Start for MATLABSystem: '<S281>/SourceBlock' */
     proc_control_lite_B.b_zeroDelimTopic_ho[i] = b_zeroDelimTopic[i];
   }
 
@@ -1396,7 +1396,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_g(const
   sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
   qos_profile = rmw_qos_profile_default;
 
-  /* Start for MATLABSystem: '<S274>/SourceBlock' */
+  /* Start for MATLABSystem: '<S284>/SourceBlock' */
   proc_control_lite_B.deadline_m4.sec = 0.0;
   proc_control_lite_B.deadline_m4.nsec = 0.0;
   lifespan.sec = 0.0;
@@ -1410,7 +1410,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_g(const
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 23; i++) {
-    /* Start for MATLABSystem: '<S274>/SourceBlock' */
+    /* Start for MATLABSystem: '<S284>/SourceBlock' */
     proc_control_lite_B.b_zeroDelimTopic_p[i] = b_zeroDelimTopic[i];
   }
 
@@ -1428,7 +1428,7 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_j(const
   sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
   qos_profile = rmw_qos_profile_default;
 
-  /* Start for MATLABSystem: '<S275>/SourceBlock' */
+  /* Start for MATLABSystem: '<S285>/SourceBlock' */
   proc_control_lite_B.deadline_g.sec = 0.0;
   proc_control_lite_B.deadline_g.nsec = 0.0;
   lifespan.sec = 0.0;
@@ -1442,172 +1442,12 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_j(const
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 24; i++) {
-    /* Start for MATLABSystem: '<S275>/SourceBlock' */
+    /* Start for MATLABSystem: '<S285>/SourceBlock' */
     proc_control_lite_B.b_zeroDelimTopic_hn[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_2958_2543.createSubscriber
     (&proc_control_lite_B.b_zeroDelimTopic_hn[0], qos_profile);
-}
-
-void proc_control_lite::proc__Publisher_setupImpl_hpq2j(const
-  ros_slros2_internal_block_Pub_T *obj)
-{
-  static const char_T b_zeroDelimTopic[25]{ "/proc_control/dvl_enable" };
-
-  rmw_qos_profile_t qos_profile;
-  sJ4ih70VmKcvCeguWN0mNVF lifespan;
-  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
-  qos_profile = rmw_qos_profile_default;
-
-  /* Start for MATLABSystem: '<S291>/SinkBlock' */
-  proc_control_lite_B.deadline_i.sec = 0.0;
-  proc_control_lite_B.deadline_i.nsec = 0.0;
-  lifespan.sec = 0.0;
-  lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
-  liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
-                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
-                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_i, lifespan,
-                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
-                 (bool)obj->QOSAvoidROSNamespaceConventions);
-  for (int32_T i{0}; i < 25; i++) {
-    /* Start for MATLABSystem: '<S291>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_bn[i] = b_zeroDelimTopic[i];
-  }
-
-  Pub_proc_control_lite_2958_2936.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_bn[0], qos_profile);
-}
-
-void proc_control_lite::proc_Publisher_setupImpl_hpq2jo(const
-  ros_slros2_internal_block_Pub_T *obj)
-{
-  static const char_T b_zeroDelimTopic[25]{ "/proc_control/imu_enable" };
-
-  rmw_qos_profile_t qos_profile;
-  sJ4ih70VmKcvCeguWN0mNVF lifespan;
-  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
-  qos_profile = rmw_qos_profile_default;
-
-  /* Start for MATLABSystem: '<S292>/SinkBlock' */
-  proc_control_lite_B.deadline_kg.sec = 0.0;
-  proc_control_lite_B.deadline_kg.nsec = 0.0;
-  lifespan.sec = 0.0;
-  lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
-  liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
-                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
-                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_kg, lifespan,
-                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
-                 (bool)obj->QOSAvoidROSNamespaceConventions);
-  for (int32_T i{0}; i < 25; i++) {
-    /* Start for MATLABSystem: '<S292>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_kl[i] = b_zeroDelimTopic[i];
-  }
-
-  Pub_proc_control_lite_2958_2939.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_kl[0], qos_profile);
-}
-
-void proc_control_lite::pro_Publisher_setupImpl_hpq2joy(const
-  ros_slros2_internal_block_Pub_T *obj)
-{
-  static const char_T b_zeroDelimTopic[25]{ "/proc_control/zed_enable" };
-
-  rmw_qos_profile_t qos_profile;
-  sJ4ih70VmKcvCeguWN0mNVF lifespan;
-  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
-  qos_profile = rmw_qos_profile_default;
-
-  /* Start for MATLABSystem: '<S293>/SinkBlock' */
-  proc_control_lite_B.deadline_l.sec = 0.0;
-  proc_control_lite_B.deadline_l.nsec = 0.0;
-  lifespan.sec = 0.0;
-  lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
-  liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
-                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
-                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_l, lifespan,
-                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
-                 (bool)obj->QOSAvoidROSNamespaceConventions);
-  for (int32_T i{0}; i < 25; i++) {
-    /* Start for MATLABSystem: '<S293>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_jz[i] = b_zeroDelimTopic[i];
-  }
-
-  Pub_proc_control_lite_2958_2942.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_jz[0], qos_profile);
-}
-
-void proc_control_lite::pr_Publisher_setupImpl_hpq2joyu(const
-  ros_slros2_internal_block_Pub_T *obj)
-{
-  static const char_T b_zeroDelimTopic[24]{ "/proc_control/imu_tared" };
-
-  rmw_qos_profile_t qos_profile;
-  sJ4ih70VmKcvCeguWN0mNVF lifespan;
-  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
-  qos_profile = rmw_qos_profile_default;
-
-  /* Start for MATLABSystem: '<S294>/SinkBlock' */
-  proc_control_lite_B.deadline_mg.sec = 0.0;
-  proc_control_lite_B.deadline_mg.nsec = 0.0;
-  lifespan.sec = 0.0;
-  lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
-  liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
-                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
-                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_mg, lifespan,
-                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
-                 (bool)obj->QOSAvoidROSNamespaceConventions);
-  for (int32_T i{0}; i < 24; i++) {
-    /* Start for MATLABSystem: '<S294>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_e[i] = b_zeroDelimTopic[i];
-  }
-
-  Pub_proc_control_lite_2958_2945.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_e[0], qos_profile);
-}
-
-void proc_control_lite::p_Publisher_setupImpl_hpq2joyui(const
-  ros_slros2_internal_block_Pub_T *obj)
-{
-  static const char_T b_zeroDelimTopic[25]{ "/proc_control/dvl_enable" };
-
-  rmw_qos_profile_t qos_profile;
-  sJ4ih70VmKcvCeguWN0mNVF lifespan;
-  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
-  qos_profile = rmw_qos_profile_default;
-
-  /* Start for MATLABSystem: '<S295>/SinkBlock' */
-  proc_control_lite_B.deadline_d.sec = 0.0;
-  proc_control_lite_B.deadline_d.nsec = 0.0;
-  lifespan.sec = 0.0;
-  lifespan.nsec = 0.0;
-  liveliness_lease_duration.sec = 0.0;
-  liveliness_lease_duration.nsec = 0.0;
-  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
-                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
-                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_d, lifespan,
-                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
-                 (bool)obj->QOSAvoidROSNamespaceConventions);
-  for (int32_T i{0}; i < 25; i++) {
-    /* Start for MATLABSystem: '<S295>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_fn[i] = b_zeroDelimTopic[i];
-  }
-
-  Pub_proc_control_lite_2958_2948.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_fn[0], qos_profile);
 }
 
 void proc_control_lite::pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t
@@ -1685,8 +1525,8 @@ void proc_control_lite::proc_contro_Publisher_setupImpl(const
   qos_profile = rmw_qos_profile_default;
 
   /* Start for MATLABSystem: '<S11>/SinkBlock' */
-  proc_control_lite_B.deadline_h5.sec = 0.0;
-  proc_control_lite_B.deadline_h5.nsec = 0.0;
+  proc_control_lite_B.deadline_mg.sec = 0.0;
+  proc_control_lite_B.deadline_mg.nsec = 0.0;
   lifespan.sec = 0.0;
   lifespan.nsec = 0.0;
   liveliness_lease_duration.sec = 0.0;
@@ -1694,16 +1534,16 @@ void proc_control_lite::proc_contro_Publisher_setupImpl(const
   SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
                  RMW_QOS_POLICY_DURABILITY_VOLATILE,
                  RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-                 proc_control_lite_B.deadline_h5, lifespan,
+                 proc_control_lite_B.deadline_mg, lifespan,
                  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 24; i++) {
     /* Start for MATLABSystem: '<S11>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_hm[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_e[i] = b_zeroDelimTopic[i];
   }
 
   Pub_proc_control_lite_500.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_hm[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_e[0], qos_profile);
 }
 
 void proc_control_lite::p_Subscriber_setupImpl_hpq2joyu(const
@@ -2248,6 +2088,166 @@ void proc_control_lite::proc_c_Publisher_setupImpl_hpq2(const
 
   Pub_proc_control_lite_671.createPublisher
     (&proc_control_lite_B.b_zeroDelimTopic_g[0], qos_profile);
+}
+
+void proc_control_lite::proc__Publisher_setupImpl_hpq2j(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic[25]{ "/proc_control/dvl_enable" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  qos_profile = rmw_qos_profile_default;
+
+  /* Start for MATLABSystem: '<S275>/SinkBlock' */
+  proc_control_lite_B.deadline_i.sec = 0.0;
+  proc_control_lite_B.deadline_i.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+                 proc_control_lite_B.deadline_i, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 25; i++) {
+    /* Start for MATLABSystem: '<S275>/SinkBlock' */
+    proc_control_lite_B.b_zeroDelimTopic_bn[i] = b_zeroDelimTopic[i];
+  }
+
+  Pub_proc_control_lite_2958_2936.createPublisher
+    (&proc_control_lite_B.b_zeroDelimTopic_bn[0], qos_profile);
+}
+
+void proc_control_lite::proc_Publisher_setupImpl_hpq2jo(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic[25]{ "/proc_control/imu_enable" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  qos_profile = rmw_qos_profile_default;
+
+  /* Start for MATLABSystem: '<S276>/SinkBlock' */
+  proc_control_lite_B.deadline_kg.sec = 0.0;
+  proc_control_lite_B.deadline_kg.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+                 proc_control_lite_B.deadline_kg, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 25; i++) {
+    /* Start for MATLABSystem: '<S276>/SinkBlock' */
+    proc_control_lite_B.b_zeroDelimTopic_kl[i] = b_zeroDelimTopic[i];
+  }
+
+  Pub_proc_control_lite_2958_2939.createPublisher
+    (&proc_control_lite_B.b_zeroDelimTopic_kl[0], qos_profile);
+}
+
+void proc_control_lite::pro_Publisher_setupImpl_hpq2joy(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic[25]{ "/proc_control/zed_enable" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  qos_profile = rmw_qos_profile_default;
+
+  /* Start for MATLABSystem: '<S277>/SinkBlock' */
+  proc_control_lite_B.deadline_l.sec = 0.0;
+  proc_control_lite_B.deadline_l.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+                 proc_control_lite_B.deadline_l, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 25; i++) {
+    /* Start for MATLABSystem: '<S277>/SinkBlock' */
+    proc_control_lite_B.b_zeroDelimTopic_jz[i] = b_zeroDelimTopic[i];
+  }
+
+  Pub_proc_control_lite_2958_2942.createPublisher
+    (&proc_control_lite_B.b_zeroDelimTopic_jz[0], qos_profile);
+}
+
+void proc_control_lite::pr_Publisher_setupImpl_hpq2joyu(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic[24]{ "/proc_control/imu_tared" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  qos_profile = rmw_qos_profile_default;
+
+  /* Start for MATLABSystem: '<S278>/SinkBlock' */
+  proc_control_lite_B.deadline_h5.sec = 0.0;
+  proc_control_lite_B.deadline_h5.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+                 proc_control_lite_B.deadline_h5, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 24; i++) {
+    /* Start for MATLABSystem: '<S278>/SinkBlock' */
+    proc_control_lite_B.b_zeroDelimTopic_hm[i] = b_zeroDelimTopic[i];
+  }
+
+  Pub_proc_control_lite_2958_2945.createPublisher
+    (&proc_control_lite_B.b_zeroDelimTopic_hm[0], qos_profile);
+}
+
+void proc_control_lite::p_Publisher_setupImpl_hpq2joyui(const
+  ros_slros2_internal_block_Pub_T *obj)
+{
+  static const char_T b_zeroDelimTopic[25]{ "/proc_control/dvl_enable" };
+
+  rmw_qos_profile_t qos_profile;
+  sJ4ih70VmKcvCeguWN0mNVF lifespan;
+  sJ4ih70VmKcvCeguWN0mNVF liveliness_lease_duration;
+  qos_profile = rmw_qos_profile_default;
+
+  /* Start for MATLABSystem: '<S279>/SinkBlock' */
+  proc_control_lite_B.deadline_d.sec = 0.0;
+  proc_control_lite_B.deadline_d.nsec = 0.0;
+  lifespan.sec = 0.0;
+  lifespan.nsec = 0.0;
+  liveliness_lease_duration.sec = 0.0;
+  liveliness_lease_duration.nsec = 0.0;
+  SET_QOS_VALUES(qos_profile, RMW_QOS_POLICY_HISTORY_KEEP_LAST, (size_t)1.0,
+                 RMW_QOS_POLICY_DURABILITY_VOLATILE,
+                 RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+                 proc_control_lite_B.deadline_d, lifespan,
+                 RMW_QOS_POLICY_LIVELINESS_AUTOMATIC, liveliness_lease_duration,
+                 (bool)obj->QOSAvoidROSNamespaceConventions);
+  for (int32_T i{0}; i < 25; i++) {
+    /* Start for MATLABSystem: '<S279>/SinkBlock' */
+    proc_control_lite_B.b_zeroDelimTopic_fn[i] = b_zeroDelimTopic[i];
+  }
+
+  Pub_proc_control_lite_2958_2948.createPublisher
+    (&proc_control_lite_B.b_zeroDelimTopic_fn[0], qos_profile);
 }
 
 real_T proc_control_lite::proc_rt_nrand_Upu32_Yd_f_pw_snf(uint32_T *u)
@@ -50993,9 +50993,9 @@ void proc_control_lite::step()
 
   /* End of Outputs for SubSystem: '<S47>/Quaternion Non linear MPC (Not for codegen)' */
   /* End of Outputs for SubSystem: '<Root>/Subsystem Controller' */
-  proc_control_lite_B.b_g4 = ((&proc_control_lite_M)->Timing.TaskCounters.TID[2]
+  proc_control_lite_B.b_lh = ((&proc_control_lite_M)->Timing.TaskCounters.TID[2]
     == 0);
-  if (proc_control_lite_B.b_g4) {
+  if (proc_control_lite_B.b_lh) {
     /* Delay: '<S160>/Delay' */
     std::memcpy(&proc_control_lite_B.Delay[0],
                 &proc_control_lite_DW.Delay_DSTATE[0], sizeof(real_T) << 3U);
@@ -51003,7 +51003,7 @@ void proc_control_lite::step()
     /* MATLABSystem: '<S36>/SourceBlock' */
     proc_control_lite_B.SourceBlock_o1_f =
       Sub_proc_control_lite_1.getLatestMessage
-      (&proc_control_lite_B.rtb_SourceBlock_o2_d_l);
+      (&proc_control_lite_B.rtb_SourceBlock_o2_d_g);
 
     /* Outputs for Enabled SubSystem: '<S36>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S42>/Enable'
@@ -51012,7 +51012,7 @@ void proc_control_lite::step()
       /* SignalConversion generated from: '<S42>/In1' incorporates:
        *  MATLABSystem: '<S36>/SourceBlock'
        */
-      proc_control_lite_B.In1_m = proc_control_lite_B.rtb_SourceBlock_o2_d_l;
+      proc_control_lite_B.In1_m = proc_control_lite_B.rtb_SourceBlock_o2_d_g;
     }
 
     /* End of Outputs for SubSystem: '<S36>/Enabled Subsystem' */
@@ -51031,7 +51031,7 @@ void proc_control_lite::step()
     /* MATLABSystem: '<S39>/SourceBlock' */
     proc_control_lite_B.SourceBlock_o1_e =
       Sub_proc_control_lite_13.getLatestMessage
-      (&proc_control_lite_B.rtb_SourceBlock_o2_i_g);
+      (&proc_control_lite_B.rtb_SourceBlock_o2_i_m);
 
     /* Outputs for Enabled SubSystem: '<S39>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S45>/Enable'
@@ -51040,7 +51040,7 @@ void proc_control_lite::step()
       /* SignalConversion generated from: '<S45>/In1' incorporates:
        *  MATLABSystem: '<S39>/SourceBlock'
        */
-      proc_control_lite_B.In1_lz = proc_control_lite_B.rtb_SourceBlock_o2_i_g;
+      proc_control_lite_B.In1_lz = proc_control_lite_B.rtb_SourceBlock_o2_i_m;
     }
 
     /* End of Outputs for SubSystem: '<S39>/Enabled Subsystem' */
@@ -51078,7 +51078,7 @@ void proc_control_lite::step()
     proc_control_lite_B.In1_g.orientation.z;
   proc_control_lite_B.TmpSignalConversionAtMATLAB[6] =
     proc_control_lite_B.In1_g.orientation.w;
-  if (proc_control_lite_B.b_g4) {
+  if (proc_control_lite_B.b_lh) {
     /* MATLABSystem: '<S40>/SourceBlock' */
     proc_control_lite_B.SourceBlock_o1_k =
       Sub_proc_control_lite_15.getLatestMessage(&proc_control_lite_B.r14);
@@ -51209,19 +51209,19 @@ void proc_control_lite::step()
       proc_control_lite_B.d;
     proc_control_lite_B.n[3] = proc_control_lite_B.scale_j;
     proc_control_lite_B.b_i[3] = std::isnan(proc_control_lite_B.scale_j);
-    proc_control_lite_B.Reset = true;
+    proc_control_lite_B.b_value_p = true;
     proc_control_lite_B.i = 0;
     exitg2 = false;
     while ((!exitg2) && (proc_control_lite_B.i < 4)) {
       if (!proc_control_lite_B.b_i[proc_control_lite_B.i]) {
-        proc_control_lite_B.Reset = false;
+        proc_control_lite_B.b_value_p = false;
         exitg2 = true;
       } else {
         proc_control_lite_B.i++;
       }
     }
 
-    if (proc_control_lite_B.Reset) {
+    if (proc_control_lite_B.b_value_p) {
       proc_control_lite_B.n[0] = 1.0;
       proc_control_lite_B.n[1] = 0.0;
       proc_control_lite_B.n[2] = 0.0;
@@ -51254,14 +51254,14 @@ void proc_control_lite::step()
 
   /* Start for MATLABSystem: '<S24>/MATLAB System' */
   /*          %% Fonction qui détermine si on reset */
-  proc_control_lite_B.Reset = (proc_control_lite_B.SourceBlock_o1_j ||
+  proc_control_lite_B.b_value_p = (proc_control_lite_B.SourceBlock_o1_j ||
     proc_control_lite_B.SourceBlock_o1_a3);
 
   /* MATLABSystem: '<S24>/MATLAB System' */
-  proc_control_lite_DW.obj_i.m_reset = proc_control_lite_B.Reset;
+  proc_control_lite_DW.obj_i.m_reset = proc_control_lite_B.b_value_p;
 
   /*          %% Fonction qui détermine si on clear la trajectoire */
-  proc_control_lite_DW.obj_i.m_trajClear = (proc_control_lite_B.Reset ||
+  proc_control_lite_DW.obj_i.m_trajClear = (proc_control_lite_B.b_value_p ||
     proc_control_lite_B.SourceBlock_o1_f ||
     proc_control_lite_B.SourceBlock_o1_kn);
   proc_control_lite_DW.m_notDryRun = proc_control_lite_DW.obj_i.m_notDryRun;
@@ -51901,11 +51901,11 @@ void proc_control_lite::step()
   /* SwitchCase: '<S7>/Switch Case' incorporates:
    *  DataTypeConversion: '<S7>/Data Type Conversion'
    *  MATLABSystem: '<S24>/MATLAB System'
-   *  MATLABSystem: '<S271>/SourceBlock'
-   *  MATLABSystem: '<S272>/SourceBlock'
-   *  MATLABSystem: '<S273>/SourceBlock'
-   *  MATLABSystem: '<S274>/SourceBlock'
-   *  MATLABSystem: '<S275>/SourceBlock'
+   *  MATLABSystem: '<S281>/SourceBlock'
+   *  MATLABSystem: '<S282>/SourceBlock'
+   *  MATLABSystem: '<S283>/SourceBlock'
+   *  MATLABSystem: '<S284>/SourceBlock'
+   *  MATLABSystem: '<S285>/SourceBlock'
    *  MATLABSystem: '<S302>/SourceBlock'
    *  MATLABSystem: '<S303>/SourceBlock'
    *  MATLABSystem: '<S304>/SourceBlock'
@@ -51913,13 +51913,13 @@ void proc_control_lite::step()
    * */
   if (static_cast<uint8_T>(proc_control_lite_DW.obj_i.m_simulation) == 1) {
     /* Outputs for IfAction SubSystem: '<S7>/Simulation' incorporates:
-     *  ActionPort: '<S270>/Action Port'
+     *  ActionPort: '<S280>/Action Port'
      */
     /* MATLABSystem: '<S304>/SourceBlock' */
     proc_control_lite_B.Merge6 = Sub_proc_control_lite_2958_83.getLatestMessage(
       &proc_control_lite_B.r11);
 
-    /* BusAssignment: '<S270>/Bus Assignment' incorporates:
+    /* BusAssignment: '<S280>/Bus Assignment' incorporates:
      *  MATLABSystem: '<S304>/SourceBlock'
      * */
     proc_control_lite_B.BusAssignment_n.data = proc_control_lite_B.Merge6;
@@ -51936,7 +51936,7 @@ void proc_control_lite::step()
     /* SignalConversion generated from: '<S163>/ SFunction ' incorporates:
      *  MATLAB Function: '<S155>/MATLAB Function'
      *  MATLABSystem: '<S304>/SourceBlock'
-     *  SignalConversion generated from: '<S270>/imu data'
+     *  SignalConversion generated from: '<S280>/imu data'
      * */
     proc_control_lite_B.n[1] =
       proc_control_lite_B.EnabledSubsystem_j.In1.orientation.x;
@@ -51945,7 +51945,7 @@ void proc_control_lite::step()
     proc_control_lite_B.n[3] =
       proc_control_lite_B.EnabledSubsystem_j.In1.orientation.z;
 
-    /* SignalConversion generated from: '<S270>/imu data' incorporates:
+    /* SignalConversion generated from: '<S280>/imu data' incorporates:
      *  Merge: '<S7>/Merge'
      */
     proc_control_lite_B.Divide3 =
@@ -51964,16 +51964,16 @@ void proc_control_lite::step()
       proc_control_lite_B.EnabledSubsystem_j.In1.linear_acceleration.z;
 
     /* MATLABSystem: '<S303>/SourceBlock' */
-    proc_control_lite_B.b_value_p =
+    proc_control_lite_B.NewDvlMsg =
       Sub_proc_control_lite_2958_84.getLatestMessage(&proc_control_lite_B.r12);
 
     /* Outputs for Enabled SubSystem: '<S303>/Enabled Subsystem' */
-    proc_control_EnabledSubsystem_l(proc_control_lite_B.b_value_p,
+    proc_control_EnabledSubsystem_l(proc_control_lite_B.NewDvlMsg,
       &proc_control_lite_B.r12, &proc_control_lite_B.EnabledSubsystem_l);
 
     /* End of Outputs for SubSystem: '<S303>/Enabled Subsystem' */
 
-    /* SignalConversion generated from: '<S270>/dvl data' incorporates:
+    /* SignalConversion generated from: '<S280>/dvl data' incorporates:
      *  MATLABSystem: '<S303>/SourceBlock'
      *  Merge: '<S7>/Merge1'
      * */
@@ -52002,7 +52002,7 @@ void proc_control_lite::step()
 
     /* End of Outputs for SubSystem: '<S302>/Enabled Subsystem' */
 
-    /* SignalConversion generated from: '<S270>/depth data' incorporates:
+    /* SignalConversion generated from: '<S280>/depth data' incorporates:
      *  MATLABSystem: '<S302>/SourceBlock'
      *  Merge: '<S7>/Merge2'
      * */
@@ -52023,19 +52023,19 @@ void proc_control_lite::step()
     /* Outputs for IfAction SubSystem: '<S7>/AUV' incorporates:
      *  ActionPort: '<S268>/Action Port'
      */
-    /* MATLABSystem: '<S273>/SourceBlock' */
+    /* MATLABSystem: '<S283>/SourceBlock' */
     proc_control_lite_B.Merge6 = Sub_proc_control_lite_2958_4.getLatestMessage
       (&proc_control_lite_B.r11);
 
-    /* Outputs for Enabled SubSystem: '<S273>/Enabled Subsystem' */
+    /* Outputs for Enabled SubSystem: '<S283>/Enabled Subsystem' */
     proc_control_EnabledSubsystem_j(proc_control_lite_B.Merge6,
       &proc_control_lite_B.r11, &proc_control_lite_B.EnabledSubsystem_gu);
 
-    /* End of Outputs for SubSystem: '<S273>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S283>/Enabled Subsystem' */
 
     /* SignalConversion generated from: '<S163>/ SFunction ' incorporates:
      *  MATLAB Function: '<S155>/MATLAB Function'
-     *  MATLABSystem: '<S273>/SourceBlock'
+     *  MATLABSystem: '<S283>/SourceBlock'
      *  SignalConversion generated from: '<S268>/imu data'
      * */
     proc_control_lite_B.n[1] =
@@ -52063,18 +52063,18 @@ void proc_control_lite::step()
     proc_control_lite_B.Product3_ly =
       proc_control_lite_B.EnabledSubsystem_gu.In1.linear_acceleration.z;
 
-    /* MATLABSystem: '<S272>/SourceBlock' */
-    proc_control_lite_B.b_value_p =
+    /* MATLABSystem: '<S282>/SourceBlock' */
+    proc_control_lite_B.NewDvlMsg =
       Sub_proc_control_lite_2958_5.getLatestMessage(&proc_control_lite_B.r12);
 
-    /* Outputs for Enabled SubSystem: '<S272>/Enabled Subsystem' */
-    proc_control_EnabledSubsystem_l(proc_control_lite_B.b_value_p,
+    /* Outputs for Enabled SubSystem: '<S282>/Enabled Subsystem' */
+    proc_control_EnabledSubsystem_l(proc_control_lite_B.NewDvlMsg,
       &proc_control_lite_B.r12, &proc_control_lite_B.EnabledSubsystem_b2);
 
-    /* End of Outputs for SubSystem: '<S272>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S282>/Enabled Subsystem' */
 
     /* SignalConversion generated from: '<S268>/dvl data' incorporates:
-     *  MATLABSystem: '<S272>/SourceBlock'
+     *  MATLABSystem: '<S282>/SourceBlock'
      *  Merge: '<S7>/Merge1'
      * */
     proc_control_lite_B.t9 =
@@ -52092,44 +52092,44 @@ void proc_control_lite::step()
     proc_control_lite_B.t24 =
       proc_control_lite_B.EnabledSubsystem_b2.In1.velocity4;
 
-    /* MATLABSystem: '<S271>/SourceBlock' */
+    /* MATLABSystem: '<S281>/SourceBlock' */
     proc_control_lite_B.newPressureMsg =
       Sub_proc_control_lite_2958_6.getLatestMessage(&proc_control_lite_B.r13);
 
-    /* Outputs for Enabled SubSystem: '<S271>/Enabled Subsystem' */
+    /* Outputs for Enabled SubSystem: '<S281>/Enabled Subsystem' */
     proc_control_EnabledSubsystem_h(proc_control_lite_B.newPressureMsg,
       &proc_control_lite_B.r13, &proc_control_lite_B.EnabledSubsystem_gf);
 
-    /* End of Outputs for SubSystem: '<S271>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S281>/Enabled Subsystem' */
 
     /* SignalConversion generated from: '<S268>/depth data' incorporates:
-     *  MATLABSystem: '<S271>/SourceBlock'
+     *  MATLABSystem: '<S281>/SourceBlock'
      *  Merge: '<S7>/Merge2'
      * */
     proc_control_lite_B.rtb_Merge2_data =
       proc_control_lite_B.EnabledSubsystem_gf.In1.data;
 
-    /* MATLABSystem: '<S274>/SourceBlock' */
+    /* MATLABSystem: '<S284>/SourceBlock' */
     proc_control_lite_B.Merge8 =
       Sub_proc_control_lite_2958_2508.getLatestMessage(&proc_control_lite_B.r11);
 
-    /* Outputs for Enabled SubSystem: '<S274>/Enabled Subsystem' */
+    /* Outputs for Enabled SubSystem: '<S284>/Enabled Subsystem' */
     proc_control_EnabledSubsystem_j(proc_control_lite_B.Merge8,
       &proc_control_lite_B.r11, &proc_control_lite_B.EnabledSubsystem_p4);
 
-    /* End of Outputs for SubSystem: '<S274>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S284>/Enabled Subsystem' */
 
-    /* MATLABSystem: '<S275>/SourceBlock' incorporates:
-     *  MATLABSystem: '<S274>/SourceBlock'
+    /* MATLABSystem: '<S285>/SourceBlock' incorporates:
+     *  MATLABSystem: '<S284>/SourceBlock'
      * */
     proc_control_lite_B.SourceBlock_o1 =
       Sub_proc_control_lite_2958_2543.getLatestMessage(&proc_control_lite_B.r14);
 
-    /* Outputs for Enabled SubSystem: '<S275>/Enabled Subsystem' */
+    /* Outputs for Enabled SubSystem: '<S285>/Enabled Subsystem' */
     proc_control_l_EnabledSubsystem(proc_control_lite_B.SourceBlock_o1,
       &proc_control_lite_B.r14, &proc_control_lite_B.EnabledSubsystem_gv);
 
-    /* End of Outputs for SubSystem: '<S275>/Enabled Subsystem' */
+    /* End of Outputs for SubSystem: '<S285>/Enabled Subsystem' */
     /* End of Outputs for SubSystem: '<S7>/AUV' */
   }
 
@@ -52226,19 +52226,19 @@ void proc_control_lite::step()
   proc_control_lite_B.scale_j = proc_control_lite_B.n[3] / proc_control_lite_B.d;
   proc_control_lite_B.n[3] = proc_control_lite_B.scale_j;
   proc_control_lite_B.b_i[3] = std::isnan(proc_control_lite_B.scale_j);
-  proc_control_lite_B.Reset = true;
+  proc_control_lite_B.b_value_p = true;
   proc_control_lite_B.ibmat = 0;
   exitg2 = false;
   while ((!exitg2) && (proc_control_lite_B.ibmat < 4)) {
     if (!proc_control_lite_B.b_i[proc_control_lite_B.ibmat]) {
-      proc_control_lite_B.Reset = false;
+      proc_control_lite_B.b_value_p = false;
       exitg2 = true;
     } else {
       proc_control_lite_B.ibmat++;
     }
   }
 
-  if (proc_control_lite_B.Reset) {
+  if (proc_control_lite_B.b_value_p) {
     proc_control_lite_B.n[0] = 1.0;
     proc_control_lite_B.n[1] = 0.0;
     proc_control_lite_B.n[2] = 0.0;
@@ -52453,137 +52453,110 @@ void proc_control_lite::step()
     &proc_control_lite_B.MovingAverage2, &proc_control_lite_DW.MovingAverage2);
 
   /* Outputs for Enabled SubSystem: '<S7>/Enabled Subsystem1' incorporates:
-   *  EnablePort: '<S269>/Enable'
+   *  EnablePort: '<S274>/Enable'
    */
   /* Logic: '<S7>/NOT' incorporates:
+   *  Constant: '<S274>/Constant3'
    *  Delay: '<S7>/Delay'
    */
   if (!(proc_control_lite_B.y != 0.0)) {
+    proc_control_lite_B.Constant3 = proc_control_lite_P.config.dvl;
+
     /* Switch: '<S296>/Reset' incorporates:
-     *  Constant: '<S269>/Constant'
-     *  Constant: '<S296>/Initial Condition'
-     *  Memory: '<S296>/Memory'
-     *  MinMax: '<S287>/MinMax'
+     *  Constant: '<S274>/Constant'
+     *  Constant: '<S274>/Constant3'
      */
     if (proc_control_lite_P.Constant_Value_lo != 0.0) {
+      /* Switch: '<S296>/Reset' incorporates:
+       *  Constant: '<S296>/Initial Condition'
+       */
       proc_control_lite_B.Reset =
         proc_control_lite_P.MinMaxRunningResettable_vinit;
     } else {
-      proc_control_lite_B.Reset = (proc_control_lite_B.b_value_p ||
-        proc_control_lite_DW.Memory_PreviousInput);
+      /* Switch: '<S296>/Reset' incorporates:
+       *  Memory: '<S296>/Memory'
+       *  MinMax: '<S292>/MinMax'
+       */
+      proc_control_lite_B.Reset = (proc_control_lite_B.NewDvlMsg ||
+        proc_control_lite_B.Reset);
     }
 
     /* End of Switch: '<S296>/Reset' */
 
-    /* BusAssignment: '<S269>/Bus Assignment' */
-    proc_control_lite_B.BusAssignment_nc.data = proc_control_lite_B.Reset;
-
-    /* MATLABSystem: '<S291>/SinkBlock' */
-    Pub_proc_control_lite_2958_2936.publish
-      (&proc_control_lite_B.BusAssignment_nc);
-
     /* Switch: '<S297>/Reset' incorporates:
-     *  Constant: '<S269>/Constant1'
-     *  Constant: '<S297>/Initial Condition'
-     *  Memory: '<S297>/Memory'
-     *  MinMax: '<S288>/MinMax'
+     *  Constant: '<S274>/Constant1'
      */
     if (proc_control_lite_P.Constant1_Value_it != 0.0) {
-      proc_control_lite_B.Merge6 =
+      /* Switch: '<S297>/Reset' incorporates:
+       *  Constant: '<S297>/Initial Condition'
+       */
+      proc_control_lite_B.Reset_a =
         proc_control_lite_P.MinMaxRunningResettable1_vinit;
     } else {
-      proc_control_lite_B.Merge6 = (proc_control_lite_B.Merge6 ||
-        proc_control_lite_DW.Memory_PreviousInput_k);
+      /* Switch: '<S297>/Reset' incorporates:
+       *  Memory: '<S297>/Memory'
+       *  MinMax: '<S293>/MinMax'
+       */
+      proc_control_lite_B.Reset_a = (proc_control_lite_B.Merge6 ||
+        proc_control_lite_B.Reset_a);
     }
 
     /* End of Switch: '<S297>/Reset' */
 
-    /* BusAssignment: '<S269>/Bus Assignment1' */
-    proc_control_lite_B.BusAssignment1_k.data = proc_control_lite_B.Merge6;
-
-    /* MATLABSystem: '<S292>/SinkBlock' */
-    Pub_proc_control_lite_2958_2939.publish
-      (&proc_control_lite_B.BusAssignment1_k);
-
     /* Switch: '<S298>/Reset' incorporates:
-     *  Constant: '<S269>/Constant2'
-     *  Constant: '<S298>/Initial Condition'
-     *  Memory: '<S298>/Memory'
-     *  MinMax: '<S289>/MinMax'
+     *  Constant: '<S274>/Constant2'
      */
     if (proc_control_lite_P.Constant2_Value_p != 0.0) {
-      proc_control_lite_B.Merge8 =
+      /* Switch: '<S298>/Reset' incorporates:
+       *  Constant: '<S298>/Initial Condition'
+       */
+      proc_control_lite_B.Reset_o =
         proc_control_lite_P.MinMaxRunningResettable2_vinit;
     } else {
-      proc_control_lite_B.Merge8 = (proc_control_lite_B.Merge8 ||
-        proc_control_lite_DW.Memory_PreviousInput_d);
+      /* Switch: '<S298>/Reset' incorporates:
+       *  Memory: '<S298>/Memory'
+       *  MinMax: '<S294>/MinMax'
+       */
+      proc_control_lite_B.Reset_o = (proc_control_lite_B.Merge8 ||
+        proc_control_lite_B.Reset_o);
     }
 
     /* End of Switch: '<S298>/Reset' */
 
-    /* BusAssignment: '<S269>/Bus Assignment2' */
-    proc_control_lite_B.BusAssignment2.data = proc_control_lite_B.Merge8;
-
-    /* MATLABSystem: '<S293>/SinkBlock' */
-    Pub_proc_control_lite_2958_2942.publish(&proc_control_lite_B.BusAssignment2);
-
     /* Switch: '<S299>/Reset' incorporates:
-     *  Constant: '<S269>/Constant4'
-     *  Constant: '<S299>/Initial Condition'
-     *  Memory: '<S299>/Memory'
-     *  MinMax: '<S290>/MinMax'
+     *  Constant: '<S274>/Constant4'
      */
     if (proc_control_lite_P.Constant4_Value_n != 0.0) {
+      /* Switch: '<S299>/Reset' incorporates:
+       *  Constant: '<S299>/Initial Condition'
+       */
       proc_control_lite_B.Reset_m =
         proc_control_lite_P.MinMaxRunningResettable3_vinit;
     } else {
+      /* Switch: '<S299>/Reset' incorporates:
+       *  Memory: '<S299>/Memory'
+       *  MinMax: '<S295>/MinMax'
+       */
       proc_control_lite_B.Reset_m = (proc_control_lite_B.SourceBlock_o1 ||
-        proc_control_lite_DW.Memory_PreviousInput_m);
+        proc_control_lite_B.Reset_m);
     }
 
     /* End of Switch: '<S299>/Reset' */
 
-    /* BusAssignment: '<S269>/Bus Assignment3' */
-    proc_control_lite_B.BusAssignment3.data = proc_control_lite_B.Reset_m;
-
-    /* MATLABSystem: '<S294>/SinkBlock' */
-    Pub_proc_control_lite_2958_2945.publish(&proc_control_lite_B.BusAssignment3);
-
-    /* BusAssignment: '<S269>/Bus Assignment4' incorporates:
-     *  Constant: '<S269>/Constant3'
-     *  DataTypeConversion: '<S269>/Data Type Conversion'
-     */
-    proc_control_lite_B.BusAssignment4.data = (proc_control_lite_P.config.dvl !=
-      0.0);
-
-    /* MATLABSystem: '<S295>/SinkBlock' */
-    Pub_proc_control_lite_2958_2948.publish(&proc_control_lite_B.BusAssignment4);
-
-    /* MATLAB Function: '<S269>/MATLAB Function' incorporates:
-     *  Constant: '<S269>/Constant3'
-     */
-    if ((proc_control_lite_P.config.dvl != 0.0) && (((proc_control_lite_B.Reset
-           + proc_control_lite_B.Merge6) + proc_control_lite_B.Merge8) +
+    /* MATLAB Function: '<S274>/MATLAB Function' */
+    if ((proc_control_lite_B.Constant3 != 0.0) && (((proc_control_lite_B.Reset +
+           proc_control_lite_B.Reset_a) + proc_control_lite_B.Reset_o) +
          proc_control_lite_B.Reset_m >= 4)) {
       proc_control_lite_B.y = 1.0;
     } else {
-      proc_control_lite_B.y = ((proc_control_lite_B.Merge6 +
-        proc_control_lite_B.Merge8) + proc_control_lite_B.Reset_m >= 3);
+      proc_control_lite_B.y = ((proc_control_lite_B.Reset_a +
+        proc_control_lite_B.Reset_o) + proc_control_lite_B.Reset_m >= 3);
     }
 
-    /* End of MATLAB Function: '<S269>/MATLAB Function' */
+    /* End of MATLAB Function: '<S274>/MATLAB Function' */
 
-    /* Update for Memory: '<S296>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput = proc_control_lite_B.Reset;
-
-    /* Update for Memory: '<S297>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_k = proc_control_lite_B.Merge6;
-
-    /* Update for Memory: '<S298>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_d = proc_control_lite_B.Merge8;
-
-    /* Update for Memory: '<S299>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_m = proc_control_lite_B.Reset_m;
+    /* SignalConversion generated from: '<S274>/Out6' */
+    proc_control_lite_B.OutportBufferForOut6 = proc_control_lite_B.Constant3;
   }
 
   /* End of Logic: '<S7>/NOT' */
@@ -53339,7 +53312,7 @@ void proc_control_lite::step()
   /* Outputs for Enabled SubSystem: '<S5>/DVL Measurements' incorporates:
    *  EnablePort: '<S156>/Enable'
    */
-  if (proc_control_lite_B.b_value_p) {
+  if (proc_control_lite_B.NewDvlMsg) {
     proc_control_lite_DW.DVLMeasurements_MODE = true;
 
     /* SignalConversion generated from: '<S215>/ SFunction ' incorporates:
@@ -53388,7 +53361,7 @@ void proc_control_lite::step()
       }
     }
 
-    if (proc_control_lite_B.t9 < proc_control_lite_P.Constant_Value_iv) {
+    if (proc_control_lite_B.t9 < proc_control_lite_P.Constant_Value_i) {
       proc_control_lite_B.Sum2_i[0] =
         proc_control_lite_B.TmpSignalConversionAtSFunct[0];
       proc_control_lite_B.Sum2_i[1] = proc_control_lite_B.t10;
@@ -53439,7 +53412,7 @@ void proc_control_lite::step()
         }
       }
 
-      if (proc_control_lite_B.t9 < proc_control_lite_P.Constant_Value_iv) {
+      if (proc_control_lite_B.t9 < proc_control_lite_P.Constant_Value_i) {
         proc_control_lite_B.Sum2_i[0] = proc_control_lite_B.t13;
         proc_control_lite_B.Sum2_i[1] = proc_control_lite_B.t19;
         proc_control_lite_B.Sum2_i[2] = proc_control_lite_B.t20;
@@ -55003,14 +54976,14 @@ void proc_control_lite::step()
     ->Timing.TaskCounters.TID[1] == 0);
   if (proc_control_lite_B.b_value_p) {
     /* MATLABSystem: '<S257>/SourceBlock' */
-    proc_control_lite_B.Reset = Sub_proc_control_lite_532.getLatestMessage
+    proc_control_lite_B.Merge6 = Sub_proc_control_lite_532.getLatestMessage
       (&proc_control_lite_B.rtb_SourceBlock_o2_g_a);
 
     /* Outputs for Enabled SubSystem: '<S257>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S258>/Enable'
      */
     /* Start for MATLABSystem: '<S257>/SourceBlock' */
-    if (proc_control_lite_B.Reset) {
+    if (proc_control_lite_B.Merge6) {
       /* SignalConversion generated from: '<S258>/In1' */
       proc_control_lite_B.In1_l = proc_control_lite_B.rtb_SourceBlock_o2_g_a;
     }
@@ -55133,13 +55106,13 @@ void proc_control_lite::step()
      *  Constant: '<S247>/Constant2'
      *  SignalConversion generated from: '<S247>/Out1'
      */
-    proc_control_lite_B.Merge8 = proc_control_lite_P.Constant2_Value_h;
+    proc_control_lite_B.NewDvlMsg = proc_control_lite_P.Constant2_Value_h;
 
     /* Merge generated from: '<S6>/Merge' incorporates:
      *  Constant: '<S247>/Constant3'
      *  SignalConversion generated from: '<S247>/Out1'
      */
-    proc_control_lite_B.Merge6 = proc_control_lite_P.Constant3_Value_i;
+    proc_control_lite_B.Merge8 = proc_control_lite_P.Constant3_Value_i;
     for (proc_control_lite_B.i = 0; proc_control_lite_B.i < 7;
          proc_control_lite_B.i++) {
       /* Merge generated from: '<S6>/Merge' incorporates:
@@ -55160,7 +55133,7 @@ void proc_control_lite::step()
     /* RelationalOperator: '<S253>/Compare' incorporates:
      *  Constant: '<S253>/Constant'
      */
-    proc_control_lite_B.Reset = (static_cast<int32_T>
+    proc_control_lite_B.Merge6 = (static_cast<int32_T>
       (proc_control_lite_B.SourceBlock_o1_a) > static_cast<int32_T>
       (proc_control_lite_P.Constant_Value_pl));
 
@@ -55187,15 +55160,15 @@ void proc_control_lite::step()
      *  UnitDelay: '<S252>/Delay Input1'
      * */
     pro_ProcPlannerManager_stepImpl(&proc_control_lite_DW.obj_l,
-      (static_cast<int32_T>(proc_control_lite_B.Reset) > static_cast<int32_T>
+      (static_cast<int32_T>(proc_control_lite_B.Merge6) > static_cast<int32_T>
        (proc_control_lite_DW.DelayInput1_DSTATE)),
       proc_control_lite_B.In1.transforms,
       proc_control_lite_B.In1.transforms_SL_Info.ReceivedLength,
       proc_control_lite_B.In1.velocities, proc_control_lite_DW.obj_i.m_trajClear,
       proc_control_lite_B.dv12, proc_control_lite_B.linearTol,
       proc_control_lite_B.angularTol, proc_control_lite_B.timeInTol,
-      proc_control_lite_B.y_n, &proc_control_lite_B.Merge8,
-      &proc_control_lite_B.Merge6,
+      proc_control_lite_B.y_n, &proc_control_lite_B.NewDvlMsg,
+      &proc_control_lite_B.Merge8,
       proc_control_lite_B.TmpSignalConversionAtMATLAB);
 
     /* MATLABSystem: '<S245>/MATLAB System' */
@@ -55222,7 +55195,7 @@ void proc_control_lite::step()
                 130U * sizeof(real_T));
 
     /* Update for UnitDelay: '<S252>/Delay Input1' */
-    proc_control_lite_DW.DelayInput1_DSTATE = proc_control_lite_B.Reset;
+    proc_control_lite_DW.DelayInput1_DSTATE = proc_control_lite_B.Merge6;
 
     /* End of Outputs for SubSystem: '<S6>/ProcPlanner Trajectory' */
     break;
@@ -55286,7 +55259,7 @@ void proc_control_lite::step()
      *  ActionPort: '<S250>/Action Port'
      */
     /* MATLABSystem: '<S264>/SourceBlock' */
-    proc_control_lite_B.Reset = Sub_proc_control_lite_589.getLatestMessage
+    proc_control_lite_B.Merge6 = Sub_proc_control_lite_589.getLatestMessage
       (&proc_control_lite_B.rtb_SourceBlock_o2_n_c);
 
     /* Outputs for Enabled SubSystem: '<S250>/Enabled Subsystem' incorporates:
@@ -55295,7 +55268,7 @@ void proc_control_lite::step()
     /* Outputs for Enabled SubSystem: '<S264>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S267>/Enable'
      */
-    if (proc_control_lite_B.Reset) {
+    if (proc_control_lite_B.Merge6) {
       /* DataTypeConversion: '<S261>/Data Type Conversion' */
       proc_control_lite_B.DataTypeConversion[0] =
         proc_control_lite_B.rtb_SourceBlock_o2_n_c.position.x;
@@ -55374,7 +55347,7 @@ void proc_control_lite::step()
     }
 
     /*  Ajout d'un waypoint provenant de ROS. */
-    if (proc_control_lite_B.Reset && (proc_control_lite_DW.obj_f.i <= 2.0)) {
+    if (proc_control_lite_B.Merge6 && (proc_control_lite_DW.obj_f.i <= 2.0)) {
       /* ========================================================================== */
       /*  Fonction qui interprete les waypoints reçu par ROS */
       /*  Determiner le quaternion en fonction des angles d'euler. */
@@ -55849,7 +55822,7 @@ void proc_control_lite::step()
     /* Outputs for Enabled SubSystem: '<S250>/Pre-traitement' incorporates:
      *  EnablePort: '<S262>/Enable'
      */
-    if (proc_control_lite_B.Reset || (proc_control_lite_DW.obj_i.m_trajClear !=
+    if (proc_control_lite_B.Merge6 || (proc_control_lite_DW.obj_i.m_trajClear !=
          0.0)) {
       proc_control_lite_B.MatrixConcatenate[0] =
         proc_control_lite_P.Constant_Value_j55;
@@ -55922,7 +55895,7 @@ void proc_control_lite::step()
     /* Outputs for Resettable SubSystem: '<S250>/Resettable Subsystem' incorporates:
      *  ResetPort: '<S263>/Reset'
      */
-    if (proc_control_lite_B.Reset &&
+    if (proc_control_lite_B.Merge6 &&
         (proc_control_lite_PrevZCX.ResettableSubsystem_Reset_ZCE != POS_ZCSIG))
     {
       /* InitializeConditions for DiscreteIntegrator: '<S263>/Discrete-Time Integrator' */
@@ -55931,7 +55904,7 @@ void proc_control_lite::step()
     }
 
     proc_control_lite_PrevZCX.ResettableSubsystem_Reset_ZCE =
-      proc_control_lite_B.Reset;
+      proc_control_lite_B.Merge6;
 
     /* DiscreteIntegrator: '<S263>/Discrete-Time Integrator' incorporates:
      *  Concatenate: '<S262>/Matrix Concatenate'
@@ -55969,8 +55942,8 @@ void proc_control_lite::step()
      *  Concatenate: '<S262>/Matrix Concatenate'
      *  Selector: '<S262>/Selector'
      */
-    proc_control_lite_B.Reset_m = false;
-    proc_control_lite_B.p_b = true;
+    proc_control_lite_B.p_b = false;
+    proc_control_lite_B.p_g = true;
     proc_control_lite_B.i = 0;
     exitg2 = false;
     while ((!exitg2) && (proc_control_lite_B.i < 6)) {
@@ -55978,18 +55951,18 @@ void proc_control_lite::step()
             ==
             proc_control_lite_P.PolynomialTrajectory_VelocityBo[proc_control_lite_B.i]))
       {
-        proc_control_lite_B.p_b = false;
+        proc_control_lite_B.p_g = false;
         exitg2 = true;
       } else {
         proc_control_lite_B.i++;
       }
     }
 
-    if (proc_control_lite_B.p_b) {
-      proc_control_lite_B.Reset_m = true;
+    if (proc_control_lite_B.p_g) {
+      proc_control_lite_B.p_b = true;
     }
 
-    if (!proc_control_lite_B.Reset_m) {
+    if (!proc_control_lite_B.p_b) {
       if (proc_control_lite_DW.obj_m.isInitialized == 1) {
         proc_control_lite_DW.obj_m.TunablePropsChanged = true;
         proc_control_lite_DW.obj_m.tunablePropertyChanged[3] = true;
@@ -56007,13 +55980,13 @@ void proc_control_lite::step()
       proc_control_lite_DW.obj_m.TunablePropsChanged = false;
       if (proc_control_lite_DW.obj_m.tunablePropertyChanged[3] ||
           proc_control_lite_DW.obj_m.tunablePropertyChanged[4]) {
-        proc_control_lite_B.Merge8 = true;
+        proc_control_lite_B.NewDvlMsg = true;
       } else {
-        proc_control_lite_B.Merge8 = false;
+        proc_control_lite_B.NewDvlMsg = false;
       }
 
       proc_control_lite_DW.obj_m.PPFormUpdatedNeeded =
-        proc_control_lite_B.Merge8;
+        proc_control_lite_B.NewDvlMsg;
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 5;
            proc_control_lite_B.Ns++) {
         proc_control_lite_DW.obj_m.tunablePropertyChanged[proc_control_lite_B.Ns]
@@ -56025,32 +55998,32 @@ void proc_control_lite::step()
     if (proc_control_lite_DW.obj_m.PPFormUpdatedNeeded) {
       guard1 = true;
     } else {
-      proc_control_lite_B.Reset_m = false;
-      proc_control_lite_B.Merge8 = true;
+      proc_control_lite_B.p_b = false;
+      proc_control_lite_B.NewDvlMsg = true;
       proc_control_lite_B.i = 0;
       exitg2 = false;
       while ((!exitg2) && (proc_control_lite_B.i < 6)) {
         if (!(proc_control_lite_B.Selector[proc_control_lite_B.i] ==
               proc_control_lite_DW.obj_m.PrevOptInputs.f1[proc_control_lite_B.i]))
         {
-          proc_control_lite_B.Merge8 = false;
+          proc_control_lite_B.NewDvlMsg = false;
           exitg2 = true;
         } else {
           proc_control_lite_B.i++;
         }
       }
 
-      if (!proc_control_lite_B.Merge8) {
-        proc_control_lite_B.p_b = false;
+      if (!proc_control_lite_B.NewDvlMsg) {
+        proc_control_lite_B.p_g = false;
       } else {
-        proc_control_lite_B.p_b = true;
+        proc_control_lite_B.p_g = true;
         proc_control_lite_B.i = 0;
         exitg2 = false;
         while ((!exitg2) && (proc_control_lite_B.i < 2)) {
           if (!(proc_control_lite_B.MatrixConcatenate[proc_control_lite_B.i] ==
                 proc_control_lite_DW.obj_m.PrevOptInputs.f2[proc_control_lite_B.i]))
           {
-            proc_control_lite_B.p_b = false;
+            proc_control_lite_B.p_g = false;
             exitg2 = true;
           } else {
             proc_control_lite_B.i++;
@@ -56058,8 +56031,8 @@ void proc_control_lite::step()
         }
       }
 
-      if (proc_control_lite_B.p_b) {
-        proc_control_lite_B.Reset_m = true;
+      if (proc_control_lite_B.p_g) {
+        proc_control_lite_B.p_b = true;
       }
 
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 6;
@@ -56072,7 +56045,7 @@ void proc_control_lite::step()
         proc_control_lite_B.MatrixConcatenate[0];
       proc_control_lite_DW.obj_m.PrevOptInputs.f2[1] =
         proc_control_lite_B.MatrixConcatenate[1];
-      if (!proc_control_lite_B.Reset_m) {
+      if (!proc_control_lite_B.p_b) {
         guard1 = true;
       }
     }
@@ -56231,7 +56204,7 @@ void proc_control_lite::step()
       proc_control_lite_DW.obj_i.m_trajClear, proc_control_lite_B.imvec,
       proc_control_lite_B.Selector4, proc_control_lite_DW.obj_f.initcond,
       proc_control_lite_B.dv12, proc_control_lite_B.y_n,
-      &proc_control_lite_B.Merge8);
+      &proc_control_lite_B.NewDvlMsg);
 
     /* MATLABSystem: '<S250>/MATLAB System1' */
     std::memcpy(&proc_control_lite_DW.poseBuffer[0],
@@ -56255,7 +56228,7 @@ void proc_control_lite::step()
      *  Constant: '<S250>/Constant1'
      *  SignalConversion generated from: '<S250>/Reference'
      */
-    proc_control_lite_B.Merge6 = proc_control_lite_P.Constant1_Value_is;
+    proc_control_lite_B.Merge8 = proc_control_lite_P.Constant1_Value_is;
     for (proc_control_lite_B.i = 0; proc_control_lite_B.i < 7;
          proc_control_lite_B.i++) {
       /* Merge generated from: '<S6>/Merge' incorporates:
@@ -56270,7 +56243,7 @@ void proc_control_lite::step()
     /* Update for Delay: '<S250>/Delay' incorporates:
      *  MATLABSystem: '<S264>/SourceBlock'
      * */
-    proc_control_lite_DW.Delay_DSTATE_g = proc_control_lite_B.Reset;
+    proc_control_lite_DW.Delay_DSTATE_g = proc_control_lite_B.Merge6;
 
     /* End of Outputs for SubSystem: '<S6>/singleWpts Trajectory Control DEBUG only' */
     break;
@@ -56309,13 +56282,13 @@ void proc_control_lite::step()
      *  Constant: '<S244>/Constant2'
      *  SignalConversion generated from: '<S244>/y'
      */
-    proc_control_lite_B.Merge8 = proc_control_lite_P.Constant2_Value_a;
+    proc_control_lite_B.NewDvlMsg = proc_control_lite_P.Constant2_Value_a;
 
     /* Merge generated from: '<S6>/Merge' incorporates:
      *  Constant: '<S244>/Constant3'
      *  SignalConversion generated from: '<S244>/y'
      */
-    proc_control_lite_B.Merge6 = proc_control_lite_P.Constant3_Value_n;
+    proc_control_lite_B.Merge8 = proc_control_lite_P.Constant3_Value_n;
     for (proc_control_lite_B.i = 0; proc_control_lite_B.i < 7;
          proc_control_lite_B.i++) {
       /* Merge generated from: '<S6>/Merge' incorporates:
@@ -56331,7 +56304,7 @@ void proc_control_lite::step()
     break;
   }
 
-  if (proc_control_lite_B.b_g4) {
+  if (proc_control_lite_B.b_lh) {
     /* Outputs for Atomic SubSystem: '<Root>/Subsystem Controller' */
     /* If: '<S4>/If' incorporates:
      *  BusCreator generated from: '<S48>/MATLAB System'
@@ -56375,25 +56348,25 @@ void proc_control_lite::step()
     /* Outputs for IfAction SubSystem: '<S4>/If Action Subsystem' incorporates:
      *  ActionPort: '<S48>/Action Port'
      */
-    proc_control_lite_B.Reset = Sub_proc_control_lite_780.getLatestMessage
+    proc_control_lite_B.Merge6 = Sub_proc_control_lite_780.getLatestMessage
       (&proc_control_lite_B.rtb_SourceBlock_o2_h_a);
 
     /* Outputs for Enabled SubSystem: '<S150>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S152>/Enable'
      */
-    if (proc_control_lite_B.Reset) {
+    if (proc_control_lite_B.Merge6) {
       /* SignalConversion generated from: '<S152>/In1' */
       proc_control_lite_B.In1_j = proc_control_lite_B.rtb_SourceBlock_o2_h_a;
     }
 
     /* End of Outputs for SubSystem: '<S150>/Enabled Subsystem' */
-    proc_control_lite_B.Reset_m = Sub_proc_control_lite_781.getLatestMessage
+    proc_control_lite_B.p_b = Sub_proc_control_lite_781.getLatestMessage
       (&proc_control_lite_B.rtb_SourceBlock_o2_k_p);
 
     /* Outputs for Enabled SubSystem: '<S151>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S153>/Enable'
      */
-    if (proc_control_lite_B.Reset_m) {
+    if (proc_control_lite_B.p_b) {
       /* SignalConversion generated from: '<S153>/In1' */
       proc_control_lite_B.In1_p = proc_control_lite_B.rtb_SourceBlock_o2_k_p;
     }
@@ -56464,7 +56437,7 @@ void proc_control_lite::step()
 
     /*  Init function */
     /*       %% Fonction qui traite les gains recu via ros. */
-    if (proc_control_lite_B.Reset) {
+    if (proc_control_lite_B.Merge6) {
       if (proc_control_lite_B.In1_j.ov_SL_Info.CurrentLength == 13U) {
         /*  regarder la vaiditée des ov */
         std::memcpy(&proc_control_lite_DW.obj_k.rosOV[0],
@@ -56657,7 +56630,7 @@ void proc_control_lite::step()
                 &proc_control_lite_B.In1_p.data[0], sizeof(real_T) << 7U);
 
     /*         %% Fonction qui vérifie l'états des moteurs. */
-    if (proc_control_lite_B.Reset_m) {
+    if (proc_control_lite_B.p_b) {
       proc_control_lite_B.VectorConcatenate[7] = 0.0;
 
       /*  regarder si le courant est en dessou du seuil */
@@ -56667,15 +56640,15 @@ void proc_control_lite::step()
       /*  rajouter des moteur défecteux */
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
            proc_control_lite_B.Ns++) {
-        proc_control_lite_B.Reset =
+        proc_control_lite_B.Merge6 =
           (proc_control_lite_B.VectorConcatenate[proc_control_lite_B.Ns] < std::
            round(static_cast<real_T>
                  (proc_control_lite_DW.Delay_DSTATE_m[proc_control_lite_B.Ns]) *
                  0.1));
         proc_control_lite_B.residue =
           proc_control_lite_DW.obj_k.currentFaultCount[proc_control_lite_B.Ns] *
-          static_cast<real_T>(proc_control_lite_B.Reset) + static_cast<real_T>
-          (proc_control_lite_B.Reset);
+          static_cast<real_T>(proc_control_lite_B.Merge6) + static_cast<real_T>
+          (proc_control_lite_B.Merge6);
         proc_control_lite_DW.obj_k.currentFaultCount[proc_control_lite_B.Ns] =
           proc_control_lite_B.residue;
         proc_control_lite_DW.obj_k.isThrusterFault[proc_control_lite_B.Ns] =
@@ -57305,25 +57278,25 @@ void proc_control_lite::step()
         proc_control_lite_DW.obj_p.k = proc_control_lite_P.MATLABSystem_k;
       }
 
-      proc_control_lite_B.Reset_m = false;
-      proc_control_lite_B.p_b = true;
+      proc_control_lite_B.p_b = false;
+      proc_control_lite_B.p_g = true;
       proc_control_lite_B.i = 0;
       exitg2 = false;
       while ((!exitg2) && (proc_control_lite_B.i < 48)) {
         if (!(proc_control_lite_DW.obj_p.binv[proc_control_lite_B.i] ==
               proc_control_lite_P.binv[proc_control_lite_B.i])) {
-          proc_control_lite_B.p_b = false;
+          proc_control_lite_B.p_g = false;
           exitg2 = true;
         } else {
           proc_control_lite_B.i++;
         }
       }
 
-      if (proc_control_lite_B.p_b) {
-        proc_control_lite_B.Reset_m = true;
+      if (proc_control_lite_B.p_g) {
+        proc_control_lite_B.p_b = true;
       }
 
-      if (!proc_control_lite_B.Reset_m) {
+      if (!proc_control_lite_B.p_b) {
         std::memcpy(&proc_control_lite_DW.obj_p.binv[0],
                     &proc_control_lite_P.binv[0], 48U * sizeof(real_T));
       }
@@ -57342,25 +57315,25 @@ void proc_control_lite::step()
         proc_control_lite_DW.obj_p.height = proc_control_lite_P.physics.height;
       }
 
-      proc_control_lite_B.Reset_m = false;
-      proc_control_lite_B.p_b = true;
+      proc_control_lite_B.p_b = false;
+      proc_control_lite_B.p_g = true;
       proc_control_lite_B.i = 0;
       exitg2 = false;
       while ((!exitg2) && (proc_control_lite_B.i < 9)) {
         if (!(proc_control_lite_DW.obj_p.I[proc_control_lite_B.i] ==
               proc_control_lite_P.physics.I[proc_control_lite_B.i])) {
-          proc_control_lite_B.p_b = false;
+          proc_control_lite_B.p_g = false;
           exitg2 = true;
         } else {
           proc_control_lite_B.i++;
         }
       }
 
-      if (proc_control_lite_B.p_b) {
-        proc_control_lite_B.Reset_m = true;
+      if (proc_control_lite_B.p_g) {
+        proc_control_lite_B.p_b = true;
       }
 
-      if (!proc_control_lite_B.Reset_m) {
+      if (!proc_control_lite_B.p_b) {
         std::memcpy(&proc_control_lite_DW.obj_p.I[0],
                     &proc_control_lite_P.physics.I[0], 9U * sizeof(real_T));
       }
@@ -59976,9 +59949,9 @@ void proc_control_lite::step()
      *  DataTypeConversion: '<S18>/Data Type Conversion'
      */
     proc_control_lite_B.BusAssignment_p.target_reached =
-      proc_control_lite_B.Merge8;
+      proc_control_lite_B.NewDvlMsg;
     proc_control_lite_B.BusAssignment_p.is_trajectory_done =
-      proc_control_lite_B.Merge6;
+      proc_control_lite_B.Merge8;
     proc_control_lite_B.BusAssignment_p.mpc_mode = proc_control_lite_B.mode;
     proc_control_lite_B.BusAssignment_p.is_mpc_alive =
       proc_control_lite_B.isMpcAlive;
@@ -60056,7 +60029,7 @@ void proc_control_lite::step()
   }
 
   /* End of Outputs for SubSystem: '<Root>/Enabled Subsystem1' */
-  if (proc_control_lite_B.b_g4) {
+  if (proc_control_lite_B.b_lh) {
     /* Outputs for Enabled SubSystem: '<S35>/Enabled Subsystem' */
     proc_control_l_EnabledSubsystem(proc_control_lite_B.SourceBlock_o1_kn,
       &proc_control_lite_B.SourceBlock_o2_e5,
@@ -60093,7 +60066,39 @@ void proc_control_lite::step()
   if (proc_control_lite_B.b_value_p) {
   }
 
-  if (proc_control_lite_B.b_g4) {
+  /* BusAssignment: '<S7>/Bus Assignment' */
+  proc_control_lite_B.BusAssignment_pu.data = proc_control_lite_B.Reset;
+
+  /* MATLABSystem: '<S275>/SinkBlock' */
+  Pub_proc_control_lite_2958_2936.publish(&proc_control_lite_B.BusAssignment_pu);
+
+  /* BusAssignment: '<S7>/Bus Assignment1' */
+  proc_control_lite_B.BusAssignment1_l.data = proc_control_lite_B.Reset_a;
+
+  /* MATLABSystem: '<S276>/SinkBlock' */
+  Pub_proc_control_lite_2958_2939.publish(&proc_control_lite_B.BusAssignment1_l);
+
+  /* BusAssignment: '<S7>/Bus Assignment2' */
+  proc_control_lite_B.BusAssignment2.data = proc_control_lite_B.Reset_o;
+
+  /* MATLABSystem: '<S277>/SinkBlock' */
+  Pub_proc_control_lite_2958_2942.publish(&proc_control_lite_B.BusAssignment2);
+
+  /* BusAssignment: '<S7>/Bus Assignment3' */
+  proc_control_lite_B.BusAssignment3.data = proc_control_lite_B.Reset_m;
+
+  /* MATLABSystem: '<S278>/SinkBlock' */
+  Pub_proc_control_lite_2958_2945.publish(&proc_control_lite_B.BusAssignment3);
+
+  /* BusAssignment: '<S7>/Bus Assignment4' incorporates:
+   *  DataTypeConversion: '<S7>/Data Type Conversion5'
+   */
+  proc_control_lite_B.BusAssignment4.data =
+    (proc_control_lite_B.OutportBufferForOut6 != 0.0);
+
+  /* MATLABSystem: '<S279>/SinkBlock' */
+  Pub_proc_control_lite_2958_2948.publish(&proc_control_lite_B.BusAssignment4);
+  if (proc_control_lite_B.b_lh) {
     /* Update for Delay: '<S160>/Delay' incorporates:
      *  SignalConversion generated from: '<S2>/thrust'
      */
@@ -60925,7 +60930,7 @@ void proc_control_lite::initialize()
     /* End of Start for SubSystem: '<S7>/Simulation' */
 
     /* Start for IfAction SubSystem: '<S7>/AUV' */
-    /* Start for MATLABSystem: '<S273>/SourceBlock' */
+    /* Start for MATLABSystem: '<S283>/SourceBlock' */
     proc_control_lite_DW.obj_i1.QOSAvoidROSNamespaceConventions = false;
     proc_control_lite_DW.obj_i1.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty_p = true;
@@ -60934,7 +60939,7 @@ void proc_control_lite::initialize()
     proc_con_Subscriber_setupImpl_c(&proc_control_lite_DW.obj_i1);
     proc_control_lite_DW.obj_i1.isSetupComplete = true;
 
-    /* Start for MATLABSystem: '<S272>/SourceBlock' */
+    /* Start for MATLABSystem: '<S282>/SourceBlock' */
     proc_control_lite_DW.obj_ll.QOSAvoidROSNamespaceConventions = false;
     proc_control_lite_DW.obj_ll.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty_i = true;
@@ -60943,7 +60948,7 @@ void proc_control_lite::initialize()
     proc_con_Subscriber_setupImpl_e(&proc_control_lite_DW.obj_ll);
     proc_control_lite_DW.obj_ll.isSetupComplete = true;
 
-    /* Start for MATLABSystem: '<S271>/SourceBlock' */
+    /* Start for MATLABSystem: '<S281>/SourceBlock' */
     proc_control_lite_DW.obj_cmo.QOSAvoidROSNamespaceConventions = false;
     proc_control_lite_DW.obj_cmo.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty_n = true;
@@ -60952,7 +60957,7 @@ void proc_control_lite::initialize()
     Subscriber_setu_hpq2joyuiyotjyq(&proc_control_lite_DW.obj_cmo);
     proc_control_lite_DW.obj_cmo.isSetupComplete = true;
 
-    /* Start for MATLABSystem: '<S274>/SourceBlock' */
+    /* Start for MATLABSystem: '<S284>/SourceBlock' */
     proc_control_lite_DW.obj_nle.QOSAvoidROSNamespaceConventions = false;
     proc_control_lite_DW.obj_nle.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty_o = true;
@@ -60961,14 +60966,14 @@ void proc_control_lite::initialize()
     proc_con_Subscriber_setupImpl_g(&proc_control_lite_DW.obj_nle);
     proc_control_lite_DW.obj_nle.isSetupComplete = true;
 
-    /* Start for MATLABSystem: '<S275>/SourceBlock' */
-    proc_control_lite_DW.obj_bga.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_bga.matlabCodegenIsDeleted = false;
+    /* Start for MATLABSystem: '<S285>/SourceBlock' */
+    proc_control_lite_DW.obj_bg.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty = true;
-    proc_control_lite_DW.obj_bga.isSetupComplete = false;
-    proc_control_lite_DW.obj_bga.isInitialized = 1;
-    proc_con_Subscriber_setupImpl_j(&proc_control_lite_DW.obj_bga);
-    proc_control_lite_DW.obj_bga.isSetupComplete = true;
+    proc_control_lite_DW.obj_bg.isSetupComplete = false;
+    proc_control_lite_DW.obj_bg.isInitialized = 1;
+    proc_con_Subscriber_setupImpl_j(&proc_control_lite_DW.obj_bg);
+    proc_control_lite_DW.obj_bg.isSetupComplete = true;
 
     /* End of Start for SubSystem: '<S7>/AUV' */
 
@@ -61005,50 +61010,8 @@ void proc_control_lite::initialize()
     proc_contr_MovingAverage1_Start(&proc_control_lite_DW.MovingAverage2);
 
     /* Start for Enabled SubSystem: '<S7>/Enabled Subsystem1' */
-    /* Start for MATLABSystem: '<S291>/SinkBlock' */
-    proc_control_lite_DW.obj_mb.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_mb.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_f = true;
-    proc_control_lite_DW.obj_mb.isSetupComplete = false;
-    proc_control_lite_DW.obj_mb.isInitialized = 1;
-    proc__Publisher_setupImpl_hpq2j(&proc_control_lite_DW.obj_mb);
-    proc_control_lite_DW.obj_mb.isSetupComplete = true;
-
-    /* Start for MATLABSystem: '<S292>/SinkBlock' */
-    proc_control_lite_DW.obj_cr.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_cr.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_aq = true;
-    proc_control_lite_DW.obj_cr.isSetupComplete = false;
-    proc_control_lite_DW.obj_cr.isInitialized = 1;
-    proc_Publisher_setupImpl_hpq2jo(&proc_control_lite_DW.obj_cr);
-    proc_control_lite_DW.obj_cr.isSetupComplete = true;
-
-    /* Start for MATLABSystem: '<S293>/SinkBlock' */
-    proc_control_lite_DW.obj_lv.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_lv.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_h = true;
-    proc_control_lite_DW.obj_lv.isSetupComplete = false;
-    proc_control_lite_DW.obj_lv.isInitialized = 1;
-    pro_Publisher_setupImpl_hpq2joy(&proc_control_lite_DW.obj_lv);
-    proc_control_lite_DW.obj_lv.isSetupComplete = true;
-
-    /* Start for MATLABSystem: '<S294>/SinkBlock' */
-    proc_control_lite_DW.obj_bg.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_a = true;
-    proc_control_lite_DW.obj_bg.isSetupComplete = false;
-    proc_control_lite_DW.obj_bg.isInitialized = 1;
-    pr_Publisher_setupImpl_hpq2joyu(&proc_control_lite_DW.obj_bg);
-    proc_control_lite_DW.obj_bg.isSetupComplete = true;
-
-    /* Start for MATLABSystem: '<S295>/SinkBlock' */
-    proc_control_lite_DW.obj_a0.QOSAvoidROSNamespaceConventions = false;
-    proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_d = true;
-    proc_control_lite_DW.obj_a0.isSetupComplete = false;
-    proc_control_lite_DW.obj_a0.isInitialized = 1;
-    p_Publisher_setupImpl_hpq2joyui(&proc_control_lite_DW.obj_a0);
-    proc_control_lite_DW.obj_a0.isSetupComplete = true;
+    /* Start for Constant: '<S274>/Constant3' */
+    proc_control_lite_B.Constant3 = proc_control_lite_P.config.dvl;
 
     /* End of Start for SubSystem: '<S7>/Enabled Subsystem1' */
 
@@ -61289,7 +61252,7 @@ void proc_control_lite::initialize()
     /* Start for MATLABSystem: '<S150>/SourceBlock' */
     proc_control_lite_DW.obj_no.QOSAvoidROSNamespaceConventions = false;
     proc_control_lite_DW.obj_no.matlabCodegenIsDeleted = false;
-    proc_control_lite_DW.objisempty_ak = true;
+    proc_control_lite_DW.objisempty_a = true;
     proc_control_lite_DW.obj_no.isSetupComplete = false;
     proc_control_lite_DW.obj_no.isInitialized = 1;
     pro_Subscriber_setupImpl_hpq2jo(&proc_control_lite_DW.obj_no);
@@ -61475,6 +61438,51 @@ void proc_control_lite::initialize()
     proc_control_lite_DW.obj_oe.isInitialized = 1;
     proc_c_Publisher_setupImpl_hpq2(&proc_control_lite_DW.obj_oe);
     proc_control_lite_DW.obj_oe.isSetupComplete = true;
+
+    /* Start for MATLABSystem: '<S275>/SinkBlock' */
+    proc_control_lite_DW.obj_cz.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_cz.matlabCodegenIsDeleted = false;
+    proc_control_lite_DW.objisempty_f = true;
+    proc_control_lite_DW.obj_cz.isSetupComplete = false;
+    proc_control_lite_DW.obj_cz.isInitialized = 1;
+    proc__Publisher_setupImpl_hpq2j(&proc_control_lite_DW.obj_cz);
+    proc_control_lite_DW.obj_cz.isSetupComplete = true;
+
+    /* Start for MATLABSystem: '<S276>/SinkBlock' */
+    proc_control_lite_DW.obj_ks.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_ks.matlabCodegenIsDeleted = false;
+    proc_control_lite_DW.objisempty_ih = true;
+    proc_control_lite_DW.obj_ks.isSetupComplete = false;
+    proc_control_lite_DW.obj_ks.isInitialized = 1;
+    proc_Publisher_setupImpl_hpq2jo(&proc_control_lite_DW.obj_ks);
+    proc_control_lite_DW.obj_ks.isSetupComplete = true;
+
+    /* Start for MATLABSystem: '<S277>/SinkBlock' */
+    proc_control_lite_DW.obj_dt.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_dt.matlabCodegenIsDeleted = false;
+    proc_control_lite_DW.objisempty_nu = true;
+    proc_control_lite_DW.obj_dt.isSetupComplete = false;
+    proc_control_lite_DW.obj_dt.isInitialized = 1;
+    pro_Publisher_setupImpl_hpq2joy(&proc_control_lite_DW.obj_dt);
+    proc_control_lite_DW.obj_dt.isSetupComplete = true;
+
+    /* Start for MATLABSystem: '<S278>/SinkBlock' */
+    proc_control_lite_DW.obj_al.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_al.matlabCodegenIsDeleted = false;
+    proc_control_lite_DW.objisempty_h = true;
+    proc_control_lite_DW.obj_al.isSetupComplete = false;
+    proc_control_lite_DW.obj_al.isInitialized = 1;
+    pr_Publisher_setupImpl_hpq2joyu(&proc_control_lite_DW.obj_al);
+    proc_control_lite_DW.obj_al.isSetupComplete = true;
+
+    /* Start for MATLABSystem: '<S279>/SinkBlock' */
+    proc_control_lite_DW.obj_a0.QOSAvoidROSNamespaceConventions = false;
+    proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted = false;
+    proc_control_lite_DW.objisempty_d = true;
+    proc_control_lite_DW.obj_a0.isSetupComplete = false;
+    proc_control_lite_DW.obj_a0.isInitialized = 1;
+    p_Publisher_setupImpl_hpq2joyui(&proc_control_lite_DW.obj_a0);
+    proc_control_lite_DW.obj_a0.isSetupComplete = true;
   }
 
   proc_control_lite_PrevZCX.ResettableSubsystem_Reset_ZCE = POS_ZCSIG;
@@ -61902,37 +61910,37 @@ void proc_control_lite::initialize()
     /* End of SystemInitialize for SubSystem: '<S7>/Simulation' */
 
     /* SystemInitialize for IfAction SubSystem: '<S7>/AUV' */
-    /* SystemInitialize for Enabled SubSystem: '<S273>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S283>/Enabled Subsystem' */
     proc_co_EnabledSubsystem_a_Init(&proc_control_lite_B.EnabledSubsystem_gu,
       &proc_control_lite_P.EnabledSubsystem_gu);
 
-    /* End of SystemInitialize for SubSystem: '<S273>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S283>/Enabled Subsystem' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S272>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S282>/Enabled Subsystem' */
     proc_co_EnabledSubsystem_f_Init(&proc_control_lite_B.EnabledSubsystem_b2,
       &proc_control_lite_P.EnabledSubsystem_b2);
 
-    /* End of SystemInitialize for SubSystem: '<S272>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S282>/Enabled Subsystem' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S271>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S281>/Enabled Subsystem' */
     proc_co_EnabledSubsystem_n_Init(&proc_control_lite_B.EnabledSubsystem_gf,
       &proc_control_lite_P.EnabledSubsystem_gf);
 
-    /* End of SystemInitialize for SubSystem: '<S271>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S281>/Enabled Subsystem' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S274>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S284>/Enabled Subsystem' */
     proc_co_EnabledSubsystem_a_Init(&proc_control_lite_B.EnabledSubsystem_p4,
       &proc_control_lite_P.EnabledSubsystem_p4);
 
-    /* End of SystemInitialize for SubSystem: '<S274>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S284>/Enabled Subsystem' */
 
-    /* SystemInitialize for Enabled SubSystem: '<S275>/Enabled Subsystem' */
+    /* SystemInitialize for Enabled SubSystem: '<S285>/Enabled Subsystem' */
     proc_cont_EnabledSubsystem_Init(&proc_control_lite_B.EnabledSubsystem_gv,
       &proc_control_lite_P.EnabledSubsystem_gv);
 
-    /* End of SystemInitialize for SubSystem: '<S275>/Enabled Subsystem' */
+    /* End of SystemInitialize for SubSystem: '<S285>/Enabled Subsystem' */
 
-    /* SystemInitialize for MATLABSystem: '<S275>/SourceBlock' incorporates:
+    /* SystemInitialize for MATLABSystem: '<S285>/SourceBlock' incorporates:
      *  Outport: '<S268>/imu_tared_new'
      */
     proc_control_lite_B.SourceBlock_o1 = proc_control_lite_P.imu_tared_new_Y0;
@@ -61940,24 +61948,31 @@ void proc_control_lite::initialize()
     /* End of SystemInitialize for SubSystem: '<S7>/AUV' */
 
     /* SystemInitialize for Enabled SubSystem: '<S7>/Enabled Subsystem1' */
-    /* InitializeConditions for Memory: '<S296>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput =
-      proc_control_lite_P.MinMaxRunningResettable_vinit;
+    /* SystemInitialize for SignalConversion generated from: '<S274>/Out6' */
+    proc_control_lite_B.OutportBufferForOut6 = proc_control_lite_B.Constant3;
 
-    /* InitializeConditions for Memory: '<S297>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_k =
-      proc_control_lite_P.MinMaxRunningResettable1_vinit;
-
-    /* InitializeConditions for Memory: '<S298>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_d =
-      proc_control_lite_P.MinMaxRunningResettable2_vinit;
-
-    /* InitializeConditions for Memory: '<S299>/Memory' */
-    proc_control_lite_DW.Memory_PreviousInput_m =
-      proc_control_lite_P.MinMaxRunningResettable3_vinit;
-
-    /* SystemInitialize for Outport: '<S269>/y' */
+    /* SystemInitialize for Outport: '<S274>/y' */
     proc_control_lite_B.y = proc_control_lite_P.y_Y0;
+
+    /* SystemInitialize for Switch: '<S296>/Reset' incorporates:
+     *  Outport: '<S274>/dvlen'
+     */
+    proc_control_lite_B.Reset = proc_control_lite_P.dvlen_Y0;
+
+    /* SystemInitialize for Switch: '<S297>/Reset' incorporates:
+     *  Outport: '<S274>/imuen'
+     */
+    proc_control_lite_B.Reset_a = proc_control_lite_P.imuen_Y0;
+
+    /* SystemInitialize for Switch: '<S298>/Reset' incorporates:
+     *  Outport: '<S274>/zeden'
+     */
+    proc_control_lite_B.Reset_o = proc_control_lite_P.zeden_Y0;
+
+    /* SystemInitialize for Switch: '<S299>/Reset' incorporates:
+     *  Outport: '<S274>/imuTared'
+     */
+    proc_control_lite_B.Reset_m = proc_control_lite_P.imuTared_Y0;
 
     /* End of SystemInitialize for SubSystem: '<S7>/Enabled Subsystem1' */
 
@@ -63090,7 +63105,7 @@ void proc_control_lite::terminate()
   /* End of Terminate for SubSystem: '<S7>/Simulation' */
 
   /* Terminate for IfAction SubSystem: '<S7>/AUV' */
-  /* Terminate for MATLABSystem: '<S273>/SourceBlock' */
+  /* Terminate for MATLABSystem: '<S283>/SourceBlock' */
   if (!proc_control_lite_DW.obj_i1.matlabCodegenIsDeleted) {
     proc_control_lite_DW.obj_i1.matlabCodegenIsDeleted = true;
     if ((proc_control_lite_DW.obj_i1.isInitialized == 1) &&
@@ -63099,9 +63114,9 @@ void proc_control_lite::terminate()
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S273>/SourceBlock' */
+  /* End of Terminate for MATLABSystem: '<S283>/SourceBlock' */
 
-  /* Terminate for MATLABSystem: '<S272>/SourceBlock' */
+  /* Terminate for MATLABSystem: '<S282>/SourceBlock' */
   if (!proc_control_lite_DW.obj_ll.matlabCodegenIsDeleted) {
     proc_control_lite_DW.obj_ll.matlabCodegenIsDeleted = true;
     if ((proc_control_lite_DW.obj_ll.isInitialized == 1) &&
@@ -63110,9 +63125,9 @@ void proc_control_lite::terminate()
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S272>/SourceBlock' */
+  /* End of Terminate for MATLABSystem: '<S282>/SourceBlock' */
 
-  /* Terminate for MATLABSystem: '<S271>/SourceBlock' */
+  /* Terminate for MATLABSystem: '<S281>/SourceBlock' */
   if (!proc_control_lite_DW.obj_cmo.matlabCodegenIsDeleted) {
     proc_control_lite_DW.obj_cmo.matlabCodegenIsDeleted = true;
     if ((proc_control_lite_DW.obj_cmo.isInitialized == 1) &&
@@ -63121,9 +63136,9 @@ void proc_control_lite::terminate()
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S271>/SourceBlock' */
+  /* End of Terminate for MATLABSystem: '<S281>/SourceBlock' */
 
-  /* Terminate for MATLABSystem: '<S274>/SourceBlock' */
+  /* Terminate for MATLABSystem: '<S284>/SourceBlock' */
   if (!proc_control_lite_DW.obj_nle.matlabCodegenIsDeleted) {
     proc_control_lite_DW.obj_nle.matlabCodegenIsDeleted = true;
     if ((proc_control_lite_DW.obj_nle.isInitialized == 1) &&
@@ -63132,18 +63147,18 @@ void proc_control_lite::terminate()
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S274>/SourceBlock' */
+  /* End of Terminate for MATLABSystem: '<S284>/SourceBlock' */
 
-  /* Terminate for MATLABSystem: '<S275>/SourceBlock' */
-  if (!proc_control_lite_DW.obj_bga.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_bga.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_bga.isInitialized == 1) &&
-        proc_control_lite_DW.obj_bga.isSetupComplete) {
+  /* Terminate for MATLABSystem: '<S285>/SourceBlock' */
+  if (!proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_bg.isInitialized == 1) &&
+        proc_control_lite_DW.obj_bg.isSetupComplete) {
       Sub_proc_control_lite_2958_2543.resetSubscriberPtr();//();
     }
   }
 
-  /* End of Terminate for MATLABSystem: '<S275>/SourceBlock' */
+  /* End of Terminate for MATLABSystem: '<S285>/SourceBlock' */
   /* End of Terminate for SubSystem: '<S7>/AUV' */
 
   /* Terminate for MATLABSystem: '<S169>/Highpass Filter' */
@@ -63165,63 +63180,6 @@ void proc_control_lite::terminate()
   proc_contro_MovingAverage1_Term(&proc_control_lite_DW.MovingAverage1);
   proc_contr_HighpassFilter1_Term(&proc_control_lite_DW.HighpassFilter2);
   proc_contro_MovingAverage1_Term(&proc_control_lite_DW.MovingAverage2);
-
-  /* Terminate for Enabled SubSystem: '<S7>/Enabled Subsystem1' */
-  /* Terminate for MATLABSystem: '<S291>/SinkBlock' */
-  if (!proc_control_lite_DW.obj_mb.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_mb.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_mb.isInitialized == 1) &&
-        proc_control_lite_DW.obj_mb.isSetupComplete) {
-      Pub_proc_control_lite_2958_2936.resetPublisherPtr();//();
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S291>/SinkBlock' */
-
-  /* Terminate for MATLABSystem: '<S292>/SinkBlock' */
-  if (!proc_control_lite_DW.obj_cr.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_cr.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_cr.isInitialized == 1) &&
-        proc_control_lite_DW.obj_cr.isSetupComplete) {
-      Pub_proc_control_lite_2958_2939.resetPublisherPtr();//();
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S292>/SinkBlock' */
-
-  /* Terminate for MATLABSystem: '<S293>/SinkBlock' */
-  if (!proc_control_lite_DW.obj_lv.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_lv.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_lv.isInitialized == 1) &&
-        proc_control_lite_DW.obj_lv.isSetupComplete) {
-      Pub_proc_control_lite_2958_2942.resetPublisherPtr();//();
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S293>/SinkBlock' */
-
-  /* Terminate for MATLABSystem: '<S294>/SinkBlock' */
-  if (!proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_bg.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_bg.isInitialized == 1) &&
-        proc_control_lite_DW.obj_bg.isSetupComplete) {
-      Pub_proc_control_lite_2958_2945.resetPublisherPtr();//();
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S294>/SinkBlock' */
-
-  /* Terminate for MATLABSystem: '<S295>/SinkBlock' */
-  if (!proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted) {
-    proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted = true;
-    if ((proc_control_lite_DW.obj_a0.isInitialized == 1) &&
-        proc_control_lite_DW.obj_a0.isSetupComplete) {
-      Pub_proc_control_lite_2958_2948.resetPublisherPtr();//();
-    }
-  }
-
-  /* End of Terminate for MATLABSystem: '<S295>/SinkBlock' */
-  /* End of Terminate for SubSystem: '<S7>/Enabled Subsystem1' */
 
   /* Terminate for Enabled SubSystem: '<S169>/Subsystem1' */
   proc_contr_MovingAverage_h_Term(&proc_control_lite_DW.MovingAverage_p);
@@ -63483,6 +63441,61 @@ void proc_control_lite::terminate()
   }
 
   /* End of Terminate for MATLABSystem: '<S255>/SinkBlock' */
+
+  /* Terminate for MATLABSystem: '<S275>/SinkBlock' */
+  if (!proc_control_lite_DW.obj_cz.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_cz.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_cz.isInitialized == 1) &&
+        proc_control_lite_DW.obj_cz.isSetupComplete) {
+      Pub_proc_control_lite_2958_2936.resetPublisherPtr();//();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S275>/SinkBlock' */
+
+  /* Terminate for MATLABSystem: '<S276>/SinkBlock' */
+  if (!proc_control_lite_DW.obj_ks.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_ks.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_ks.isInitialized == 1) &&
+        proc_control_lite_DW.obj_ks.isSetupComplete) {
+      Pub_proc_control_lite_2958_2939.resetPublisherPtr();//();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S276>/SinkBlock' */
+
+  /* Terminate for MATLABSystem: '<S277>/SinkBlock' */
+  if (!proc_control_lite_DW.obj_dt.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_dt.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_dt.isInitialized == 1) &&
+        proc_control_lite_DW.obj_dt.isSetupComplete) {
+      Pub_proc_control_lite_2958_2942.resetPublisherPtr();//();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S277>/SinkBlock' */
+
+  /* Terminate for MATLABSystem: '<S278>/SinkBlock' */
+  if (!proc_control_lite_DW.obj_al.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_al.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_al.isInitialized == 1) &&
+        proc_control_lite_DW.obj_al.isSetupComplete) {
+      Pub_proc_control_lite_2958_2945.resetPublisherPtr();//();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S278>/SinkBlock' */
+
+  /* Terminate for MATLABSystem: '<S279>/SinkBlock' */
+  if (!proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted) {
+    proc_control_lite_DW.obj_a0.matlabCodegenIsDeleted = true;
+    if ((proc_control_lite_DW.obj_a0.isInitialized == 1) &&
+        proc_control_lite_DW.obj_a0.isSetupComplete) {
+      Pub_proc_control_lite_2958_2948.resetPublisherPtr();//();
+    }
+  }
+
+  /* End of Terminate for MATLABSystem: '<S279>/SinkBlock' */
 }
 
 /* Constructor */

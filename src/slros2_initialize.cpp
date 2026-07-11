@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 11-Jul-2026 01:55:42
+// Generated 11-Jul-2026 03:14:17
 #include "slros2_initialize.h"
 // proc_control_lite/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_500;
@@ -15,15 +15,15 @@ SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_Moto
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_lite_913;
 // proc_control_lite/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_lite_671;
-// proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish
+// proc_control_lite/proc_nav_ros_input_lite1/Publish
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2936;
-// proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish1
+// proc_control_lite/proc_nav_ros_input_lite1/Publish1
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2939;
-// proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish2
+// proc_control_lite/proc_nav_ros_input_lite1/Publish2
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2942;
-// proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish3
+// proc_control_lite/proc_nav_ros_input_lite1/Publish3
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2945;
-// proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish4
+// proc_control_lite/proc_nav_ros_input_lite1/Publish4
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2948;
 // proc_control_lite/proc_nav_ros_input_lite1/Simulation/Publish
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2668;

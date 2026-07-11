@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.3
+ * Model version              : 1.4
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ * C++ source code generated on : Sat Jul 11 03:14:05 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -170,7 +170,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
 
   /* Variable: config
    * Referenced by:
-   *   '<S269>/Constant3'
+   *   '<S274>/Constant3'
    *   '<S234>/Constant3'
    */
   {
@@ -77392,7 +77392,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_n
-   * Referenced by: '<S273>/Constant'
+   * Referenced by: '<S283>/Constant'
    */
   {
     {
@@ -77451,7 +77451,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_b
-   * Referenced by: '<S274>/Constant'
+   * Referenced by: '<S284>/Constant'
    */
   {
     {
@@ -77578,7 +77578,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_a
-   * Referenced by: '<S272>/Constant'
+   * Referenced by: '<S282>/Constant'
    */
   {
     {
@@ -77833,41 +77833,6 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
     false                              /* data */
   },
 
-  /* Computed Parameter: Constant_Value_i
-   * Referenced by: '<S281>/Constant'
-   */
-  {
-    false                              /* data */
-  },
-
-  /* Computed Parameter: Constant_Value_aq
-   * Referenced by: '<S282>/Constant'
-   */
-  {
-    false                              /* data */
-  },
-
-  /* Computed Parameter: Constant_Value_ab
-   * Referenced by: '<S283>/Constant'
-   */
-  {
-    false                              /* data */
-  },
-
-  /* Computed Parameter: Constant_Value_nc
-   * Referenced by: '<S284>/Constant'
-   */
-  {
-    false                              /* data */
-  },
-
-  /* Computed Parameter: Constant_Value_gi
-   * Referenced by: '<S285>/Constant'
-   */
-  {
-    false                              /* data */
-  },
-
   /* Computed Parameter: Constant_Value_ht
    * Referenced by: '<S300>/Constant'
    */
@@ -77876,7 +77841,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_l
-   * Referenced by: '<S275>/Constant'
+   * Referenced by: '<S285>/Constant'
    */
   {
     false                              /* data */
@@ -77903,6 +77868,41 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
     false                              /* data */
   },
 
+  /* Computed Parameter: Constant_Value_c0
+   * Referenced by: '<S269>/Constant'
+   */
+  {
+    false                              /* data */
+  },
+
+  /* Computed Parameter: Constant_Value_oh
+   * Referenced by: '<S270>/Constant'
+   */
+  {
+    false                              /* data */
+  },
+
+  /* Computed Parameter: Constant_Value_ps
+   * Referenced by: '<S271>/Constant'
+   */
+  {
+    false                              /* data */
+  },
+
+  /* Computed Parameter: Constant_Value_bu
+   * Referenced by: '<S272>/Constant'
+   */
+  {
+    false                              /* data */
+  },
+
+  /* Computed Parameter: Constant_Value_gi
+   * Referenced by: '<S273>/Constant'
+   */
+  {
+    false                              /* data */
+  },
+
   /* Computed Parameter: Constant_Value_d
    * Referenced by: '<S302>/Constant'
    */
@@ -77911,7 +77911,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_cf
-   * Referenced by: '<S271>/Constant'
+   * Referenced by: '<S281>/Constant'
    */
   {
     0.0F                               /* data */
@@ -78906,27 +78906,27 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   10.0,
 
   /* Computed Parameter: y_Y0
-   * Referenced by: '<S269>/y'
+   * Referenced by: '<S274>/y'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S269>/Constant'
+   * Referenced by: '<S274>/Constant'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S269>/Constant1'
+   * Referenced by: '<S274>/Constant1'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S269>/Constant2'
+   * Referenced by: '<S274>/Constant2'
    */
   0.0,
 
   /* Expression: 0
-   * Referenced by: '<S269>/Constant4'
+   * Referenced by: '<S274>/Constant4'
    */
   0.0,
 
@@ -79355,6 +79355,26 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   false,
 
+  /* Computed Parameter: dvlen_Y0
+   * Referenced by: '<S274>/dvlen'
+   */
+  false,
+
+  /* Computed Parameter: imuen_Y0
+   * Referenced by: '<S274>/imuen'
+   */
+  false,
+
+  /* Computed Parameter: zeden_Y0
+   * Referenced by: '<S274>/zeden'
+   */
+  false,
+
+  /* Computed Parameter: imuTared_Y0
+   * Referenced by: '<S274>/imuTared'
+   */
+  false,
+
   /* Computed Parameter: imu_tared_new_Y0
    * Referenced by: '<S268>/imu_tared_new'
    */
@@ -79385,10 +79405,10 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0,
 
-  /* Start of '<S275>/Enabled Subsystem' */
+  /* Start of '<S285>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S280>/Out1'
+     * Referenced by: '<S290>/Out1'
      */
     {
       false                            /* data */
@@ -79396,12 +79416,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S275>/Enabled Subsystem' */
+  /* End of '<S285>/Enabled Subsystem' */
 
-  /* Start of '<S274>/Enabled Subsystem' */
+  /* Start of '<S284>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S279>/Out1'
+     * Referenced by: '<S289>/Out1'
      */
     {
       {
@@ -79461,12 +79481,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S274>/Enabled Subsystem' */
+  /* End of '<S284>/Enabled Subsystem' */
 
-  /* Start of '<S273>/Enabled Subsystem' */
+  /* Start of '<S283>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S278>/Out1'
+     * Referenced by: '<S288>/Out1'
      */
     {
       {
@@ -79526,12 +79546,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S273>/Enabled Subsystem' */
+  /* End of '<S283>/Enabled Subsystem' */
 
-  /* Start of '<S272>/Enabled Subsystem' */
+  /* Start of '<S282>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S277>/Out1'
+     * Referenced by: '<S287>/Out1'
      */
     {
       {
@@ -79568,12 +79588,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S272>/Enabled Subsystem' */
+  /* End of '<S282>/Enabled Subsystem' */
 
-  /* Start of '<S271>/Enabled Subsystem' */
+  /* Start of '<S281>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S276>/Out1'
+     * Referenced by: '<S286>/Out1'
      */
     {
       0.0F                             /* data */
@@ -79581,7 +79601,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S271>/Enabled Subsystem' */
+  /* End of '<S281>/Enabled Subsystem' */
 
   /* Start of '<S305>/Enabled Subsystem' */
   {

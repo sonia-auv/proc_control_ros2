@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.3
+ * Model version              : 1.4
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ * C++ source code generated on : Sat Jul 11 03:14:05 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -749,7 +749,9 @@ struct B_proc_control_lite_T {
   real_T rotation[3];                  /* '<S169>/Sum1' */
   real_T Gain[3];                      /* '<S248>/Gain' */
   real_T Reference[130];               /* '<S6>/Merge' */
-  real_T y;                            /* '<S269>/MATLAB Function' */
+  real_T Constant3;                    /* '<S274>/Constant3' */
+  real_T OutportBufferForOut6;         /* '<S274>/Constant3' */
+  real_T y;                            /* '<S274>/MATLAB Function' */
   real_T MatrixConcatenate[2];         /* '<S262>/Matrix Concatenate' */
   real_T Selector[6];                  /* '<S262>/Selector' */
   real_T Selector1[8];                 /* '<S262>/Selector1' */
@@ -4046,7 +4048,11 @@ struct B_proc_control_lite_T {
   uint8_T ZeroOrderHold_b;             /* '<S3>/Zero-Order Hold' */
   int8_T MpcStatus;                    /* '<S47>/Merge' */
   uint8_T u1_a;
-  boolean_T SourceBlock_o1;            /* '<S275>/SourceBlock' */
+  boolean_T SourceBlock_o1;            /* '<S285>/SourceBlock' */
+  boolean_T Reset;                     /* '<S296>/Reset' */
+  boolean_T Reset_a;                   /* '<S297>/Reset' */
+  boolean_T Reset_o;                   /* '<S298>/Reset' */
+  boolean_T Reset_m;                   /* '<S299>/Reset' */
   boolean_T SourceBlock_o1_a;          /* '<S259>/SourceBlock' */
   boolean_T MATLABSystem_o3_k;         /* '<S235>/MATLAB System' */
   boolean_T isMpcAlive;                /* '<S49>/Data Type Conversion' */
@@ -4059,28 +4065,28 @@ struct B_proc_control_lite_T {
   boolean_T SourceBlock_o1_kn;         /* '<S35>/SourceBlock' */
   boolean_T b_value_p;
   boolean_T p_b;
+  boolean_T p_g;
   boolean_T Merge6;                    /* '<S7>/Merge6' */
+  boolean_T NewDvlMsg;                 /* '<S7>/Merge5' */
   boolean_T newPressureMsg;            /* '<S7>/Merge3' */
   boolean_T Merge8;                    /* '<S7>/Merge8' */
-  boolean_T Reset;                     /* '<S296>/Reset' */
-  boolean_T Reset_m;                   /* '<S299>/Reset' */
-  boolean_T b_g4;
+  boolean_T b_lh;
   boolean_T empty_non_axis_sizes;
   SL_Bus_std_msgs_Bool r14;
   SL_Bus_std_msgs_Bool SourceBlock_o2_e5;/* '<S35>/SourceBlock' */
-  SL_Bus_std_msgs_Bool BusAssignment_n;/* '<S270>/Bus Assignment' */
-  SL_Bus_std_msgs_Bool BusAssignment_nc;/* '<S269>/Bus Assignment' */
-  SL_Bus_std_msgs_Bool BusAssignment1_k;/* '<S269>/Bus Assignment1' */
-  SL_Bus_std_msgs_Bool BusAssignment2; /* '<S269>/Bus Assignment2' */
-  SL_Bus_std_msgs_Bool BusAssignment3; /* '<S269>/Bus Assignment3' */
-  SL_Bus_std_msgs_Bool BusAssignment4; /* '<S269>/Bus Assignment4' */
-  SL_Bus_std_msgs_UInt8 rtb_SourceBlock_o2_d_l;
-  SL_Bus_sonia_common_ros2_KillStatus rtb_SourceBlock_o2_i_g;
-  B_EnabledSubsystem_proc_contr_T EnabledSubsystem_gv;/* '<S275>/Enabled Subsystem' */
-  B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_p4;/* '<S274>/Enabled Subsystem' */
-  B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_gu;/* '<S273>/Enabled Subsystem' */
-  B_EnabledSubsystem_proc_con_f_T EnabledSubsystem_b2;/* '<S272>/Enabled Subsystem' */
-  B_EnabledSubsystem_proc_con_e_T EnabledSubsystem_gf;/* '<S271>/Enabled Subsystem' */
+  SL_Bus_std_msgs_Bool BusAssignment_n;/* '<S280>/Bus Assignment' */
+  SL_Bus_std_msgs_Bool BusAssignment_pu;/* '<S7>/Bus Assignment' */
+  SL_Bus_std_msgs_Bool BusAssignment1_l;/* '<S7>/Bus Assignment1' */
+  SL_Bus_std_msgs_Bool BusAssignment2; /* '<S7>/Bus Assignment2' */
+  SL_Bus_std_msgs_Bool BusAssignment3; /* '<S7>/Bus Assignment3' */
+  SL_Bus_std_msgs_Bool BusAssignment4; /* '<S7>/Bus Assignment4' */
+  SL_Bus_std_msgs_UInt8 rtb_SourceBlock_o2_d_g;
+  SL_Bus_sonia_common_ros2_KillStatus rtb_SourceBlock_o2_i_m;
+  B_EnabledSubsystem_proc_contr_T EnabledSubsystem_gv;/* '<S285>/Enabled Subsystem' */
+  B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_p4;/* '<S284>/Enabled Subsystem' */
+  B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_gu;/* '<S283>/Enabled Subsystem' */
+  B_EnabledSubsystem_proc_con_f_T EnabledSubsystem_b2;/* '<S282>/Enabled Subsystem' */
+  B_EnabledSubsystem_proc_con_e_T EnabledSubsystem_gf;/* '<S281>/Enabled Subsystem' */
   B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_k;/* '<S305>/Enabled Subsystem' */
   B_EnabledSubsystem_proc_con_a_T EnabledSubsystem_j;/* '<S304>/Enabled Subsystem' */
   B_EnabledSubsystem_proc_con_f_T EnabledSubsystem_l;/* '<S303>/Enabled Subsystem' */
@@ -4185,11 +4191,11 @@ struct DW_proc_control_lite_T {
   ros_slros2_internal_block_Get_T obj_bn;/* '<S29>/MVR' */
   ros_slros2_internal_block_Get_T obj_iw;/* '<S29>/MV' */
   ros_slros2_internal_block_Pub_T obj_fp;/* '<S301>/SinkBlock' */
-  ros_slros2_internal_block_Pub_T obj_a0;/* '<S295>/SinkBlock' */
-  ros_slros2_internal_block_Pub_T obj_bg;/* '<S294>/SinkBlock' */
-  ros_slros2_internal_block_Pub_T obj_lv;/* '<S293>/SinkBlock' */
-  ros_slros2_internal_block_Pub_T obj_cr;/* '<S292>/SinkBlock' */
-  ros_slros2_internal_block_Pub_T obj_mb;/* '<S291>/SinkBlock' */
+  ros_slros2_internal_block_Pub_T obj_a0;/* '<S279>/SinkBlock' */
+  ros_slros2_internal_block_Pub_T obj_al;/* '<S278>/SinkBlock' */
+  ros_slros2_internal_block_Pub_T obj_dt;/* '<S277>/SinkBlock' */
+  ros_slros2_internal_block_Pub_T obj_ks;/* '<S276>/SinkBlock' */
+  ros_slros2_internal_block_Pub_T obj_cz;/* '<S275>/SinkBlock' */
   ros_slros2_internal_block_Pub_T obj_oe;/* '<S255>/SinkBlock' */
   ros_slros2_internal_block_Pub_T obj_ni;/* '<S90>/SinkBlock' */
   ros_slros2_internal_block_Pub_T obj_fd;/* '<S20>/SinkBlock' */
@@ -4197,11 +4203,11 @@ struct DW_proc_control_lite_T {
   ros_slros2_internal_block_Pub_T obj_clf;/* '<S22>/SinkBlock' */
   ros_slros2_internal_block_Pub_T obj_ez;/* '<S15>/SinkBlock' */
   ros_slros2_internal_block_Pub_T obj_dv;/* '<S11>/SinkBlock' */
-  ros_slros2_internal_block_Sub_T obj_bga;/* '<S275>/SourceBlock' */
-  ros_slros2_internal_block_Sub_T obj_nle;/* '<S274>/SourceBlock' */
-  ros_slros2_internal_block_Sub_T obj_i1;/* '<S273>/SourceBlock' */
-  ros_slros2_internal_block_Sub_T obj_ll;/* '<S272>/SourceBlock' */
-  ros_slros2_internal_block_Sub_T obj_cmo;/* '<S271>/SourceBlock' */
+  ros_slros2_internal_block_Sub_T obj_bg;/* '<S285>/SourceBlock' */
+  ros_slros2_internal_block_Sub_T obj_nle;/* '<S284>/SourceBlock' */
+  ros_slros2_internal_block_Sub_T obj_i1;/* '<S283>/SourceBlock' */
+  ros_slros2_internal_block_Sub_T obj_ll;/* '<S282>/SourceBlock' */
+  ros_slros2_internal_block_Sub_T obj_cmo;/* '<S281>/SourceBlock' */
   ros_slros2_internal_block_Sub_T obj_llj;/* '<S305>/SourceBlock' */
   ros_slros2_internal_block_Sub_T obj_fj;/* '<S304>/SourceBlock' */
   ros_slros2_internal_block_Sub_T obj_fu;/* '<S303>/SourceBlock' */
@@ -4383,25 +4389,21 @@ struct DW_proc_control_lite_T {
   int8_T SwitchCase_ActiveSubsystem;   /* '<S6>/Switch Case' */
   int8_T If_ActiveSubsystem_b;         /* '<S4>/If' */
   int8_T SwitchCase_ActiveSubsystem_p; /* '<S47>/Switch Case' */
-  boolean_T objisempty;                /* '<S275>/SourceBlock' */
-  boolean_T objisempty_o;              /* '<S274>/SourceBlock' */
-  boolean_T objisempty_p;              /* '<S273>/SourceBlock' */
-  boolean_T objisempty_i;              /* '<S272>/SourceBlock' */
-  boolean_T objisempty_n;              /* '<S271>/SourceBlock' */
+  boolean_T objisempty;                /* '<S285>/SourceBlock' */
+  boolean_T objisempty_o;              /* '<S284>/SourceBlock' */
+  boolean_T objisempty_p;              /* '<S283>/SourceBlock' */
+  boolean_T objisempty_i;              /* '<S282>/SourceBlock' */
+  boolean_T objisempty_n;              /* '<S281>/SourceBlock' */
   boolean_T objisempty_k;              /* '<S305>/SourceBlock' */
   boolean_T objisempty_g;              /* '<S304>/SourceBlock' */
   boolean_T objisempty_e;              /* '<S303>/SourceBlock' */
   boolean_T objisempty_pt;             /* '<S302>/SourceBlock' */
   boolean_T objisempty_c;              /* '<S301>/SinkBlock' */
-  boolean_T Memory_PreviousInput;      /* '<S296>/Memory' */
-  boolean_T Memory_PreviousInput_k;    /* '<S297>/Memory' */
-  boolean_T Memory_PreviousInput_d;    /* '<S298>/Memory' */
-  boolean_T Memory_PreviousInput_m;    /* '<S299>/Memory' */
-  boolean_T objisempty_d;              /* '<S295>/SinkBlock' */
-  boolean_T objisempty_a;              /* '<S294>/SinkBlock' */
-  boolean_T objisempty_h;              /* '<S293>/SinkBlock' */
-  boolean_T objisempty_aq;             /* '<S292>/SinkBlock' */
-  boolean_T objisempty_f;              /* '<S291>/SinkBlock' */
+  boolean_T objisempty_d;              /* '<S279>/SinkBlock' */
+  boolean_T objisempty_h;              /* '<S278>/SinkBlock' */
+  boolean_T objisempty_nu;             /* '<S277>/SinkBlock' */
+  boolean_T objisempty_ih;             /* '<S276>/SinkBlock' */
+  boolean_T objisempty_f;              /* '<S275>/SinkBlock' */
   boolean_T objisempty_l;              /* '<S264>/SourceBlock' */
   boolean_T objisempty_j;              /* '<S266>/Polynomial Trajectory' */
   boolean_T objisempty_jc;             /* '<S263>/Rotation Trajectory' */
@@ -4419,7 +4421,7 @@ struct DW_proc_control_lite_T {
   boolean_T isInitialized;             /* '<S169>/Highpass Filter' */
   boolean_T isInitialized_i;           /* '<S169>/Highpass Filter' */
   boolean_T objisempty_ba;             /* '<S151>/SourceBlock' */
-  boolean_T objisempty_ak;             /* '<S150>/SourceBlock' */
+  boolean_T objisempty_a;              /* '<S150>/SourceBlock' */
   boolean_T objisempty_ei;             /* '<S48>/MATLAB System' */
   boolean_T icLoad;                    /* '<S128>/mv_Delay' */
   boolean_T icLoad_g;                  /* '<S128>/x_Delay' */
@@ -4577,7 +4579,7 @@ struct P_proc_control_lite_T_ {
                                         */
   struct_lestj3Cmqe3cAicxMA7epG config;/* Variable: config
                                         * Referenced by:
-                                        *   '<S269>/Constant3'
+                                        *   '<S274>/Constant3'
                                         *   '<S234>/Constant3'
                                         */
   uint16_T A[201];                     /* Variable: A
@@ -4662,10 +4664,10 @@ struct P_proc_control_lite_T_ {
                                             * Referenced by: '<S305>/Constant'
                                             */
   SL_Bus_sensor_msgs_Imu Constant_Value_n;/* Computed Parameter: Constant_Value_n
-                                           * Referenced by: '<S273>/Constant'
+                                           * Referenced by: '<S283>/Constant'
                                            */
   SL_Bus_sensor_msgs_Imu Constant_Value_b;/* Computed Parameter: Constant_Value_b
-                                           * Referenced by: '<S274>/Constant'
+                                           * Referenced by: '<S284>/Constant'
                                            */
   struct_eJsqWOClzwG18rBvtrhWOG MPCparam_Y0;/* Computed Parameter: MPCparam_Y0
                                              * Referenced by: '<S48>/MPC param'
@@ -4674,7 +4676,7 @@ struct P_proc_control_lite_T_ {
                                                              * Referenced by: '<S303>/Constant'
                                                              */
   SL_Bus_sonia_common_ros2_BodyVelocityDVL Constant_Value_a;/* Computed Parameter: Constant_Value_a
-                                                             * Referenced by: '<S272>/Constant'
+                                                             * Referenced by: '<S282>/Constant'
                                                              */
   struct_dhOFexlPAOq1XLxIBHN1J Output_Y0;/* Computed Parameter: Output_Y0
                                           * Referenced by: '<S1>/Output'
@@ -4718,26 +4720,11 @@ struct P_proc_control_lite_T_ {
   SL_Bus_std_msgs_Bool Constant_Value_cc;/* Computed Parameter: Constant_Value_cc
                                           * Referenced by: '<S10>/Constant'
                                           */
-  SL_Bus_std_msgs_Bool Constant_Value_i;/* Computed Parameter: Constant_Value_i
-                                         * Referenced by: '<S281>/Constant'
-                                         */
-  SL_Bus_std_msgs_Bool Constant_Value_aq;/* Computed Parameter: Constant_Value_aq
-                                          * Referenced by: '<S282>/Constant'
-                                          */
-  SL_Bus_std_msgs_Bool Constant_Value_ab;/* Computed Parameter: Constant_Value_ab
-                                          * Referenced by: '<S283>/Constant'
-                                          */
-  SL_Bus_std_msgs_Bool Constant_Value_nc;/* Computed Parameter: Constant_Value_nc
-                                          * Referenced by: '<S284>/Constant'
-                                          */
-  SL_Bus_std_msgs_Bool Constant_Value_gi;/* Computed Parameter: Constant_Value_gi
-                                          * Referenced by: '<S285>/Constant'
-                                          */
   SL_Bus_std_msgs_Bool Constant_Value_ht;/* Computed Parameter: Constant_Value_ht
                                           * Referenced by: '<S300>/Constant'
                                           */
   SL_Bus_std_msgs_Bool Constant_Value_l;/* Computed Parameter: Constant_Value_l
-                                         * Referenced by: '<S275>/Constant'
+                                         * Referenced by: '<S285>/Constant'
                                          */
   SL_Bus_std_msgs_Bool Constant_Value_oy;/* Computed Parameter: Constant_Value_oy
                                           * Referenced by: '<S37>/Constant'
@@ -4748,11 +4735,26 @@ struct P_proc_control_lite_T_ {
   SL_Bus_std_msgs_Bool Constant_Value_ha;/* Computed Parameter: Constant_Value_ha
                                           * Referenced by: '<S35>/Constant'
                                           */
+  SL_Bus_std_msgs_Bool Constant_Value_c0;/* Computed Parameter: Constant_Value_c0
+                                          * Referenced by: '<S269>/Constant'
+                                          */
+  SL_Bus_std_msgs_Bool Constant_Value_oh;/* Computed Parameter: Constant_Value_oh
+                                          * Referenced by: '<S270>/Constant'
+                                          */
+  SL_Bus_std_msgs_Bool Constant_Value_ps;/* Computed Parameter: Constant_Value_ps
+                                          * Referenced by: '<S271>/Constant'
+                                          */
+  SL_Bus_std_msgs_Bool Constant_Value_bu;/* Computed Parameter: Constant_Value_bu
+                                          * Referenced by: '<S272>/Constant'
+                                          */
+  SL_Bus_std_msgs_Bool Constant_Value_gi;/* Computed Parameter: Constant_Value_gi
+                                          * Referenced by: '<S273>/Constant'
+                                          */
   SL_Bus_std_msgs_Float32 Constant_Value_d;/* Computed Parameter: Constant_Value_d
                                             * Referenced by: '<S302>/Constant'
                                             */
   SL_Bus_std_msgs_Float32 Constant_Value_cf;/* Computed Parameter: Constant_Value_cf
-                                             * Referenced by: '<S271>/Constant'
+                                             * Referenced by: '<S281>/Constant'
                                              */
   SL_Bus_std_msgs_UInt8 Out1_Y0_fy;    /* Computed Parameter: Out1_Y0_fy
                                         * Referenced by: '<S42>/Out1'
@@ -5101,7 +5103,7 @@ struct P_proc_control_lite_T_ {
   real_T u2_Gain;                      /* Expression: 0.5
                                         * Referenced by: '<S218>/1//2'
                                         */
-  real_T Constant_Value_iv;  /* Expression: simulation.sensors.dvl.maxSpeedThres
+  real_T Constant_Value_i;   /* Expression: simulation.sensors.dvl.maxSpeedThres
                               * Referenced by: '<S156>/Constant'
                               */
   real_T Delay_InitialCondition_f;     /* Expression: 1
@@ -5259,19 +5261,19 @@ struct P_proc_control_lite_T_ {
                                         * Referenced by: '<S244>/Constant1'
                                         */
   real_T y_Y0;                         /* Computed Parameter: y_Y0
-                                        * Referenced by: '<S269>/y'
+                                        * Referenced by: '<S274>/y'
                                         */
   real_T Constant_Value_lo;            /* Expression: 0
-                                        * Referenced by: '<S269>/Constant'
+                                        * Referenced by: '<S274>/Constant'
                                         */
   real_T Constant1_Value_it;           /* Expression: 0
-                                        * Referenced by: '<S269>/Constant1'
+                                        * Referenced by: '<S274>/Constant1'
                                         */
   real_T Constant2_Value_p;            /* Expression: 0
-                                        * Referenced by: '<S269>/Constant2'
+                                        * Referenced by: '<S274>/Constant2'
                                         */
   real_T Constant4_Value_n;            /* Expression: 0
-                                        * Referenced by: '<S269>/Constant4'
+                                        * Referenced by: '<S274>/Constant4'
                                         */
   real_T Delay_InitialCondition_fy[8]; /* Expression: [0,0,0,0,0,0,0,0]
                                         * Referenced by: '<S160>/Delay'
@@ -5506,6 +5508,18 @@ struct P_proc_control_lite_T_ {
   boolean_T Constant3_Value_n;         /* Expression: false
                                         * Referenced by: '<S244>/Constant3'
                                         */
+  boolean_T dvlen_Y0;                  /* Computed Parameter: dvlen_Y0
+                                        * Referenced by: '<S274>/dvlen'
+                                        */
+  boolean_T imuen_Y0;                  /* Computed Parameter: imuen_Y0
+                                        * Referenced by: '<S274>/imuen'
+                                        */
+  boolean_T zeden_Y0;                  /* Computed Parameter: zeden_Y0
+                                        * Referenced by: '<S274>/zeden'
+                                        */
+  boolean_T imuTared_Y0;               /* Computed Parameter: imuTared_Y0
+                                        * Referenced by: '<S274>/imuTared'
+                                        */
   boolean_T imu_tared_new_Y0;          /* Computed Parameter: imu_tared_new_Y0
                                         * Referenced by: '<S268>/imu_tared_new'
                                         */
@@ -5525,11 +5539,11 @@ struct P_proc_control_lite_T_ {
   int8_T Merge_2_InitialOutput_i; /* Computed Parameter: Merge_2_InitialOutput_i
                                    * Referenced by: '<S47>/Merge'
                                    */
-  P_EnabledSubsystem_proc_contr_T EnabledSubsystem_gv;/* '<S275>/Enabled Subsystem' */
-  P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_p4;/* '<S274>/Enabled Subsystem' */
-  P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_gu;/* '<S273>/Enabled Subsystem' */
-  P_EnabledSubsystem_proc_co_pu_T EnabledSubsystem_b2;/* '<S272>/Enabled Subsystem' */
-  P_EnabledSubsystem_proc_con_p_T EnabledSubsystem_gf;/* '<S271>/Enabled Subsystem' */
+  P_EnabledSubsystem_proc_contr_T EnabledSubsystem_gv;/* '<S285>/Enabled Subsystem' */
+  P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_p4;/* '<S284>/Enabled Subsystem' */
+  P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_gu;/* '<S283>/Enabled Subsystem' */
+  P_EnabledSubsystem_proc_co_pu_T EnabledSubsystem_b2;/* '<S282>/Enabled Subsystem' */
+  P_EnabledSubsystem_proc_con_p_T EnabledSubsystem_gf;/* '<S281>/Enabled Subsystem' */
   P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_k;/* '<S305>/Enabled Subsystem' */
   P_EnabledSubsystem_proc_con_m_T EnabledSubsystem_j;/* '<S304>/Enabled Subsystem' */
   P_EnabledSubsystem_proc_co_pu_T EnabledSubsystem_l;/* '<S303>/Enabled Subsystem' */
@@ -5724,16 +5738,6 @@ class proc_control_lite final
     *obj);
   void proc_con_Subscriber_setupImpl_j(const ros_slros2_internal_block_Sub_T
     *obj);
-  void proc__Publisher_setupImpl_hpq2j(const ros_slros2_internal_block_Pub_T
-    *obj);
-  void proc_Publisher_setupImpl_hpq2jo(const ros_slros2_internal_block_Pub_T
-    *obj);
-  void pro_Publisher_setupImpl_hpq2joy(const ros_slros2_internal_block_Pub_T
-    *obj);
-  void pr_Publisher_setupImpl_hpq2joyu(const ros_slros2_internal_block_Pub_T
-    *obj);
-  void p_Publisher_setupImpl_hpq2joyui(const ros_slros2_internal_block_Pub_T
-    *obj);
   void pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t rmwProfile, real_T
     qosDepth, real_T qosDeadline, real_T qosLifespan, real_T qosLeaseDuration,
     boolean_T qosAvoidROSNamespaceConventions);
@@ -5763,6 +5767,16 @@ class proc_control_lite final
   void proc_co_Publisher_setupImpl_hpq(const ros_slros2_internal_block_Pub_T
     *obj);
   void proc_c_Publisher_setupImpl_hpq2(const ros_slros2_internal_block_Pub_T
+    *obj);
+  void proc__Publisher_setupImpl_hpq2j(const ros_slros2_internal_block_Pub_T
+    *obj);
+  void proc_Publisher_setupImpl_hpq2jo(const ros_slros2_internal_block_Pub_T
+    *obj);
+  void pro_Publisher_setupImpl_hpq2joy(const ros_slros2_internal_block_Pub_T
+    *obj);
+  void pr_Publisher_setupImpl_hpq2joyu(const ros_slros2_internal_block_Pub_T
+    *obj);
+  void p_Publisher_setupImpl_hpq2joyui(const ros_slros2_internal_block_Pub_T
     *obj);
   real_T proc_rt_nrand_Upu32_Yd_f_pw_snf(uint32_T *u);
   void proc_contr_mpcManager_resetImpl(mpcManager_proc_control_lite_T *b_this);
@@ -6639,13 +6653,13 @@ extern volatile boolean_T runModel;
  * Block '<S265>/fine' : Unused code path elimination
  * Block '<S265>/speed' : Unused code path elimination
  * Block '<S265>/speed1' : Unused code path elimination
- * Block '<S287>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S292>/Data Type Duplicate' : Unused code path elimination
  * Block '<S296>/FixPt Data Type Duplicate2' : Unused code path elimination
- * Block '<S288>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S293>/Data Type Duplicate' : Unused code path elimination
  * Block '<S297>/FixPt Data Type Duplicate2' : Unused code path elimination
- * Block '<S289>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S294>/Data Type Duplicate' : Unused code path elimination
  * Block '<S298>/FixPt Data Type Duplicate2' : Unused code path elimination
- * Block '<S290>/Data Type Duplicate' : Unused code path elimination
+ * Block '<S295>/Data Type Duplicate' : Unused code path elimination
  * Block '<S299>/FixPt Data Type Duplicate2' : Unused code path elimination
  * Block '<S58>/Reshape' : Reshape block reduction
  * Block '<S58>/Reshape1' : Reshape block reduction
@@ -6697,10 +6711,10 @@ extern volatile boolean_T runModel;
  * Block '<S234>/Zero-Order Hold' : Eliminated since input and output rates are identical
  * Block '<S158>/Zero-Order Hold1' : Eliminated since input and output rates are identical
  * Block '<S160>/Reshape' : Reshape block reduction
- * Block '<S269>/Data Type Conversion1' : Eliminate redundant data type conversion
- * Block '<S269>/Data Type Conversion2' : Eliminate redundant data type conversion
- * Block '<S269>/Data Type Conversion3' : Eliminate redundant data type conversion
- * Block '<S269>/Data Type Conversion4' : Eliminate redundant data type conversion
+ * Block '<S7>/Data Type Conversion1' : Eliminate redundant data type conversion
+ * Block '<S7>/Data Type Conversion2' : Eliminate redundant data type conversion
+ * Block '<S7>/Data Type Conversion3' : Eliminate redundant data type conversion
+ * Block '<S7>/Data Type Conversion4' : Eliminate redundant data type conversion
  * Block '<S7>/Zero-Order Hold' : Eliminated since input and output rates are identical
  */
 
@@ -6987,33 +7001,33 @@ extern volatile boolean_T runModel;
  * '<S266>' : 'proc_control_lite/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Resettable Subsystem/Subsystem'
  * '<S267>' : 'proc_control_lite/Subsystem Trajectory/singleWpts Trajectory Control DEBUG only/Subscribe/Enabled Subsystem'
  * '<S268>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV'
- * '<S269>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1'
- * '<S270>' : 'proc_control_lite/proc_nav_ros_input_lite1/Simulation'
- * '<S271>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_depth depth'
- * '<S272>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_dvl dvl_velocity'
- * '<S273>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info'
- * '<S274>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info1'
- * '<S275>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info2'
- * '<S276>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_depth depth/Enabled Subsystem'
- * '<S277>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_dvl dvl_velocity/Enabled Subsystem'
- * '<S278>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info/Enabled Subsystem'
- * '<S279>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info1/Enabled Subsystem'
- * '<S280>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info2/Enabled Subsystem'
- * '<S281>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Blank Message'
- * '<S282>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Blank Message1'
- * '<S283>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Blank Message2'
- * '<S284>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Blank Message3'
- * '<S285>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Blank Message4'
- * '<S286>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MATLAB Function'
- * '<S287>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable'
- * '<S288>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable1'
- * '<S289>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable2'
- * '<S290>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable3'
- * '<S291>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish'
- * '<S292>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish1'
- * '<S293>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish2'
- * '<S294>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish3'
- * '<S295>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/Publish4'
+ * '<S269>' : 'proc_control_lite/proc_nav_ros_input_lite1/Blank Message'
+ * '<S270>' : 'proc_control_lite/proc_nav_ros_input_lite1/Blank Message1'
+ * '<S271>' : 'proc_control_lite/proc_nav_ros_input_lite1/Blank Message2'
+ * '<S272>' : 'proc_control_lite/proc_nav_ros_input_lite1/Blank Message3'
+ * '<S273>' : 'proc_control_lite/proc_nav_ros_input_lite1/Blank Message4'
+ * '<S274>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1'
+ * '<S275>' : 'proc_control_lite/proc_nav_ros_input_lite1/Publish'
+ * '<S276>' : 'proc_control_lite/proc_nav_ros_input_lite1/Publish1'
+ * '<S277>' : 'proc_control_lite/proc_nav_ros_input_lite1/Publish2'
+ * '<S278>' : 'proc_control_lite/proc_nav_ros_input_lite1/Publish3'
+ * '<S279>' : 'proc_control_lite/proc_nav_ros_input_lite1/Publish4'
+ * '<S280>' : 'proc_control_lite/proc_nav_ros_input_lite1/Simulation'
+ * '<S281>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_depth depth'
+ * '<S282>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_dvl dvl_velocity'
+ * '<S283>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info'
+ * '<S284>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info1'
+ * '<S285>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info2'
+ * '<S286>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_depth depth/Enabled Subsystem'
+ * '<S287>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_dvl dvl_velocity/Enabled Subsystem'
+ * '<S288>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info/Enabled Subsystem'
+ * '<S289>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info1/Enabled Subsystem'
+ * '<S290>' : 'proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info2/Enabled Subsystem'
+ * '<S291>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MATLAB Function'
+ * '<S292>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable'
+ * '<S293>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable1'
+ * '<S294>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable2'
+ * '<S295>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable3'
  * '<S296>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable/Subsystem'
  * '<S297>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable1/Subsystem'
  * '<S298>' : 'proc_control_lite/proc_nav_ros_input_lite1/Enabled Subsystem1/MinMax Running Resettable2/Subsystem'

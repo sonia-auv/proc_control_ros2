@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.3
+ * Model version              : 1.4
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 01:55:30 2026
+ * C++ source code generated on : Sat Jul 11 03:14:05 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -783,7 +783,7 @@ struct dsp_simulink_MovingAverage_e3_T
 
 #endif                              /* struct_dsp_simulink_MovingAverage_e3_T */
 
-/* Custom Type definition for MATLABSystem: '<S275>/SourceBlock' */
+/* Custom Type definition for MATLABSystem: '<S285>/SourceBlock' */
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
