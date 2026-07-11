@@ -110,7 +110,7 @@ install(
 )
 
 install(TARGETS
-  ${PROJECT_NAME}
+  proc_control_lite
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_export_include_directories(
