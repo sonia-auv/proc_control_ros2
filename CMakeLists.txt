@@ -33,7 +33,7 @@ set (CMAKE_BUILD_WITH_INSTALL_RPATH true)
 set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Node
-add_executable(proc_control 
+add_executable(proc_control_lite 
 src/main.cpp
 src/proc_control_lite.cpp
 src/proc_control_lite_data.cpp
