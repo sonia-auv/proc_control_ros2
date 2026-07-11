@@ -50,12 +50,12 @@ src/rt_urand_Upu32_Yd_f_pw_snf.cpp
 src/slros2_generic_param.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-target_compile_options(proc_control PUBLIC 
+target_compile_options(proc_control_lite PUBLIC 
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
   -Wall -Wextra -Wpedantic
   >)
 endif()
-target_compile_options(proc_control PRIVATE
+target_compile_options(proc_control_lite PRIVATE
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
   -DMODEL=proc_control_lite
   -DNUMST=6
@@ -88,14 +88,14 @@ ament_target_dependencies(
   "std_msgs"
   "trajectory_msgs"
 )
-target_include_directories(proc_control PUBLIC
+target_include_directories(proc_control_lite PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 # target_link_libraries(proc_control 
 #     "/usr/local/MATLAB/R2024b/sys/os/glnxa64/orig/libstdc++.so.6"
 # 	${CMAKE_DL_LIBS}
 #     )
-install(TARGETS proc_control
+install(TARGETS proc_control_lite
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
 
@@ -118,13 +118,13 @@ ament_export_include_directories(
 )
 foreach(file_i ${CUDA_BINS})
 add_custom_command(
-                   TARGET proc_control
+                   TARGET proc_control_lite
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND}
                    ARGS -E copy ${PROJECT_SOURCE_DIR}/src/${file_i} ${CMAKE_INSTALL_PREFIX}/proc_control_ert_rtw/${file_i}
 				   )
 add_custom_command(
-                   TARGET proc_control
+                   TARGET proc_control_lite
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND}
                    ARGS -E copy ${PROJECT_SOURCE_DIR}/src/${file_i} ${CMAKE_INSTALL_PREFIX}/codegen/exe/proc_control/${file_i}
