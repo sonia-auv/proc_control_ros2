@@ -27,7 +27,7 @@ find_package( sensor_msgs REQUIRED)
 find_package( sonia_common_ros2 REQUIRED)
 find_package( std_msgs REQUIRED)
 find_package( trajectory_msgs REQUIRED)
-include_directories("include/proc_control")
+include_directories("include/proc_control_lite")
 set (CMAKE_SKIP_BUILD_RPATH false)
 set (CMAKE_BUILD_WITH_INSTALL_RPATH true)
 set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
@@ -57,7 +57,7 @@ target_compile_options(proc_control PUBLIC
 endif()
 target_compile_options(proc_control PRIVATE
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
-  -DMODEL=proc_control
+  -DMODEL=proc_control_lite
   -DNUMST=6
   -DNCSTATES=0
   -DHAVESTDIO
@@ -78,7 +78,7 @@ target_compile_options(proc_control PRIVATE
   -fpermissive  >
   )
 ament_target_dependencies(
-  proc_control
+  proc_control_lite
   "builtin_interfaces"
   "geometry_msgs"
   "nav_msgs"
