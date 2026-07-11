@@ -34,41 +34,20 @@ set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Node
 add_executable(proc_control 
-src/all_Dt0A7QFv.cpp
-src/binsearch_u32d_prevIdx.cpp
-src/binsearch_u32u16.cpp
-src/checkVectorNonFinite_R8rA6F1f.cpp
-src/div_nde_s32_floor.cpp
-src/DropConstraint_BByivNjC.cpp
-src/isfinite_2ZoJfJwq.cpp
-src/log2_td5QA1jf.cpp
 src/main.cpp
-src/maximum_jZnaLMOl.cpp
-src/minimum_Tj2c1hlw.cpp
-src/norm_5tbm0KyS.cpp
-src/norm_ncQhwrEv.cpp
-src/norm_T8v8L2Tp.cpp
-src/plook_u32d_binckpan.cpp
-src/plook_u32d_binckpang.cpp
-src/plook_u32u16_binckan.cpp
-src/proc_control.cpp
-src/proc_control_data.cpp
+src/proc_control_lite.cpp
+src/proc_control_lite_data.cpp
 src/ros2nodeinterface.cpp
-src/rt_atan2d_snf.cpp
+src/slros2_initialize.cpp
+src/slros_busmsg_conversion.cpp
+src/binsearch_u32d_prevIdx.cpp
+src/div_nde_s32_floor.cpp
+src/plook_u32d_binckpang.cpp
 src/rtGetInf.cpp
 src/rtGetNaN.cpp
 src/rt_nonfinite.cpp
-src/rt_nrand_Upu32_Yd_f_pw_snf.cpp
-src/rt_powd_snf.cpp
 src/rt_urand_Upu32_Yd_f_pw_snf.cpp
 src/slros2_generic_param.cpp
-src/slros2_initialize.cpp
-src/slros2_multi_threaded_executor.cpp
-src/trisolve_sFlGkFFn.cpp
-src/updateWeights_Cxwhp29c.cpp
-src/updateWeights_X8Xk4DtT.cpp
-src/xpotrf_FPrJkkYE.cpp
-src/xzlartg_d6Fmu5CC.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 target_compile_options(proc_control PUBLIC 
