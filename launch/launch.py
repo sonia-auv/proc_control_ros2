@@ -12,7 +12,7 @@ def generate_launch_description():
         raise Exception("env var AUV not set")
 
     config = os.path.join(
-        get_package_share_directory("proc_control"), "config", f"{auv}_config.yaml"
+        get_package_share_directory("proc_control_lite"), "config", f"{auv}_config.yaml"
     )
     print(config)
     if not os.path.exists(config):
@@ -20,8 +20,8 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="proc_control",
-                executable="proc_control",
+                package="proc_control_lite",
+                executable="proc_control_lite",
                 parameters=[config]
             )
         ]

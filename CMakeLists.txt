@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(proc_control)
+project(proc_control_lite)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 # Set CMAKE_BUILD_TYPE
 set(CMAKE_BUILD_TYPE Release)
