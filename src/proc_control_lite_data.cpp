@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.4
+ * Model version              : 1.15
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 03:14:05 2026
+ * C++ source code generated on : Sun Jul 12 01:23:28 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -172,6 +172,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    * Referenced by:
    *   '<S274>/Constant3'
    *   '<S234>/Constant3'
+   *   '<S234>/Constant4'
    */
   {
     0.0
@@ -226,6 +227,13 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0.0,
 
+  /* Mask Parameter: MinMaxRunningResettable2_vinit
+   * Referenced by:
+   *   '<S296>/Initial Condition'
+   *   '<S296>/Memory'
+   */
+  0.0,
+
   /* Mask Parameter: DetectRisePositive_vinit
    * Referenced by: '<S252>/Delay Input1'
    */
@@ -233,29 +241,22 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
 
   /* Mask Parameter: MinMaxRunningResettable_vinit
    * Referenced by:
-   *   '<S296>/Initial Condition'
-   *   '<S296>/Memory'
+   *   '<S294>/Initial Condition'
+   *   '<S294>/Memory'
    */
   false,
 
   /* Mask Parameter: MinMaxRunningResettable1_vinit
    * Referenced by:
-   *   '<S297>/Initial Condition'
-   *   '<S297>/Memory'
-   */
-  false,
-
-  /* Mask Parameter: MinMaxRunningResettable2_vinit
-   * Referenced by:
-   *   '<S298>/Initial Condition'
-   *   '<S298>/Memory'
+   *   '<S295>/Initial Condition'
+   *   '<S295>/Memory'
    */
   false,
 
   /* Mask Parameter: MinMaxRunningResettable3_vinit
    * Referenced by:
-   *   '<S299>/Initial Condition'
-   *   '<S299>/Memory'
+   *   '<S297>/Initial Condition'
+   *   '<S297>/Memory'
    */
   false,
 
@@ -77274,7 +77275,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_p
-   * Referenced by: '<S304>/Constant'
+   * Referenced by: '<S302>/Constant'
    */
   {
     {
@@ -77333,7 +77334,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_fw
-   * Referenced by: '<S305>/Constant'
+   * Referenced by: '<S303>/Constant'
    */
   {
     {
@@ -77450,8 +77451,8 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
     /* linear_acceleration_covariance */
   },
 
-  /* Computed Parameter: Constant_Value_b
-   * Referenced by: '<S284>/Constant'
+  /* Computed Parameter: Merge7_InitialOutput
+   * Referenced by: '<S7>/Merge7'
    */
   {
     {
@@ -77542,7 +77543,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_c
-   * Referenced by: '<S303>/Constant'
+   * Referenced by: '<S301>/Constant'
    */
   {
     {
@@ -77834,14 +77835,14 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_ht
-   * Referenced by: '<S300>/Constant'
+   * Referenced by: '<S298>/Constant'
    */
   {
     false                              /* data */
   },
 
   /* Computed Parameter: Constant_Value_l
-   * Referenced by: '<S285>/Constant'
+   * Referenced by: '<S284>/Constant'
    */
   {
     false                              /* data */
@@ -77889,7 +77890,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
     false                              /* data */
   },
 
-  /* Computed Parameter: Constant_Value_bu
+  /* Computed Parameter: Constant_Value_b
    * Referenced by: '<S272>/Constant'
    */
   {
@@ -77904,7 +77905,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   },
 
   /* Computed Parameter: Constant_Value_d
-   * Referenced by: '<S302>/Constant'
+   * Referenced by: '<S300>/Constant'
    */
   {
     0.0F                               /* data */
@@ -78330,16 +78331,17 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   /* Expression: repmat(MPC.Xi.',11,1)
    * Referenced by: '<S51>/Delay'
    */
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3,
-    0.3, 0.3, 0.3, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0,
+  { 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003,
+    0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003,
+    0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003, 0.003,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+    0.0, 0.0, 0.0, 0.0, 0.0 },
 
   /* Expression: MPC.Ts
    * Referenced by: '<S51>/Constant'
@@ -78740,6 +78742,56 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   1.0,
 
+  /* Expression: 0
+   * Referenced by: '<S234>/Random Number1'
+   */
+  0.0,
+
+  /* Computed Parameter: RandomNumber1_StdDev
+   * Referenced by: '<S234>/Random Number1'
+   */
+  1.0E-5,
+
+  /* Expression: 525886
+   * Referenced by: '<S234>/Random Number1'
+   */
+  525886.0,
+
+  /* Expression: 0
+   * Referenced by: '<S234>/Random Number'
+   */
+  0.0,
+
+  /* Computed Parameter: RandomNumber_StdDev
+   * Referenced by: '<S234>/Random Number'
+   */
+  1.0E-5,
+
+  /* Expression: 1
+   * Referenced by: '<S234>/Random Number'
+   */
+  1.0,
+
+  /* Expression: 0
+   * Referenced by: '<S234>/Random Number2'
+   */
+  0.0,
+
+  /* Computed Parameter: RandomNumber2_StdDev
+   * Referenced by: '<S234>/Random Number2'
+   */
+  1.0E-5,
+
+  /* Expression: 4
+   * Referenced by: '<S234>/Random Number2'
+   */
+  4.0,
+
+  /* Expression: 0
+   * Referenced by: '<S234>/Switch2'
+   */
+  0.0,
+
   /* Expression: p.R{2}
    * Referenced by: '<S233>/R2'
    */
@@ -78813,7 +78865,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   /* Expression: p.InitialState
    * Referenced by: '<S233>/DataStoreMemory - x'
    */
-  { 0.0, 0.0, 0.3, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+  { 0.003, 0.003, 0.003, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   /* Expression: [0 0 0 1 0 0 0]
    * Referenced by: '<S247>/Constant'
@@ -78905,8 +78957,18 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   10.0,
 
+  /* Expression: 1
+   * Referenced by: '<S274>/Constant5'
+   */
+  1.0,
+
   /* Computed Parameter: y_Y0
    * Referenced by: '<S274>/y'
+   */
+  0.0,
+
+  /* Computed Parameter: zeden_Y0
+   * Referenced by: '<S274>/zeden'
    */
   0.0,
 
@@ -78945,10 +79007,10 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0.0,
 
-  /* Computed Parameter: RandomNumber_StdDev
+  /* Computed Parameter: RandomNumber_StdDev_m
    * Referenced by: '<S169>/Random Number'
    */
-  3.1622776601683794E-11,
+  1.0E-5,
 
   /* Expression: 1
    * Referenced by: '<S169>/Random Number'
@@ -78960,10 +79022,10 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0.0,
 
-  /* Computed Parameter: RandomNumber1_StdDev
+  /* Computed Parameter: RandomNumber1_StdDev_a
    * Referenced by: '<S169>/Random Number1'
    */
-  3.1622776601683794E-11,
+  1.0E-5,
 
   /* Expression: 525886
    * Referenced by: '<S169>/Random Number1'
@@ -78975,15 +79037,15 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0.0,
 
-  /* Computed Parameter: RandomNumber2_StdDev
+  /* Computed Parameter: RandomNumber2_StdDev_g
    * Referenced by: '<S169>/Random Number2'
    */
-  3.1622776601683794E-11,
+  1.0E-5,
 
-  /* Expression: 645156145645445
+  /* Expression: 4
    * Referenced by: '<S169>/Random Number2'
    */
-  5.18178693E+8,
+  4.0,
 
   /* Expression: 0
    * Referenced by: '<S7>/Delay'
@@ -79195,6 +79257,11 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   { 1.0, -1.0, 1.0, -1.0 },
 
+  /* Expression: [0,0,0,0,0,0,0,0]
+   * Referenced by: '<S160>/Constant'
+   */
+  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+
   /* Computed Parameter: Merge_4_InitialOutput
    * Referenced by: '<S6>/Merge'
    */
@@ -79295,12 +79362,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   false,
 
-  /* Computed Parameter: yBlockOrdering_Y0_l
+  /* Computed Parameter: yBlockOrdering_Y0_m
    * Referenced by: '<S236>/yBlockOrdering'
    */
   false,
 
-  /* Computed Parameter: yBlockOrdering_Y0_h
+  /* Computed Parameter: yBlockOrdering_Y0_d
    * Referenced by: '<S237>/yBlockOrdering'
    */
   false,
@@ -79365,11 +79432,6 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   false,
 
-  /* Computed Parameter: zeden_Y0
-   * Referenced by: '<S274>/zeden'
-   */
-  false,
-
   /* Computed Parameter: imuTared_Y0
    * Referenced by: '<S274>/imuTared'
    */
@@ -79390,6 +79452,11 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   false,
 
+  /* Computed Parameter: Merge8_InitialOutput
+   * Referenced by: '<S7>/Merge8'
+   */
+  false,
+
   /* Expression: int8(0)
    * Referenced by: '<S52>/Constant'
    */
@@ -79405,78 +79472,13 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
    */
   0,
 
-  /* Start of '<S285>/Enabled Subsystem' */
-  {
-    /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S290>/Out1'
-     */
-    {
-      false                            /* data */
-    }
-  }
-  ,
-
-  /* End of '<S285>/Enabled Subsystem' */
-
   /* Start of '<S284>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S289>/Out1'
+     * Referenced by: '<S288>/Out1'
      */
     {
-      {
-        {
-          0,                           /* sec */
-          0U                           /* nanosec */
-        },                             /* stamp */
-
-        {
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U }
-        ,                              /* frame_id */
-
-        {
-          0U,                          /* CurrentLength */
-          0U                           /* ReceivedLength */
-        }                              /* frame_id_SL_Info */
-      },                               /* header */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0,                           /* z */
-        0.0                            /* w */
-      },                               /* orientation */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* orientation_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* angular_velocity */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* angular_velocity_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* linear_acceleration */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      /* linear_acceleration_covariance */
+      false                            /* data */
     }
   }
   ,
@@ -79486,7 +79488,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   /* Start of '<S283>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S288>/Out1'
+     * Referenced by: '<S287>/Out1'
      */
     {
       {
@@ -79551,7 +79553,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   /* Start of '<S282>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S287>/Out1'
+     * Referenced by: '<S286>/Out1'
      */
     {
       {
@@ -79593,7 +79595,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   /* Start of '<S281>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S286>/Out1'
+     * Referenced by: '<S285>/Out1'
      */
     {
       0.0F                             /* data */
@@ -79603,140 +79605,140 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
 
   /* End of '<S281>/Enabled Subsystem' */
 
-  /* Start of '<S305>/Enabled Subsystem' */
-  {
-    /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S309>/Out1'
-     */
-    {
-      {
-        {
-          0,                           /* sec */
-          0U                           /* nanosec */
-        },                             /* stamp */
-
-        {
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U }
-        ,                              /* frame_id */
-
-        {
-          0U,                          /* CurrentLength */
-          0U                           /* ReceivedLength */
-        }                              /* frame_id_SL_Info */
-      },                               /* header */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0,                           /* z */
-        0.0                            /* w */
-      },                               /* orientation */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* orientation_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* angular_velocity */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* angular_velocity_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* linear_acceleration */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      /* linear_acceleration_covariance */
-    }
-  }
-  ,
-
-  /* End of '<S305>/Enabled Subsystem' */
-
-  /* Start of '<S304>/Enabled Subsystem' */
-  {
-    /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S308>/Out1'
-     */
-    {
-      {
-        {
-          0,                           /* sec */
-          0U                           /* nanosec */
-        },                             /* stamp */
-
-        {
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
-          0U, 0U }
-        ,                              /* frame_id */
-
-        {
-          0U,                          /* CurrentLength */
-          0U                           /* ReceivedLength */
-        }                              /* frame_id_SL_Info */
-      },                               /* header */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0,                           /* z */
-        0.0                            /* w */
-      },                               /* orientation */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* orientation_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* angular_velocity */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      ,                                /* angular_velocity_covariance */
-
-      {
-        0.0,                           /* x */
-        0.0,                           /* y */
-        0.0                            /* z */
-      },                               /* linear_acceleration */
-
-      {
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
-      /* linear_acceleration_covariance */
-    }
-  }
-  ,
-
-  /* End of '<S304>/Enabled Subsystem' */
-
   /* Start of '<S303>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
      * Referenced by: '<S307>/Out1'
+     */
+    {
+      {
+        {
+          0,                           /* sec */
+          0U                           /* nanosec */
+        },                             /* stamp */
+
+        {
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U }
+        ,                              /* frame_id */
+
+        {
+          0U,                          /* CurrentLength */
+          0U                           /* ReceivedLength */
+        }                              /* frame_id_SL_Info */
+      },                               /* header */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0,                           /* z */
+        0.0                            /* w */
+      },                               /* orientation */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      ,                                /* orientation_covariance */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0                            /* z */
+      },                               /* angular_velocity */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      ,                                /* angular_velocity_covariance */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0                            /* z */
+      },                               /* linear_acceleration */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      /* linear_acceleration_covariance */
+    }
+  }
+  ,
+
+  /* End of '<S303>/Enabled Subsystem' */
+
+  /* Start of '<S302>/Enabled Subsystem' */
+  {
+    /* Computed Parameter: Out1_Y0
+     * Referenced by: '<S306>/Out1'
+     */
+    {
+      {
+        {
+          0,                           /* sec */
+          0U                           /* nanosec */
+        },                             /* stamp */
+
+        {
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U,
+          0U, 0U }
+        ,                              /* frame_id */
+
+        {
+          0U,                          /* CurrentLength */
+          0U                           /* ReceivedLength */
+        }                              /* frame_id_SL_Info */
+      },                               /* header */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0,                           /* z */
+        0.0                            /* w */
+      },                               /* orientation */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      ,                                /* orientation_covariance */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0                            /* z */
+      },                               /* angular_velocity */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      ,                                /* angular_velocity_covariance */
+
+      {
+        0.0,                           /* x */
+        0.0,                           /* y */
+        0.0                            /* z */
+      },                               /* linear_acceleration */
+
+      {
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+      /* linear_acceleration_covariance */
+    }
+  }
+  ,
+
+  /* End of '<S302>/Enabled Subsystem' */
+
+  /* Start of '<S301>/Enabled Subsystem' */
+  {
+    /* Computed Parameter: Out1_Y0
+     * Referenced by: '<S305>/Out1'
      */
     {
       {
@@ -79773,12 +79775,12 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S303>/Enabled Subsystem' */
+  /* End of '<S301>/Enabled Subsystem' */
 
-  /* Start of '<S302>/Enabled Subsystem' */
+  /* Start of '<S300>/Enabled Subsystem' */
   {
     /* Computed Parameter: Out1_Y0
-     * Referenced by: '<S306>/Out1'
+     * Referenced by: '<S304>/Out1'
      */
     {
       0.0F                             /* data */
@@ -79786,7 +79788,7 @@ P_proc_control_lite_T proc_control_lite::proc_control_lite_P{
   }
   ,
 
-  /* End of '<S302>/Enabled Subsystem' */
+  /* End of '<S300>/Enabled Subsystem' */
 
   /* Start of '<S40>/Enabled Subsystem' */
   {

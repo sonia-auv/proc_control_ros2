@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.4
+ * Model version              : 1.15
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sat Jul 11 03:14:05 2026
+ * C++ source code generated on : Sun Jul 12 01:23:28 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -783,7 +783,7 @@ struct dsp_simulink_MovingAverage_e3_T
 
 #endif                              /* struct_dsp_simulink_MovingAverage_e3_T */
 
-/* Custom Type definition for MATLABSystem: '<S285>/SourceBlock' */
+/* Custom Type definition for MATLABSystem: '<S284>/SourceBlock' */
 #include "rmw/qos_profiles.h"
 #ifndef struct_sJ4ih70VmKcvCeguWN0mNVF
 #define struct_sJ4ih70VmKcvCeguWN0mNVF
@@ -1547,13 +1547,13 @@ struct robotics_slcore_internal_bl_h_T
 /* Parameters for system: '<S35>/Enabled Subsystem' */
 typedef struct P_EnabledSubsystem_proc_contr_T_ P_EnabledSubsystem_proc_contr_T;
 
-/* Parameters for system: '<S302>/Enabled Subsystem' */
+/* Parameters for system: '<S300>/Enabled Subsystem' */
 typedef struct P_EnabledSubsystem_proc_con_p_T_ P_EnabledSubsystem_proc_con_p_T;
 
-/* Parameters for system: '<S303>/Enabled Subsystem' */
+/* Parameters for system: '<S301>/Enabled Subsystem' */
 typedef struct P_EnabledSubsystem_proc_co_pu_T_ P_EnabledSubsystem_proc_co_pu_T;
 
-/* Parameters for system: '<S304>/Enabled Subsystem' */
+/* Parameters for system: '<S302>/Enabled Subsystem' */
 typedef struct P_EnabledSubsystem_proc_con_m_T_ P_EnabledSubsystem_proc_con_m_T;
 
 /* Parameters (default storage) */

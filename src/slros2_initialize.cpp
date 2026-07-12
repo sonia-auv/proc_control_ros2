@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 11-Jul-2026 03:14:17
+// Generated 12-Jul-2026 01:23:44
 #include "slros2_initialize.h"
 // proc_control_lite/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_500;
@@ -16,13 +16,13 @@ SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_con
 // proc_control_lite/Subsystem Trajectory/Send Current Target/Publish
 SimulinkPublisher<geometry_msgs::msg::Pose,SL_Bus_geometry_msgs_Pose> Pub_proc_control_lite_671;
 // proc_control_lite/proc_nav_ros_input_lite1/Publish
-SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2936;
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2971;
 // proc_control_lite/proc_nav_ros_input_lite1/Publish1
-SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2939;
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2972;
 // proc_control_lite/proc_nav_ros_input_lite1/Publish2
-SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2942;
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2973;
 // proc_control_lite/proc_nav_ros_input_lite1/Publish3
-SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2945;
+SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2974;
 // proc_control_lite/proc_nav_ros_input_lite1/Publish4
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_2958_2948;
 // proc_control_lite/proc_nav_ros_input_lite1/Simulation/Publish
@@ -55,8 +55,6 @@ SimulinkSubscriber<std_msgs::msg::Float32,SL_Bus_std_msgs_Float32> Sub_proc_cont
 SimulinkSubscriber<sonia_common_ros2::msg::BodyVelocityDVL,SL_Bus_sonia_common_ros2_BodyVelocityDVL> Sub_proc_control_lite_2958_5;
 // proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info
 SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_lite_2958_4;
-// proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info1
-SimulinkSubscriber<sensor_msgs::msg::Imu,SL_Bus_sensor_msgs_Imu> Sub_proc_control_lite_2958_2508;
 // proc_control_lite/proc_nav_ros_input_lite1/AUV/provider_imu imu_info2
 SimulinkSubscriber<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Sub_proc_control_lite_2958_2543;
 // proc_control_lite/proc_nav_ros_input_lite1/Simulation/proc_simulation depth
