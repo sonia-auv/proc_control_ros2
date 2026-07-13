@@ -1,5 +1,5 @@
 // Copyright 2022-2024 The MathWorks, Inc.
-// Generated 12-Jul-2026 01:23:44
+// Generated 13-Jul-2026 16:05:05
 #include "slros2_initialize.h"
 // proc_control_lite/Enabled Subsystem/Send Sensor On/proc_control sensor_on
 SimulinkPublisher<std_msgs::msg::Bool,SL_Bus_std_msgs_Bool> Pub_proc_control_lite_500;
@@ -10,7 +10,7 @@ SimulinkPublisher<sonia_common_ros2::msg::MpcInfo,SL_Bus_sonia_common_ros2_MpcIn
 // proc_control_lite/Enabled Subsystem1/provider_thruster thruster_pwm
 SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_lite_1380;
 // proc_control_lite/Enabled Subsystem1/telemetry thruster_newton
-SimulinkPublisher<sonia_common_ros2::msg::MotorPwm,SL_Bus_sonia_common_ros2_MotorPwm> Pub_proc_control_lite_1386;
+SimulinkPublisher<sonia_common_ros2::msg::MotorNewton,SL_Bus_sonia_common_ros2_MotorNewton> Pub_proc_control_lite_1386;
 // proc_control_lite/Subsystem Controller/Controller List/If Action Subsystem/Sent mesurement residuals/Publish
 SimulinkPublisher<nav_msgs::msg::Odometry,SL_Bus_nav_msgs_Odometry> Pub_proc_control_lite_913;
 // proc_control_lite/Subsystem Trajectory/Send Current Target/Publish

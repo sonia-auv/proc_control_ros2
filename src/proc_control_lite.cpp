@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.15
+ * Model version              : 1.22
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sun Jul 12 01:23:28 2026
+ * C++ source code generated on : Mon Jul 13 16:04:52 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -29,7 +29,6 @@
 #include <stddef.h>
 #include "rt_defines.h"
 #include "rt_urand_Upu32_Yd_f_pw_snf.h"
-#include "cmath"
 #include "plook_u32d_binckpang.h"
 #include "div_nde_s32_floor.h"
 #include "zero_crossing_types.h"
@@ -118,12 +117,12 @@ void proc_control_lite::proc_contr_HighpassFilter1_Init
   /* InitializeConditions for MATLABSystem: '<S169>/Highpass Filter1' */
   if (localDW->obj.FilterObj->isInitialized == 1) {
     /* System object Initialization function: dsp.SOSFilter */
-    for (int32_T i{0}; i < 10; i++) {
+    for (int32_T i{0}; i < 12; i++) {
       localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[i] =
         localDW->obj.FilterObj->cSFunObject.P0_ICRTP;
     }
 
-    for (int32_T i{0}; i < 10; i++) {
+    for (int32_T i{0}; i < 12; i++) {
       localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[i] =
         localDW->obj.FilterObj->cSFunObject.P4_IC2RTP;
     }
@@ -136,16 +135,18 @@ void proc_control_lite::proc_contr_HighpassFilter1_Init
 void proc_control_lite::proc_cont_HighpassFilter1_Start
   (DW_HighpassFilter1_proc_contr_T *localDW)
 {
-  static const real_T tmp[15]{ 0.47049906464656743, 0.99382083579643143,
-    0.5268068592747962, 1.0078713479088459, 0.9277273871026962,
-    -0.91744906203792753, -0.99382083579643143, -1.0013241023973467, -2.0,
-    -1.7794984850686681, 0.4704990646465676, 0.0, 0.52680685927479642,
-    1.0078713479088461, 0.92772738710269609 };
+  static const real_T tmp[18]{ 0.32413781078226916, 0.787105968438851,
+    0.482429930935823, 0.79683717815146327, 0.738896361428022,
+    0.89132194726126335, -0.55247388142170539, -1.5294393548830705,
+    -0.76904822490223546, -1.4500890090498284, -0.738896361428022,
+    -1.452037019226736, 0.32413781078226928, 0.78710596843885072,
+    0.48242993093582281, 0.79683717815146315, 0.0, 0.89132194726126324 };
 
-  static const real_T tmp_0[15]{ 1.0, 1.0, 1.0, 1.0, 1.0, -1.4208199482790183,
-    -0.17242133381065139, -1.7621932123954043, -0.8866008622471574,
-    -1.6565521641581005, 0.72986227762939926, 0.0, 0.96892016575610618,
-    0.38130975080988527, 0.88830726093400558 };
+  static const real_T tmp_0[18]{ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    -1.1426898881362995, -0.15904984999548274, -1.4063619250144992,
+    -0.78109601638639292, 0.14300459980086819, -1.3212923152479337,
+    0.80818737226442261, 0.26450680493226369, 0.97497683712378924,
+    0.60662036025296828, 0.0, 0.91338862519949937 };
 
   /* Start for MATLABSystem: '<S169>/Highpass Filter1' */
   localDW->obj.NumChannels = -1;
@@ -161,11 +162,11 @@ void proc_control_lite::proc_cont_HighpassFilter1_Start
   /* System object Constructor function: dsp.SOSFilter */
   localDW->obj._pobj0.cSFunObject.P0_ICRTP = 0.0;
   localDW->obj._pobj0.cSFunObject.P4_IC2RTP = 0.0;
-  std::memcpy(&localDW->obj._pobj0.cSFunObject.P1_RTP1COEFF[0], &tmp[0], 15U *
+  std::memcpy(&localDW->obj._pobj0.cSFunObject.P1_RTP1COEFF[0], &tmp[0], 18U *
               sizeof(real_T));
-  std::memcpy(&localDW->obj._pobj0.cSFunObject.P2_RTP2COEFF[0], &tmp_0[0], 15U *
+  std::memcpy(&localDW->obj._pobj0.cSFunObject.P2_RTP2COEFF[0], &tmp_0[0], 18U *
               sizeof(real_T));
-  for (int32_T i{0}; i < 6; i++) {
+  for (int32_T i{0}; i < 7; i++) {
     localDW->obj._pobj0.cSFunObject.P3_RTP3COEFF[i] = 1.0;
   }
 
@@ -190,12 +191,12 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
     localDW->obj.FilterObj->isSetupComplete = true;
 
     /* System object Initialization function: dsp.SOSFilter */
-    for (int32_T i{0}; i < 10; i++) {
+    for (int32_T i{0}; i < 12; i++) {
       localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[i] =
         localDW->obj.FilterObj->cSFunObject.P0_ICRTP;
     }
 
-    for (int32_T i{0}; i < 10; i++) {
+    for (int32_T i{0}; i < 12; i++) {
       localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[i] =
         localDW->obj.FilterObj->cSFunObject.P4_IC2RTP;
     }
@@ -205,13 +206,13 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
   stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[0U] * rtu_0;
   numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[0] * stageIn;
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[0] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[5];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[6];
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[1] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[10];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[12];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[0] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[5];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[6];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[1] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[10];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[12];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[1] = localDW->
     obj.FilterObj->cSFunObject.W0_ZERO_STATES[0];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[0] = stageIn;
@@ -221,13 +222,13 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
   stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[1U] * numAccum;
   numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[1] * stageIn;
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[2] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[6];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[7];
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[3] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[11];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[13];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[2] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[6];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[7];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[3] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[11];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[13];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[3] = localDW->
     obj.FilterObj->cSFunObject.W0_ZERO_STATES[2];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[2] = stageIn;
@@ -237,13 +238,13 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
   stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[2U] * numAccum;
   numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[2] * stageIn;
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[4] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[7];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[8];
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[5] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[12];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[14];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[4] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[7];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[8];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[5] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[12];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[14];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[5] = localDW->
     obj.FilterObj->cSFunObject.W0_ZERO_STATES[4];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[4] = stageIn;
@@ -253,13 +254,13 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
   stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[3U] * numAccum;
   numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[3] * stageIn;
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[6] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[8];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[9];
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[7] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[13];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[15];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[6] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[8];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[9];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[7] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[13];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[15];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[7] = localDW->
     obj.FilterObj->cSFunObject.W0_ZERO_STATES[6];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[6] = stageIn;
@@ -269,22 +270,38 @@ void proc_control_lite::proc_control_li_HighpassFilter1(real_T rtu_0,
   stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[4U] * numAccum;
   numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[4] * stageIn;
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[8] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[9];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[10];
   numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[9] *
-    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[14];
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[16];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[8] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[9];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[10];
   numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[9] *
-    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[14];
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[16];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[9] = localDW->
     obj.FilterObj->cSFunObject.W0_ZERO_STATES[8];
   localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[8] = stageIn;
   localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[9] = localDW->
     obj.FilterObj->cSFunObject.W1_POLE_STATES[8];
   localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[8] = numAccum;
+  stageIn = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[5U] * numAccum;
+  numAccum = localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[5] * stageIn;
+  numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[10] *
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[11];
+  numAccum += localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[11] *
+    localDW->obj.FilterObj->cSFunObject.P1_RTP1COEFF[17];
+  numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[10] *
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[11];
+  numAccum -= localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[11] *
+    localDW->obj.FilterObj->cSFunObject.P2_RTP2COEFF[17];
+  localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[11] =
+    localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[10];
+  localDW->obj.FilterObj->cSFunObject.W0_ZERO_STATES[10] = stageIn;
+  localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[11] =
+    localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[10];
+  localDW->obj.FilterObj->cSFunObject.W1_POLE_STATES[10] = numAccum;
 
   /* MATLABSystem: '<S169>/Highpass Filter1' */
-  localB->y = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[5U] * numAccum;
+  localB->y = localDW->obj.FilterObj->cSFunObject.P3_RTP3COEFF[6U] * numAccum;
 }
 
 /* Termination for atomic system: */
@@ -472,12 +489,11 @@ void proc_control_lite::proc_control_LowpassFilter_Term
 
 /*
  * Output and update for atomic system:
- *    '<S169>/MATLAB Function3'
  *    '<S169>/MATLAB Function4'
  *    '<S169>/MATLAB Function6'
  */
-void proc_control_lite::proc_control_li_MATLABFunction3(real_T rtu_u,
-  B_MATLABFunction3_proc_contro_T *localB)
+void proc_control_lite::proc_control_li_MATLABFunction4(real_T rtu_u,
+  B_MATLABFunction4_proc_contro_T *localB)
 {
   if ((rtu_u > -0.05) && (rtu_u < 0.05)) {
     localB->y = 0.0;
@@ -1058,11 +1074,11 @@ void proc_control_lite::proc_c_Subscriber_setupImpl_hpq(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 34; i++) {
     /* Start for MATLABSystem: '<S38>/SourceBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_a[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_b[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_40.createSubscriber
-    (&proc_control_lite_B.b_zeroDelimTopic_a[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_b[0], qos_profile);
 }
 
 void proc_control_lite::proc_Subscriber_setupImpl_hpq2j(const
@@ -1282,11 +1298,11 @@ void proc_control_lite::Subscriber_setup_hpq2joyuiyotjy(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 26; i++) {
     /* Start for MATLABSystem: '<S303>/SourceBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_av[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_a[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_2958_2511.createSubscriber
-    (&proc_control_lite_B.b_zeroDelimTopic_av[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_a[0], qos_profile);
 }
 
 void proc_control_lite::proc_con_Subscriber_setupImpl_c(const
@@ -1410,11 +1426,11 @@ void proc_control_lite::proc_con_Subscriber_setupImpl_g(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 24; i++) {
     /* Start for MATLABSystem: '<S284>/SourceBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_e[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_eg[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_2958_2543.createSubscriber
-    (&proc_control_lite_B.b_zeroDelimTopic_e[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_eg[0], qos_profile);
 }
 
 void proc_control_lite::pr_ROS2PubSubBase_setQOSProfile(rmw_qos_profile_t
@@ -1847,21 +1863,21 @@ void proc_control_lite::proc_cont_PolyTrajSys_setupImpl
     proc_control_lite_B.obj[1] = obj->VelocityBoundaryCondition[b_j + 3];
     proc_contro_generateCubicCoeffs(proc_control_lite_B.dv27,
       proc_control_lite_B.obj, 1.0, proc_control_lite_B.modBreaks);
-    proc_control_lite_B.coefMat_n[b_j] = proc_control_lite_B.modBreaks[0];
-    proc_control_lite_B.coefMat_n[b_j + 3] = proc_control_lite_B.modBreaks[1];
-    proc_control_lite_B.coefMat_n[b_j + 6] = proc_control_lite_B.modBreaks[2];
-    proc_control_lite_B.coefMat_n[b_j + 9] = proc_control_lite_B.modBreaks[3];
+    proc_control_lite_B.coefMat_g[b_j] = proc_control_lite_B.modBreaks[0];
+    proc_control_lite_B.coefMat_g[b_j + 3] = proc_control_lite_B.modBreaks[1];
+    proc_control_lite_B.coefMat_g[b_j + 6] = proc_control_lite_B.modBreaks[2];
+    proc_control_lite_B.coefMat_g[b_j + 9] = proc_control_lite_B.modBreaks[3];
   }
 
   proc_control_lite_B.dv27[0] = 1.0;
   proc_control_lite_B.dv27[1] = 2.0;
   pr_addFlatSegmentsToPPFormParts(proc_control_lite_B.dv27,
-    proc_control_lite_B.coefMat_n, proc_control_lite_B.modBreaks,
-    proc_control_lite_B.modCoeffs_c);
+    proc_control_lite_B.coefMat_g, proc_control_lite_B.modBreaks,
+    proc_control_lite_B.modCoeffs_g);
 
   /* Start for MATLABSystem: '<S266>/Polynomial Trajectory' */
   PolyTrajSys_updateStoredPPForms(obj, proc_control_lite_B.modBreaks,
-    proc_control_lite_B.modCoeffs_c);
+    proc_control_lite_B.modCoeffs_g);
   obj->PPFormUpdatedNeeded = false;
 }
 
@@ -1890,11 +1906,11 @@ void proc_control_lite::pro_Subscriber_setupImpl_hpq2jo(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 28; i++) {
     /* Start for MATLABSystem: '<S150>/SourceBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_f[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_f1[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_780.createSubscriber
-    (&proc_control_lite_B.b_zeroDelimTopic_f[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_f1[0], qos_profile);
 }
 
 void proc_control_lite::pr_Subscriber_setupImpl_hpq2joy(const
@@ -1922,11 +1938,11 @@ void proc_control_lite::pr_Subscriber_setupImpl_hpq2joy(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 28; i++) {
     /* Start for MATLABSystem: '<S151>/SourceBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_jo[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_j[i] = b_zeroDelimTopic[i];
   }
 
   Sub_proc_control_lite_781.createSubscriber
-    (&proc_control_lite_B.b_zeroDelimTopic_jo[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_j[0], qos_profile);
 }
 
 void proc_control_lite::proc_cont_Publisher_setupImpl_h(const
@@ -1986,11 +2002,11 @@ void proc_control_lite::proc_con_Publisher_setupImpl_hp(const
                  (bool)obj->QOSAvoidROSNamespaceConventions);
   for (int32_T i{0}; i < 32; i++) {
     /* Start for MATLABSystem: '<S19>/SinkBlock' */
-    proc_control_lite_B.b_zeroDelimTopic_j[i] = b_zeroDelimTopic[i];
+    proc_control_lite_B.b_zeroDelimTopic_f[i] = b_zeroDelimTopic[i];
   }
 
   Pub_proc_control_lite_1380.createPublisher
-    (&proc_control_lite_B.b_zeroDelimTopic_j[0], qos_profile);
+    (&proc_control_lite_B.b_zeroDelimTopic_f[0], qos_profile);
 }
 
 void proc_control_lite::proc_co_Publisher_setupImpl_hpq(const
@@ -2392,16 +2408,16 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
   boolean_T exitg2;
 
   /* Start for MATLABSystem: '<S235>/MATLAB System' */
-  std::memset(&proc_control_lite_B.b_tau_o[0], 0, 10U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.b_tau_dk[0], 0, 10U * sizeof(real_T));
   std::memcpy(&Q[0], &A[0], 230U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.work_j[0], 0, 10U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_o[0], 0, 10U * sizeof(real_T));
   for (proc_control_lite_B.itau_i = 0; proc_control_lite_B.itau_i < 10;
        proc_control_lite_B.itau_i++) {
     proc_control_lite_B.ii_b = proc_control_lite_B.itau_i * 23 +
       proc_control_lite_B.itau_i;
     proc_control_lite_B.ix0_c = proc_control_lite_B.ii_b + 2;
     proc_control_lite_B.b_atmp_l = Q[proc_control_lite_B.ii_b];
-    proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] = 0.0;
+    proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] = 0.0;
     proc_control_lite_B.beta1_jt = proc_control_lite_xnrm2_hp(22 -
       proc_control_lite_B.itau_i, Q, proc_control_lite_B.ii_b + 2);
     if (proc_control_lite_B.beta1_jt != 0.0) {
@@ -2437,7 +2453,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
           proc_control_lite_B.beta1_jt = -proc_control_lite_B.beta1_jt;
         }
 
-        proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] =
+        proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] =
           (proc_control_lite_B.beta1_jt - proc_control_lite_B.b_atmp_l) /
           proc_control_lite_B.beta1_jt;
         proc_control_lite_B.b_atmp_l = 1.0 / (proc_control_lite_B.b_atmp_l -
@@ -2455,7 +2471,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
 
         proc_control_lite_B.b_atmp_l = proc_control_lite_B.beta1_jt;
       } else {
-        proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] =
+        proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] =
           (proc_control_lite_B.beta1_jt - proc_control_lite_B.c_A_h) /
           proc_control_lite_B.beta1_jt;
         proc_control_lite_B.b_atmp_l = 1.0 / (proc_control_lite_B.c_A_h -
@@ -2476,7 +2492,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
     if (proc_control_lite_B.itau_i + 1 < 10) {
       Q[proc_control_lite_B.ii_b] = 1.0;
       proc_control_lite_B.ix0_c = proc_control_lite_B.ii_b + 24;
-      if (proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] != 0.0) {
+      if (proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] != 0.0) {
         proc_control_lite_B.lastv_dv = 23 - proc_control_lite_B.itau_i;
         proc_control_lite_B.i_av = proc_control_lite_B.ii_b -
           proc_control_lite_B.itau_i;
@@ -2519,7 +2535,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
       if (proc_control_lite_B.lastv_dv > 0) {
         if (proc_control_lite_B.knt_e + 1 != 0) {
           if (proc_control_lite_B.knt_e >= 0) {
-            std::memset(&proc_control_lite_B.work_j[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_o[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_e + 1) * sizeof(real_T));
           }
 
@@ -2541,21 +2557,21 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
 
             proc_control_lite_B.ia_l = div_nde_s32_floor
               ((proc_control_lite_B.iac_n - proc_control_lite_B.ii_b) - 24, 23);
-            proc_control_lite_B.work_j[proc_control_lite_B.ia_l] +=
+            proc_control_lite_B.work_o[proc_control_lite_B.ia_l] +=
               proc_control_lite_B.beta1_jt;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] == 0.0))
         {
           proc_control_lite_B.jA_ov = proc_control_lite_B.ii_b;
           for (proc_control_lite_B.ia_l = 0; proc_control_lite_B.ia_l <=
                proc_control_lite_B.knt_e; proc_control_lite_B.ia_l++) {
             proc_control_lite_B.beta1_jt =
-              proc_control_lite_B.work_j[proc_control_lite_B.ia_l];
+              proc_control_lite_B.work_o[proc_control_lite_B.ia_l];
             if (proc_control_lite_B.beta1_jt != 0.0) {
               proc_control_lite_B.beta1_jt *=
-                -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i];
+                -proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i];
               proc_control_lite_B.i_av = proc_control_lite_B.jA_ov + 24;
               proc_control_lite_B.ix0_c = (proc_control_lite_B.lastv_dv +
                 proc_control_lite_B.jA_ov) + 23;
@@ -2592,7 +2608,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
     }
 
     /* Start for MATLABSystem: '<S235>/MATLAB System' */
-    proc_control_lite_B.work_j[proc_control_lite_B.ii_b] = 0.0;
+    proc_control_lite_B.work_o[proc_control_lite_B.ii_b] = 0.0;
   }
 
   /* Start for MATLABSystem: '<S235>/MATLAB System' */
@@ -2603,7 +2619,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
     if (proc_control_lite_B.itau_i + 1 < 10) {
       Q[proc_control_lite_B.ii_b - 23] = 1.0;
       proc_control_lite_B.ix0_c = proc_control_lite_B.ii_b + 1;
-      if (proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] != 0.0) {
+      if (proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] != 0.0) {
         proc_control_lite_B.lastv_dv = 23 - proc_control_lite_B.itau_i;
         proc_control_lite_B.i_av = (proc_control_lite_B.ii_b -
           proc_control_lite_B.itau_i) - 1;
@@ -2646,7 +2662,7 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
       if (proc_control_lite_B.lastv_dv > 0) {
         if (proc_control_lite_B.knt_e + 1 != 0) {
           if (proc_control_lite_B.knt_e >= 0) {
-            std::memset(&proc_control_lite_B.work_j[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_o[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_e + 1) * sizeof(real_T));
           }
 
@@ -2668,21 +2684,21 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
 
             proc_control_lite_B.ia_l = div_nde_s32_floor
               ((proc_control_lite_B.iac_n - proc_control_lite_B.ii_b) - 1, 23);
-            proc_control_lite_B.work_j[proc_control_lite_B.ia_l] +=
+            proc_control_lite_B.work_o[proc_control_lite_B.ia_l] +=
               proc_control_lite_B.beta1_jt;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i] == 0.0))
         {
           proc_control_lite_B.jA_ov = proc_control_lite_B.ii_b;
           for (proc_control_lite_B.ia_l = 0; proc_control_lite_B.ia_l <=
                proc_control_lite_B.knt_e; proc_control_lite_B.ia_l++) {
             proc_control_lite_B.beta1_jt =
-              proc_control_lite_B.work_j[proc_control_lite_B.ia_l];
+              proc_control_lite_B.work_o[proc_control_lite_B.ia_l];
             if (proc_control_lite_B.beta1_jt != 0.0) {
               proc_control_lite_B.beta1_jt *=
-                -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i];
+                -proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i];
               proc_control_lite_B.i_av = proc_control_lite_B.jA_ov + 1;
               proc_control_lite_B.ix0_c = proc_control_lite_B.lastv_dv +
                 proc_control_lite_B.jA_ov;
@@ -2707,11 +2723,11 @@ void proc_control_lite::proc_control_lite_qr(const real_T A[230], real_T Q[230],
          proc_control_lite_B.lastv_dv <= proc_control_lite_B.i_av;
          proc_control_lite_B.lastv_dv++) {
       Q[proc_control_lite_B.lastv_dv - 1] *=
-        -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i];
+        -proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i];
     }
 
     Q[proc_control_lite_B.ii_b - 23] = 1.0 -
-      proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_i];
+      proc_control_lite_B.b_tau_dk[proc_control_lite_B.itau_i];
     for (proc_control_lite_B.i_av = 0; proc_control_lite_B.i_av <
          proc_control_lite_B.itau_i; proc_control_lite_B.i_av++) {
       Q[(proc_control_lite_B.ii_b - proc_control_lite_B.i_av) - 24] = 0.0;
@@ -2841,16 +2857,16 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
   boolean_T exitg2;
 
   /* Start for MATLABSystem: '<S235>/MATLAB System' */
-  std::memset(&proc_control_lite_B.b_tau_i[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.b_tau_d[0], 0, 13U * sizeof(real_T));
   std::memcpy(&Q[0], &A[0], 299U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.work_g[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_ik[0], 0, 13U * sizeof(real_T));
   for (proc_control_lite_B.itau_e = 0; proc_control_lite_B.itau_e < 13;
        proc_control_lite_B.itau_e++) {
     proc_control_lite_B.ii_m = proc_control_lite_B.itau_e * 23 +
       proc_control_lite_B.itau_e;
     proc_control_lite_B.ix0_i = proc_control_lite_B.ii_m + 2;
     proc_control_lite_B.b_atmp_a = Q[proc_control_lite_B.ii_m];
-    proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] = 0.0;
+    proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] = 0.0;
     proc_control_lite_B.beta1_i = proc_control_lite_xnrm2_hpq(22 -
       proc_control_lite_B.itau_e, Q, proc_control_lite_B.ii_m + 2);
     if (proc_control_lite_B.beta1_i != 0.0) {
@@ -2886,7 +2902,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
           proc_control_lite_B.beta1_i = -proc_control_lite_B.beta1_i;
         }
 
-        proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] =
+        proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] =
           (proc_control_lite_B.beta1_i - proc_control_lite_B.b_atmp_a) /
           proc_control_lite_B.beta1_i;
         proc_control_lite_B.b_atmp_a = 1.0 / (proc_control_lite_B.b_atmp_a -
@@ -2904,7 +2920,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
 
         proc_control_lite_B.b_atmp_a = proc_control_lite_B.beta1_i;
       } else {
-        proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] =
+        proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] =
           (proc_control_lite_B.beta1_i - proc_control_lite_B.c_A_p) /
           proc_control_lite_B.beta1_i;
         proc_control_lite_B.b_atmp_a = 1.0 / (proc_control_lite_B.c_A_p -
@@ -2925,7 +2941,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
     if (proc_control_lite_B.itau_e + 1 < 13) {
       Q[proc_control_lite_B.ii_m] = 1.0;
       proc_control_lite_B.ix0_i = proc_control_lite_B.ii_m + 24;
-      if (proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] != 0.0) {
+      if (proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] != 0.0) {
         proc_control_lite_B.lastv_h = 23 - proc_control_lite_B.itau_e;
         proc_control_lite_B.i_j4 = proc_control_lite_B.ii_m -
           proc_control_lite_B.itau_e;
@@ -2968,7 +2984,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
       if (proc_control_lite_B.lastv_h > 0) {
         if (proc_control_lite_B.knt_o4 + 1 != 0) {
           if (proc_control_lite_B.knt_o4 >= 0) {
-            std::memset(&proc_control_lite_B.work_g[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_ik[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_o4 + 1) * sizeof(real_T));
           }
 
@@ -2990,21 +3006,21 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
 
             proc_control_lite_B.ia_j = div_nde_s32_floor
               ((proc_control_lite_B.iac_lx - proc_control_lite_B.ii_m) - 24, 23);
-            proc_control_lite_B.work_g[proc_control_lite_B.ia_j] +=
+            proc_control_lite_B.work_ik[proc_control_lite_B.ia_j] +=
               proc_control_lite_B.beta1_i;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] == 0.0))
         {
           proc_control_lite_B.jA_n5 = proc_control_lite_B.ii_m;
           for (proc_control_lite_B.ia_j = 0; proc_control_lite_B.ia_j <=
                proc_control_lite_B.knt_o4; proc_control_lite_B.ia_j++) {
             proc_control_lite_B.beta1_i =
-              proc_control_lite_B.work_g[proc_control_lite_B.ia_j];
+              proc_control_lite_B.work_ik[proc_control_lite_B.ia_j];
             if (proc_control_lite_B.beta1_i != 0.0) {
               proc_control_lite_B.beta1_i *=
-                -proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e];
+                -proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e];
               proc_control_lite_B.i_j4 = proc_control_lite_B.jA_n5 + 24;
               proc_control_lite_B.ix0_i = (proc_control_lite_B.lastv_h +
                 proc_control_lite_B.jA_n5) + 23;
@@ -3042,7 +3058,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
     }
 
     /* Start for MATLABSystem: '<S235>/MATLAB System' */
-    proc_control_lite_B.work_g[proc_control_lite_B.ii_m] = 0.0;
+    proc_control_lite_B.work_ik[proc_control_lite_B.ii_m] = 0.0;
   }
 
   /* Start for MATLABSystem: '<S235>/MATLAB System' */
@@ -3053,7 +3069,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
     if (proc_control_lite_B.itau_e + 1 < 13) {
       Q[proc_control_lite_B.ii_m - 23] = 1.0;
       proc_control_lite_B.ix0_i = proc_control_lite_B.ii_m + 1;
-      if (proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] != 0.0) {
+      if (proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] != 0.0) {
         proc_control_lite_B.lastv_h = 23 - proc_control_lite_B.itau_e;
         proc_control_lite_B.i_j4 = (proc_control_lite_B.ii_m -
           proc_control_lite_B.itau_e) - 1;
@@ -3096,7 +3112,7 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
       if (proc_control_lite_B.lastv_h > 0) {
         if (proc_control_lite_B.knt_o4 + 1 != 0) {
           if (proc_control_lite_B.knt_o4 >= 0) {
-            std::memset(&proc_control_lite_B.work_g[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_ik[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_o4 + 1) * sizeof(real_T));
           }
 
@@ -3118,21 +3134,21 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
 
             proc_control_lite_B.ia_j = div_nde_s32_floor
               ((proc_control_lite_B.iac_lx - proc_control_lite_B.ii_m) - 1, 23);
-            proc_control_lite_B.work_g[proc_control_lite_B.ia_j] +=
+            proc_control_lite_B.work_ik[proc_control_lite_B.ia_j] +=
               proc_control_lite_B.beta1_i;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e] == 0.0))
         {
           proc_control_lite_B.jA_n5 = proc_control_lite_B.ii_m;
           for (proc_control_lite_B.ia_j = 0; proc_control_lite_B.ia_j <=
                proc_control_lite_B.knt_o4; proc_control_lite_B.ia_j++) {
             proc_control_lite_B.beta1_i =
-              proc_control_lite_B.work_g[proc_control_lite_B.ia_j];
+              proc_control_lite_B.work_ik[proc_control_lite_B.ia_j];
             if (proc_control_lite_B.beta1_i != 0.0) {
               proc_control_lite_B.beta1_i *=
-                -proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e];
+                -proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e];
               proc_control_lite_B.i_j4 = proc_control_lite_B.jA_n5 + 1;
               proc_control_lite_B.ix0_i = proc_control_lite_B.lastv_h +
                 proc_control_lite_B.jA_n5;
@@ -3158,11 +3174,11 @@ void proc_control_lite::proc_control_lite_qr_h(const real_T A[299], real_T Q[299
          proc_control_lite_B.lastv_h <= proc_control_lite_B.i_j4;
          proc_control_lite_B.lastv_h++) {
       Q[proc_control_lite_B.lastv_h - 1] *=
-        -proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e];
+        -proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e];
     }
 
     Q[proc_control_lite_B.ii_m - 23] = 1.0 -
-      proc_control_lite_B.b_tau_i[proc_control_lite_B.itau_e];
+      proc_control_lite_B.b_tau_d[proc_control_lite_B.itau_e];
     for (proc_control_lite_B.i_j4 = 0; proc_control_lite_B.i_j4 <
          proc_control_lite_B.itau_e; proc_control_lite_B.i_j4++) {
       Q[(proc_control_lite_B.ii_m - proc_control_lite_B.i_j4) - 24] = 0.0;
@@ -3686,16 +3702,16 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
   boolean_T exitg2;
 
   /* Start for MATLABSystem: '<S236>/MATLAB System' */
-  std::memset(&proc_control_lite_B.b_tau_e[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.b_tau_b[0], 0, 13U * sizeof(real_T));
   std::memcpy(&Q[0], &A[0], 208U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.work_d[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_e[0], 0, 13U * sizeof(real_T));
   for (proc_control_lite_B.itau_c = 0; proc_control_lite_B.itau_c < 13;
        proc_control_lite_B.itau_c++) {
     proc_control_lite_B.ii_o = (proc_control_lite_B.itau_c << 4) +
       proc_control_lite_B.itau_c;
     proc_control_lite_B.ix0_f = proc_control_lite_B.ii_o + 2;
     proc_control_lite_B.b_atmp_c = Q[proc_control_lite_B.ii_o];
-    proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] = 0.0;
+    proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] = 0.0;
     proc_control_lite_B.beta1_j = proc_control_lite_xnrm2_hpq2j(15 -
       proc_control_lite_B.itau_c, Q, proc_control_lite_B.ii_o + 2);
     if (proc_control_lite_B.beta1_j != 0.0) {
@@ -3731,7 +3747,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
           proc_control_lite_B.beta1_j = -proc_control_lite_B.beta1_j;
         }
 
-        proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] =
+        proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] =
           (proc_control_lite_B.beta1_j - proc_control_lite_B.b_atmp_c) /
           proc_control_lite_B.beta1_j;
         proc_control_lite_B.b_atmp_c = 1.0 / (proc_control_lite_B.b_atmp_c -
@@ -3749,7 +3765,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
 
         proc_control_lite_B.b_atmp_c = proc_control_lite_B.beta1_j;
       } else {
-        proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] =
+        proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] =
           (proc_control_lite_B.beta1_j - proc_control_lite_B.c_A_a) /
           proc_control_lite_B.beta1_j;
         proc_control_lite_B.b_atmp_c = 1.0 / (proc_control_lite_B.c_A_a -
@@ -3770,7 +3786,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
     if (proc_control_lite_B.itau_c + 1 < 13) {
       Q[proc_control_lite_B.ii_o] = 1.0;
       proc_control_lite_B.ix0_f = proc_control_lite_B.ii_o + 17;
-      if (proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] != 0.0) {
+      if (proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] != 0.0) {
         proc_control_lite_B.lastv_i = 16 - proc_control_lite_B.itau_c;
         proc_control_lite_B.i_oa = proc_control_lite_B.ii_o -
           proc_control_lite_B.itau_c;
@@ -3813,7 +3829,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
       if (proc_control_lite_B.lastv_i > 0) {
         if (proc_control_lite_B.knt_ov + 1 != 0) {
           if (proc_control_lite_B.knt_ov >= 0) {
-            std::memset(&proc_control_lite_B.work_d[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_e[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_ov + 1) * sizeof(real_T));
           }
 
@@ -3835,21 +3851,21 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
 
             proc_control_lite_B.ia_m = ((proc_control_lite_B.iac_d -
               proc_control_lite_B.ii_o) - 17) >> 4;
-            proc_control_lite_B.work_d[proc_control_lite_B.ia_m] +=
+            proc_control_lite_B.work_e[proc_control_lite_B.ia_m] +=
               proc_control_lite_B.beta1_j;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] == 0.0))
         {
           proc_control_lite_B.jA_o = proc_control_lite_B.ii_o;
           for (proc_control_lite_B.ia_m = 0; proc_control_lite_B.ia_m <=
                proc_control_lite_B.knt_ov; proc_control_lite_B.ia_m++) {
             proc_control_lite_B.beta1_j =
-              proc_control_lite_B.work_d[proc_control_lite_B.ia_m];
+              proc_control_lite_B.work_e[proc_control_lite_B.ia_m];
             if (proc_control_lite_B.beta1_j != 0.0) {
               proc_control_lite_B.beta1_j *=
-                -proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c];
+                -proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c];
               proc_control_lite_B.i_oa = proc_control_lite_B.jA_o + 17;
               proc_control_lite_B.ix0_f = (proc_control_lite_B.lastv_i +
                 proc_control_lite_B.jA_o) + 16;
@@ -3886,7 +3902,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
     }
 
     /* Start for MATLABSystem: '<S236>/MATLAB System' */
-    proc_control_lite_B.work_d[proc_control_lite_B.ii_o] = 0.0;
+    proc_control_lite_B.work_e[proc_control_lite_B.ii_o] = 0.0;
   }
 
   /* Start for MATLABSystem: '<S236>/MATLAB System' */
@@ -3897,7 +3913,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
     if (proc_control_lite_B.itau_c + 1 < 13) {
       Q[proc_control_lite_B.ii_o - 16] = 1.0;
       proc_control_lite_B.ix0_f = proc_control_lite_B.ii_o + 1;
-      if (proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] != 0.0) {
+      if (proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] != 0.0) {
         proc_control_lite_B.lastv_i = 16 - proc_control_lite_B.itau_c;
         proc_control_lite_B.i_oa = (proc_control_lite_B.ii_o -
           proc_control_lite_B.itau_c) - 1;
@@ -3940,7 +3956,7 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
       if (proc_control_lite_B.lastv_i > 0) {
         if (proc_control_lite_B.knt_ov + 1 != 0) {
           if (proc_control_lite_B.knt_ov >= 0) {
-            std::memset(&proc_control_lite_B.work_d[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_e[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_ov + 1) * sizeof(real_T));
           }
 
@@ -3962,21 +3978,21 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
 
             proc_control_lite_B.ia_m = ((proc_control_lite_B.iac_d -
               proc_control_lite_B.ii_o) - 1) >> 4;
-            proc_control_lite_B.work_d[proc_control_lite_B.ia_m] +=
+            proc_control_lite_B.work_e[proc_control_lite_B.ia_m] +=
               proc_control_lite_B.beta1_j;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c] == 0.0))
         {
           proc_control_lite_B.jA_o = proc_control_lite_B.ii_o;
           for (proc_control_lite_B.ia_m = 0; proc_control_lite_B.ia_m <=
                proc_control_lite_B.knt_ov; proc_control_lite_B.ia_m++) {
             proc_control_lite_B.beta1_j =
-              proc_control_lite_B.work_d[proc_control_lite_B.ia_m];
+              proc_control_lite_B.work_e[proc_control_lite_B.ia_m];
             if (proc_control_lite_B.beta1_j != 0.0) {
               proc_control_lite_B.beta1_j *=
-                -proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c];
+                -proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c];
               proc_control_lite_B.i_oa = proc_control_lite_B.jA_o + 1;
               proc_control_lite_B.ix0_f = proc_control_lite_B.lastv_i +
                 proc_control_lite_B.jA_o;
@@ -4001,11 +4017,11 @@ void proc_control_lite::proc_control_lite_qr_hpq(const real_T A[208], real_T Q
          proc_control_lite_B.lastv_i <= proc_control_lite_B.i_oa;
          proc_control_lite_B.lastv_i++) {
       Q[proc_control_lite_B.lastv_i - 1] *=
-        -proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c];
+        -proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c];
     }
 
     Q[proc_control_lite_B.ii_o - 16] = 1.0 -
-      proc_control_lite_B.b_tau_e[proc_control_lite_B.itau_c];
+      proc_control_lite_B.b_tau_b[proc_control_lite_B.itau_c];
     for (proc_control_lite_B.i_oa = 0; proc_control_lite_B.i_oa <
          proc_control_lite_B.itau_c; proc_control_lite_B.i_oa++) {
       Q[(proc_control_lite_B.ii_o - proc_control_lite_B.i_oa) - 17] = 0.0;
@@ -4089,7 +4105,7 @@ void proc_control_lite::EKFCorrectorAdditive_getMeasure(real_T Rs, const real_T
     proc_control_lite_B.lastv = 0;
     for (proc_control_lite_B.i_or = 0; proc_control_lite_B.i_or < 13;
          proc_control_lite_B.i_or++) {
-      proc_control_lite_B.imvec_j[proc_control_lite_B.i_or] =
+      proc_control_lite_B.imvec_d[proc_control_lite_B.i_or] =
         x[proc_control_lite_B.i_or];
       proc_control_lite_B.beta1_o = 0.0;
       proc_control_lite_B.i32 = 0;
@@ -4106,9 +4122,9 @@ void proc_control_lite::EKFCorrectorAdditive_getMeasure(real_T Rs, const real_T
       proc_control_lite_B.lastv += 13;
     }
 
-    proc_control_lite_B.imvec_j[proc_control_lite_B.b_j_i] =
+    proc_control_lite_B.imvec_d[proc_control_lite_B.b_j_i] =
       x[proc_control_lite_B.b_j_i] + proc_control_lite_B.epsilon;
-    dHdx[proc_control_lite_B.b_j_i] = (proc_control_lite_B.imvec_j[2] - x[2]) /
+    dHdx[proc_control_lite_B.b_j_i] = (proc_control_lite_B.imvec_d[2] - x[2]) /
       proc_control_lite_B.epsilon;
   }
 
@@ -4278,16 +4294,16 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
   boolean_T exitg2;
 
   /* Start for MATLABSystem: '<S237>/MATLAB System' */
-  std::memset(&proc_control_lite_B.b_tau_c[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.b_tau_o[0], 0, 13U * sizeof(real_T));
   std::memcpy(&Q[0], &A[0], 182U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.work_b[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_c[0], 0, 13U * sizeof(real_T));
   for (proc_control_lite_B.itau_p = 0; proc_control_lite_B.itau_p < 13;
        proc_control_lite_B.itau_p++) {
     proc_control_lite_B.ii_p = proc_control_lite_B.itau_p * 14 +
       proc_control_lite_B.itau_p;
     proc_control_lite_B.ix0_m = proc_control_lite_B.ii_p + 2;
     proc_control_lite_B.b_atmp_e = Q[proc_control_lite_B.ii_p];
-    proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] = 0.0;
+    proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] = 0.0;
     proc_control_lite_B.beta1_c = proc_control_lite_xnrm2_hpq2joy(13 -
       proc_control_lite_B.itau_p, Q, proc_control_lite_B.ii_p + 2);
     if (proc_control_lite_B.beta1_c != 0.0) {
@@ -4323,7 +4339,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
           proc_control_lite_B.beta1_c = -proc_control_lite_B.beta1_c;
         }
 
-        proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] =
+        proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] =
           (proc_control_lite_B.beta1_c - proc_control_lite_B.b_atmp_e) /
           proc_control_lite_B.beta1_c;
         proc_control_lite_B.b_atmp_e = 1.0 / (proc_control_lite_B.b_atmp_e -
@@ -4341,7 +4357,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
 
         proc_control_lite_B.b_atmp_e = proc_control_lite_B.beta1_c;
       } else {
-        proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] =
+        proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] =
           (proc_control_lite_B.beta1_c - proc_control_lite_B.c_A_j) /
           proc_control_lite_B.beta1_c;
         proc_control_lite_B.b_atmp_e = 1.0 / (proc_control_lite_B.c_A_j -
@@ -4362,7 +4378,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
     if (proc_control_lite_B.itau_p + 1 < 13) {
       Q[proc_control_lite_B.ii_p] = 1.0;
       proc_control_lite_B.ix0_m = proc_control_lite_B.ii_p + 15;
-      if (proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] != 0.0) {
+      if (proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] != 0.0) {
         proc_control_lite_B.lastv_d = 14 - proc_control_lite_B.itau_p;
         proc_control_lite_B.i_gh = proc_control_lite_B.ii_p -
           proc_control_lite_B.itau_p;
@@ -4405,7 +4421,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
       if (proc_control_lite_B.lastv_d > 0) {
         if (proc_control_lite_B.knt_p + 1 != 0) {
           if (proc_control_lite_B.knt_p >= 0) {
-            std::memset(&proc_control_lite_B.work_b[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_c[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_p + 1) * sizeof(real_T));
           }
 
@@ -4427,21 +4443,21 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
 
             proc_control_lite_B.ia_bh = div_nde_s32_floor
               ((proc_control_lite_B.iac_l - proc_control_lite_B.ii_p) - 15, 14);
-            proc_control_lite_B.work_b[proc_control_lite_B.ia_bh] +=
+            proc_control_lite_B.work_c[proc_control_lite_B.ia_bh] +=
               proc_control_lite_B.beta1_c;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] == 0.0))
         {
           proc_control_lite_B.jA_e = proc_control_lite_B.ii_p;
           for (proc_control_lite_B.ia_bh = 0; proc_control_lite_B.ia_bh <=
                proc_control_lite_B.knt_p; proc_control_lite_B.ia_bh++) {
             proc_control_lite_B.beta1_c =
-              proc_control_lite_B.work_b[proc_control_lite_B.ia_bh];
+              proc_control_lite_B.work_c[proc_control_lite_B.ia_bh];
             if (proc_control_lite_B.beta1_c != 0.0) {
               proc_control_lite_B.beta1_c *=
-                -proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p];
+                -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p];
               proc_control_lite_B.i_gh = proc_control_lite_B.jA_e + 15;
               proc_control_lite_B.ix0_m = (proc_control_lite_B.lastv_d +
                 proc_control_lite_B.jA_e) + 14;
@@ -4478,7 +4494,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
     }
 
     /* Start for MATLABSystem: '<S237>/MATLAB System' */
-    proc_control_lite_B.work_b[proc_control_lite_B.ii_p] = 0.0;
+    proc_control_lite_B.work_c[proc_control_lite_B.ii_p] = 0.0;
   }
 
   /* Start for MATLABSystem: '<S237>/MATLAB System' */
@@ -4489,7 +4505,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
     if (proc_control_lite_B.itau_p + 1 < 13) {
       Q[proc_control_lite_B.ii_p - 14] = 1.0;
       proc_control_lite_B.ix0_m = proc_control_lite_B.ii_p + 1;
-      if (proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] != 0.0) {
+      if (proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] != 0.0) {
         proc_control_lite_B.lastv_d = 14 - proc_control_lite_B.itau_p;
         proc_control_lite_B.i_gh = (proc_control_lite_B.ii_p -
           proc_control_lite_B.itau_p) - 1;
@@ -4532,7 +4548,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
       if (proc_control_lite_B.lastv_d > 0) {
         if (proc_control_lite_B.knt_p + 1 != 0) {
           if (proc_control_lite_B.knt_p >= 0) {
-            std::memset(&proc_control_lite_B.work_b[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_c[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_p + 1) * sizeof(real_T));
           }
 
@@ -4554,21 +4570,21 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
 
             proc_control_lite_B.ia_bh = div_nde_s32_floor
               ((proc_control_lite_B.iac_l - proc_control_lite_B.ii_p) - 1, 14);
-            proc_control_lite_B.work_b[proc_control_lite_B.ia_bh] +=
+            proc_control_lite_B.work_c[proc_control_lite_B.ia_bh] +=
               proc_control_lite_B.beta1_c;
           }
         }
 
-        if (!(-proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p] == 0.0))
+        if (!(-proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p] == 0.0))
         {
           proc_control_lite_B.jA_e = proc_control_lite_B.ii_p;
           for (proc_control_lite_B.ia_bh = 0; proc_control_lite_B.ia_bh <=
                proc_control_lite_B.knt_p; proc_control_lite_B.ia_bh++) {
             proc_control_lite_B.beta1_c =
-              proc_control_lite_B.work_b[proc_control_lite_B.ia_bh];
+              proc_control_lite_B.work_c[proc_control_lite_B.ia_bh];
             if (proc_control_lite_B.beta1_c != 0.0) {
               proc_control_lite_B.beta1_c *=
-                -proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p];
+                -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p];
               proc_control_lite_B.i_gh = proc_control_lite_B.jA_e + 1;
               proc_control_lite_B.ix0_m = proc_control_lite_B.lastv_d +
                 proc_control_lite_B.jA_e;
@@ -4593,11 +4609,11 @@ void proc_control_lite::proc_control_lite_qr_hpq2(const real_T A[182], real_T Q
          proc_control_lite_B.lastv_d <= proc_control_lite_B.i_gh;
          proc_control_lite_B.lastv_d++) {
       Q[proc_control_lite_B.lastv_d - 1] *=
-        -proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p];
+        -proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p];
     }
 
     Q[proc_control_lite_B.ii_p - 14] = 1.0 -
-      proc_control_lite_B.b_tau_c[proc_control_lite_B.itau_p];
+      proc_control_lite_B.b_tau_o[proc_control_lite_B.itau_p];
     for (proc_control_lite_B.i_gh = 0; proc_control_lite_B.i_gh <
          proc_control_lite_B.itau_p; proc_control_lite_B.i_gh++) {
       Q[(proc_control_lite_B.ii_p - proc_control_lite_B.i_gh) - 15] = 0.0;
@@ -4609,7 +4625,7 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
   real_T B[48])
 {
   /* Start for MATLABSystem: '<S239>/MATLAB System' */
-  std::memcpy(&proc_control_lite_B.c_A_m[0], &A[0], 36U * sizeof(real_T));
+  std::memcpy(&proc_control_lite_B.c_A_cj[0], &A[0], 36U * sizeof(real_T));
   for (proc_control_lite_B.jj_o = 0; proc_control_lite_B.jj_o < 6;
        proc_control_lite_B.jj_o++) {
     proc_control_lite_B.b_ipiv_o[proc_control_lite_B.jj_o] = static_cast<int8_T>
@@ -4624,10 +4640,10 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
     proc_control_lite_B.kAcol_o3 = 6 - proc_control_lite_B.b_j_o;
     proc_control_lite_B.iy_a = 1;
     proc_control_lite_B.smax_c = std::abs
-      (proc_control_lite_B.c_A_m[proc_control_lite_B.jj_o]);
+      (proc_control_lite_B.c_A_cj[proc_control_lite_B.jj_o]);
     for (proc_control_lite_B.jA_b = 2; proc_control_lite_B.jA_b <=
          proc_control_lite_B.kAcol_o3; proc_control_lite_B.jA_b++) {
-      proc_control_lite_B.s_d = std::abs(proc_control_lite_B.c_A_m
+      proc_control_lite_B.s_d = std::abs(proc_control_lite_B.c_A_cj
         [(proc_control_lite_B.c_li + proc_control_lite_B.jA_b) - 3]);
       if (proc_control_lite_B.s_d > proc_control_lite_B.smax_c) {
         proc_control_lite_B.iy_a = proc_control_lite_B.jA_b;
@@ -4635,7 +4651,7 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
       }
     }
 
-    if (proc_control_lite_B.c_A_m[(proc_control_lite_B.c_li +
+    if (proc_control_lite_B.c_A_cj[(proc_control_lite_B.c_li +
          proc_control_lite_B.iy_a) - 3] != 0.0) {
       if (proc_control_lite_B.iy_a - 1 != 0) {
         proc_control_lite_B.iy_a += proc_control_lite_B.b_j_o;
@@ -4646,12 +4662,12 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
           proc_control_lite_B.kAcol_o3 = proc_control_lite_B.jA_b * 6 +
             proc_control_lite_B.b_j_o;
           proc_control_lite_B.smax_c =
-            proc_control_lite_B.c_A_m[proc_control_lite_B.kAcol_o3];
+            proc_control_lite_B.c_A_cj[proc_control_lite_B.kAcol_o3];
           proc_control_lite_B.jp1j_e = (proc_control_lite_B.jA_b * 6 +
             proc_control_lite_B.iy_a) - 1;
-          proc_control_lite_B.c_A_m[proc_control_lite_B.kAcol_o3] =
-            proc_control_lite_B.c_A_m[proc_control_lite_B.jp1j_e];
-          proc_control_lite_B.c_A_m[proc_control_lite_B.jp1j_e] =
+          proc_control_lite_B.c_A_cj[proc_control_lite_B.kAcol_o3] =
+            proc_control_lite_B.c_A_cj[proc_control_lite_B.jp1j_e];
+          proc_control_lite_B.c_A_cj[proc_control_lite_B.jp1j_e] =
             proc_control_lite_B.smax_c;
         }
       }
@@ -4661,8 +4677,8 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
       for (proc_control_lite_B.jA_b = proc_control_lite_B.c_li;
            proc_control_lite_B.jA_b <= proc_control_lite_B.iy_a + 4;
            proc_control_lite_B.jA_b++) {
-        proc_control_lite_B.c_A_m[proc_control_lite_B.jA_b - 1] /=
-          proc_control_lite_B.c_A_m[proc_control_lite_B.jj_o];
+        proc_control_lite_B.c_A_cj[proc_control_lite_B.jA_b - 1] /=
+          proc_control_lite_B.c_A_cj[proc_control_lite_B.jj_o];
       }
     }
 
@@ -4672,7 +4688,7 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
     for (proc_control_lite_B.jp1j_e = 0; proc_control_lite_B.jp1j_e <=
          proc_control_lite_B.kAcol_o3; proc_control_lite_B.jp1j_e++) {
       proc_control_lite_B.smax_c =
-        proc_control_lite_B.c_A_m[proc_control_lite_B.jp1j_e * 6 +
+        proc_control_lite_B.c_A_cj[proc_control_lite_B.jp1j_e * 6 +
         proc_control_lite_B.jj_o];
       if (proc_control_lite_B.smax_c != 0.0) {
         proc_control_lite_B.iy_a = proc_control_lite_B.jA_b + 8;
@@ -4680,7 +4696,7 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
           proc_control_lite_B.b_j_o) + 12;
         for (int32_T ijA{proc_control_lite_B.iy_a}; ijA <=
              proc_control_lite_B.c_oy; ijA++) {
-          proc_control_lite_B.c_A_m[ijA - 1] += proc_control_lite_B.c_A_m
+          proc_control_lite_B.c_A_cj[ijA - 1] += proc_control_lite_B.c_A_cj
             [((proc_control_lite_B.c_li + ijA) - proc_control_lite_B.jA_b) - 9] *
             -proc_control_lite_B.smax_c;
         }
@@ -4726,7 +4742,7 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
           proc_control_lite_B.jp1j_e = proc_control_lite_B.jA_b +
             proc_control_lite_B.iy_a;
           B[proc_control_lite_B.jp1j_e] -=
-            proc_control_lite_B.c_A_m[proc_control_lite_B.jA_b +
+            proc_control_lite_B.c_A_cj[proc_control_lite_B.jA_b +
             proc_control_lite_B.kAcol_o3] * B[proc_control_lite_B.jj_o];
         }
       }
@@ -4745,14 +4761,14 @@ void proc_control_lite::proc_control_lit_mldivide_hpq2j(const real_T A[36],
       proc_control_lite_B.smax_c = B[proc_control_lite_B.jj_o];
       if (proc_control_lite_B.smax_c != 0.0) {
         B[proc_control_lite_B.jj_o] = proc_control_lite_B.smax_c /
-          proc_control_lite_B.c_A_m[proc_control_lite_B.jA_b +
+          proc_control_lite_B.c_A_cj[proc_control_lite_B.jA_b +
           proc_control_lite_B.kAcol_o3];
         for (proc_control_lite_B.c_li = 0; proc_control_lite_B.c_li <
              proc_control_lite_B.jA_b; proc_control_lite_B.c_li++) {
           proc_control_lite_B.jp1j_e = proc_control_lite_B.c_li +
             proc_control_lite_B.iy_a;
           B[proc_control_lite_B.jp1j_e] -=
-            proc_control_lite_B.c_A_m[proc_control_lite_B.c_li +
+            proc_control_lite_B.c_A_cj[proc_control_lite_B.c_li +
             proc_control_lite_B.kAcol_o3] * B[proc_control_lite_B.jj_o];
         }
       }
@@ -4794,16 +4810,16 @@ real_T proc_control_lite::proc_control_lite_erf(real_T x)
         y = 0.12837916709551259 * x + x;
       }
     } else {
-      proc_control_lite_B.z_l = x * x;
-      y = ((((proc_control_lite_B.z_l * -2.3763016656650163E-5 -
-              0.0057702702964894416) * proc_control_lite_B.z_l -
-             0.02848174957559851) * proc_control_lite_B.z_l - 0.3250421072470015)
-           * proc_control_lite_B.z_l + 0.12837916709551256) /
-        (((((proc_control_lite_B.z_l * -3.9602282787753681E-6 +
-             0.00013249473800432164) * proc_control_lite_B.z_l +
-            0.0050813062818757656) * proc_control_lite_B.z_l +
-           0.0650222499887673) * proc_control_lite_B.z_l + 0.39791722395915535) *
-         proc_control_lite_B.z_l + 1.0) * x + x;
+      proc_control_lite_B.z_lm = x * x;
+      y = ((((proc_control_lite_B.z_lm * -2.3763016656650163E-5 -
+              0.0057702702964894416) * proc_control_lite_B.z_lm -
+             0.02848174957559851) * proc_control_lite_B.z_lm -
+            0.3250421072470015) * proc_control_lite_B.z_lm + 0.12837916709551256)
+        / (((((proc_control_lite_B.z_lm * -3.9602282787753681E-6 +
+               0.00013249473800432164) * proc_control_lite_B.z_lm +
+              0.0050813062818757656) * proc_control_lite_B.z_lm +
+             0.0650222499887673) * proc_control_lite_B.z_lm +
+            0.39791722395915535) * proc_control_lite_B.z_lm + 1.0) * x + x;
     }
   } else if (proc_control_lite_B.absx_j < 1.25) {
     if (x >= 0.0) {
@@ -4873,25 +4889,26 @@ real_T proc_control_lite::proc_control_lite_erf(real_T x)
     }
 
     if (!std::isnan(proc_control_lite_B.absx_j)) {
-      proc_control_lite_B.z_l = std::frexp(proc_control_lite_B.absx_j, &b_e);
+      proc_control_lite_B.z_lm = std::frexp(proc_control_lite_B.absx_j, &b_e);
     } else {
-      proc_control_lite_B.z_l = (rtNaN);
+      proc_control_lite_B.z_lm = (rtNaN);
       b_e = 0;
     }
 
-    proc_control_lite_B.z_l = std::floor(proc_control_lite_B.z_l * 2.097152E+6) /
-      2.097152E+6 * proc_control_lite_rt_powd_snf(2.0, static_cast<real_T>(b_e));
+    proc_control_lite_B.z_lm = std::floor(proc_control_lite_B.z_lm * 2.097152E+6)
+      / 2.097152E+6 * proc_control_lite_rt_powd_snf(2.0, static_cast<real_T>(b_e));
     if (x < 0.0) {
-      y = std::exp((proc_control_lite_B.z_l - proc_control_lite_B.absx_j) *
-                   (proc_control_lite_B.z_l + proc_control_lite_B.absx_j) +
+      y = std::exp((proc_control_lite_B.z_lm - proc_control_lite_B.absx_j) *
+                   (proc_control_lite_B.z_lm + proc_control_lite_B.absx_j) +
                    proc_control_lite_B.R_m / proc_control_lite_B.s_g) * std::exp
-        (-proc_control_lite_B.z_l * proc_control_lite_B.z_l - 0.5625) /
+        (-proc_control_lite_B.z_lm * proc_control_lite_B.z_lm - 0.5625) /
         proc_control_lite_B.absx_j - 1.0;
     } else {
-      y = 1.0 - std::exp((proc_control_lite_B.z_l - proc_control_lite_B.absx_j) *
-                         (proc_control_lite_B.z_l + proc_control_lite_B.absx_j)
-                         + proc_control_lite_B.R_m / proc_control_lite_B.s_g) *
-        std::exp(-proc_control_lite_B.z_l * proc_control_lite_B.z_l - 0.5625) /
+      y = 1.0 - std::exp((proc_control_lite_B.z_lm - proc_control_lite_B.absx_j)
+                         * (proc_control_lite_B.z_lm +
+                            proc_control_lite_B.absx_j) +
+                         proc_control_lite_B.R_m / proc_control_lite_B.s_g) *
+        std::exp(-proc_control_lite_B.z_lm * proc_control_lite_B.z_lm - 0.5625) /
         proc_control_lite_B.absx_j;
     }
   }
@@ -8988,21 +9005,21 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
   proc_control_lite_B.b_i_l = 0;
   for (proc_control_lite_B.i23 = 0; proc_control_lite_B.i23 < 6;
        proc_control_lite_B.i23++) {
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l] =
       inputs[proc_control_lite_B.i23 + 47];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 1] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 1] =
       inputs[proc_control_lite_B.i23 + 53];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 2] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 2] =
       inputs[proc_control_lite_B.i23 + 59];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 3] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 3] =
       inputs[proc_control_lite_B.i23 + 65];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 4] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 4] =
       inputs[proc_control_lite_B.i23 + 71];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 5] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 5] =
       inputs[proc_control_lite_B.i23 + 77];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 6] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 6] =
       inputs[proc_control_lite_B.i23 + 83];
-    proc_control_lite_B.T_c[proc_control_lite_B.b_i_l + 7] =
+    proc_control_lite_B.T_n[proc_control_lite_B.b_i_l + 7] =
       inputs[proc_control_lite_B.i23 + 89];
     proc_control_lite_B.b_i_l += 8;
   }
@@ -9013,11 +9030,11 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
   proc_control_lite_B.b_i_l = 0;
   for (proc_control_lite_B.b_i_b = 0; proc_control_lite_B.b_i_b < 8;
        proc_control_lite_B.b_i_b++) {
-    proc_control_lite_B.cosa = proc_control_lite_B.T_c[proc_control_lite_B.b_i_b
+    proc_control_lite_B.cosa = proc_control_lite_B.T_n[proc_control_lite_B.b_i_b
       + 24] * 0.017453292519943295 / 2.0;
-    proc_control_lite_B.cosb = proc_control_lite_B.T_c[proc_control_lite_B.b_i_b
+    proc_control_lite_B.cosb = proc_control_lite_B.T_n[proc_control_lite_B.b_i_b
       + 32] * 0.017453292519943295 / 2.0;
-    proc_control_lite_B.cosc = proc_control_lite_B.T_c[proc_control_lite_B.b_i_b
+    proc_control_lite_B.cosc = proc_control_lite_B.T_n[proc_control_lite_B.b_i_b
       + 40] * 0.017453292519943295 / 2.0;
     proc_control_lite_B.sina_o = std::sin(proc_control_lite_B.cosa);
     proc_control_lite_B.sinb_m = std::sin(proc_control_lite_B.cosb);
@@ -9052,11 +9069,11 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
     proc_control_lite_B.cosa = proc_control_lite_B.qt_idx_0 *
       proc_control_lite_B.qt_idx_1 * 2.0;
     proc_control_lite_B.sina_o = proc_control_lite_B.inputs_o -
-      proc_control_lite_B.T_c[proc_control_lite_B.b_i_b];
+      proc_control_lite_B.T_n[proc_control_lite_B.b_i_b];
     proc_control_lite_B.sinb_m = proc_control_lite_B.inputs_g -
-      proc_control_lite_B.T_c[proc_control_lite_B.b_i_b + 8];
+      proc_control_lite_B.T_n[proc_control_lite_B.b_i_b + 8];
     proc_control_lite_B.cosb = proc_control_lite_B.inputs_e -
-      proc_control_lite_B.T_c[proc_control_lite_B.b_i_b + 16];
+      proc_control_lite_B.T_n[proc_control_lite_B.b_i_b + 16];
     proc_control_lite_B.cosc = proc_control_lite_B.qt_idx_1 *
       proc_control_lite_B.cosc * 2.0 + proc_control_lite_B.qt_idx_0 *
       proc_control_lite_B.qt_idx_2 * 2.0;
@@ -9065,19 +9082,19 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
     proc_control_lite_B.qt_idx_1 = (proc_control_lite_B.qt_idx_1 *
       proc_control_lite_B.qt_idx_1 * 2.0 + proc_control_lite_B.qt_idx_2 *
       proc_control_lite_B.qt_idx_2 * 2.0) - 1.0;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l] =
       -proc_control_lite_B.cosc;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l + 1] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l + 1] =
       -proc_control_lite_B.sinc + proc_control_lite_B.cosa;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l + 2] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l + 2] =
       proc_control_lite_B.qt_idx_1;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l + 3] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l + 3] =
       -proc_control_lite_B.sinb_m * proc_control_lite_B.qt_idx_1 -
       proc_control_lite_B.cosb * proc_control_lite_B.qt_idx_0;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l + 4] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l + 4] =
       proc_control_lite_B.sina_o * proc_control_lite_B.qt_idx_1 +
       proc_control_lite_B.cosb * proc_control_lite_B.cosc;
-    proc_control_lite_B.Tm_f[proc_control_lite_B.b_i_l + 5] =
+    proc_control_lite_B.Tm_c[proc_control_lite_B.b_i_l + 5] =
       proc_control_lite_B.sina_o * proc_control_lite_B.qt_idx_0 -
       proc_control_lite_B.sinb_m * proc_control_lite_B.cosc;
 
@@ -9132,19 +9149,19 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
   proc_control_lite_B.inputs[34] = inputs[17];
   proc_control_lite_B.inputs[35] = inputs[20] - inputs[44];
   proc_control_lit_mldivide_hpq2j(proc_control_lite_B.inputs,
-    proc_control_lite_B.Tm_f);
+    proc_control_lite_B.Tm_c);
   for (proc_control_lite_B.b_i_l = 0; proc_control_lite_B.b_i_l < 8;
        proc_control_lite_B.b_i_l++) {
     for (proc_control_lite_B.i23 = 0; proc_control_lite_B.i23 < 7;
          proc_control_lite_B.i23++) {
-      proc_control_lite_B.Bc_o[proc_control_lite_B.i23 + 13 *
+      proc_control_lite_B.Bc_i[proc_control_lite_B.i23 + 13 *
         proc_control_lite_B.b_i_l] = 0.0;
     }
 
     for (proc_control_lite_B.i23 = 0; proc_control_lite_B.i23 < 6;
          proc_control_lite_B.i23++) {
-      proc_control_lite_B.Bc_o[(proc_control_lite_B.i23 + 13 *
-        proc_control_lite_B.b_i_l) + 7] = proc_control_lite_B.Tm_f[6 *
+      proc_control_lite_B.Bc_i[(proc_control_lite_B.i23 + 13 *
+        proc_control_lite_B.b_i_l) + 7] = proc_control_lite_B.Tm_c[6 *
         proc_control_lite_B.b_i_l + proc_control_lite_B.i23];
     }
   }
@@ -9171,7 +9188,7 @@ void proc_control_lite::proc_control_lit_EkfNavStatesEq(real_T x[13], const
       for (proc_control_lite_B.i41 = 0; proc_control_lite_B.i41 < 8;
            proc_control_lite_B.i41++) {
         proc_control_lite_B.inputs_o +=
-          proc_control_lite_B.Bc_o[proc_control_lite_B.i23 +
+          proc_control_lite_B.Bc_i[proc_control_lite_B.i23 +
           proc_control_lite_B.b_i_l] * inputs[proc_control_lite_B.i41 + 1];
         proc_control_lite_B.i23 += 13;
       }
@@ -9331,7 +9348,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
   /* Start for MATLABSystem: '<S239>/MATLAB System' */
   std::memset(&proc_control_lite_B.b_tau[0], 0, 13U * sizeof(real_T));
   std::memcpy(&Q[0], &A[0], 338U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.work_o[0], 0, 13U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_n[0], 0, 13U * sizeof(real_T));
   for (proc_control_lite_B.itau_o = 0; proc_control_lite_B.itau_o < 13;
        proc_control_lite_B.itau_o++) {
     proc_control_lite_B.ii_a = proc_control_lite_B.itau_o * 26 +
@@ -9456,7 +9473,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
       if (proc_control_lite_B.lastv_f > 0) {
         if (proc_control_lite_B.knt_h + 1 != 0) {
           if (proc_control_lite_B.knt_h >= 0) {
-            std::memset(&proc_control_lite_B.work_o[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_n[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_h + 1) * sizeof(real_T));
           }
 
@@ -9478,7 +9495,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
 
             proc_control_lite_B.ia_d = div_nde_s32_floor
               ((proc_control_lite_B.iac - proc_control_lite_B.ii_a) - 27, 26);
-            proc_control_lite_B.work_o[proc_control_lite_B.ia_d] +=
+            proc_control_lite_B.work_n[proc_control_lite_B.ia_d] +=
               proc_control_lite_B.beta1_ok;
           }
         }
@@ -9488,7 +9505,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
           for (proc_control_lite_B.ia_d = 0; proc_control_lite_B.ia_d <=
                proc_control_lite_B.knt_h; proc_control_lite_B.ia_d++) {
             proc_control_lite_B.beta1_ok =
-              proc_control_lite_B.work_o[proc_control_lite_B.ia_d];
+              proc_control_lite_B.work_n[proc_control_lite_B.ia_d];
             if (proc_control_lite_B.beta1_ok != 0.0) {
               proc_control_lite_B.beta1_ok *=
                 -proc_control_lite_B.b_tau[proc_control_lite_B.itau_o];
@@ -9528,7 +9545,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
     }
 
     /* Start for MATLABSystem: '<S239>/MATLAB System' */
-    proc_control_lite_B.work_o[proc_control_lite_B.ii_a] = 0.0;
+    proc_control_lite_B.work_n[proc_control_lite_B.ii_a] = 0.0;
   }
 
   /* Start for MATLABSystem: '<S239>/MATLAB System' */
@@ -9582,7 +9599,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
       if (proc_control_lite_B.lastv_f > 0) {
         if (proc_control_lite_B.knt_h + 1 != 0) {
           if (proc_control_lite_B.knt_h >= 0) {
-            std::memset(&proc_control_lite_B.work_o[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_n[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.knt_h + 1) * sizeof(real_T));
           }
 
@@ -9604,7 +9621,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
 
             proc_control_lite_B.ia_d = div_nde_s32_floor
               ((proc_control_lite_B.iac - proc_control_lite_B.ii_a) - 1, 26);
-            proc_control_lite_B.work_o[proc_control_lite_B.ia_d] +=
+            proc_control_lite_B.work_n[proc_control_lite_B.ia_d] +=
               proc_control_lite_B.beta1_ok;
           }
         }
@@ -9614,7 +9631,7 @@ void proc_control_lite::proc_control_lite_qr_hpq2j(const real_T A[338], real_T
           for (proc_control_lite_B.ia_d = 0; proc_control_lite_B.ia_d <=
                proc_control_lite_B.knt_h; proc_control_lite_B.ia_d++) {
             proc_control_lite_B.beta1_ok =
-              proc_control_lite_B.work_o[proc_control_lite_B.ia_d];
+              proc_control_lite_B.work_n[proc_control_lite_B.ia_d];
             if (proc_control_lite_B.beta1_ok != 0.0) {
               proc_control_lite_B.beta1_ok *=
                 -proc_control_lite_B.b_tau[proc_control_lite_B.itau_o];
@@ -10147,29 +10164,29 @@ void proc_control_lite::pro_ProcPlannerManager_stepImpl
     /*  calculer l'erreur angulaire. */
     /* ================================================================= */
     /*  Fonction qui calcule l'angle entre 2 quaternion */
-    proc_control_lite_B.qRel_o[0] = ((b_this->poseBuffer[18000] *
+    proc_control_lite_B.qRel_j[0] = ((b_this->poseBuffer[18000] *
       proc_control_lite_B.c_m - -b_this->poseBuffer[24000] *
       proc_control_lite_B.cosa_a) - -b_this->poseBuffer[30000] *
       proc_control_lite_B.cosc_o) - -b_this->poseBuffer[36000] *
       proc_control_lite_B.cosb_l;
-    proc_control_lite_B.qRel_o[1] = (b_this->poseBuffer[18000] *
+    proc_control_lite_B.qRel_j[1] = (b_this->poseBuffer[18000] *
       proc_control_lite_B.cosa_a + -b_this->poseBuffer[24000] *
       proc_control_lite_B.c_m) + (-b_this->poseBuffer[30000] *
       proc_control_lite_B.cosb_l - -b_this->poseBuffer[36000] *
       proc_control_lite_B.cosc_o);
-    proc_control_lite_B.qRel_o[2] = (b_this->poseBuffer[18000] *
+    proc_control_lite_B.qRel_j[2] = (b_this->poseBuffer[18000] *
       proc_control_lite_B.cosc_o + -b_this->poseBuffer[30000] *
       proc_control_lite_B.c_m) + (-b_this->poseBuffer[36000] *
       proc_control_lite_B.cosa_a - -b_this->poseBuffer[24000] *
       proc_control_lite_B.cosb_l);
-    proc_control_lite_B.qRel_o[3] = (b_this->poseBuffer[18000] *
+    proc_control_lite_B.qRel_j[3] = (b_this->poseBuffer[18000] *
       proc_control_lite_B.cosb_l + proc_control_lite_B.c_m * -b_this->
       poseBuffer[36000]) + (-b_this->poseBuffer[24000] *
       proc_control_lite_B.cosc_o - -b_this->poseBuffer[30000] *
       proc_control_lite_B.cosa_a);
     proc_control_lite_B.tmp = std::abs(2.0 * proc_control_lite_rt_atan2d_snf
-      (proc_control_lite_norm_hpq(&proc_control_lite_B.qRel_o[1]),
-       proc_control_lite_B.qRel_o[0]));
+      (proc_control_lite_norm_hpq(&proc_control_lite_B.qRel_j[1]),
+       proc_control_lite_B.qRel_j[0]));
 
     /*  Ramener l'erreur de 0 à pi */
     if (proc_control_lite_B.tmp > 6.2831853071795862) {
@@ -10746,67 +10763,67 @@ void proc_control_lite::proc_contro_RotTrajSys_stepImpl(real_T evalTime, const
   proc_control_lite_B.pnCorrected.b /= proc_control_lite_B.n_b;
   proc_control_lite_B.pnCorrected.c /= proc_control_lite_B.n_b;
   proc_control_lite_B.pnCorrected.d /= proc_control_lite_B.n_b;
-  proc_control_lite_B.expl_temp_i = proc_contr_quaternionBase_slerp
+  proc_control_lite_B.expl_temp_a0 = proc_contr_quaternionBase_slerp
     (proc_control_lite_B.q0_a, proc_control_lite_B.q0_b,
      proc_control_lite_B.q0_c, proc_control_lite_B.q0_d,
      proc_control_lite_B.qF_a, proc_control_lite_B.qF_b,
      proc_control_lite_B.qF_c, proc_control_lite_B.qF_d);
 
   /* Start for MATLABSystem: '<S263>/Rotation Trajectory' */
-  proc_control_lite_B.expl_temp_f = proc_con_quaternionBase_slerp_h
+  proc_control_lite_B.expl_temp_i = proc_con_quaternionBase_slerp_h
     (proc_control_lite_B.q0_a, proc_control_lite_B.q0_b,
      proc_control_lite_B.q0_c, proc_control_lite_B.q0_d,
      proc_control_lite_B.qF_a, proc_control_lite_B.qF_b,
      proc_control_lite_B.qF_c, proc_control_lite_B.qF_d,
      proc_control_lite_B.b_idx_0);
   proc_control_lite_B.q0_a = ((proc_control_lite_B.pnCorrected.a *
-    proc_control_lite_B.expl_temp_i.a - -proc_control_lite_B.pnCorrected.b *
-    proc_control_lite_B.expl_temp_i.b) - -proc_control_lite_B.pnCorrected.c *
-    proc_control_lite_B.expl_temp_i.c) - -proc_control_lite_B.pnCorrected.d *
-    proc_control_lite_B.expl_temp_i.d;
+    proc_control_lite_B.expl_temp_a0.a - -proc_control_lite_B.pnCorrected.b *
+    proc_control_lite_B.expl_temp_a0.b) - -proc_control_lite_B.pnCorrected.c *
+    proc_control_lite_B.expl_temp_a0.c) - -proc_control_lite_B.pnCorrected.d *
+    proc_control_lite_B.expl_temp_a0.d;
   proc_control_lite_B.q0_b = ((proc_control_lite_B.pnCorrected.a *
-    proc_control_lite_B.expl_temp_i.b + -proc_control_lite_B.pnCorrected.b *
-    proc_control_lite_B.expl_temp_i.a) + -proc_control_lite_B.pnCorrected.c *
-    proc_control_lite_B.expl_temp_i.d) - -proc_control_lite_B.pnCorrected.d *
-    proc_control_lite_B.expl_temp_i.c;
+    proc_control_lite_B.expl_temp_a0.b + -proc_control_lite_B.pnCorrected.b *
+    proc_control_lite_B.expl_temp_a0.a) + -proc_control_lite_B.pnCorrected.c *
+    proc_control_lite_B.expl_temp_a0.d) - -proc_control_lite_B.pnCorrected.d *
+    proc_control_lite_B.expl_temp_a0.c;
   proc_control_lite_B.q0_c = ((proc_control_lite_B.pnCorrected.a *
-    proc_control_lite_B.expl_temp_i.c - -proc_control_lite_B.pnCorrected.b *
-    proc_control_lite_B.expl_temp_i.d) + -proc_control_lite_B.pnCorrected.c *
-    proc_control_lite_B.expl_temp_i.a) + -proc_control_lite_B.pnCorrected.d *
-    proc_control_lite_B.expl_temp_i.b;
+    proc_control_lite_B.expl_temp_a0.c - -proc_control_lite_B.pnCorrected.b *
+    proc_control_lite_B.expl_temp_a0.d) + -proc_control_lite_B.pnCorrected.c *
+    proc_control_lite_B.expl_temp_a0.a) + -proc_control_lite_B.pnCorrected.d *
+    proc_control_lite_B.expl_temp_a0.b;
   proc_control_lite_B.qF_d = ((proc_control_lite_B.pnCorrected.a *
-    proc_control_lite_B.expl_temp_i.d + -proc_control_lite_B.pnCorrected.b *
-    proc_control_lite_B.expl_temp_i.c) - -proc_control_lite_B.pnCorrected.c *
-    proc_control_lite_B.expl_temp_i.b) + -proc_control_lite_B.pnCorrected.d *
-    proc_control_lite_B.expl_temp_i.a;
+    proc_control_lite_B.expl_temp_a0.d + -proc_control_lite_B.pnCorrected.b *
+    proc_control_lite_B.expl_temp_a0.c) - -proc_control_lite_B.pnCorrected.c *
+    proc_control_lite_B.expl_temp_a0.b) + -proc_control_lite_B.pnCorrected.d *
+    proc_control_lite_B.expl_temp_a0.a;
   proc_control_quaternionBase_log(proc_control_lite_B.q0_a,
     proc_control_lite_B.q0_b, proc_control_lite_B.q0_c, proc_control_lite_B.qF_d,
     &proc_control_lite_B.q0_d, &proc_control_lite_B.qF_a,
     &proc_control_lite_B.qF_b, &proc_control_lite_B.qF_c);
-  proc_control_lite_B.dp = ((proc_control_lite_B.expl_temp_f.a *
-    proc_control_lite_B.q0_d - proc_control_lite_B.expl_temp_f.b *
-    proc_control_lite_B.qF_a) - proc_control_lite_B.expl_temp_f.c *
-    proc_control_lite_B.qF_b) - proc_control_lite_B.expl_temp_f.d *
+  proc_control_lite_B.dp = ((proc_control_lite_B.expl_temp_i.a *
+    proc_control_lite_B.q0_d - proc_control_lite_B.expl_temp_i.b *
+    proc_control_lite_B.qF_a) - proc_control_lite_B.expl_temp_i.c *
+    proc_control_lite_B.qF_b) - proc_control_lite_B.expl_temp_i.d *
     proc_control_lite_B.qF_c;
   proc_control_lite_B.linearScaling = proc_control_lite_B.dp *
     proc_control_lite_B.h_idx_0;
-  proc_control_lite_B.oa = ((proc_control_lite_B.expl_temp_f.a *
-    proc_control_lite_B.qF_a + proc_control_lite_B.expl_temp_f.b *
-    proc_control_lite_B.q0_d) + proc_control_lite_B.expl_temp_f.c *
-    proc_control_lite_B.qF_c) - proc_control_lite_B.expl_temp_f.d *
+  proc_control_lite_B.oa = ((proc_control_lite_B.expl_temp_i.a *
+    proc_control_lite_B.qF_a + proc_control_lite_B.expl_temp_i.b *
+    proc_control_lite_B.q0_d) + proc_control_lite_B.expl_temp_i.c *
+    proc_control_lite_B.qF_c) - proc_control_lite_B.expl_temp_i.d *
     proc_control_lite_B.qF_b;
   proc_control_lite_B.ob = proc_control_lite_B.oa * proc_control_lite_B.h_idx_0;
-  proc_control_lite_B.ob_h = ((proc_control_lite_B.expl_temp_f.a *
-    proc_control_lite_B.qF_b - proc_control_lite_B.expl_temp_f.b *
-    proc_control_lite_B.qF_c) + proc_control_lite_B.expl_temp_f.c *
-    proc_control_lite_B.q0_d) + proc_control_lite_B.expl_temp_f.d *
+  proc_control_lite_B.ob_h = ((proc_control_lite_B.expl_temp_i.a *
+    proc_control_lite_B.qF_b - proc_control_lite_B.expl_temp_i.b *
+    proc_control_lite_B.qF_c) + proc_control_lite_B.expl_temp_i.c *
+    proc_control_lite_B.q0_d) + proc_control_lite_B.expl_temp_i.d *
     proc_control_lite_B.qF_a;
   proc_control_lite_B.oc = proc_control_lite_B.ob_h *
     proc_control_lite_B.h_idx_0;
-  proc_control_lite_B.q0_d = ((proc_control_lite_B.expl_temp_f.a *
-    proc_control_lite_B.qF_c + proc_control_lite_B.expl_temp_f.b *
-    proc_control_lite_B.qF_b) - proc_control_lite_B.expl_temp_f.c *
-    proc_control_lite_B.qF_a) + proc_control_lite_B.expl_temp_f.d *
+  proc_control_lite_B.q0_d = ((proc_control_lite_B.expl_temp_i.a *
+    proc_control_lite_B.qF_c + proc_control_lite_B.expl_temp_i.b *
+    proc_control_lite_B.qF_b) - proc_control_lite_B.expl_temp_i.c *
+    proc_control_lite_B.qF_a) + proc_control_lite_B.expl_temp_i.d *
     proc_control_lite_B.q0_d;
   proc_control_lite_B.od = proc_control_lite_B.q0_d *
     proc_control_lite_B.h_idx_0;
@@ -10814,18 +10831,18 @@ void proc_control_lite::proc_contro_RotTrajSys_stepImpl(real_T evalTime, const
   proc_control_lite_B.qF_b = 2.0 * proc_control_lite_B.ob;
   proc_control_lite_B.qF_c = 2.0 * proc_control_lite_B.oc;
   proc_control_lite_B.b_idx_0 = 2.0 * proc_control_lite_B.od;
-  omega[0] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_f.b +
-               proc_control_lite_B.qF_b * proc_control_lite_B.expl_temp_f.a) +
-              proc_control_lite_B.qF_c * -proc_control_lite_B.expl_temp_f.d) -
-    proc_control_lite_B.b_idx_0 * -proc_control_lite_B.expl_temp_f.c;
-  omega[1] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_f.c -
-               proc_control_lite_B.qF_b * -proc_control_lite_B.expl_temp_f.d) +
-              proc_control_lite_B.qF_c * proc_control_lite_B.expl_temp_f.a) +
-    proc_control_lite_B.b_idx_0 * -proc_control_lite_B.expl_temp_f.b;
-  omega[2] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_f.d +
-               proc_control_lite_B.qF_b * -proc_control_lite_B.expl_temp_f.c) -
-              proc_control_lite_B.qF_c * -proc_control_lite_B.expl_temp_f.b) +
-    proc_control_lite_B.b_idx_0 * proc_control_lite_B.expl_temp_f.a;
+  omega[0] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_i.b +
+               proc_control_lite_B.qF_b * proc_control_lite_B.expl_temp_i.a) +
+              proc_control_lite_B.qF_c * -proc_control_lite_B.expl_temp_i.d) -
+    proc_control_lite_B.b_idx_0 * -proc_control_lite_B.expl_temp_i.c;
+  omega[1] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_i.c -
+               proc_control_lite_B.qF_b * -proc_control_lite_B.expl_temp_i.d) +
+              proc_control_lite_B.qF_c * proc_control_lite_B.expl_temp_i.a) +
+    proc_control_lite_B.b_idx_0 * -proc_control_lite_B.expl_temp_i.b;
+  omega[2] = ((proc_control_lite_B.qF_a * -proc_control_lite_B.expl_temp_i.d +
+               proc_control_lite_B.qF_b * -proc_control_lite_B.expl_temp_i.c) -
+              proc_control_lite_B.qF_c * -proc_control_lite_B.expl_temp_i.b) +
+    proc_control_lite_B.b_idx_0 * proc_control_lite_B.expl_temp_i.a;
   proc_control_quaternionBase_log(proc_control_lite_B.q0_a,
     proc_control_lite_B.q0_b, proc_control_lite_B.q0_c, proc_control_lite_B.qF_d,
     &proc_control_lite_B.n_b, &proc_control_lite_B.ob_tmp,
@@ -10858,34 +10875,34 @@ void proc_control_lite::proc_contro_RotTrajSys_stepImpl(real_T evalTime, const
     proc_control_lite_B.ob_tmp) + proc_control_lite_B.q0_d *
     proc_control_lite_B.n_b) * proc_control_lite_B.qF_d +
     proc_control_lite_B.q0_d * 0.0) * 2.0;
-  alpha[0] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_f.b +
-                proc_control_lite_B.q0_b * proc_control_lite_B.expl_temp_f.a) +
-               proc_control_lite_B.q0_c * -proc_control_lite_B.expl_temp_f.d) -
-              proc_control_lite_B.n_b * -proc_control_lite_B.expl_temp_f.c) -
+  alpha[0] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_i.b +
+                proc_control_lite_B.q0_b * proc_control_lite_B.expl_temp_i.a) +
+               proc_control_lite_B.q0_c * -proc_control_lite_B.expl_temp_i.d) -
+              proc_control_lite_B.n_b * -proc_control_lite_B.expl_temp_i.c) -
     (((proc_control_lite_B.qF_a * -proc_control_lite_B.ob +
        proc_control_lite_B.qF_b * proc_control_lite_B.linearScaling) +
       proc_control_lite_B.qF_c * -proc_control_lite_B.od) -
      proc_control_lite_B.b_idx_0 * -proc_control_lite_B.oc);
-  alpha[1] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_f.c -
-                proc_control_lite_B.q0_b * -proc_control_lite_B.expl_temp_f.d) +
-               proc_control_lite_B.q0_c * proc_control_lite_B.expl_temp_f.a) +
-              proc_control_lite_B.n_b * -proc_control_lite_B.expl_temp_f.b) -
+  alpha[1] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_i.c -
+                proc_control_lite_B.q0_b * -proc_control_lite_B.expl_temp_i.d) +
+               proc_control_lite_B.q0_c * proc_control_lite_B.expl_temp_i.a) +
+              proc_control_lite_B.n_b * -proc_control_lite_B.expl_temp_i.b) -
     (((proc_control_lite_B.qF_a * -proc_control_lite_B.oc -
        proc_control_lite_B.qF_b * -proc_control_lite_B.od) +
       proc_control_lite_B.qF_c * proc_control_lite_B.linearScaling) +
      proc_control_lite_B.b_idx_0 * -proc_control_lite_B.ob);
-  alpha[2] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_f.d +
-                proc_control_lite_B.q0_b * -proc_control_lite_B.expl_temp_f.c) -
-               proc_control_lite_B.q0_c * -proc_control_lite_B.expl_temp_f.b) +
-              proc_control_lite_B.n_b * proc_control_lite_B.expl_temp_f.a) -
+  alpha[2] = (((proc_control_lite_B.q0_a * -proc_control_lite_B.expl_temp_i.d +
+                proc_control_lite_B.q0_b * -proc_control_lite_B.expl_temp_i.c) -
+               proc_control_lite_B.q0_c * -proc_control_lite_B.expl_temp_i.b) +
+              proc_control_lite_B.n_b * proc_control_lite_B.expl_temp_i.a) -
     (((proc_control_lite_B.qF_a * -proc_control_lite_B.od +
        proc_control_lite_B.qF_b * -proc_control_lite_B.oc) -
       proc_control_lite_B.qF_c * -proc_control_lite_B.ob) +
      proc_control_lite_B.b_idx_0 * proc_control_lite_B.linearScaling);
-  R[0] = proc_control_lite_B.expl_temp_f.a;
-  R[1] = proc_control_lite_B.expl_temp_f.b;
-  R[2] = proc_control_lite_B.expl_temp_f.c;
-  R[3] = proc_control_lite_B.expl_temp_f.d;
+  R[0] = proc_control_lite_B.expl_temp_i.a;
+  R[1] = proc_control_lite_B.expl_temp_i.b;
+  R[2] = proc_control_lite_B.expl_temp_i.c;
+  R[3] = proc_control_lite_B.expl_temp_i.d;
 }
 
 void proc_control_lite::proc_control_lite_ppval(const real_T pp_breaks[4], const
@@ -10961,16 +10978,16 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
     /*  Conditions Initiales */
     for (proc_control_lite_B.b_jcol_n = 0; proc_control_lite_B.b_jcol_n < 7;
          proc_control_lite_B.b_jcol_n++) {
-      proc_control_lite_B.a_n[proc_control_lite_B.b_jcol_n] =
+      proc_control_lite_B.a_h[proc_control_lite_B.b_jcol_n] =
         x0[proc_control_lite_B.b_jcol_n];
     }
 
-    proc_control_lite_B.a_n[7] = 0.0;
-    proc_control_lite_B.a_n[8] = 0.0;
-    proc_control_lite_B.a_n[9] = 0.0;
-    proc_control_lite_B.a_n[10] = 0.0;
-    proc_control_lite_B.a_n[11] = 0.0;
-    proc_control_lite_B.a_n[12] = 0.0;
+    proc_control_lite_B.a_h[7] = 0.0;
+    proc_control_lite_B.a_h[8] = 0.0;
+    proc_control_lite_B.a_h[9] = 0.0;
+    proc_control_lite_B.a_h[10] = 0.0;
+    proc_control_lite_B.a_h[11] = 0.0;
+    proc_control_lite_B.a_h[12] = 0.0;
     proc_control_lite_B.b_jcol_n = 0;
     for (proc_control_lite_B.b_jcol = 0; proc_control_lite_B.b_jcol < 13;
          proc_control_lite_B.b_jcol++) {
@@ -10978,7 +10995,7 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
            10; proc_control_lite_B.b_itilerow++) {
         b_this->poseBuffer[proc_control_lite_B.b_itilerow +
           proc_control_lite_B.b_jcol_n] =
-          proc_control_lite_B.a_n[proc_control_lite_B.b_jcol];
+          proc_control_lite_B.a_h[proc_control_lite_B.b_jcol];
       }
 
       proc_control_lite_B.b_jcol_n += 6001;
@@ -11072,7 +11089,7 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
         proc_control_lite_B.b_jcol;
       for (proc_control_lite_B.b_jcol_n = 0; proc_control_lite_B.b_jcol_n < 13;
            proc_control_lite_B.b_jcol_n++) {
-        proc_control_lite_B.a_n[proc_control_lite_B.b_jcol_n] = currentPose[(10 *
+        proc_control_lite_B.a_h[proc_control_lite_B.b_jcol_n] = currentPose[(10 *
           proc_control_lite_B.b_jcol_n + proc_control_lite_B.b_index) - 2];
       }
 
@@ -11080,7 +11097,7 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
            proc_control_lite_B.b_jcol_n++) {
         currentPose[(proc_control_lite_B.b_index_a + 10 *
                      proc_control_lite_B.b_jcol_n) - 1] =
-          proc_control_lite_B.a_n[proc_control_lite_B.b_jcol_n];
+          proc_control_lite_B.a_h[proc_control_lite_B.b_jcol_n];
       }
     }
   }
@@ -11132,7 +11149,7 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
   for (proc_control_lite_B.b_jcol_n = 0; proc_control_lite_B.b_jcol_n < 7;
        proc_control_lite_B.b_jcol_n++) {
     /* Start for MATLABSystem: '<S250>/MATLAB System1' */
-    proc_control_lite_B.y_nl[proc_control_lite_B.b_jcol_n] = std::abs
+    proc_control_lite_B.y_f[proc_control_lite_B.b_jcol_n] = std::abs
       (poses[proc_control_lite_B.b_jcol_n] - target[proc_control_lite_B.b_jcol_n]);
   }
 
@@ -11141,7 +11158,7 @@ void proc_control_lite::proc_TrajectoryManager_stepImpl
   proc_control_lite_B.b_jcol = 0;
   exitg1 = false;
   while ((!exitg1) && (proc_control_lite_B.b_jcol < 7)) {
-    if (!(proc_control_lite_B.y_nl[proc_control_lite_B.b_jcol] < 0.001)) {
+    if (!(proc_control_lite_B.y_f[proc_control_lite_B.b_jcol] < 0.001)) {
       b_this->done = false;
       exitg1 = true;
     } else {
@@ -19305,7 +19322,7 @@ int32_T proc_control_lite::proc_control_lite_xzsteqr(real_T d[13], real_T e[12],
 
   /* Start for MATLABSystem: '<S50>/MATLAB System' */
   info = 0;
-  std::memset(&proc_control_lite_B.work_m[0], 0, 24U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.work_k[0], 0, 24U * sizeof(real_T));
   proc_control_lite_B.jtot = 0;
   proc_control_lite_B.l1_e = 1;
   do {
@@ -19486,13 +19503,13 @@ int32_T proc_control_lite::proc_control_lite_xzsteqr(real_T d[13], real_T e[12],
                 proc_control_lite_xdlaev2(d[proc_control_lite_B.l_e],
                   e[proc_control_lite_B.l_e], d[proc_control_lite_B.l_e + 1],
                   &d[proc_control_lite_B.l_e], &proc_control_lite_B.anorm,
-                  &proc_control_lite_B.work_m[proc_control_lite_B.l_e],
+                  &proc_control_lite_B.work_k[proc_control_lite_B.l_e],
                   &proc_control_lite_B.s_k);
                 d[proc_control_lite_B.l_e + 1] = proc_control_lite_B.anorm;
-                proc_control_lite_B.work_m[proc_control_lite_B.l_e + 12] =
+                proc_control_lite_B.work_k[proc_control_lite_B.l_e + 12] =
                   proc_control_lite_B.s_k;
                 proc_control_lite_rotateRight(2, z, proc_control_lite_B.l_e * 13
-                  + 1, proc_control_lite_B.work_m, proc_control_lite_B.l_e + 1,
+                  + 1, proc_control_lite_B.work_k, proc_control_lite_B.l_e + 1,
                   proc_control_lite_B.l_e + 13);
                 e[proc_control_lite_B.l_e] = 0.0;
                 proc_control_lite_B.l_e += 2;
@@ -19545,15 +19562,15 @@ int32_T proc_control_lite::proc_control_lite_xzsteqr(real_T d[13], real_T e[12],
                     proc_control_lite_B.p_k;
                   proc_control_lite_B.anorm = proc_control_lite_B.c_p *
                     proc_control_lite_B.r_f - proc_control_lite_B.b_h;
-                  proc_control_lite_B.work_m[proc_control_lite_B.i_ny - 1] =
+                  proc_control_lite_B.work_k[proc_control_lite_B.i_ny - 1] =
                     proc_control_lite_B.c_p;
-                  proc_control_lite_B.work_m[proc_control_lite_B.i_ny + 11] =
+                  proc_control_lite_B.work_k[proc_control_lite_B.i_ny + 11] =
                     -proc_control_lite_B.c_s;
                 }
 
                 proc_control_lite_rotateRight(proc_control_lite_B.m_f -
                   proc_control_lite_B.l_e, z, proc_control_lite_B.l_e * 13 + 1,
-                  proc_control_lite_B.work_m, proc_control_lite_B.l_e + 1,
+                  proc_control_lite_B.work_k, proc_control_lite_B.l_e + 1,
                   proc_control_lite_B.l_e + 13);
                 d[proc_control_lite_B.l_e] -= proc_control_lite_B.p_k;
                 e[proc_control_lite_B.l_e] = proc_control_lite_B.anorm;
@@ -19596,13 +19613,13 @@ int32_T proc_control_lite::proc_control_lite_xzsteqr(real_T d[13], real_T e[12],
                 proc_control_lite_xdlaev2(d[proc_control_lite_B.l_e - 1],
                   e[proc_control_lite_B.l_e - 1], d[proc_control_lite_B.l_e],
                   &d[proc_control_lite_B.l_e - 1], &proc_control_lite_B.anorm,
-                  &proc_control_lite_B.work_m[proc_control_lite_B.m_f - 1],
+                  &proc_control_lite_B.work_k[proc_control_lite_B.m_f - 1],
                   &proc_control_lite_B.s_k);
                 d[proc_control_lite_B.l_e] = proc_control_lite_B.anorm;
-                proc_control_lite_B.work_m[proc_control_lite_B.m_f + 11] =
+                proc_control_lite_B.work_k[proc_control_lite_B.m_f + 11] =
                   proc_control_lite_B.s_k;
                 proc_control_lite_rotateRight_h(2, z, (proc_control_lite_B.l_e -
-                  1) * 13 + 1, proc_control_lite_B.work_m,
+                  1) * 13 + 1, proc_control_lite_B.work_k,
                   proc_control_lite_B.m_f, proc_control_lite_B.m_f + 12);
                 e[proc_control_lite_B.l_e - 1] = 0.0;
                 proc_control_lite_B.l_e -= 2;
@@ -19656,15 +19673,15 @@ int32_T proc_control_lite::proc_control_lite_xzsteqr(real_T d[13], real_T e[12],
                     proc_control_lite_B.p_k;
                   proc_control_lite_B.anorm = proc_control_lite_B.c_p *
                     proc_control_lite_B.r_f - proc_control_lite_B.b_h;
-                  proc_control_lite_B.work_m[proc_control_lite_B.i_ny - 1] =
+                  proc_control_lite_B.work_k[proc_control_lite_B.i_ny - 1] =
                     proc_control_lite_B.c_p;
-                  proc_control_lite_B.work_m[proc_control_lite_B.i_ny + 11] =
+                  proc_control_lite_B.work_k[proc_control_lite_B.i_ny + 11] =
                     proc_control_lite_B.c_s;
                 }
 
                 proc_control_lite_rotateRight_h((proc_control_lite_B.l_e -
                   proc_control_lite_B.m_f) + 2, z, (proc_control_lite_B.m_f - 1)
-                  * 13 + 1, proc_control_lite_B.work_m, proc_control_lite_B.m_f,
+                  * 13 + 1, proc_control_lite_B.work_k, proc_control_lite_B.m_f,
                   proc_control_lite_B.m_f + 12);
                 d[proc_control_lite_B.l_e] -= proc_control_lite_B.p_k;
                 e[proc_control_lite_B.l_e - 1] = proc_control_lite_B.anorm;
@@ -19813,8 +19830,8 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
       }
     }
 
-    proc_control_lite_xzsyhetrd(b_A, W, proc_control_lite_B.e_l,
-      proc_control_lite_B.tau_c);
+    proc_control_lite_xzsyhetrd(b_A, W, proc_control_lite_B.e_n,
+      proc_control_lite_B.tau_l);
     proc_control_lite_B.lastv_e = 143;
     for (proc_control_lite_B.lastc_d = 11; proc_control_lite_B.lastc_d >= 0;
          proc_control_lite_B.lastc_d--) {
@@ -19832,14 +19849,14 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
 
     b_A[0] = 1.0;
     std::memset(&b_A[1], 0, 12U * sizeof(real_T));
-    std::memset(&proc_control_lite_B.work_h[0], 0, 13U * sizeof(real_T));
+    std::memset(&proc_control_lite_B.work_i[0], 0, 13U * sizeof(real_T));
     for (proc_control_lite_B.itau_m = 11; proc_control_lite_B.itau_m >= 0;
          proc_control_lite_B.itau_m--) {
       proc_control_lite_B.iaii_f = (proc_control_lite_B.itau_m * 13 +
         proc_control_lite_B.itau_m) + 28;
       if (proc_control_lite_B.itau_m + 1 < 12) {
         b_A[proc_control_lite_B.iaii_f - 14] = 1.0;
-        if (proc_control_lite_B.tau_c[proc_control_lite_B.itau_m] != 0.0) {
+        if (proc_control_lite_B.tau_l[proc_control_lite_B.itau_m] != 0.0) {
           proc_control_lite_B.lastv_e = 12 - proc_control_lite_B.itau_m;
           proc_control_lite_B.lastc_d = (proc_control_lite_B.iaii_f -
             proc_control_lite_B.itau_m) - 3;
@@ -19881,7 +19898,7 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
 
         if (proc_control_lite_B.lastv_e > 0) {
           if (proc_control_lite_B.lastc_d != 0) {
-            std::memset(&proc_control_lite_B.work_h[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_i[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.lastc_d) * sizeof(real_T));
             proc_control_lite_B.coltop_f = (proc_control_lite_B.lastc_d - 1) *
               13 + proc_control_lite_B.iaii_f;
@@ -19901,22 +19918,22 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
 
               proc_control_lite_B.b_b = div_nde_s32_floor
                 (proc_control_lite_B.jy_h - proc_control_lite_B.iaii_f, 13);
-              proc_control_lite_B.work_h[proc_control_lite_B.b_b] +=
+              proc_control_lite_B.work_i[proc_control_lite_B.b_b] +=
                 proc_control_lite_B.absx_e;
             }
           }
 
-          if (!(-proc_control_lite_B.tau_c[proc_control_lite_B.itau_m] == 0.0))
+          if (!(-proc_control_lite_B.tau_l[proc_control_lite_B.itau_m] == 0.0))
           {
             proc_control_lite_B.jy_h = proc_control_lite_B.iaii_f;
             proc_control_lite_B.b_b = proc_control_lite_B.lastc_d - 1;
             for (proc_control_lite_B.lastc_d = 0; proc_control_lite_B.lastc_d <=
                  proc_control_lite_B.b_b; proc_control_lite_B.lastc_d++) {
               proc_control_lite_B.absx_e =
-                proc_control_lite_B.work_h[proc_control_lite_B.lastc_d];
+                proc_control_lite_B.work_i[proc_control_lite_B.lastc_d];
               if (proc_control_lite_B.absx_e != 0.0) {
                 proc_control_lite_B.absx_e *=
-                  -proc_control_lite_B.tau_c[proc_control_lite_B.itau_m];
+                  -proc_control_lite_B.tau_l[proc_control_lite_B.itau_m];
                 proc_control_lite_B.coltop_f = (proc_control_lite_B.lastv_e +
                   proc_control_lite_B.jy_h) - 1;
                 for (proc_control_lite_B.e_m = proc_control_lite_B.jy_h;
@@ -19940,12 +19957,12 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
              proc_control_lite_B.lastv_e <= proc_control_lite_B.b_b - 2;
              proc_control_lite_B.lastv_e++) {
           b_A[proc_control_lite_B.lastv_e - 1] *=
-            -proc_control_lite_B.tau_c[proc_control_lite_B.itau_m];
+            -proc_control_lite_B.tau_l[proc_control_lite_B.itau_m];
         }
       }
 
       b_A[proc_control_lite_B.iaii_f - 14] = 1.0 -
-        proc_control_lite_B.tau_c[proc_control_lite_B.itau_m];
+        proc_control_lite_B.tau_l[proc_control_lite_B.itau_m];
       for (proc_control_lite_B.lastv_e = 0; proc_control_lite_B.lastv_e <
            proc_control_lite_B.itau_m; proc_control_lite_B.lastv_e++) {
         b_A[(proc_control_lite_B.iaii_f - proc_control_lite_B.lastv_e) - 15] =
@@ -19953,7 +19970,7 @@ void proc_control_lite::proc_control_lite_xsyheev(const real_T A[169], int32_T
       }
     }
 
-    *info = proc_control_lite_xzsteqr(W, proc_control_lite_B.e_l, b_A);
+    *info = proc_control_lite_xzsteqr(W, proc_control_lite_B.e_n, b_A);
     if (*info != 0) {
       for (proc_control_lite_B.itau_m = 0; proc_control_lite_B.itau_m < 13;
            proc_control_lite_B.itau_m++) {
@@ -24931,49 +24948,49 @@ void proc_control_lite::proc_control_TrimPlant_stepImpl
     proc_control_lite_B.t15 = b_this->constValues[0] * b_this->constValues[14];
 
     /*  M inverse * Tm */
-    proc_control_lite_B.b_this_o[0] = -b_this->constValues[30] +
+    proc_control_lite_B.b_this_n[0] = -b_this->constValues[30] +
       b_this->constValues[0];
-    proc_control_lite_B.b_this_o[1] = 0.0;
-    proc_control_lite_B.b_this_o[2] = 0.0;
-    proc_control_lite_B.b_this_o[3] = 0.0;
-    proc_control_lite_B.b_this_o[4] = proc_control_lite_B.t15;
-    proc_control_lite_B.b_this_o[5] = -proc_control_lite_B.t14;
-    proc_control_lite_B.b_this_o[6] = 0.0;
-    proc_control_lite_B.b_this_o[7] = -b_this->constValues[31] +
+    proc_control_lite_B.b_this_n[1] = 0.0;
+    proc_control_lite_B.b_this_n[2] = 0.0;
+    proc_control_lite_B.b_this_n[3] = 0.0;
+    proc_control_lite_B.b_this_n[4] = proc_control_lite_B.t15;
+    proc_control_lite_B.b_this_n[5] = -proc_control_lite_B.t14;
+    proc_control_lite_B.b_this_n[6] = 0.0;
+    proc_control_lite_B.b_this_n[7] = -b_this->constValues[31] +
       b_this->constValues[0];
-    proc_control_lite_B.b_this_o[8] = 0.0;
-    proc_control_lite_B.b_this_o[9] = -proc_control_lite_B.t15;
-    proc_control_lite_B.b_this_o[10] = 0.0;
-    proc_control_lite_B.b_this_o[11] = proc_control_lite_B.t5;
-    proc_control_lite_B.b_this_o[12] = 0.0;
-    proc_control_lite_B.b_this_o[13] = 0.0;
-    proc_control_lite_B.b_this_o[14] = -b_this->constValues[32] +
+    proc_control_lite_B.b_this_n[8] = 0.0;
+    proc_control_lite_B.b_this_n[9] = -proc_control_lite_B.t15;
+    proc_control_lite_B.b_this_n[10] = 0.0;
+    proc_control_lite_B.b_this_n[11] = proc_control_lite_B.t5;
+    proc_control_lite_B.b_this_n[12] = 0.0;
+    proc_control_lite_B.b_this_n[13] = 0.0;
+    proc_control_lite_B.b_this_n[14] = -b_this->constValues[32] +
       b_this->constValues[0];
-    proc_control_lite_B.b_this_o[15] = proc_control_lite_B.t14;
-    proc_control_lite_B.b_this_o[16] = -proc_control_lite_B.t5;
-    proc_control_lite_B.b_this_o[17] = 0.0;
-    proc_control_lite_B.b_this_o[18] = 0.0;
-    proc_control_lite_B.b_this_o[19] = -proc_control_lite_B.t15;
-    proc_control_lite_B.b_this_o[20] = proc_control_lite_B.t14;
-    proc_control_lite_B.b_this_o[21] = b_this->constValues[3] -
+    proc_control_lite_B.b_this_n[15] = proc_control_lite_B.t14;
+    proc_control_lite_B.b_this_n[16] = -proc_control_lite_B.t5;
+    proc_control_lite_B.b_this_n[17] = 0.0;
+    proc_control_lite_B.b_this_n[18] = 0.0;
+    proc_control_lite_B.b_this_n[19] = -proc_control_lite_B.t15;
+    proc_control_lite_B.b_this_n[20] = proc_control_lite_B.t14;
+    proc_control_lite_B.b_this_n[21] = b_this->constValues[3] -
       b_this->constValues[33];
-    proc_control_lite_B.b_this_o[22] = b_this->constValues[6];
-    proc_control_lite_B.b_this_o[23] = b_this->constValues[9];
-    proc_control_lite_B.b_this_o[24] = proc_control_lite_B.t15;
-    proc_control_lite_B.b_this_o[25] = 0.0;
-    proc_control_lite_B.b_this_o[26] = -proc_control_lite_B.t5;
-    proc_control_lite_B.b_this_o[27] = b_this->constValues[4];
-    proc_control_lite_B.b_this_o[28] = b_this->constValues[7] -
+    proc_control_lite_B.b_this_n[22] = b_this->constValues[6];
+    proc_control_lite_B.b_this_n[23] = b_this->constValues[9];
+    proc_control_lite_B.b_this_n[24] = proc_control_lite_B.t15;
+    proc_control_lite_B.b_this_n[25] = 0.0;
+    proc_control_lite_B.b_this_n[26] = -proc_control_lite_B.t5;
+    proc_control_lite_B.b_this_n[27] = b_this->constValues[4];
+    proc_control_lite_B.b_this_n[28] = b_this->constValues[7] -
       b_this->constValues[34];
-    proc_control_lite_B.b_this_o[29] = b_this->constValues[10];
-    proc_control_lite_B.b_this_o[30] = -proc_control_lite_B.t14;
-    proc_control_lite_B.b_this_o[31] = proc_control_lite_B.t5;
-    proc_control_lite_B.b_this_o[32] = 0.0;
-    proc_control_lite_B.b_this_o[33] = b_this->constValues[5];
-    proc_control_lite_B.b_this_o[34] = b_this->constValues[8];
-    proc_control_lite_B.b_this_o[35] = b_this->constValues[11] -
+    proc_control_lite_B.b_this_n[29] = b_this->constValues[10];
+    proc_control_lite_B.b_this_n[30] = -proc_control_lite_B.t14;
+    proc_control_lite_B.b_this_n[31] = proc_control_lite_B.t5;
+    proc_control_lite_B.b_this_n[32] = 0.0;
+    proc_control_lite_B.b_this_n[33] = b_this->constValues[5];
+    proc_control_lite_B.b_this_n[34] = b_this->constValues[8];
+    proc_control_lite_B.b_this_n[35] = b_this->constValues[11] -
       b_this->constValues[35];
-    proc_control_lite_mldivide_hpq(proc_control_lite_B.b_this_o,
+    proc_control_lite_mldivide_hpq(proc_control_lite_B.b_this_n,
       proc_control_lite_B.Tm);
     for (proc_control_lite_B.b_i_p = 0; proc_control_lite_B.b_i_p < 8;
          proc_control_lite_B.b_i_p++) {
@@ -25115,11 +25132,11 @@ void proc_control_lite::proc_control_TrimPlant_stepImpl
   proc_control_lite_expm(proc_control_lite_B.Ac_l, A);
 
   /*  Fossen 2021 Eq B.10/B.9 page 662 */
-  std::memset(&proc_control_lite_B.b_this_o[0], 0, 36U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.b_this_n[0], 0, 36U * sizeof(real_T));
   proc_control_lite_B.b_k = 0;
   for (proc_control_lite_B.b_i_p = 0; proc_control_lite_B.b_i_p < 6;
        proc_control_lite_B.b_i_p++) {
-    proc_control_lite_B.b_this_o[proc_control_lite_B.b_k] = 1.0;
+    proc_control_lite_B.b_this_n[proc_control_lite_B.b_k] = 1.0;
     proc_control_lite_B.b_k += 7;
   }
 
@@ -25133,10 +25150,10 @@ void proc_control_lite::proc_control_TrimPlant_stepImpl
         proc_control_lite_B.b_i_p;
       proc_control_lite_B.b_I_tmp_p = (proc_control_lite_B.i_h +
         proc_control_lite_B.b_k) + 98;
-      proc_control_lite_B.b_this_o[proc_control_lite_B.b_I_tmp] =
+      proc_control_lite_B.b_this_n[proc_control_lite_B.b_I_tmp] =
         A[proc_control_lite_B.b_I_tmp_p] -
-        proc_control_lite_B.b_this_o[proc_control_lite_B.b_I_tmp];
-      proc_control_lite_B.Ac_g[proc_control_lite_B.b_I_tmp] =
+        proc_control_lite_B.b_this_n[proc_control_lite_B.b_I_tmp];
+      proc_control_lite_B.Ac_o[proc_control_lite_B.b_I_tmp] =
         proc_control_lite_B.Ac[proc_control_lite_B.b_I_tmp_p];
     }
 
@@ -25144,8 +25161,8 @@ void proc_control_lite::proc_control_TrimPlant_stepImpl
     proc_control_lite_B.b_k += 13;
   }
 
-  proc_control_lite_mldivide_hpq2(proc_control_lite_B.Ac_g,
-    proc_control_lite_B.b_this_o);
+  proc_control_lite_mldivide_hpq2(proc_control_lite_B.Ac_o,
+    proc_control_lite_B.b_this_n);
 
   /*  Fossen 2021 Eq B.11 p 662 */
   /*  Calculer F(x(k),u(k)) */
@@ -25209,7 +25226,7 @@ void proc_control_lite::proc_control_TrimPlant_stepImpl
            proc_control_lite_B.b_I_tmp++) {
         proc_control_lite_B.constMec_rg += b_this->Bc
           [(proc_control_lite_B.b_I_tmp + proc_control_lite_B.b_i_j) + 7] *
-          proc_control_lite_B.b_this_o[proc_control_lite_B.b_I_tmp_p +
+          proc_control_lite_B.b_this_n[proc_control_lite_B.b_I_tmp_p +
           proc_control_lite_B.b_i_p];
         proc_control_lite_B.b_I_tmp_p += 6;
       }
@@ -25355,7 +25372,7 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
           proc_control_lite_B.input_sizes_idx_0];
       }
 
-      proc_control_lite_B.Sum_i[proc_control_lite_B.i_i + 13 *
+      proc_control_lite_B.Sum_f[proc_control_lite_B.i_i + 13 *
         proc_control_lite_B.loop_ub_c] = proc_control_lite_B.CA_h;
     }
 
@@ -25439,7 +25456,7 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
          proc_control_lite_B.loop_ub_c++) {
       Su1_data[proc_control_lite_B.loop_ub_c + (static_cast<int32_T>
         (proc_control_lite_B.pny1) + 13) * proc_control_lite_B.i_i] =
-        proc_control_lite_B.Sum_i[13 * proc_control_lite_B.i_i +
+        proc_control_lite_B.Sum_f[13 * proc_control_lite_B.i_i +
         proc_control_lite_B.loop_ub_c];
     }
 
@@ -25456,7 +25473,7 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
   proc_control_lite_B.input_sizes_idx_0_tmp = static_cast<int32_T>
     (proc_control_lite_B.CA_h) + 8;
   std::memcpy(&proc_control_lite_B.varargin_1_data_f[0],
-              &proc_control_lite_B.Sum_i[0], 104U * sizeof(real_T));
+              &proc_control_lite_B.Sum_f[0], 104U * sizeof(real_T));
   proc_control_lite_B.loop_ub_tmp = static_cast<int32_T>
     (proc_control_lite_B.CA_h) * 13;
   if (proc_control_lite_B.loop_ub_tmp - 1 >= 0) {
@@ -25535,7 +25552,7 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
 
         proc_control_lite_B.Sum_tmp = proc_control_lite_B.loop_ub_c +
           proc_control_lite_B.i_i;
-        proc_control_lite_B.Sum_i[proc_control_lite_B.Sum_tmp] +=
+        proc_control_lite_B.Sum_f[proc_control_lite_B.Sum_tmp] +=
           proc_control_lite_B.CA_h;
         proc_control_lite_B.loop_ub_c += 13;
         proc_control_lite_B.input_sizes_idx_0 += 21;
@@ -25550,7 +25567,7 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
         proc_control_lite_B.loop_ub_tmp = 13 * proc_control_lite_B.i_i +
           proc_control_lite_B.loop_ub_c;
         proc_control_lite_B.CA_h =
-          proc_control_lite_B.Sum_i[proc_control_lite_B.loop_ub_tmp];
+          proc_control_lite_B.Sum_f[proc_control_lite_B.loop_ub_tmp];
         Su1_data[(proc_control_lite_B.rows[proc_control_lite_B.loop_ub_c] + (
                    static_cast<int32_T>(proc_control_lite_B.pny1) + 13) *
                   proc_control_lite_B.i_i) - 1] = proc_control_lite_B.CA_h;
@@ -25595,13 +25612,13 @@ void proc_control_lite::proc_control_mpc_constraintcoef(const real_T b_A[441],
         proc_control_lite_B.loop_ub_c += 13;
       }
 
-      proc_control_lite_B.CA_i[proc_control_lite_B.i_i] =
+      proc_control_lite_B.CA_c[proc_control_lite_B.i_i] =
         proc_control_lite_B.CA_h;
     }
 
     proc_control_lite_B.loop_ub_tmp = static_cast<int32_T>
       (proc_control_lite_B.b_p) + 1;
-    std::memcpy(&proc_control_lite_B.CA_data[0], &proc_control_lite_B.CA_i[0],
+    std::memcpy(&proc_control_lite_B.CA_data[0], &proc_control_lite_B.CA_c[0],
                 13U * sizeof(real_T));
     for (proc_control_lite_B.i_i = 0; proc_control_lite_B.i_i <
          proc_control_lite_B.loop_ub_g; proc_control_lite_B.i_i++) {
@@ -25675,10 +25692,10 @@ void proc_control_lite::proc_control_lite_Mrows_reshape(boolean_T isMrows_data[]
   proc_control_lite_B.loop_ub_tmp_c = b_p * 13;
   for (proc_control_lite_B.i35 = 0; proc_control_lite_B.i35 <
        proc_control_lite_B.loop_ub_tmp_c; proc_control_lite_B.i35++) {
-    proc_control_lite_B.tmp_data_a[proc_control_lite_B.i35] =
+    proc_control_lite_B.tmp_data_fo[proc_control_lite_B.i35] =
       proc_control_lite_B.i35;
     proc_control_lite_B.i36 =
-      proc_control_lite_B.tmp_data_a[proc_control_lite_B.i35];
+      proc_control_lite_B.tmp_data_fo[proc_control_lite_B.i35];
     isMrows_data[proc_control_lite_B.i36] = isMrows0[proc_control_lite_B.i36];
     Mlimfull_data[proc_control_lite_B.i36] = Mlimfull0[proc_control_lite_B.i36];
     Vfull_data[proc_control_lite_B.i36] = Vfull0[proc_control_lite_B.i36];
@@ -25923,7 +25940,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
       proc_control_lite_B.ibcol_i = proc_control_lite_B.isMrows_tmp_b << 3;
       for (proc_control_lite_B.b_k_c = 0; proc_control_lite_B.b_k_c < 8;
            proc_control_lite_B.b_k_c++) {
-        proc_control_lite_B.gb_data_d[proc_control_lite_B.ibcol_i +
+        proc_control_lite_B.gb_data_p[proc_control_lite_B.ibcol_i +
           proc_control_lite_B.b_k_c] = isMrows0[proc_control_lite_B.b_k_c + 420];
       }
     }
@@ -25933,7 +25950,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
     for (proc_control_lite_B.b_k_c = 0; proc_control_lite_B.b_k_c <
          proc_control_lite_B.isMrows_tmp_b; proc_control_lite_B.b_k_c++) {
       isMrows_data[proc_control_lite_B.fb_k + proc_control_lite_B.b_k_c] =
-        proc_control_lite_B.gb_data_d[proc_control_lite_B.b_k_c];
+        proc_control_lite_B.gb_data_p[proc_control_lite_B.b_k_c];
     }
 
     proc_control_lite_B.db_i = proc_control_lite_B.db_tmp_k;
@@ -25948,7 +25965,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
          proc_control_lite_B.isMrows_tmp_b < proc_control_lite_B.hb_tmp_l;
          proc_control_lite_B.isMrows_tmp_b++) {
       proc_control_lite_B.ibcol_i = proc_control_lite_B.isMrows_tmp_b << 3;
-      std::memcpy(&proc_control_lite_B.y_data_m0[proc_control_lite_B.ibcol_i],
+      std::memcpy(&proc_control_lite_B.y_data_m[proc_control_lite_B.ibcol_i],
                   &Mlimfull0[420], sizeof(real_T) << 3U);
     }
 
@@ -25957,7 +25974,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
     for (proc_control_lite_B.b_k_c = 0; proc_control_lite_B.b_k_c <
          proc_control_lite_B.isMrows_tmp_b; proc_control_lite_B.b_k_c++) {
       Mlimfull_data[proc_control_lite_B.fb_k + proc_control_lite_B.b_k_c] =
-        proc_control_lite_B.y_data_m0[proc_control_lite_B.b_k_c];
+        proc_control_lite_B.y_data_m[proc_control_lite_B.b_k_c];
     }
 
     proc_control_lite_B.db_i = proc_control_lite_B.db_tmp_k;
@@ -25972,7 +25989,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
          proc_control_lite_B.isMrows_tmp_b < proc_control_lite_B.hb_tmp_l;
          proc_control_lite_B.isMrows_tmp_b++) {
       proc_control_lite_B.ibcol_i = proc_control_lite_B.isMrows_tmp_b << 3;
-      std::memcpy(&proc_control_lite_B.y_data_m0[proc_control_lite_B.ibcol_i],
+      std::memcpy(&proc_control_lite_B.y_data_m[proc_control_lite_B.ibcol_i],
                   &Vfull0[420], sizeof(real_T) << 3U);
     }
 
@@ -25981,7 +25998,7 @@ void proc_control_lite::proc_control_Mrows_reshape_hnyc(boolean_T isMrows_data[]
     for (proc_control_lite_B.hb_tmp_l = 0; proc_control_lite_B.hb_tmp_l <
          proc_control_lite_B.isMrows_tmp_b; proc_control_lite_B.hb_tmp_l++) {
       Vfull_data[proc_control_lite_B.fb_k + proc_control_lite_B.hb_tmp_l] =
-        proc_control_lite_B.y_data_m0[proc_control_lite_B.hb_tmp_l];
+        proc_control_lite_B.y_data_m[proc_control_lite_B.hb_tmp_l];
     }
   }
 }
@@ -26109,7 +26126,7 @@ void proc_control_lite::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[]
     for (proc_control_lite_B.isMrows_tmp = 0; proc_control_lite_B.isMrows_tmp <
          proc_control_lite_B.hb_tmp; proc_control_lite_B.isMrows_tmp++) {
       proc_control_lite_B.ibcol = proc_control_lite_B.isMrows_tmp << 3;
-      std::memcpy(&proc_control_lite_B.y_data_m[proc_control_lite_B.ibcol],
+      std::memcpy(&proc_control_lite_B.y_data_e[proc_control_lite_B.ibcol],
                   &Mlimfull0[428], sizeof(real_T) << 3U);
     }
 
@@ -26118,7 +26135,7 @@ void proc_control_lite::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[]
     for (proc_control_lite_B.b_k_p = 0; proc_control_lite_B.b_k_p <
          proc_control_lite_B.isMrows_tmp; proc_control_lite_B.b_k_p++) {
       Mlimfull_data[proc_control_lite_B.fb + proc_control_lite_B.b_k_p] =
-        proc_control_lite_B.y_data_m[proc_control_lite_B.b_k_p];
+        proc_control_lite_B.y_data_e[proc_control_lite_B.b_k_p];
     }
 
     proc_control_lite_B.db = proc_control_lite_B.db_tmp;
@@ -26132,7 +26149,7 @@ void proc_control_lite::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[]
     for (proc_control_lite_B.isMrows_tmp = 0; proc_control_lite_B.isMrows_tmp <
          proc_control_lite_B.hb_tmp; proc_control_lite_B.isMrows_tmp++) {
       proc_control_lite_B.ibcol = proc_control_lite_B.isMrows_tmp << 3;
-      std::memcpy(&proc_control_lite_B.y_data_m[proc_control_lite_B.ibcol],
+      std::memcpy(&proc_control_lite_B.y_data_e[proc_control_lite_B.ibcol],
                   &Vfull0[428], sizeof(real_T) << 3U);
     }
 
@@ -26141,7 +26158,7 @@ void proc_control_lite::proc_contro_Mrows_reshape_hnycd(boolean_T isMrows_data[]
     for (proc_control_lite_B.hb_tmp = 0; proc_control_lite_B.hb_tmp <
          proc_control_lite_B.isMrows_tmp; proc_control_lite_B.hb_tmp++) {
       Vfull_data[proc_control_lite_B.fb + proc_control_lite_B.hb_tmp] =
-        proc_control_lite_B.y_data_m[proc_control_lite_B.hb_tmp];
+        proc_control_lite_B.y_data_e[proc_control_lite_B.hb_tmp];
     }
   }
 }
@@ -26776,9 +26793,9 @@ real_T proc_control_lite::proc_control_lite_minimum(const real_T x_data[], const
       for (proc_control_lite_B.k_gw = proc_control_lite_B.idx_cm + 1;
            proc_control_lite_B.k_gw <= proc_control_lite_B.last;
            proc_control_lite_B.k_gw++) {
-        proc_control_lite_B.x_py = x_data[proc_control_lite_B.k_gw - 1];
-        if (ex > proc_control_lite_B.x_py) {
-          ex = proc_control_lite_B.x_py;
+        proc_control_lite_B.x_p = x_data[proc_control_lite_B.k_gw - 1];
+        if (ex > proc_control_lite_B.x_p) {
+          ex = proc_control_lite_B.x_p;
         }
       }
     }
@@ -26854,9 +26871,9 @@ void proc_control_lite::proc_control_l_mpc_checkhessian(real_T b_H_data[],
     b_H_size[1]);
   guard1 = false;
   if (proc_control_lite_B.Tries_e == 0) {
-    proc_control_lite_diag(L_data, L_size, proc_control_lite_B.tmp_data_nb,
+    proc_control_lite_diag(L_data, L_size, proc_control_lite_B.tmp_data_ch,
       proc_control_lite_B.tmp_size_gh);
-    if (proc_control_lite_minimum(proc_control_lite_B.tmp_data_nb,
+    if (proc_control_lite_minimum(proc_control_lite_B.tmp_data_ch,
          proc_control_lite_B.tmp_size_gh) > 1.4901161193847656E-7) {
     } else {
       guard1 = true;
@@ -26967,9 +26984,9 @@ void proc_control_lite::proc_control_l_mpc_checkhessian(real_T b_H_data[],
           (proc_control_lite_B.emlN_tmp, L_data, proc_control_lite_B.emlN_tmp);
         guard2 = false;
         if (proc_control_lite_B.b_k_k == 0) {
-          proc_control_lite_diag(L_data, L_size, proc_control_lite_B.tmp_data_nb,
+          proc_control_lite_diag(L_data, L_size, proc_control_lite_B.tmp_data_ch,
             proc_control_lite_B.tmp_size_gh);
-          if (proc_control_lite_minimum(proc_control_lite_B.tmp_data_nb,
+          if (proc_control_lite_minimum(proc_control_lite_B.tmp_data_ch,
                proc_control_lite_B.tmp_size_gh) > 1.4901161193847656E-7) {
             *BadH = 1.0;
             exitg1 = true;
@@ -27427,7 +27444,7 @@ void proc_control_lite::proc_control_lite_xgeqrf(real_T b_A_data[], const
     }
 
     if (proc_control_lite_B.n_tmp_i - 1 >= 0) {
-      std::memset(&proc_control_lite_B.work_data_c[0], 0, static_cast<uint32_T>
+      std::memset(&proc_control_lite_B.work_data_b[0], 0, static_cast<uint32_T>
                   (proc_control_lite_B.n_tmp_i) * sizeof(real_T));
     }
 
@@ -27569,10 +27586,10 @@ void proc_control_lite::proc_control_lite_xgeqrf(real_T b_A_data[], const
           proc_control_lite_xgemv(proc_control_lite_B.mmi,
             proc_control_lite_B.mmip1, b_A_data, proc_control_lite_B.ix0,
             proc_control_lite_B.b_m_tmp, b_A_data, proc_control_lite_B.ii_j + 1,
-            proc_control_lite_B.work_data_c);
+            proc_control_lite_B.work_data_b);
           proc_control_lite_xgerc(proc_control_lite_B.mmi,
             proc_control_lite_B.mmip1, -tau_data[proc_control_lite_B.minmana],
-            proc_control_lite_B.ii_j + 1, proc_control_lite_B.work_data_c,
+            proc_control_lite_B.ii_j + 1, proc_control_lite_B.work_data_b,
             b_A_data, proc_control_lite_B.ix0, proc_control_lite_B.b_m_tmp);
         }
 
@@ -27604,7 +27621,7 @@ void proc_control_lite::proc_control_lite_xorgqr(int32_T b_m, int32_T n, int32_T
     proc_control_lite_B.itau_b = k - 1;
     proc_control_lite_B.loop_ub_mn = b_A_size[1];
     if (proc_control_lite_B.loop_ub_mn - 1 >= 0) {
-      std::memset(&proc_control_lite_B.work_data_i[0], 0, static_cast<uint32_T>
+      std::memset(&proc_control_lite_B.work_data_n[0], 0, static_cast<uint32_T>
                   (proc_control_lite_B.loop_ub_mn) * sizeof(real_T));
     }
 
@@ -27659,10 +27676,10 @@ void proc_control_lite::proc_control_lite_xorgqr(int32_T b_m, int32_T n, int32_T
           proc_control_lite_xgemv(proc_control_lite_B.lastv_l,
             proc_control_lite_B.lastc_g, b_A_data,
             proc_control_lite_B.loop_ub_mn, lda, b_A_data,
-            proc_control_lite_B.ia_b, proc_control_lite_B.work_data_i);
+            proc_control_lite_B.ia_b, proc_control_lite_B.work_data_n);
           proc_control_lite_xgerc(proc_control_lite_B.lastv_l,
             proc_control_lite_B.lastc_g, -tau_data[proc_control_lite_B.itau_b],
-            proc_control_lite_B.ia_b, proc_control_lite_B.work_data_i, b_A_data,
+            proc_control_lite_B.ia_b, proc_control_lite_B.work_data_n, b_A_data,
             proc_control_lite_B.loop_ub_mn, lda);
         }
       }
@@ -27983,14 +28000,14 @@ void proc_control_lite::proc_control_binary_expand_op_4(real_T in1_data[],
   proc_control_lite_B.stride_1_0 = (in3_size[0] != 1);
   for (proc_control_lite_B.i34 = 0; proc_control_lite_B.i34 <
        proc_control_lite_B.loop_ub_ba; proc_control_lite_B.i34++) {
-    proc_control_lite_B.in1_data_m[proc_control_lite_B.i34] =
+    proc_control_lite_B.in1_data_i[proc_control_lite_B.i34] =
       in3_data[proc_control_lite_B.i34 * proc_control_lite_B.stride_1_0] * in2 +
       in1_data[proc_control_lite_B.i34 * proc_control_lite_B.stride_0_0];
   }
 
   in1_size[0] = proc_control_lite_B.loop_ub_ba;
   if (proc_control_lite_B.loop_ub_ba - 1 >= 0) {
-    std::memcpy(&in1_data[0], &proc_control_lite_B.in1_data_m[0],
+    std::memcpy(&in1_data[0], &proc_control_lite_B.in1_data_i[0],
                 static_cast<uint32_T>(proc_control_lite_B.loop_ub_ba) * sizeof
                 (real_T));
   }
@@ -31567,7 +31584,7 @@ void proc_control_lite::proc_control_l_xsyheev_I3eOIoIT(real_T A[169], int32_T
 
     A[0] = 1.0;
     std::memset(&A[1], 0, 12U * sizeof(real_T));
-    std::memset(&proc_control_lite_B.work_i[0], 0, 13U * sizeof(real_T));
+    std::memset(&proc_control_lite_B.work_j[0], 0, 13U * sizeof(real_T));
     for (proc_control_lite_B.e_i_g = 11; proc_control_lite_B.e_i_g >= 0;
          proc_control_lite_B.e_i_g--) {
       proc_control_lite_B.iaii = (proc_control_lite_B.e_i_g * 13 +
@@ -31616,7 +31633,7 @@ void proc_control_lite::proc_control_l_xsyheev_I3eOIoIT(real_T A[169], int32_T
 
         if (proc_control_lite_B.itau > 0) {
           if (proc_control_lite_B.lastc + 1 != 0) {
-            std::memset(&proc_control_lite_B.work_i[0], 0, static_cast<uint32_T>
+            std::memset(&proc_control_lite_B.work_j[0], 0, static_cast<uint32_T>
                         (proc_control_lite_B.lastc + 1) * sizeof(real_T));
             proc_control_lite_B.jy = 13 * proc_control_lite_B.lastc +
               proc_control_lite_B.iaii;
@@ -31636,7 +31653,7 @@ void proc_control_lite::proc_control_l_xsyheev_I3eOIoIT(real_T A[169], int32_T
 
               proc_control_lite_B.b_ia = div_nde_s32_floor
                 (proc_control_lite_B.coltop_b - proc_control_lite_B.iaii, 13);
-              proc_control_lite_B.work_i[proc_control_lite_B.b_ia] +=
+              proc_control_lite_B.work_j[proc_control_lite_B.b_ia] +=
                 proc_control_lite_B.absx;
             }
           }
@@ -31646,7 +31663,7 @@ void proc_control_lite::proc_control_l_xsyheev_I3eOIoIT(real_T A[169], int32_T
             for (proc_control_lite_B.coltop_b = 0; proc_control_lite_B.coltop_b <=
                  proc_control_lite_B.lastc; proc_control_lite_B.coltop_b++) {
               proc_control_lite_B.absx =
-                proc_control_lite_B.work_i[proc_control_lite_B.coltop_b];
+                proc_control_lite_B.work_j[proc_control_lite_B.coltop_b];
               if (proc_control_lite_B.absx != 0.0) {
                 proc_control_lite_B.absx *=
                   -proc_control_lite_B.tau[proc_control_lite_B.e_i_g];
@@ -31800,12 +31817,12 @@ void proc_control_lite::proc_control_lite_expm_gzVvZTcz(real_T A[169], real_T F
       if (recomputeDiags) {
         std::memcpy(&proc_control_lite_B.A2_c[0], &A[0], 169U * sizeof(real_T));
         proc_control_l_xsyheev_I3eOIoIT(proc_control_lite_B.A2_c,
-          &proc_control_lite_B.b_s_e, proc_control_lite_B.w_d);
+          &proc_control_lite_B.b_s_e, proc_control_lite_B.w_i);
         proc_control_lite_B.e_i = 0;
         for (proc_control_lite_B.b_s_e = 0; proc_control_lite_B.b_s_e < 13;
              proc_control_lite_B.b_s_e++) {
           proc_control_lite_B.exptj_j = std::exp
-            (proc_control_lite_B.w_d[proc_control_lite_B.b_s_e]);
+            (proc_control_lite_B.w_i[proc_control_lite_B.b_s_e]);
           for (proc_control_lite_B.e_j = 0; proc_control_lite_B.e_j < 13;
                proc_control_lite_B.e_j++) {
             proc_control_lite_B.F_tmp = proc_control_lite_B.e_j +
@@ -32195,7 +32212,7 @@ void proc_control_lite::proc_control_lite_expm_gzVvZTcz(real_T A[169], real_T F
         if (recomputeDiags) {
           for (proc_control_lite_B.e_j = 0; proc_control_lite_B.e_j < 12;
                proc_control_lite_B.e_j++) {
-            proc_control_lite_B.blockFormat_f[proc_control_lite_B.e_j] = 0;
+            proc_control_lite_B.blockFormat_k[proc_control_lite_B.e_j] = 0;
           }
 
           proc_control_lite_B.e_j = 0;
@@ -32203,25 +32220,25 @@ void proc_control_lite::proc_control_lite_expm_gzVvZTcz(real_T A[169], real_T F
             proc_control_lite_B.d6_a = A[(13 * proc_control_lite_B.e_j +
               proc_control_lite_B.e_j) + 1];
             if (proc_control_lite_B.d6_a != 0.0) {
-              proc_control_lite_B.blockFormat_f[proc_control_lite_B.e_j] = 2;
-              proc_control_lite_B.blockFormat_f[proc_control_lite_B.e_j + 1] = 0;
+              proc_control_lite_B.blockFormat_k[proc_control_lite_B.e_j] = 2;
+              proc_control_lite_B.blockFormat_k[proc_control_lite_B.e_j + 1] = 0;
               proc_control_lite_B.e_j += 2;
             } else if ((proc_control_lite_B.d6_a == 0.0) && (A
                         [((proc_control_lite_B.e_j + 1) * 13 +
                           proc_control_lite_B.e_j) + 2] == 0.0)) {
-              proc_control_lite_B.blockFormat_f[proc_control_lite_B.e_j] = 1;
+              proc_control_lite_B.blockFormat_k[proc_control_lite_B.e_j] = 1;
               proc_control_lite_B.e_j++;
             } else {
-              proc_control_lite_B.blockFormat_f[proc_control_lite_B.e_j] = 0;
+              proc_control_lite_B.blockFormat_k[proc_control_lite_B.e_j] = 0;
               proc_control_lite_B.e_j++;
             }
           }
 
           if (A[155] != 0.0) {
-            proc_control_lite_B.blockFormat_f[11] = 2;
-          } else if ((proc_control_lite_B.blockFormat_f[10] == 0) ||
-                     (proc_control_lite_B.blockFormat_f[10] == 1)) {
-            proc_control_lite_B.blockFormat_f[11] = 1;
+            proc_control_lite_B.blockFormat_k[11] = 2;
+          } else if ((proc_control_lite_B.blockFormat_k[10] == 0) ||
+                     (proc_control_lite_B.blockFormat_k[10] == 1)) {
+            proc_control_lite_B.blockFormat_k[11] = 1;
           }
         }
 
@@ -32230,7 +32247,7 @@ void proc_control_lite::proc_control_lite_expm_gzVvZTcz(real_T A[169], real_T F
           proc_control_lite_B.b_s_e, F);
         if (recomputeDiags) {
           pro_recomputeBlockDiag_GI8hdgJN(A, F,
-            proc_control_lite_B.blockFormat_f);
+            proc_control_lite_B.blockFormat_k);
         }
 
         proc_control_lite_B.b_s_e = static_cast<int32_T>
@@ -32266,7 +32283,7 @@ void proc_control_lite::proc_control_lite_expm_gzVvZTcz(real_T A[169], real_T F
             }
 
             pro_recomputeBlockDiag_GI8hdgJN(A, F,
-              proc_control_lite_B.blockFormat_f);
+              proc_control_lite_B.blockFormat_k);
           }
         }
       }
@@ -32279,7 +32296,7 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
   real_T B[36])
 {
   int32_T ijA;
-  std::memcpy(&proc_control_lite_B.b_A_j[0], &A[0], 36U * sizeof(real_T));
+  std::memcpy(&proc_control_lite_B.b_A_m[0], &A[0], 36U * sizeof(real_T));
   for (proc_control_lite_B.c_k = 0; proc_control_lite_B.c_k < 6;
        proc_control_lite_B.c_k++) {
     proc_control_lite_B.ipiv_g[proc_control_lite_B.c_k] = static_cast<int8_T>
@@ -32293,19 +32310,19 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
     proc_control_lite_B.b_ix_l = 0;
     proc_control_lite_B.ix_b = proc_control_lite_B.jj_c1;
     proc_control_lite_B.smax_a = std::abs
-      (proc_control_lite_B.b_A_j[proc_control_lite_B.jj_c1]);
+      (proc_control_lite_B.b_A_m[proc_control_lite_B.jj_c1]);
     for (proc_control_lite_B.c_k = 2; proc_control_lite_B.c_k <
          proc_control_lite_B.iy_am; proc_control_lite_B.c_k++) {
       proc_control_lite_B.ix_b++;
       proc_control_lite_B.s_hs = std::abs
-        (proc_control_lite_B.b_A_j[proc_control_lite_B.ix_b]);
+        (proc_control_lite_B.b_A_m[proc_control_lite_B.ix_b]);
       if (proc_control_lite_B.s_hs > proc_control_lite_B.smax_a) {
         proc_control_lite_B.b_ix_l = proc_control_lite_B.c_k - 1;
         proc_control_lite_B.smax_a = proc_control_lite_B.s_hs;
       }
     }
 
-    if (proc_control_lite_B.b_A_j[proc_control_lite_B.jj_c1 +
+    if (proc_control_lite_B.b_A_m[proc_control_lite_B.jj_c1 +
         proc_control_lite_B.b_ix_l] != 0.0) {
       if (proc_control_lite_B.b_ix_l != 0) {
         proc_control_lite_B.iy_am = proc_control_lite_B.b_j_f +
@@ -32317,10 +32334,10 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
           proc_control_lite_B.b_ix_l = proc_control_lite_B.ix_b * 6 +
             proc_control_lite_B.b_j_f;
           proc_control_lite_B.smax_a =
-            proc_control_lite_B.b_A_j[proc_control_lite_B.b_ix_l];
-          proc_control_lite_B.b_A_j[proc_control_lite_B.b_ix_l] =
-            proc_control_lite_B.b_A_j[proc_control_lite_B.iy_am];
-          proc_control_lite_B.b_A_j[proc_control_lite_B.iy_am] =
+            proc_control_lite_B.b_A_m[proc_control_lite_B.b_ix_l];
+          proc_control_lite_B.b_A_m[proc_control_lite_B.b_ix_l] =
+            proc_control_lite_B.b_A_m[proc_control_lite_B.iy_am];
+          proc_control_lite_B.b_A_m[proc_control_lite_B.iy_am] =
             proc_control_lite_B.smax_a;
           proc_control_lite_B.iy_am += 6;
         }
@@ -32331,8 +32348,8 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
       for (proc_control_lite_B.b_ix_l = proc_control_lite_B.jj_c1 + 2;
            proc_control_lite_B.b_ix_l <= proc_control_lite_B.iy_am;
            proc_control_lite_B.b_ix_l++) {
-        proc_control_lite_B.b_A_j[proc_control_lite_B.b_ix_l - 1] /=
-          proc_control_lite_B.b_A_j[proc_control_lite_B.jj_c1];
+        proc_control_lite_B.b_A_m[proc_control_lite_B.b_ix_l - 1] /=
+          proc_control_lite_B.b_A_m[proc_control_lite_B.jj_c1];
       }
     }
 
@@ -32342,13 +32359,13 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
     for (proc_control_lite_B.c_k = 0; proc_control_lite_B.c_k <=
          proc_control_lite_B.ix_b; proc_control_lite_B.c_k++) {
       proc_control_lite_B.smax_a =
-        proc_control_lite_B.b_A_j[proc_control_lite_B.iy_am];
-      if (proc_control_lite_B.b_A_j[proc_control_lite_B.iy_am] != 0.0) {
+        proc_control_lite_B.b_A_m[proc_control_lite_B.iy_am];
+      if (proc_control_lite_B.b_A_m[proc_control_lite_B.iy_am] != 0.0) {
         proc_control_lite_B.d_c = (proc_control_lite_B.b_ix_l -
           proc_control_lite_B.b_j_f) + 4;
         for (ijA = proc_control_lite_B.b_ix_l; ijA <= proc_control_lite_B.d_c;
              ijA++) {
-          proc_control_lite_B.b_A_j[ijA - 1] += proc_control_lite_B.b_A_j
+          proc_control_lite_B.b_A_m[ijA - 1] += proc_control_lite_B.b_A_m
             [((proc_control_lite_B.jj_c1 + ijA) - proc_control_lite_B.b_ix_l) +
             1] * -proc_control_lite_B.smax_a;
         }
@@ -32388,7 +32405,7 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
         for (proc_control_lite_B.ix_b = proc_control_lite_B.iy_am + 2;
              proc_control_lite_B.ix_b < 7; proc_control_lite_B.ix_b++) {
           ijA = (proc_control_lite_B.ix_b + proc_control_lite_B.jj_c1) - 1;
-          B[ijA] -= proc_control_lite_B.b_A_j[(proc_control_lite_B.ix_b +
+          B[ijA] -= proc_control_lite_B.b_A_m[(proc_control_lite_B.ix_b +
             proc_control_lite_B.b_ix_l) - 1] * B[proc_control_lite_B.c_k];
         }
       }
@@ -32406,12 +32423,12 @@ void proc_control_lite::proc_contro_mldivide_Bh63yZKV_b(const real_T A[36],
       proc_control_lite_B.smax_a = B[proc_control_lite_B.c_k];
       if (proc_control_lite_B.smax_a != 0.0) {
         B[proc_control_lite_B.c_k] = proc_control_lite_B.smax_a /
-          proc_control_lite_B.b_A_j[proc_control_lite_B.iy_am +
+          proc_control_lite_B.b_A_m[proc_control_lite_B.iy_am +
           proc_control_lite_B.b_ix_l];
         for (proc_control_lite_B.ix_b = 0; proc_control_lite_B.ix_b <
              proc_control_lite_B.iy_am; proc_control_lite_B.ix_b++) {
           ijA = proc_control_lite_B.ix_b + proc_control_lite_B.jj_c1;
-          B[ijA] -= proc_control_lite_B.b_A_j[proc_control_lite_B.ix_b +
+          B[ijA] -= proc_control_lite_B.b_A_m[proc_control_lite_B.ix_b +
             proc_control_lite_B.b_ix_l] * B[proc_control_lite_B.c_k];
         }
       }
@@ -33159,7 +33176,7 @@ void proc_control_lite::mpc_constraintcoefLTV_LuSb5Vr_i(const real_T b_A[4851],
               proc_control_lite_B.i24];
           }
 
-          proc_control_lite_B.b_Su1_k[proc_control_lite_B.i24 + 13 *
+          proc_control_lite_B.b_Su1_o[proc_control_lite_B.i24 + 13 *
             proc_control_lite_B.i25] = b_Su1[(130 * proc_control_lite_B.i25 +
             proc_control_lite_B.rows_o[proc_control_lite_B.i24]) - 1] +
             proc_control_lite_B.b_C_l;
@@ -33171,7 +33188,7 @@ void proc_control_lite::mpc_constraintcoefLTV_LuSb5Vr_i(const real_T b_A[4851],
         for (proc_control_lite_B.i25 = 0; proc_control_lite_B.i25 < 13;
              proc_control_lite_B.i25++) {
           b_Su1[(proc_control_lite_B.rows_o[proc_control_lite_B.i25] + 130 *
-                 proc_control_lite_B.i24) - 1] = proc_control_lite_B.b_Su1_k[13 *
+                 proc_control_lite_B.i24) - 1] = proc_control_lite_B.b_Su1_o[13 *
             proc_control_lite_B.i24 + proc_control_lite_B.i25];
         }
       }
@@ -33447,9 +33464,9 @@ void proc_control_lite::proc_control__trisolve_welyRBjd(const real_T b_A[81],
       proc_control_lite_B.kAcol_h = 9 * proc_control_lite_B.b_k_i;
       proc_control_lite_B.b_B_tmp = proc_control_lite_B.b_k_i +
         proc_control_lite_B.jBcol_i;
-      proc_control_lite_B.b_B_a = b_B[proc_control_lite_B.b_B_tmp];
-      if (proc_control_lite_B.b_B_a != 0.0) {
-        b_B[proc_control_lite_B.b_B_tmp] = proc_control_lite_B.b_B_a /
+      proc_control_lite_B.b_B_ap = b_B[proc_control_lite_B.b_B_tmp];
+      if (proc_control_lite_B.b_B_ap != 0.0) {
+        b_B[proc_control_lite_B.b_B_tmp] = proc_control_lite_B.b_B_ap /
           b_A[proc_control_lite_B.b_k_i + proc_control_lite_B.kAcol_h];
         for (proc_control_lite_B.i_nx = proc_control_lite_B.b_k_i + 2;
              proc_control_lite_B.i_nx < 10; proc_control_lite_B.i_nx++) {
@@ -33676,8 +33693,8 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
     }
   }
 
-  std::memcpy(&proc_control_lite_B.b_A_b[0], &RLinv[0], 81U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.tau_p[0], 0, 9U * sizeof(real_T));
+  std::memcpy(&proc_control_lite_B.b_A_p[0], &RLinv[0], 81U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.tau_c[0], 0, 9U * sizeof(real_T));
   std::memset(&proc_control_lite_B.work_p[0], 0, 9U * sizeof(real_T));
   for (proc_control_lite_B.k_i = 0; proc_control_lite_B.k_i < 9;
        proc_control_lite_B.k_i++) {
@@ -33685,18 +33702,18 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
       proc_control_lite_B.k_i;
     if (proc_control_lite_B.k_i + 1 < 9) {
       proc_control_lite_B.RLinv_l =
-        proc_control_lite_B.b_A_b[proc_control_lite_B.ii];
+        proc_control_lite_B.b_A_p[proc_control_lite_B.ii];
       proc_control_lite_B.b_lastv = proc_control_lite_B.ii + 2;
-      proc_control_lite_B.tau_p[proc_control_lite_B.k_i] = 0.0;
+      proc_control_lite_B.tau_c[proc_control_lite_B.k_i] = 0.0;
       proc_control_lite_B.beta1 = proc_control_lit_xnrm2_lhTkIDkT(8 -
-        proc_control_lite_B.k_i, proc_control_lite_B.b_A_b,
+        proc_control_lite_B.k_i, proc_control_lite_B.b_A_p,
         proc_control_lite_B.ii + 2);
       if (proc_control_lite_B.beta1 != 0.0) {
-        proc_control_lite_B.b_A_jz =
-          proc_control_lite_B.b_A_b[proc_control_lite_B.ii];
+        proc_control_lite_B.b_A_j =
+          proc_control_lite_B.b_A_p[proc_control_lite_B.ii];
         proc_control_lite_B.beta1 = proc_control_lite_rt_hypotd_snf
-          (proc_control_lite_B.b_A_jz, proc_control_lite_B.beta1);
-        if (proc_control_lite_B.b_A_jz >= 0.0) {
+          (proc_control_lite_B.b_A_j, proc_control_lite_B.beta1);
+        if (proc_control_lite_B.b_A_j >= 0.0) {
           proc_control_lite_B.beta1 = -proc_control_lite_B.beta1;
         }
 
@@ -33709,7 +33726,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
             for (proc_control_lite_B.b_coltop = proc_control_lite_B.b_lastv;
                  proc_control_lite_B.b_coltop <= proc_control_lite_B.coltop;
                  proc_control_lite_B.b_coltop++) {
-              proc_control_lite_B.b_A_b[proc_control_lite_B.b_coltop - 1] *=
+              proc_control_lite_B.b_A_p[proc_control_lite_B.b_coltop - 1] *=
                 9.9792015476736E+291;
             }
 
@@ -33720,13 +33737,13 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
 
           proc_control_lite_B.beta1 = proc_control_lite_rt_hypotd_snf
             (proc_control_lite_B.RLinv_l, proc_control_lit_xnrm2_lhTkIDkT(8 -
-              proc_control_lite_B.k_i, proc_control_lite_B.b_A_b,
+              proc_control_lite_B.k_i, proc_control_lite_B.b_A_p,
               proc_control_lite_B.ii + 2));
           if (proc_control_lite_B.RLinv_l >= 0.0) {
             proc_control_lite_B.beta1 = -proc_control_lite_B.beta1;
           }
 
-          proc_control_lite_B.tau_p[proc_control_lite_B.k_i] =
+          proc_control_lite_B.tau_c[proc_control_lite_B.k_i] =
             (proc_control_lite_B.beta1 - proc_control_lite_B.RLinv_l) /
             proc_control_lite_B.beta1;
           proc_control_lite_B.RLinv_l = 1.0 / (proc_control_lite_B.RLinv_l -
@@ -33734,7 +33751,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
           for (proc_control_lite_B.b_coltop = proc_control_lite_B.b_lastv;
                proc_control_lite_B.b_coltop <= proc_control_lite_B.coltop;
                proc_control_lite_B.b_coltop++) {
-            proc_control_lite_B.b_A_b[proc_control_lite_B.b_coltop - 1] *=
+            proc_control_lite_B.b_A_p[proc_control_lite_B.b_coltop - 1] *=
               proc_control_lite_B.RLinv_l;
           }
 
@@ -33745,17 +33762,17 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
 
           proc_control_lite_B.RLinv_l = proc_control_lite_B.beta1;
         } else {
-          proc_control_lite_B.tau_p[proc_control_lite_B.k_i] =
-            (proc_control_lite_B.beta1 - proc_control_lite_B.b_A_jz) /
+          proc_control_lite_B.tau_c[proc_control_lite_B.k_i] =
+            (proc_control_lite_B.beta1 - proc_control_lite_B.b_A_j) /
             proc_control_lite_B.beta1;
-          proc_control_lite_B.RLinv_l = 1.0 / (proc_control_lite_B.b_A_jz -
+          proc_control_lite_B.RLinv_l = 1.0 / (proc_control_lite_B.b_A_j -
             proc_control_lite_B.beta1);
           proc_control_lite_B.b_coltop = (proc_control_lite_B.ii -
             proc_control_lite_B.k_i) + 9;
           for (proc_control_lite_B.knt = proc_control_lite_B.b_lastv;
                proc_control_lite_B.knt <= proc_control_lite_B.b_coltop;
                proc_control_lite_B.knt++) {
-            proc_control_lite_B.b_A_b[proc_control_lite_B.knt - 1] *=
+            proc_control_lite_B.b_A_p[proc_control_lite_B.knt - 1] *=
               proc_control_lite_B.RLinv_l;
           }
 
@@ -33763,13 +33780,13 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
         }
       }
 
-      proc_control_lite_B.b_A_b[proc_control_lite_B.ii] = 1.0;
-      if (proc_control_lite_B.tau_p[proc_control_lite_B.k_i] != 0.0) {
+      proc_control_lite_B.b_A_p[proc_control_lite_B.ii] = 1.0;
+      if (proc_control_lite_B.tau_c[proc_control_lite_B.k_i] != 0.0) {
         proc_control_lite_B.b_lastv = 9 - proc_control_lite_B.k_i;
         proc_control_lite_B.knt = (proc_control_lite_B.ii -
           proc_control_lite_B.k_i) + 8;
         while ((proc_control_lite_B.b_lastv > 0) &&
-               (proc_control_lite_B.b_A_b[proc_control_lite_B.knt] == 0.0)) {
+               (proc_control_lite_B.b_A_p[proc_control_lite_B.knt] == 0.0)) {
           proc_control_lite_B.b_lastv--;
           proc_control_lite_B.knt--;
         }
@@ -33784,7 +33801,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
             exitg1 = 0;
             if (proc_control_lite_B.coltop + 1 <= proc_control_lite_B.b_coltop +
                 proc_control_lite_B.b_lastv) {
-              if (proc_control_lite_B.b_A_b[proc_control_lite_B.coltop] != 0.0)
+              if (proc_control_lite_B.b_A_p[proc_control_lite_B.coltop] != 0.0)
               {
                 exitg1 = 1;
               } else {
@@ -33807,20 +33824,20 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
 
       if (proc_control_lite_B.b_lastv > 0) {
         proc_control_lit_xgemv_zYrlt8Jf(proc_control_lite_B.b_lastv,
-          proc_control_lite_B.knt, proc_control_lite_B.b_A_b,
-          proc_control_lite_B.ii + 10, proc_control_lite_B.b_A_b,
+          proc_control_lite_B.knt, proc_control_lite_B.b_A_p,
+          proc_control_lite_B.ii + 10, proc_control_lite_B.b_A_p,
           proc_control_lite_B.ii + 1, proc_control_lite_B.work_p);
         proc_control_lit_xgerc_vcdhhgKg(proc_control_lite_B.b_lastv,
           proc_control_lite_B.knt,
-          -proc_control_lite_B.tau_p[proc_control_lite_B.k_i],
+          -proc_control_lite_B.tau_c[proc_control_lite_B.k_i],
           proc_control_lite_B.ii + 1, proc_control_lite_B.work_p,
-          proc_control_lite_B.b_A_b, proc_control_lite_B.ii + 10);
+          proc_control_lite_B.b_A_p, proc_control_lite_B.ii + 10);
       }
 
-      proc_control_lite_B.b_A_b[proc_control_lite_B.ii] =
+      proc_control_lite_B.b_A_p[proc_control_lite_B.ii] =
         proc_control_lite_B.RLinv_l;
     } else {
-      proc_control_lite_B.tau_p[8] = 0.0;
+      proc_control_lite_B.tau_c[8] = 0.0;
     }
   }
 
@@ -33828,14 +33845,14 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
        proc_control_lite_B.k_i++) {
     for (proc_control_lite_B.ii = 0; proc_control_lite_B.ii <=
          proc_control_lite_B.k_i; proc_control_lite_B.ii++) {
-      proc_control_lite_B.R_p[proc_control_lite_B.ii + 9 *
-        proc_control_lite_B.k_i] = proc_control_lite_B.b_A_b[9 *
+      proc_control_lite_B.R_k[proc_control_lite_B.ii + 9 *
+        proc_control_lite_B.k_i] = proc_control_lite_B.b_A_p[9 *
         proc_control_lite_B.k_i + proc_control_lite_B.ii];
     }
 
     for (proc_control_lite_B.ii = proc_control_lite_B.k_i + 2;
          proc_control_lite_B.ii < 10; proc_control_lite_B.ii++) {
-      proc_control_lite_B.R_p[(proc_control_lite_B.ii + 9 *
+      proc_control_lite_B.R_k[(proc_control_lite_B.ii + 9 *
         proc_control_lite_B.k_i) - 1] = 0.0;
     }
 
@@ -33847,13 +33864,13 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
     proc_control_lite_B.b_lastv = (proc_control_lite_B.k_i * 9 +
       proc_control_lite_B.k_i) + 10;
     if (proc_control_lite_B.k_i + 1 < 9) {
-      proc_control_lite_B.b_A_b[proc_control_lite_B.b_lastv - 10] = 1.0;
-      if (proc_control_lite_B.tau_p[proc_control_lite_B.k_i] != 0.0) {
+      proc_control_lite_B.b_A_p[proc_control_lite_B.b_lastv - 10] = 1.0;
+      if (proc_control_lite_B.tau_c[proc_control_lite_B.k_i] != 0.0) {
         proc_control_lite_B.knt = 9 - proc_control_lite_B.k_i;
         proc_control_lite_B.b_coltop = proc_control_lite_B.b_lastv -
           proc_control_lite_B.k_i;
         while ((proc_control_lite_B.knt > 0) &&
-               (proc_control_lite_B.b_A_b[proc_control_lite_B.b_coltop - 2] ==
+               (proc_control_lite_B.b_A_p[proc_control_lite_B.b_coltop - 2] ==
                 0.0)) {
           proc_control_lite_B.knt--;
           proc_control_lite_B.b_coltop--;
@@ -33869,7 +33886,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
             exitg1 = 0;
             if (proc_control_lite_B.ii <= (proc_control_lite_B.coltop +
                  proc_control_lite_B.knt) - 1) {
-              if (proc_control_lite_B.b_A_b[proc_control_lite_B.ii - 1] != 0.0)
+              if (proc_control_lite_B.b_A_p[proc_control_lite_B.ii - 1] != 0.0)
               {
                 exitg1 = 1;
               } else {
@@ -33892,14 +33909,14 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
 
       if (proc_control_lite_B.knt > 0) {
         proc_control_lit_xgemv_zYrlt8Jf(proc_control_lite_B.knt,
-          proc_control_lite_B.b_coltop, proc_control_lite_B.b_A_b,
-          proc_control_lite_B.b_lastv, proc_control_lite_B.b_A_b,
+          proc_control_lite_B.b_coltop, proc_control_lite_B.b_A_p,
+          proc_control_lite_B.b_lastv, proc_control_lite_B.b_A_p,
           proc_control_lite_B.b_lastv - 9, proc_control_lite_B.work_p);
         proc_control_lit_xgerc_vcdhhgKg(proc_control_lite_B.knt,
           proc_control_lite_B.b_coltop,
-          -proc_control_lite_B.tau_p[proc_control_lite_B.k_i],
+          -proc_control_lite_B.tau_c[proc_control_lite_B.k_i],
           proc_control_lite_B.b_lastv - 9, proc_control_lite_B.work_p,
-          proc_control_lite_B.b_A_b, proc_control_lite_B.b_lastv);
+          proc_control_lite_B.b_A_p, proc_control_lite_B.b_lastv);
       }
 
       proc_control_lite_B.b_coltop = proc_control_lite_B.b_lastv -
@@ -33907,16 +33924,16 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
       for (proc_control_lite_B.knt = proc_control_lite_B.b_lastv - 8;
            proc_control_lite_B.knt < proc_control_lite_B.b_coltop;
            proc_control_lite_B.knt++) {
-        proc_control_lite_B.b_A_b[proc_control_lite_B.knt - 1] *=
-          -proc_control_lite_B.tau_p[proc_control_lite_B.k_i];
+        proc_control_lite_B.b_A_p[proc_control_lite_B.knt - 1] *=
+          -proc_control_lite_B.tau_c[proc_control_lite_B.k_i];
       }
     }
 
-    proc_control_lite_B.b_A_b[proc_control_lite_B.b_lastv - 10] = 1.0 -
-      proc_control_lite_B.tau_p[proc_control_lite_B.k_i];
+    proc_control_lite_B.b_A_p[proc_control_lite_B.b_lastv - 10] = 1.0 -
+      proc_control_lite_B.tau_c[proc_control_lite_B.k_i];
     for (proc_control_lite_B.knt = 0; proc_control_lite_B.knt <
          proc_control_lite_B.k_i; proc_control_lite_B.knt++) {
-      proc_control_lite_B.b_A_b[(proc_control_lite_B.b_lastv -
+      proc_control_lite_B.b_A_p[(proc_control_lite_B.b_lastv -
         proc_control_lite_B.knt) - 11] = 0.0;
     }
   }
@@ -33925,7 +33942,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
   do {
     exitg1 = 0;
     if (proc_control_lite_B.k_i <= nA - 1) {
-      if (std::abs(proc_control_lite_B.R_p[9 * proc_control_lite_B.k_i +
+      if (std::abs(proc_control_lite_B.R_k[9 * proc_control_lite_B.k_i +
                    proc_control_lite_B.k_i]) < 1.0E-12) {
         *Status = -2.0;
         exitg1 = 1;
@@ -33944,7 +33961,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
                9; proc_control_lite_B.b_coltop++) {
             proc_control_lite_B.RLinv_l += b_Linv[proc_control_lite_B.b_coltop +
               proc_control_lite_B.knt] *
-              proc_control_lite_B.b_A_b[proc_control_lite_B.b_coltop +
+              proc_control_lite_B.b_A_p[proc_control_lite_B.b_coltop +
               proc_control_lite_B.coltop];
           }
 
@@ -33968,7 +33985,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
           proc_control_lite_B.coltop = ((proc_control_lite_B.ii - 1) * 9 +
             proc_control_lite_B.k_i) - 1;
           RLinv[proc_control_lite_B.coltop] /=
-            proc_control_lite_B.R_p[proc_control_lite_B.knt];
+            proc_control_lite_B.R_k[proc_control_lite_B.knt];
         }
 
         if (proc_control_lite_B.k_i > 1) {
@@ -33982,7 +33999,7 @@ void proc_control_lite::proc_contro_KWIKfactor_pQfokztF(const real_T b_Ac[2034],
                 proc_control_lite_B.ii;
               RLinv[proc_control_lite_B.coltop] -= RLinv
                 [(proc_control_lite_B.knt + proc_control_lite_B.k_i) - 1] *
-                proc_control_lite_B.R_p[proc_control_lite_B.b_coltop +
+                proc_control_lite_B.R_k[proc_control_lite_B.b_coltop +
                 proc_control_lite_B.ii];
             }
           }
@@ -34080,7 +34097,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
   std::memset(&x[0], 0, 9U * sizeof(real_T));
   std::memset(&lambda[0], 0, 226U * sizeof(real_T));
   *status = 1;
-  std::memset(&proc_control_lite_B.r_d[0], 0, 9U * sizeof(real_T));
+  std::memset(&proc_control_lite_B.r_h[0], 0, 9U * sizeof(real_T));
   proc_control_lite_B.rMin = 0.0;
   cTolComputed = false;
   for (proc_control_lite_B.i_cg = 0; proc_control_lite_B.i_cg < 226;
@@ -34118,7 +34135,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
       if ((!DualFeasible) && (proc_control_lite_B.nA > 0) && (*status <= maxiter))
       {
         proc_contro_KWIKfactor_pQfokztF(b_Ac, proc_control_lite_B.iC_p,
-          proc_control_lite_B.nA, b_Linv, proc_control_lite_B.b_D_a,
+          proc_control_lite_B.nA, b_Linv, proc_control_lite_B.b_D_m,
           proc_control_lite_B.b_H, 9, proc_control_lite_B.RLinv,
           &proc_control_lite_B.Xnorm0);
         if (proc_control_lite_B.Xnorm0 < 0.0) {
@@ -34141,18 +34158,18 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                  proc_control_lite_B.iSave++) {
               proc_control_lite_B.U_tmp = (9 * proc_control_lite_B.i_cg +
                 proc_control_lite_B.iSave) - 1;
-              proc_control_lite_B.U_k[proc_control_lite_B.U_tmp] = 0.0;
+              proc_control_lite_B.U_a[proc_control_lite_B.U_tmp] = 0.0;
               for (proc_control_lite_B.iC_g = 0; proc_control_lite_B.iC_g <
                    proc_control_lite_B.nA; proc_control_lite_B.iC_g++) {
-                proc_control_lite_B.U_k[proc_control_lite_B.U_tmp] +=
+                proc_control_lite_B.U_a[proc_control_lite_B.U_tmp] +=
                   proc_control_lite_B.RLinv[(9 * proc_control_lite_B.iC_g +
                   proc_control_lite_B.iSave) - 1] * proc_control_lite_B.RLinv[9 *
                   proc_control_lite_B.iC_g + proc_control_lite_B.i_cg];
               }
 
-              proc_control_lite_B.U_k[proc_control_lite_B.i_cg + 9 *
+              proc_control_lite_B.U_a[proc_control_lite_B.i_cg + 9 *
                 (proc_control_lite_B.iSave - 1)] =
-                proc_control_lite_B.U_k[proc_control_lite_B.U_tmp];
+                proc_control_lite_B.U_a[proc_control_lite_B.U_tmp];
             }
           }
 
@@ -34171,7 +34188,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
             for (proc_control_lite_B.iSave = 0; proc_control_lite_B.iSave <
                  proc_control_lite_B.nA; proc_control_lite_B.iSave++) {
               proc_control_lite_B.Opt[proc_control_lite_B.i_cg] +=
-                proc_control_lite_B.b_D_a[9 * proc_control_lite_B.iSave +
+                proc_control_lite_B.b_D_m[9 * proc_control_lite_B.iSave +
                 proc_control_lite_B.i_cg] *
                 proc_control_lite_B.Rhs[proc_control_lite_B.iSave + 9];
             }
@@ -34182,7 +34199,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
             proc_control_lite_B.Xnorm0 = 0.0;
             for (proc_control_lite_B.iC_g = 0; proc_control_lite_B.iC_g < 9;
                  proc_control_lite_B.iC_g++) {
-              proc_control_lite_B.Xnorm0 += proc_control_lite_B.b_D_a[9 *
+              proc_control_lite_B.Xnorm0 += proc_control_lite_B.b_D_m[9 *
                 proc_control_lite_B.i_cg + proc_control_lite_B.iC_g] *
                 proc_control_lite_B.Rhs[proc_control_lite_B.iC_g];
             }
@@ -34192,7 +34209,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
             for (proc_control_lite_B.iSave = 0; proc_control_lite_B.iSave <
                  proc_control_lite_B.nA; proc_control_lite_B.iSave++) {
               proc_control_lite_B.Opt[proc_control_lite_B.i_cg + 9] +=
-                proc_control_lite_B.U_k[9 * proc_control_lite_B.iSave +
+                proc_control_lite_B.U_a[9 * proc_control_lite_B.iSave +
                 proc_control_lite_B.i_cg] *
                 proc_control_lite_B.Rhs[proc_control_lite_B.iSave + 9];
             }
@@ -34291,14 +34308,14 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
         if (!cTolComputed) {
           for (proc_control_lite_B.iSave = 0; proc_control_lite_B.iSave < 9;
                proc_control_lite_B.iSave++) {
-            proc_control_lite_B.z_c5[proc_control_lite_B.iSave] = std::abs(b_Ac
+            proc_control_lite_B.z_d[proc_control_lite_B.iSave] = std::abs(b_Ac
               [226 * proc_control_lite_B.iSave + proc_control_lite_B.i_cg] *
               x[proc_control_lite_B.iSave]);
           }
 
           proc_control_lite_B.cTol_c[proc_control_lite_B.i_cg] = std::fmax
             (proc_control_lite_B.cTol_c[proc_control_lite_B.i_cg],
-             proc_control_l_maximum_6ril9Yjp(proc_control_lite_B.z_c5));
+             proc_control_l_maximum_6ril9Yjp(proc_control_lite_B.z_d));
         }
 
         if (!iA[proc_control_lite_B.i_cg]) {
@@ -34341,14 +34358,14 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                     [226 * proc_control_lite_B.i_cg + proc_control_lite_B.tmp_c];
                 }
 
-                proc_control_lite_B.z_c5[proc_control_lite_B.iC_g] =
+                proc_control_lite_B.z_d[proc_control_lite_B.iC_g] =
                   proc_control_lite_B.cMin;
               }
 
               guard2 = true;
             } else {
               proc_contro_KWIKfactor_pQfokztF(b_Ac, proc_control_lite_B.iC_p,
-                proc_control_lite_B.nA, b_Linv, proc_control_lite_B.b_D_a,
+                proc_control_lite_B.nA, b_Linv, proc_control_lite_B.b_D_m,
                 proc_control_lite_B.b_H, 9, proc_control_lite_B.RLinv,
                 &proc_control_lite_B.cMin);
               if (proc_control_lite_B.cMin <= 0.0) {
@@ -34357,7 +34374,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
               } else {
                 for (proc_control_lite_B.iC_g = 0; proc_control_lite_B.iC_g < 81;
                      proc_control_lite_B.iC_g++) {
-                  proc_control_lite_B.U_k[proc_control_lite_B.iC_g] =
+                  proc_control_lite_B.U_a[proc_control_lite_B.iC_g] =
                     -proc_control_lite_B.b_H[proc_control_lite_B.iC_g];
                 }
 
@@ -34366,13 +34383,13 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                   proc_control_lite_B.cMin = 0.0;
                   for (proc_control_lite_B.i_cg = 0; proc_control_lite_B.i_cg <
                        9; proc_control_lite_B.i_cg++) {
-                    proc_control_lite_B.cMin += proc_control_lite_B.U_k[9 *
+                    proc_control_lite_B.cMin += proc_control_lite_B.U_a[9 *
                       proc_control_lite_B.i_cg + proc_control_lite_B.iC_g] *
                       b_Ac[226 * proc_control_lite_B.i_cg +
                       proc_control_lite_B.tmp_c];
                   }
 
-                  proc_control_lite_B.z_c5[proc_control_lite_B.iC_g] =
+                  proc_control_lite_B.z_d[proc_control_lite_B.iC_g] =
                     proc_control_lite_B.cMin;
                 }
 
@@ -34383,11 +34400,11 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                        9; proc_control_lite_B.iC_g++) {
                     proc_control_lite_B.t_g += b_Ac[226 *
                       proc_control_lite_B.iC_g + proc_control_lite_B.tmp_c] *
-                      proc_control_lite_B.b_D_a[9 * proc_control_lite_B.i_cg +
+                      proc_control_lite_B.b_D_m[9 * proc_control_lite_B.i_cg +
                       proc_control_lite_B.iC_g];
                   }
 
-                  proc_control_lite_B.r_d[proc_control_lite_B.i_cg] =
+                  proc_control_lite_B.r_h[proc_control_lite_B.i_cg] =
                     proc_control_lite_B.t_g;
                 }
 
@@ -34405,7 +34422,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                 exitg4 = false;
                 while ((!exitg4) && (proc_control_lite_B.iSave <=
                                      proc_control_lite_B.nA - 1)) {
-                  if (proc_control_lite_B.r_d[proc_control_lite_B.iSave] >=
+                  if (proc_control_lite_B.r_h[proc_control_lite_B.iSave] >=
                       1.0E-12) {
                     ColdReset = false;
                     exitg4 = true;
@@ -34419,7 +34436,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                 for (proc_control_lite_B.iSave = 0; proc_control_lite_B.iSave <
                      proc_control_lite_B.nA; proc_control_lite_B.iSave++) {
                   proc_control_lite_B.cVal =
-                    proc_control_lite_B.r_d[proc_control_lite_B.iSave];
+                    proc_control_lite_B.r_h[proc_control_lite_B.iSave];
                   if (proc_control_lite_B.cVal > 1.0E-12) {
                     proc_control_lite_B.cVal =
                       lambda[proc_control_lite_B.iC_p[proc_control_lite_B.iSave]
@@ -34443,7 +34460,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                    proc_control_lite_B.iSave++) {
                 proc_control_lite_B.cVal += b_Ac[226 * proc_control_lite_B.iSave
                   + proc_control_lite_B.tmp_c] *
-                  proc_control_lite_B.z_c5[proc_control_lite_B.iSave];
+                  proc_control_lite_B.z_d[proc_control_lite_B.iSave];
               }
 
               if (proc_control_lite_B.cVal <= 0.0) {
@@ -34483,7 +34500,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                     proc_control_lite_B.iC_p[proc_control_lite_B.iSave];
                   lambda[proc_control_lite_B.iC_g - 1] -=
                     proc_control_lite_B.t_g *
-                    proc_control_lite_B.r_d[proc_control_lite_B.iSave];
+                    proc_control_lite_B.r_h[proc_control_lite_B.iSave];
                   if ((proc_control_lite_B.iC_g <= 226) &&
                       (lambda[proc_control_lite_B.iC_g - 1] < 0.0)) {
                     lambda[proc_control_lite_B.iC_g - 1] = 0.0;
@@ -34502,7 +34519,7 @@ void proc_control_lite::proc_control_lite_qpkwik(const real_T b_Linv[81], const
                   for (proc_control_lite_B.iC_g = 0; proc_control_lite_B.iC_g <
                        9; proc_control_lite_B.iC_g++) {
                     x[proc_control_lite_B.iC_g] += proc_control_lite_B.t_g *
-                      proc_control_lite_B.z_c5[proc_control_lite_B.iC_g];
+                      proc_control_lite_B.z_d[proc_control_lite_B.iC_g];
                   }
 
                   std::frexp(1.0, &proc_control_lite_B.b_exponent);
@@ -34709,11 +34726,11 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
     }
   }
 
-  std::memset(&proc_control_lite_B.b_B_g[0], 0, sizeof(real_T) << 6U);
+  std::memset(&proc_control_lite_B.b_B_a[0], 0, sizeof(real_T) << 6U);
   proc_control_lite_B.kidx_k = 0;
   for (proc_control_lite_B.kidx = 0; proc_control_lite_B.kidx < 8;
        proc_control_lite_B.kidx++) {
-    proc_control_lite_B.b_B_g[proc_control_lite_B.kidx_k] = 1.0;
+    proc_control_lite_B.b_B_a[proc_control_lite_B.kidx_k] = 1.0;
     proc_control_lite_B.kidx_k += 9;
   }
 
@@ -34729,7 +34746,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
           proc_control_lite_B.a_m[(proc_control_lite_B.kidx +
             proc_control_lite_B.i2_f) + 1] = static_cast<int8_T>(c_A[10 *
             proc_control_lite_B.Tries + proc_control_lite_B.kidx_k] *
-            static_cast<int32_T>(proc_control_lite_B.b_B_g
+            static_cast<int32_T>(proc_control_lite_B.b_B_a
             [(proc_control_lite_B.i_gq << 3) + proc_control_lite_B.i2_f]));
         }
 
@@ -34859,7 +34876,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
 
       proc_control_lite_B.kidx_k = (proc_control_lite_B.kidx << 3) +
         proc_control_lite_B.i_gq;
-      proc_control_lite_B.b_Su1_n[proc_control_lite_B.kidx_k] =
+      proc_control_lite_B.b_Su1_g[proc_control_lite_B.kidx_k] =
         proc_control_lite_B.normH;
       proc_control_lite_B.normH = 0.0;
       for (proc_control_lite_B.Tries = 0; proc_control_lite_B.Tries < 80;
@@ -34876,8 +34893,8 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
 
   for (proc_control_lite_B.i_gq = 0; proc_control_lite_B.i_gq < 64;
        proc_control_lite_B.i_gq++) {
-    proc_control_lite_B.b_B_g[proc_control_lite_B.i_gq] =
-      proc_control_lite_B.b_Su1_n[proc_control_lite_B.i_gq] +
+    proc_control_lite_B.b_B_a[proc_control_lite_B.i_gq] =
+      proc_control_lite_B.b_Su1_g[proc_control_lite_B.i_gq] +
       proc_control_lite_B.b_I1[proc_control_lite_B.i_gq];
   }
 
@@ -34954,12 +34971,12 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
     proc_control_lite_B.i_gq = 0;
     for (proc_control_lite_B.Tries = 0; proc_control_lite_B.Tries < 9;
          proc_control_lite_B.Tries++) {
-      proc_control_lite_B.varargin_1_h[proc_control_lite_B.Tries] =
+      proc_control_lite_B.varargin_1_c[proc_control_lite_B.Tries] =
         proc_control_lite_B.L[proc_control_lite_B.i_gq];
       proc_control_lite_B.i_gq += 10;
     }
 
-    if (proc_control_l_minimum_FuPUSFQR(proc_control_lite_B.varargin_1_h) >
+    if (proc_control_l_minimum_FuPUSFQR(proc_control_lite_B.varargin_1_c) >
         1.4901161193847656E-7) {
     } else {
       guard1 = true;
@@ -35026,12 +35043,12 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
           proc_control_lite_B.kidx_k = 0;
           for (proc_control_lite_B.kidx = 0; proc_control_lite_B.kidx < 9;
                proc_control_lite_B.kidx++) {
-            proc_control_lite_B.varargin_1_h[proc_control_lite_B.kidx] =
+            proc_control_lite_B.varargin_1_c[proc_control_lite_B.kidx] =
               proc_control_lite_B.L[proc_control_lite_B.kidx_k];
             proc_control_lite_B.kidx_k += 10;
           }
 
-          if (proc_control_l_minimum_FuPUSFQR(proc_control_lite_B.varargin_1_h) >
+          if (proc_control_l_minimum_FuPUSFQR(proc_control_lite_B.varargin_1_c) >
               1.4901161193847656E-7) {
             proc_control_lite_B.kidx = 1;
             exitg1 = true;
@@ -35177,7 +35194,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
       }
     }
 
-    std::memset(&proc_control_lite_B.varargin_1_h[0], 0, 9U * sizeof(real_T));
+    std::memset(&proc_control_lite_B.varargin_1_c[0], 0, 9U * sizeof(real_T));
     for (proc_control_lite_B.kidx = 0; proc_control_lite_B.kidx < 8;
          proc_control_lite_B.kidx++) {
       proc_control_lite_B.normH = 0.0;
@@ -35199,7 +35216,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
       proc_control_lite_B.b_B_h = 0.0;
       for (proc_control_lite_B.i_gq = 0; proc_control_lite_B.i_gq < 8;
            proc_control_lite_B.i_gq++) {
-        proc_control_lite_B.b_B_h += proc_control_lite_B.b_B_g
+        proc_control_lite_B.b_B_h += proc_control_lite_B.b_B_a
           [(proc_control_lite_B.kidx << 3) + proc_control_lite_B.i_gq] *
           old_u[proc_control_lite_B.i_gq];
       }
@@ -35220,7 +35237,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
           b_utarget[proc_control_lite_B.i_gq];
       }
 
-      proc_control_lite_B.varargin_1_h[proc_control_lite_B.kidx] =
+      proc_control_lite_B.varargin_1_c[proc_control_lite_B.kidx] =
         (((proc_control_lite_B.normH + proc_control_lite_B.b_Jm) +
           proc_control_lite_B.b_B_h) + proc_control_lite_B.s) +
         proc_control_lite_B.WuI2Jm_j;
@@ -35250,7 +35267,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
     }
 
     proc_control_lite_qpkwik(b_H, proc_control_lite_B.L,
-      proc_control_lite_B.varargin_1_h, b_Ac, proc_control_lite_B.Bc_m, iAout,
+      proc_control_lite_B.varargin_1_c, b_Ac, proc_control_lite_B.Bc_m, iAout,
       940, 0.01, proc_control_lite_B.zopt, proc_control_lite_B.a__1_m,
       &proc_control_lite_B.kidx);
     if ((proc_control_lite_B.kidx < 0) || (proc_control_lite_B.kidx == 0)) {
@@ -35265,11 +35282,11 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
         b_uoff[proc_control_lite_B.kidx];
     }
 
-    std::memset(&proc_control_lite_B.b_B_g[0], 0, sizeof(real_T) << 6U);
+    std::memset(&proc_control_lite_B.b_B_a[0], 0, sizeof(real_T) << 6U);
     proc_control_lite_B.kidx_k = 0;
     for (proc_control_lite_B.kidx = 0; proc_control_lite_B.kidx < 8;
          proc_control_lite_B.kidx++) {
-      proc_control_lite_B.b_B_g[proc_control_lite_B.kidx_k] = 1.0;
+      proc_control_lite_B.b_B_a[proc_control_lite_B.kidx_k] = 1.0;
       proc_control_lite_B.kidx_k += 9;
     }
 
@@ -35285,7 +35302,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
             proc_control_lite_B.a_m[(proc_control_lite_B.kidx +
               proc_control_lite_B.i2_f) + 1] = static_cast<int8_T>(c_A[10 *
               proc_control_lite_B.Tries + proc_control_lite_B.kidx_k] *
-              static_cast<int32_T>(proc_control_lite_B.b_B_g
+              static_cast<int32_T>(proc_control_lite_B.b_B_a
               [(proc_control_lite_B.i_gq << 3) + proc_control_lite_B.i2_f]));
           }
 
@@ -35336,7 +35353,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
         proc_control_lite_B.kidx += 80;
       }
 
-      proc_control_lite_B.a_j[proc_control_lite_B.i_gq] = proc_control_lite_B.s
+      proc_control_lite_B.a_my[proc_control_lite_B.i_gq] = proc_control_lite_B.s
         + proc_control_lite_B.normH;
     }
 
@@ -35347,7 +35364,7 @@ void proc_control_lite::proc_control_mpcblock_optimizer(const real_T rseq[130],
       for (proc_control_lite_B.kidx_k = 0; proc_control_lite_B.kidx_k < 10;
            proc_control_lite_B.kidx_k++) {
         useq[proc_control_lite_B.kidx_k + proc_control_lite_B.i_gq] =
-          proc_control_lite_B.a_j[proc_control_lite_B.Tries +
+          proc_control_lite_B.a_my[proc_control_lite_B.Tries +
           proc_control_lite_B.kidx];
         proc_control_lite_B.Tries += 8;
       }
@@ -35441,9 +35458,9 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
   boolean_T exitg1;
   std::memset(&proc_control_lite_B.Au[0], 0, 25600U * sizeof(int8_T));
   std::memset(&proc_control_lite_B.b_Bu[0], 0, 320U * sizeof(real_T));
-  std::memset(&proc_control_lite_B.x_p[0], 0, 320U * sizeof(boolean_T));
+  std::memset(&proc_control_lite_B.x_f[0], 0, 320U * sizeof(boolean_T));
   for (idx = 0; idx < 8; idx++) {
-    proc_control_lite_B.ic_j[idx] = static_cast<real_T>(idx) + 1.0;
+    proc_control_lite_B.ic_k[idx] = static_cast<real_T>(idx) + 1.0;
   }
 
   std::memset(&proc_control_lite_B.As[0], 0, sizeof(int8_T) << 6U);
@@ -35458,7 +35475,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
     proc_control_lite_B.idx_l = proc_control_lite_B.As[idx];
     proc_control_lite_B.Au_tmp[idx] = static_cast<int8_T>
       (proc_control_lite_B.idx_l);
-    proc_control_lite_B.Au_tmp_p[idx] = static_cast<int8_T>
+    proc_control_lite_B.Au_tmp_j[idx] = static_cast<int8_T>
       (-proc_control_lite_B.idx_l);
   }
 
@@ -35466,7 +35483,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
        proc_control_lite_B.idx_l++) {
     for (idx = 0; idx < 8; idx++) {
       proc_control_lite_B.iv2[idx] = static_cast<int32_T>
-        (proc_control_lite_B.ic_j[idx]);
+        (proc_control_lite_B.ic_k[idx]);
       proc_control_lite_B.runtimedata_MVRateMin[idx] = runtimedata_MVRateMin[10 *
         idx + proc_control_lite_B.idx_l];
     }
@@ -35474,10 +35491,10 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
     proc_control__isfinite_tbtZO0of(proc_control_lite_B.runtimedata_MVRateMin,
       proc_control_lite_B.bv3);
     for (idx = 0; idx < 8; idx++) {
-      proc_control_lite_B.x_p[proc_control_lite_B.iv2[idx] - 1] =
+      proc_control_lite_B.x_f[proc_control_lite_B.iv2[idx] - 1] =
         proc_control_lite_B.bv3[idx];
       proc_control_lite_B.iv3[idx] = static_cast<int32_T>
-        (proc_control_lite_B.ic_j[idx] + 8.0);
+        (proc_control_lite_B.ic_k[idx] + 8.0);
       proc_control_lite_B.runtimedata_MVRateMin[idx] = runtimedata_MVRateMax[10 *
         idx + proc_control_lite_B.idx_l];
     }
@@ -35485,10 +35502,10 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
     proc_control__isfinite_tbtZO0of(proc_control_lite_B.runtimedata_MVRateMin,
       proc_control_lite_B.bv3);
     for (idx = 0; idx < 8; idx++) {
-      proc_control_lite_B.x_p[proc_control_lite_B.iv3[idx] - 1] =
+      proc_control_lite_B.x_f[proc_control_lite_B.iv3[idx] - 1] =
         proc_control_lite_B.bv3[idx];
       proc_control_lite_B.iv4[idx] = static_cast<int32_T>
-        (proc_control_lite_B.ic_j[idx] + 16.0);
+        (proc_control_lite_B.ic_k[idx] + 16.0);
       proc_control_lite_B.runtimedata_MVRateMin[idx] = runtimedata_MVMin[10 *
         idx + proc_control_lite_B.idx_l];
     }
@@ -35496,10 +35513,10 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
     proc_control__isfinite_tbtZO0of(proc_control_lite_B.runtimedata_MVRateMin,
       proc_control_lite_B.bv3);
     for (idx = 0; idx < 8; idx++) {
-      proc_control_lite_B.x_p[proc_control_lite_B.iv4[idx] - 1] =
+      proc_control_lite_B.x_f[proc_control_lite_B.iv4[idx] - 1] =
         proc_control_lite_B.bv3[idx];
       proc_control_lite_B.iv5[idx] = static_cast<int32_T>
-        (proc_control_lite_B.ic_j[idx] + 24.0);
+        (proc_control_lite_B.ic_k[idx] + 24.0);
       proc_control_lite_B.runtimedata_MVRateMin[idx] = runtimedata_MVMax[10 *
         idx + proc_control_lite_B.idx_l];
     }
@@ -35507,14 +35524,14 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
     proc_control__isfinite_tbtZO0of(proc_control_lite_B.runtimedata_MVRateMin,
       proc_control_lite_B.bv3);
     for (idx = 0; idx < 8; idx++) {
-      proc_control_lite_B.x_p[proc_control_lite_B.iv5[idx] - 1] =
+      proc_control_lite_B.x_f[proc_control_lite_B.iv5[idx] - 1] =
         proc_control_lite_B.bv3[idx];
       for (proc_control_lite_B.i_ay = 0; proc_control_lite_B.i_ay < 8;
            proc_control_lite_B.i_ay++) {
         proc_control_lite_B.Au
           [((proc_control_lite_B.iv2[proc_control_lite_B.i_ay] + 320 * idx) +
             2560 * proc_control_lite_B.idx_l) - 1] =
-          proc_control_lite_B.Au_tmp_p[(idx << 3) + proc_control_lite_B.i_ay];
+          proc_control_lite_B.Au_tmp_j[(idx << 3) + proc_control_lite_B.i_ay];
       }
     }
 
@@ -35534,7 +35551,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
         proc_control_lite_B.Au
           [((proc_control_lite_B.iv4[proc_control_lite_B.i_ay] + 320 * idx) +
             2560 * proc_control_lite_B.idx_l) - 1] =
-          proc_control_lite_B.Au_tmp_p[(idx << 3) + proc_control_lite_B.i_ay];
+          proc_control_lite_B.Au_tmp_j[(idx << 3) + proc_control_lite_B.i_ay];
       }
     }
 
@@ -35570,7 +35587,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
       for (proc_control_lite_B.i_ay = 0; proc_control_lite_B.i_ay < 8;
            proc_control_lite_B.i_ay++) {
         proc_control_lite_B.c_o = runtimedata_lastMV[proc_control_lite_B.i_ay];
-        proc_control_lite_B.c_f[proc_control_lite_B.i_ay] =
+        proc_control_lite_B.c_j[proc_control_lite_B.i_ay] =
           proc_control_lite_B.c_o;
         proc_control_lite_B.runtimedata_MVRateMin[proc_control_lite_B.i_ay] =
           proc_control_lite_B.b_Bu[proc_control_lite_B.iv2[proc_control_lite_B.i_ay]
@@ -35585,7 +35602,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
       for (idx = 0; idx < 8; idx++) {
         proc_control_lite_B.runtimedata_MVRateMin[idx] =
           proc_control_lite_B.b_Bu[proc_control_lite_B.iv3[idx] - 1] +
-          proc_control_lite_B.c_f[idx];
+          proc_control_lite_B.c_j[idx];
       }
 
       for (idx = 0; idx < 8; idx++) {
@@ -35609,13 +35626,13 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
           proc_control_lite_B.Au
             [((proc_control_lite_B.iv3[proc_control_lite_B.i_ay] + 320 * idx) +
               2560 * (proc_control_lite_B.idx_l - 1)) - 1] =
-            proc_control_lite_B.Au_tmp_p[(idx << 3) + proc_control_lite_B.i_ay];
+            proc_control_lite_B.Au_tmp_j[(idx << 3) + proc_control_lite_B.i_ay];
         }
       }
     }
 
     for (idx = 0; idx < 8; idx++) {
-      proc_control_lite_B.ic_j[idx] += 32.0;
+      proc_control_lite_B.ic_k[idx] += 32.0;
     }
   }
 
@@ -35623,7 +35640,7 @@ void proc_control_lite::proc_control_lite_getUBounds(const real_T
   idx = 0;
   exitg1 = false;
   while ((!exitg1) && (idx < 320)) {
-    if (proc_control_lite_B.x_p[idx]) {
+    if (proc_control_lite_B.x_f[idx]) {
       proc_control_lite_B.idx_l++;
       proc_control_lite_B.ii_data[proc_control_lite_B.idx_l - 1] =
         static_cast<int16_T>(idx + 1);
@@ -35733,7 +35750,7 @@ void proc_control_lite::proc_control_li_getXUe_B5bFgDId(const real_T z[139],
       proc_control_lite_B.i_iu += 80;
     }
 
-    proc_control_lite_B.y_e[proc_control_lite_B.i22] = proc_control_lite_B.y_p;
+    proc_control_lite_B.y_jg[proc_control_lite_B.i22] = proc_control_lite_B.y_p;
   }
 
   proc_control_lite_B.i22 = 0;
@@ -35744,7 +35761,7 @@ void proc_control_lite::proc_control_li_getXUe_B5bFgDId(const real_T z[139],
          proc_control_lite_B.U_tmp_a++) {
       proc_control_lite_B.Umv[proc_control_lite_B.U_tmp_a +
         proc_control_lite_B.i22] =
-        proc_control_lite_B.y_e[proc_control_lite_B.i_e0 +
+        proc_control_lite_B.y_jg[proc_control_lite_B.i_e0 +
         proc_control_lite_B.i_iu];
       proc_control_lite_B.i_e0 += 8;
     }
@@ -35753,7 +35770,7 @@ void proc_control_lite::proc_control_li_getXUe_B5bFgDId(const real_T z[139],
   }
 
   *e = z[138];
-  std::memcpy(&proc_control_lite_B.z_p[0], &z[0], 130U * sizeof(real_T));
+  std::memcpy(&proc_control_lite_B.z_l[0], &z[0], 130U * sizeof(real_T));
   proc_control_lite_B.i22 = 0;
   for (proc_control_lite_B.i_iu = 0; proc_control_lite_B.i_iu < 13;
        proc_control_lite_B.i_iu++) {
@@ -35761,7 +35778,7 @@ void proc_control_lite::proc_control_li_getXUe_B5bFgDId(const real_T z[139],
     for (proc_control_lite_B.U_tmp_a = 0; proc_control_lite_B.U_tmp_a < 10;
          proc_control_lite_B.U_tmp_a++) {
       X[(proc_control_lite_B.U_tmp_a + proc_control_lite_B.i22) + 1] =
-        proc_control_lite_B.z_p[proc_control_lite_B.i_e0 +
+        proc_control_lite_B.z_l[proc_control_lite_B.i_e0 +
         proc_control_lite_B.i_iu];
       proc_control_lite_B.i_e0 += 13;
     }
@@ -36234,7 +36251,7 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
   std::memset(&c[0], 0, 130U * sizeof(real_T));
   for (proc_control_lite_B.Jx_tmp = 0; proc_control_lite_B.Jx_tmp < 13;
        proc_control_lite_B.Jx_tmp++) {
-    proc_control_lite_B.ic_f[proc_control_lite_B.Jx_tmp] = static_cast<real_T>
+    proc_control_lite_B.ic_l[proc_control_lite_B.Jx_tmp] = static_cast<real_T>
       (proc_control_lite_B.Jx_tmp) + 1.0;
   }
 
@@ -36244,7 +36261,7 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
     proc_control_lite_B.Ak1_tmp = 0;
     for (proc_control_lite_B.k_e = 0; proc_control_lite_B.k_e < 11;
          proc_control_lite_B.k_e++) {
-      proc_control_lite_B.b_U_h[proc_control_lite_B.Ak1_tmp +
+      proc_control_lite_B.b_U_f[proc_control_lite_B.Ak1_tmp +
         proc_control_lite_B.i_nz] = U[proc_control_lite_B.k_e +
         proc_control_lite_B.Jx_tmp];
       proc_control_lite_B.Ak1_tmp += 8;
@@ -36279,15 +36296,15 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
     proc_control_lite_B.Jx_tmp = proc_control_lite_B.i_nz << 3;
     proc_co_AUV8QuatSimFcn_NbyAPIEY(&proc_control_lite_B.b_X_d[13 *
       proc_control_lite_B.i_nz],
-      &proc_control_lite_B.b_U_h[proc_control_lite_B.Jx_tmp],
+      &proc_control_lite_B.b_U_f[proc_control_lite_B.Jx_tmp],
       proc_control_lite_B.dv16);
     proc_co_AUV8QuatSimFcn_NbyAPIEY
       (&proc_control_lite_B.b_X_d[proc_control_lite_B.Ak1_tmp],
-       &proc_control_lite_B.b_U_h[proc_control_lite_B.Jx_tmp],
+       &proc_control_lite_B.b_U_f[proc_control_lite_B.Jx_tmp],
        proc_control_lite_B.dv17);
     for (proc_control_lite_B.k_e = 0; proc_control_lite_B.k_e < 13;
          proc_control_lite_B.k_e++) {
-      c[static_cast<int32_T>(proc_control_lite_B.ic_f[proc_control_lite_B.k_e])
+      c[static_cast<int32_T>(proc_control_lite_B.ic_l[proc_control_lite_B.k_e])
         - 1] = (proc_control_lite_B.b_X_d[13 * proc_control_lite_B.i_nz +
                 proc_control_lite_B.k_e] +
                 (proc_control_lite_B.dv16[proc_control_lite_B.k_e] +
@@ -36298,14 +36315,14 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
         for (proc_control_lite_B.Jx_tmp = 0; proc_control_lite_B.Jx_tmp < 13;
              proc_control_lite_B.Jx_tmp++) {
           proc_control_lite_B.Jx_c[((static_cast<int32_T>
-            (proc_control_lite_B.ic_f[proc_control_lite_B.Jx_tmp]) + 130 *
+            (proc_control_lite_B.ic_l[proc_control_lite_B.Jx_tmp]) + 130 *
             proc_control_lite_B.k_e) + 1690 * (proc_control_lite_B.i_nz - 1)) -
             1] = proc_control_lite_B.Ak[13 * proc_control_lite_B.k_e +
             proc_control_lite_B.Jx_tmp] * 0.05;
         }
 
         proc_control_lite_B.Jx_tmp = ((130 * proc_control_lite_B.k_e +
-          static_cast<int32_T>(proc_control_lite_B.ic_f[proc_control_lite_B.k_e]))
+          static_cast<int32_T>(proc_control_lite_B.ic_l[proc_control_lite_B.k_e]))
           + (proc_control_lite_B.i_nz - 1) * 1690) - 1;
         proc_control_lite_B.Jx_c[proc_control_lite_B.Jx_tmp]++;
       }
@@ -36316,14 +36333,14 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
       for (proc_control_lite_B.Jx_tmp = 0; proc_control_lite_B.Jx_tmp < 13;
            proc_control_lite_B.Jx_tmp++) {
         proc_control_lite_B.Jx_c[((static_cast<int32_T>
-          (proc_control_lite_B.ic_f[proc_control_lite_B.Jx_tmp]) + 130 *
+          (proc_control_lite_B.ic_l[proc_control_lite_B.Jx_tmp]) + 130 *
           proc_control_lite_B.k_e) + 1690 * proc_control_lite_B.i_nz) - 1] =
           proc_control_lite_B.Ak1[13 * proc_control_lite_B.k_e +
           proc_control_lite_B.Jx_tmp] * 0.05;
       }
 
       proc_control_lite_B.Jx_tmp = ((130 * proc_control_lite_B.k_e +
-        static_cast<int32_T>(proc_control_lite_B.ic_f[proc_control_lite_B.k_e]))
+        static_cast<int32_T>(proc_control_lite_B.ic_l[proc_control_lite_B.k_e]))
         + 1690 * proc_control_lite_B.i_nz) - 1;
       proc_control_lite_B.Jx_c[proc_control_lite_B.Jx_tmp]--;
     }
@@ -36333,7 +36350,7 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
       for (proc_control_lite_B.Jx_tmp = 0; proc_control_lite_B.Jx_tmp < 13;
            proc_control_lite_B.Jx_tmp++) {
         proc_control_lite_B.Jmv[((static_cast<int32_T>
-          (proc_control_lite_B.ic_f[proc_control_lite_B.Jx_tmp]) + 130 *
+          (proc_control_lite_B.ic_l[proc_control_lite_B.Jx_tmp]) + 130 *
           proc_control_lite_B.k_e) + 1040 * proc_control_lite_B.i_nz) - 1] =
           val[13 * proc_control_lite_B.k_e + proc_control_lite_B.Jx_tmp];
       }
@@ -36341,7 +36358,7 @@ void proc_control_lite::proc_co_stateEvolution_rCe9GJXz(const real_T X[143],
 
     for (proc_control_lite_B.Jx_tmp = 0; proc_control_lite_B.Jx_tmp < 13;
          proc_control_lite_B.Jx_tmp++) {
-      proc_control_lite_B.ic_f[proc_control_lite_B.Jx_tmp] += 13.0;
+      proc_control_lite_B.ic_l[proc_control_lite_B.Jx_tmp] += 13.0;
     }
   }
 
@@ -36395,11 +36412,12 @@ void proc_control_lite::proc_control_lite_all_aWPrU3Xb(const boolean_T x[130],
        proc_control_lite_B.i_c++) {
     boolean_T exitg1;
     y[proc_control_lite_B.i_c] = true;
-    proc_control_lite_B.a_h = proc_control_lite_B.i2_d + 9;
+    proc_control_lite_B.a_hq = proc_control_lite_B.i2_d + 9;
     proc_control_lite_B.ix_i = proc_control_lite_B.i2_d;
     proc_control_lite_B.i2_d += 10;
     exitg1 = false;
-    while ((!exitg1) && (proc_control_lite_B.ix_i <= proc_control_lite_B.a_h)) {
+    while ((!exitg1) && (proc_control_lite_B.ix_i <= proc_control_lite_B.a_hq))
+    {
       if (!x[proc_control_lite_B.ix_i - 1]) {
         y[proc_control_lite_B.i_c] = false;
         exitg1 = true;
@@ -36580,14 +36598,14 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 260;
          proc_control_lite_B.i_ir++) {
       proc_control_lite_B.b_c_g[proc_control_lite_B.i_ir] = 0.0;
-      proc_control_lite_B.icf_k[proc_control_lite_B.i_ir] = true;
+      proc_control_lite_B.icf_j[proc_control_lite_B.i_ir] = true;
     }
 
     std::memset(&proc_control_lite_B.Jx[0], 0, 33800U * sizeof(real_T));
     std::memset(&proc_control_lite_B.Je[0], 0, 260U * sizeof(int8_T));
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
          proc_control_lite_B.i_ir++) {
-      proc_control_lite_B.ic_g[proc_control_lite_B.i_ir] = static_cast<real_T>
+      proc_control_lite_B.ic_d[proc_control_lite_B.i_ir] = static_cast<real_T>
         (proc_control_lite_B.i_ir) + 1.0;
     }
 
@@ -36596,46 +36614,46 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
       for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
            proc_control_lite_B.i_ir++) {
         proc_control_lite_B.ic_n =
-          proc_control_lite_B.ic_g[proc_control_lite_B.i_ir];
-        proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.i_ir] = static_cast<
-          int32_T>(proc_control_lite_B.ic_n);
+          proc_control_lite_B.ic_d[proc_control_lite_B.i_ir];
+        proc_control_lite_B.icf_tmp_l[proc_control_lite_B.i_ir] =
+          static_cast<int32_T>(proc_control_lite_B.ic_n);
         proc_control_lite_B.runtimedata_OutputMin_j = runtimedata_OutputMin[10 *
           proc_control_lite_B.i_ir + proc_control_lite_B.d_k];
-        proc_control_lite_B.icf_k[static_cast<int32_T>(proc_control_lite_B.ic_n)
+        proc_control_lite_B.icf_j[static_cast<int32_T>(proc_control_lite_B.ic_n)
           - 1] = ((!std::isinf(proc_control_lite_B.runtimedata_OutputMin_j)) &&
                   (!std::isnan(proc_control_lite_B.runtimedata_OutputMin_j)));
-        proc_control_lite_B.icf_tmp_k[proc_control_lite_B.i_ir] =
-          static_cast<int32_T>(proc_control_lite_B.ic_n + 13.0);
+        proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.i_ir] = static_cast<
+          int32_T>(proc_control_lite_B.ic_n + 13.0);
       }
 
       for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
            proc_control_lite_B.i_ir++) {
         proc_control_lite_B.icf_tmp_g =
-          proc_control_lite_B.icf_tmp_k[proc_control_lite_B.i_ir];
+          proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.i_ir];
         proc_control_lite_B.ic_n = runtimedata_OutputMax[10 *
           proc_control_lite_B.i_ir + proc_control_lite_B.d_k];
-        proc_control_lite_B.icf_k[proc_control_lite_B.icf_tmp_g - 1] = ((!std::
+        proc_control_lite_B.icf_j[proc_control_lite_B.icf_tmp_g - 1] = ((!std::
           isinf(proc_control_lite_B.ic_n)) && (!std::isnan
           (proc_control_lite_B.ic_n)));
-        proc_control_lite_B.icf_tmp_d[proc_control_lite_B.i_ir] =
-          proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.i_ir] - 1;
-        proc_control_lite_B.icf_tmp_d[proc_control_lite_B.i_ir + 13] =
+        proc_control_lite_B.icf_tmp_p[proc_control_lite_B.i_ir] =
+          proc_control_lite_B.icf_tmp_l[proc_control_lite_B.i_ir] - 1;
+        proc_control_lite_B.icf_tmp_p[proc_control_lite_B.i_ir + 13] =
           proc_control_lite_B.icf_tmp_g - 1;
       }
 
       for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 26;
            proc_control_lite_B.i_ir++) {
-        proc_control_lite_B.icf_ki[proc_control_lite_B.i_ir] =
-          proc_control_lite_B.icf_k[proc_control_lite_B.icf_tmp_d[proc_control_lite_B.i_ir]];
+        proc_control_lite_B.icf_k[proc_control_lite_B.i_ir] =
+          proc_control_lite_B.icf_j[proc_control_lite_B.icf_tmp_p[proc_control_lite_B.i_ir]];
       }
 
-      if (proc_control_lite_any(proc_control_lite_B.icf_ki)) {
+      if (proc_control_lite_any(proc_control_lite_B.icf_k)) {
         std::memset(&proc_control_lite_B.Ck[0], 0, 169U * sizeof(int8_T));
         for (proc_control_lite_B.icf_tmp_g = 0; proc_control_lite_B.icf_tmp_g <
              13; proc_control_lite_B.icf_tmp_g++) {
           proc_control_lite_B.Ck[proc_control_lite_B.icf_tmp_g + 13 *
             proc_control_lite_B.icf_tmp_g] = 1;
-          proc_control_lite_B.b_c_g[proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.icf_tmp_g]
+          proc_control_lite_B.b_c_g[proc_control_lite_B.icf_tmp_l[proc_control_lite_B.icf_tmp_g]
             - 1] = (runtimedata_OutputMin[10 * proc_control_lite_B.icf_tmp_g +
                     proc_control_lite_B.d_k] - e) - X[(11 *
             proc_control_lite_B.icf_tmp_g + proc_control_lite_B.d_k) + 1];
@@ -36643,7 +36661,7 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
 
         for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
              proc_control_lite_B.i_ir++) {
-          proc_control_lite_B.b_c_g[proc_control_lite_B.icf_tmp_k[proc_control_lite_B.i_ir]
+          proc_control_lite_B.b_c_g[proc_control_lite_B.icf_tmp_i3[proc_control_lite_B.i_ir]
             - 1] = (X[(11 * proc_control_lite_B.i_ir + proc_control_lite_B.d_k)
                     + 1] - runtimedata_OutputMax[10 * proc_control_lite_B.i_ir +
                     proc_control_lite_B.d_k]) - e;
@@ -36660,7 +36678,7 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
           for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
                proc_control_lite_B.i_ir++) {
             proc_control_lite_B.Jx[((static_cast<int32_T>
-              (proc_control_lite_B.ic_g[proc_control_lite_B.i_ir]) + 260 *
+              (proc_control_lite_B.ic_d[proc_control_lite_B.i_ir]) + 260 *
               proc_control_lite_B.icf_tmp_g) + 3380 * proc_control_lite_B.d_k) -
               1] = proc_control_lite_B.val[13 * proc_control_lite_B.icf_tmp_g +
               proc_control_lite_B.i_ir];
@@ -36672,34 +36690,34 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
           for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
                proc_control_lite_B.i_ir++) {
             proc_control_lite_B.Jx[((static_cast<int32_T>
-              (proc_control_lite_B.ic_g[proc_control_lite_B.i_ir] + 13.0) + 260 *
+              (proc_control_lite_B.ic_d[proc_control_lite_B.i_ir] + 13.0) + 260 *
               proc_control_lite_B.icf_tmp_g) + 3380 * proc_control_lite_B.d_k) -
               1] = proc_control_lite_B.Ck[13 * proc_control_lite_B.icf_tmp_g +
               proc_control_lite_B.i_ir];
           }
 
           proc_control_lite_B.Je[static_cast<int32_T>
-            (proc_control_lite_B.ic_g[proc_control_lite_B.icf_tmp_g]) - 1] = -1;
+            (proc_control_lite_B.ic_d[proc_control_lite_B.icf_tmp_g]) - 1] = -1;
         }
 
         for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
              proc_control_lite_B.i_ir++) {
           proc_control_lite_B.Je[static_cast<int32_T>
-            (proc_control_lite_B.ic_g[proc_control_lite_B.i_ir] + 13.0) - 1] =
+            (proc_control_lite_B.ic_d[proc_control_lite_B.i_ir] + 13.0) - 1] =
             -1;
         }
       }
 
       for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 13;
            proc_control_lite_B.i_ir++) {
-        proc_control_lite_B.ic_g[proc_control_lite_B.i_ir] += 26.0;
+        proc_control_lite_B.ic_d[proc_control_lite_B.i_ir] += 26.0;
       }
     }
 
     proc_control_lite_B.d_k = 0;
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 260;
          proc_control_lite_B.i_ir++) {
-      if (proc_control_lite_B.icf_k[proc_control_lite_B.i_ir]) {
+      if (proc_control_lite_B.icf_j[proc_control_lite_B.i_ir]) {
         proc_control_lite_B.d_k++;
       }
     }
@@ -36708,8 +36726,8 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
     proc_control_lite_B.d_k = 0;
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir < 260;
          proc_control_lite_B.i_ir++) {
-      if (proc_control_lite_B.icf_k[proc_control_lite_B.i_ir]) {
-        proc_control_lite_B.tmp_data_fo[proc_control_lite_B.d_k] =
+      if (proc_control_lite_B.icf_j[proc_control_lite_B.i_ir]) {
+        proc_control_lite_B.tmp_data_jg[proc_control_lite_B.d_k] =
           static_cast<int16_T>(proc_control_lite_B.i_ir);
         proc_control_lite_B.d_k++;
       }
@@ -36720,7 +36738,7 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir <
          proc_control_lite_B.tmp_size_idx_0; proc_control_lite_B.i_ir++) {
       c_data[proc_control_lite_B.i_ir] =
-        proc_control_lite_B.b_c_g[proc_control_lite_B.tmp_data_fo[proc_control_lite_B.i_ir]];
+        proc_control_lite_B.b_c_g[proc_control_lite_B.tmp_data_jg[proc_control_lite_B.i_ir]];
     }
 
     proc_control_lite_B.Jx_size[0] = proc_control_lite_B.tmp_size_idx_0;
@@ -36736,7 +36754,7 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
             proc_control_lite_B.tmp_size_idx_0 * proc_control_lite_B.icf_tmp_g)
             + proc_control_lite_B.tmp_size_idx_0 * 13 * proc_control_lite_B.i_ir]
             = proc_control_lite_B.Jx[(260 * proc_control_lite_B.icf_tmp_g +
-            proc_control_lite_B.tmp_data_fo[proc_control_lite_B.d_k]) + 3380 *
+            proc_control_lite_B.tmp_data_jg[proc_control_lite_B.d_k]) + 3380 *
             proc_control_lite_B.i_ir];
         }
       }
@@ -36753,7 +36771,7 @@ void proc_control_lite::proc_control_lite_outputBounds(const real_T
     for (proc_control_lite_B.i_ir = 0; proc_control_lite_B.i_ir <
          proc_control_lite_B.tmp_size_idx_0; proc_control_lite_B.i_ir++) {
       proc_control_lite_B.b_c_g[proc_control_lite_B.i_ir] =
-        proc_control_lite_B.Je[proc_control_lite_B.tmp_data_fo[proc_control_lite_B.i_ir]];
+        proc_control_lite_B.Je[proc_control_lite_B.tmp_data_jg[proc_control_lite_B.i_ir]];
     }
 
     proc_control_lit_reformJacobian(proc_control_lite_B.Jx_data,
@@ -36773,9 +36791,9 @@ void proc_control_lite::proc_control_c4_mpclib_anonFcn2(const real_T
   uint8_T sizes_idx_0;
   boolean_T sizes_idx_1_tmp;
   proc_control_li_getXUe_B5bFgDId(z, runtimedata_x, proc_control_lite_B.X_e,
-    proc_control_lite_B.U_m, &proc_control_lite_B.e_p);
+    proc_control_lite_B.U_o, &proc_control_lite_B.e_p);
   proc_co_stateEvolution_rCe9GJXz(proc_control_lite_B.X_e,
-    proc_control_lite_B.U_m, varargout_2, varargout_4);
+    proc_control_lite_B.U_o, varargout_2, varargout_4);
   proc_control_lite_outputBounds(runtimedata_OutputMin, runtimedata_OutputMax,
     proc_control_lite_B.X_e, proc_control_lite_B.e_p,
     proc_control_lite_B.varargin_1_data_ff,
@@ -37000,7 +37018,7 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
 
   proc_control_li_getXUe_B5bFgDId(x,
     obj_next_next_next_next_next_ne->runtimedata.x, proc_control_lite_B.X_c,
-    proc_control_lite_B.U_c, &proc_control_lite_B.e_b);
+    proc_control_lite_B.U_m, &proc_control_lite_B.e_b);
   std::memset(&proc_control_lite_B.gfX[0], 0, 130U * sizeof(real_T));
   std::memset(&proc_control_lite_B.gfU[0], 0, 80U * sizeof(real_T));
   proc_control_lite_B.fs_o = 0.0;
@@ -37040,9 +37058,9 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
     for (proc_control_lite_B.obj_next_next_next_next_next_ic = 0;
          proc_control_lite_B.obj_next_next_next_next_next_ic < 11;
          proc_control_lite_B.obj_next_next_next_next_next_ic++) {
-      proc_control_lite_B.b_U_f[proc_control_lite_B.i21 +
+      proc_control_lite_B.b_U_c[proc_control_lite_B.i21 +
         proc_control_lite_B.idx_current] =
-        proc_control_lite_B.U_c[proc_control_lite_B.obj_next_next_next_next_next_ic
+        proc_control_lite_B.U_m[proc_control_lite_B.obj_next_next_next_next_next_ic
         + proc_control_lite_B.i_ck];
       proc_control_lite_B.i21 += 8;
     }
@@ -37086,7 +37104,7 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
           proc_control_lite_B.obj_next_next_next_next_next_ne[proc_control_lite_B.obj_next_next_next_next_next_ic];
       }
 
-      proc_control_lite_B.gfX_l[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.gfX_g[proc_control_lite_B.i_ck] =
         proc_control_lite_B.gfX[static_cast<int32_T>
         (proc_control_lite_B.ix[proc_control_lite_B.i_ck]) - 1] +
         proc_control_lite_B.obj_next_next_next_next_next__i;
@@ -37098,28 +37116,28 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
         proc_control_lite_B.ix[proc_control_lite_B.i_ck];
       proc_control_lite_B.gfX[static_cast<int32_T>
         (proc_control_lite_B.obj_next_next_next_next_next__i) - 1] =
-        proc_control_lite_B.gfX_l[proc_control_lite_B.i_ck];
+        proc_control_lite_B.gfX_g[proc_control_lite_B.i_ck];
       proc_control_lite_B.ix[proc_control_lite_B.i_ck] =
         proc_control_lite_B.obj_next_next_next_next_next__i + 13.0;
     }
 
-    std::memcpy(&proc_control_lite_B.umvk_o[0],
-                &proc_control_lite_B.b_U_f[proc_control_lite_B.idx_current << 3],
+    std::memcpy(&proc_control_lite_B.umvk_p[0],
+                &proc_control_lite_B.b_U_c[proc_control_lite_B.idx_current << 3],
                 sizeof(real_T) << 3U);
     if (proc_control_lite_B.idx_current + 1 == 1) {
       for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
            proc_control_lite_B.i_ck++) {
-        proc_control_lite_B.duk_l[proc_control_lite_B.i_ck] =
-          proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck] -
+        proc_control_lite_B.duk_o[proc_control_lite_B.i_ck] =
+          proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck] -
           obj_next_next_next_next_next_ne->
           runtimedata.lastMV[proc_control_lite_B.i_ck];
       }
     } else {
       for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
            proc_control_lite_B.i_ck++) {
-        proc_control_lite_B.duk_l[proc_control_lite_B.i_ck] =
-          proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck] -
-          proc_control_lite_B.b_U_f[((proc_control_lite_B.idx_current - 1) << 3)
+        proc_control_lite_B.duk_o[proc_control_lite_B.i_ck] =
+          proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck] -
+          proc_control_lite_B.b_U_c[((proc_control_lite_B.idx_current - 1) << 3)
           + proc_control_lite_B.i_ck];
       }
     }
@@ -37132,19 +37150,19 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
         obj_next_next_next_next_next_ne->
         runtimedata.MVWeights[proc_control_lite_B.obj_next_next_next_next_next_ic];
       proc_control_lite_B.wtYerr_j =
-        (proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck] -
+        (proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck] -
          obj_next_next_next_next_next_ne->
          runtimedata.MVScaledTarget[proc_control_lite_B.obj_next_next_next_next_next_ic])
         * proc_control_lite_B.obj_next_next_next_next_next__i;
-      proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck] =
         proc_control_lite_B.wtYerr_j;
       proc_control_lite_B.wtYerr_n =
         proc_control_lite_B.iu[proc_control_lite_B.i_ck];
       proc_control_lite_B.gfU_tmp[proc_control_lite_B.i_ck] =
         static_cast<int32_T>(proc_control_lite_B.wtYerr_n);
-      proc_control_lite_B.gfU_tmp_f[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.gfU_tmp_o[proc_control_lite_B.i_ck] =
         static_cast<int32_T>(proc_control_lite_B.wtYerr_n);
-      proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck] =
         proc_control_lite_B.gfU[static_cast<int32_T>
         (proc_control_lite_B.wtYerr_n) - 1] +
         proc_control_lite_B.obj_next_next_next_next_next__i *
@@ -37155,23 +37173,23 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
     proc_control_lite_B.wtYerr_n = 0.0;
     for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
          proc_control_lite_B.i_ck++) {
-      proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp_f[proc_control_lite_B.i_ck]
-        - 1] = proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck];
+      proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp_o[proc_control_lite_B.i_ck]
+        - 1] = proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck];
       proc_control_lite_B.obj_next_next_next_next_next__i =
         obj_next_next_next_next_next_ne->runtimedata.MVRateWeights[10 *
         proc_control_lite_B.i_ck + proc_control_lite_B.idx_current];
       proc_control_lite_B.duk_e =
         proc_control_lite_B.obj_next_next_next_next_next__i *
-        proc_control_lite_B.duk_l[proc_control_lite_B.i_ck];
-      proc_control_lite_B.duk_l[proc_control_lite_B.i_ck] =
+        proc_control_lite_B.duk_o[proc_control_lite_B.i_ck];
+      proc_control_lite_B.duk_o[proc_control_lite_B.i_ck] =
         proc_control_lite_B.duk_e;
       proc_control_lite_B.umvk_i =
-        proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck];
+        proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck];
       proc_control_lite_B.wtYerr_j += proc_control_lite_B.umvk_i *
         proc_control_lite_B.umvk_i;
       proc_control_lite_B.wtYerr_n += proc_control_lite_B.duk_e *
         proc_control_lite_B.duk_e;
-      proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck] =
         proc_control_lite_B.obj_next_next_next_next_next__i *
         proc_control_lite_B.duk_e;
     }
@@ -37180,15 +37198,15 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
       proc_control_lite_B.wtYerr_j) + proc_control_lite_B.wtYerr_n;
     for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
          proc_control_lite_B.i_ck++) {
-      proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck] =
+      proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck] =
         proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp[proc_control_lite_B.i_ck]
-        - 1] + proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck];
+        - 1] + proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck];
     }
 
     for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
          proc_control_lite_B.i_ck++) {
-      proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp_f[proc_control_lite_B.i_ck]
-        - 1] = proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck];
+      proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp_o[proc_control_lite_B.i_ck]
+        - 1] = proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck];
     }
 
     if (proc_control_lite_B.idx_current + 1 > 1) {
@@ -37199,15 +37217,15 @@ void proc_control_lite::computeObjectiveAndUserGradient(const
           - 8.0);
         proc_control_lite_B.gfU_tmp[proc_control_lite_B.i_ck] =
           proc_control_lite_B.obj_next_next_next_next_next_ic;
-        proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck] =
+        proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck] =
           proc_control_lite_B.gfU[proc_control_lite_B.obj_next_next_next_next_next_ic
-          - 1] - proc_control_lite_B.umvk_o[proc_control_lite_B.i_ck];
+          - 1] - proc_control_lite_B.umvk_p[proc_control_lite_B.i_ck];
       }
 
       for (proc_control_lite_B.i_ck = 0; proc_control_lite_B.i_ck < 8;
            proc_control_lite_B.i_ck++) {
         proc_control_lite_B.gfU[proc_control_lite_B.gfU_tmp[proc_control_lite_B.i_ck]
-          - 1] = proc_control_lite_B.gfU_k[proc_control_lite_B.i_ck];
+          - 1] = proc_control_lite_B.gfU_l[proc_control_lite_B.i_ck];
       }
     }
 
@@ -37356,7 +37374,7 @@ int32_T proc_control_lite::computeConstraintsAndUserJacobi(int32_T
       obj_next_next_next_next_next_ne->OutputMin,
       obj_next_next_next_next_next_ne->OutputMax, x,
       proc_control_lite_B.a__3_data, proc_control_lite_B.a__3_size,
-      proc_control_lite_B.b_x_l, proc_control_lite_B.a__4_data,
+      proc_control_lite_B.b_x_n, proc_control_lite_B.a__4_data,
       proc_control_lite_B.a__4_size, proc_control_lite_B.JacEqTrans_tmp);
     proc_control_lite_B.col = static_cast<uint16_T>
       (obj_next_next_next_next_next_b_);
@@ -37366,7 +37384,7 @@ int32_T proc_control_lite::computeConstraintsAndUserJacobi(int32_T
         proc_control_lite_B.a__3_data[proc_control_lite_B.row];
     }
 
-    std::memcpy(&Ceq_workspace[0], &proc_control_lite_B.b_x_l[0], 130U * sizeof
+    std::memcpy(&Ceq_workspace[0], &proc_control_lite_B.b_x_n[0], 130U * sizeof
                 (real_T));
     proc_control_lite_B.col_end = proc_control_lite_B.a__4_size[0];
     for (proc_control_lite_B.row = 0; proc_control_lite_B.row <
@@ -37395,9 +37413,9 @@ int32_T proc_control_lite::computeConstraintsAndUserJacobi(int32_T
       obj_next_next_next_next_next_ne->OutputMin,
       obj_next_next_next_next_next_ne->OutputMax, x,
       proc_control_lite_B.a__3_data, proc_control_lite_B.a__3_size,
-      proc_control_lite_B.b_x_l, proc_control_lite_B.a__4_data,
+      proc_control_lite_B.b_x_n, proc_control_lite_B.a__4_data,
       proc_control_lite_B.a__4_size, proc_control_lite_B.JacEqTrans_tmp);
-    std::memcpy(&Ceq_workspace[0], &proc_control_lite_B.b_x_l[0], 130U * sizeof
+    std::memcpy(&Ceq_workspace[0], &proc_control_lite_B.b_x_n[0], 130U * sizeof
                 (real_T));
     for (proc_control_lite_B.row = 0; proc_control_lite_B.row < 139;
          proc_control_lite_B.row++) {
@@ -40905,16 +40923,16 @@ void proc_control_lite::proc_control_lite_xgemv_jhnw(int32_T m, int32_T n, const
     for (proc_control_lite_B.b_iy_g = 1; lda < 0 ? proc_control_lite_B.b_iy_g >=
          proc_control_lite_B.d_o3 : proc_control_lite_B.b_iy_g <=
          proc_control_lite_B.d_o3; proc_control_lite_B.b_iy_g += lda) {
-      proc_control_lite_B.c_j = 0.0;
-      proc_control_lite_B.e_n = (proc_control_lite_B.b_iy_g + m) - 1;
+      proc_control_lite_B.c_jn = 0.0;
+      proc_control_lite_B.e_na = (proc_control_lite_B.b_iy_g + m) - 1;
       for (proc_control_lite_B.b_k4 = proc_control_lite_B.b_iy_g;
-           proc_control_lite_B.b_k4 <= proc_control_lite_B.e_n;
+           proc_control_lite_B.b_k4 <= proc_control_lite_B.e_na;
            proc_control_lite_B.b_k4++) {
-        proc_control_lite_B.c_j += A_data[proc_control_lite_B.b_k4 - 1] *
+        proc_control_lite_B.c_jn += A_data[proc_control_lite_B.b_k4 - 1] *
           x_data[proc_control_lite_B.b_k4 - proc_control_lite_B.b_iy_g];
       }
 
-      y_data[proc_control_lite_B.iy_d] += proc_control_lite_B.c_j;
+      y_data[proc_control_lite_B.iy_d] += proc_control_lite_B.c_jn;
       proc_control_lite_B.iy_d++;
     }
   }
@@ -41759,10 +41777,10 @@ void proc_control_lite::proc_control_lite_xgemm_k(int32_T m, int32_T n, int32_T
          proc_control_lite_B.lastColC_e : proc_control_lite_B.cr <=
          proc_control_lite_B.lastColC_e; proc_control_lite_B.cr += ldc) {
       proc_control_lite_B.b_at = proc_control_lite_B.cr + m;
-      for (proc_control_lite_B.ic_g4 = proc_control_lite_B.cr + 1;
-           proc_control_lite_B.ic_g4 <= proc_control_lite_B.b_at;
-           proc_control_lite_B.ic_g4++) {
-        C_data[proc_control_lite_B.ic_g4 - 1] = 0.0;
+      for (proc_control_lite_B.ic_g = proc_control_lite_B.cr + 1;
+           proc_control_lite_B.ic_g <= proc_control_lite_B.b_at;
+           proc_control_lite_B.ic_g++) {
+        C_data[proc_control_lite_B.ic_g - 1] = 0.0;
       }
     }
 
@@ -41771,10 +41789,10 @@ void proc_control_lite::proc_control_lite_xgemm_k(int32_T m, int32_T n, int32_T
          proc_control_lite_B.lastColC_e : proc_control_lite_B.cr <=
          proc_control_lite_B.lastColC_e; proc_control_lite_B.cr += ldc) {
       proc_control_lite_B.ar = ia0;
-      proc_control_lite_B.c_fh = proc_control_lite_B.cr + m;
-      for (proc_control_lite_B.ic_g4 = proc_control_lite_B.cr + 1;
-           proc_control_lite_B.ic_g4 <= proc_control_lite_B.c_fh;
-           proc_control_lite_B.ic_g4++) {
+      proc_control_lite_B.c_f = proc_control_lite_B.cr + m;
+      for (proc_control_lite_B.ic_g = proc_control_lite_B.cr + 1;
+           proc_control_lite_B.ic_g <= proc_control_lite_B.c_f;
+           proc_control_lite_B.ic_g++) {
         proc_control_lite_B.temp_d0 = 0.0;
         for (proc_control_lite_B.b_at = 0; proc_control_lite_B.b_at < k;
              proc_control_lite_B.b_at++) {
@@ -41783,7 +41801,7 @@ void proc_control_lite::proc_control_lite_xgemm_k(int32_T m, int32_T n, int32_T
             proc_control_lite_B.br_p) + 1];
         }
 
-        C_data[proc_control_lite_B.ic_g4 - 1] += proc_control_lite_B.temp_d0;
+        C_data[proc_control_lite_B.ic_g - 1] += proc_control_lite_B.temp_d0;
         proc_control_lite_B.ar += lda;
       }
 
@@ -44999,28 +45017,28 @@ void proc_control_lite::proc_control_lit_outputBounds_k(const real_T
            proc_control_lite_B.i_j++) {
         proc_control_lite_B.ic_o =
           proc_control_lite_B.ic[proc_control_lite_B.i_j];
-        proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j] = static_cast<
+        proc_control_lite_B.icf_tmp_n[proc_control_lite_B.i_j] = static_cast<
           int32_T>(proc_control_lite_B.ic_o);
         proc_control_lite_B.runtimedata_OutputMin = runtimedata_OutputMin[10 *
           proc_control_lite_B.i_j + proc_control_lite_B.k_m];
         proc_control_lite_B.icf[static_cast<int32_T>(proc_control_lite_B.ic_o) -
           1] = ((!std::isinf(proc_control_lite_B.runtimedata_OutputMin)) &&
                 (!std::isnan(proc_control_lite_B.runtimedata_OutputMin)));
-        proc_control_lite_B.icf_tmp_l[proc_control_lite_B.i_j] =
+        proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j] =
           static_cast<int32_T>(proc_control_lite_B.ic_o + 13.0);
       }
 
       for (proc_control_lite_B.i_j = 0; proc_control_lite_B.i_j < 13;
            proc_control_lite_B.i_j++) {
         proc_control_lite_B.icf_tmp_m =
-          proc_control_lite_B.icf_tmp_l[proc_control_lite_B.i_j];
+          proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j];
         proc_control_lite_B.ic_o = runtimedata_OutputMax[10 *
           proc_control_lite_B.i_j + proc_control_lite_B.k_m];
         proc_control_lite_B.icf[proc_control_lite_B.icf_tmp_m - 1] = ((!std::
           isinf(proc_control_lite_B.ic_o)) && (!std::isnan
           (proc_control_lite_B.ic_o)));
         proc_control_lite_B.icf_tmp[proc_control_lite_B.i_j] =
-          proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j] - 1;
+          proc_control_lite_B.icf_tmp_n[proc_control_lite_B.i_j] - 1;
         proc_control_lite_B.icf_tmp[proc_control_lite_B.i_j + 13] =
           proc_control_lite_B.icf_tmp_m - 1;
       }
@@ -45034,7 +45052,7 @@ void proc_control_lite::proc_control_lit_outputBounds_k(const real_T
       if (proc_control_lite_any(proc_control_lite_B.icf_n)) {
         for (proc_control_lite_B.i_j = 0; proc_control_lite_B.i_j < 13;
              proc_control_lite_B.i_j++) {
-          proc_control_lite_B.b_c[proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j]
+          proc_control_lite_B.b_c[proc_control_lite_B.icf_tmp_n[proc_control_lite_B.i_j]
             - 1] = (runtimedata_OutputMin[10 * proc_control_lite_B.i_j +
                     proc_control_lite_B.k_m] - e) - X[(11 *
             proc_control_lite_B.i_j + proc_control_lite_B.k_m) + 1];
@@ -45042,7 +45060,7 @@ void proc_control_lite::proc_control_lit_outputBounds_k(const real_T
 
         for (proc_control_lite_B.i_j = 0; proc_control_lite_B.i_j < 13;
              proc_control_lite_B.i_j++) {
-          proc_control_lite_B.b_c[proc_control_lite_B.icf_tmp_l[proc_control_lite_B.i_j]
+          proc_control_lite_B.b_c[proc_control_lite_B.icf_tmp_i[proc_control_lite_B.i_j]
             - 1] = (X[(11 * proc_control_lite_B.i_j + proc_control_lite_B.k_m) +
                     1] - runtimedata_OutputMax[10 * proc_control_lite_B.i_j +
                     proc_control_lite_B.k_m]) - e;
@@ -45068,7 +45086,7 @@ void proc_control_lite::proc_control_lit_outputBounds_k(const real_T
     for (proc_control_lite_B.i_j = 0; proc_control_lite_B.i_j < 260;
          proc_control_lite_B.i_j++) {
       if (proc_control_lite_B.icf[proc_control_lite_B.i_j]) {
-        proc_control_lite_B.tmp_data_jg[proc_control_lite_B.k_m] =
+        proc_control_lite_B.tmp_data_m0[proc_control_lite_B.k_m] =
           static_cast<int16_T>(proc_control_lite_B.i_j);
         proc_control_lite_B.k_m++;
       }
@@ -45079,7 +45097,7 @@ void proc_control_lite::proc_control_lit_outputBounds_k(const real_T
     for (proc_control_lite_B.i_j = 0; proc_control_lite_B.i_j <
          proc_control_lite_B.icf_tmp_m; proc_control_lite_B.i_j++) {
       c_data[proc_control_lite_B.i_j] =
-        proc_control_lite_B.b_c[proc_control_lite_B.tmp_data_jg[proc_control_lite_B.i_j]];
+        proc_control_lite_B.b_c[proc_control_lite_B.tmp_data_m0[proc_control_lite_B.i_j]];
     }
   }
 }
@@ -45091,7 +45109,7 @@ void proc_control_lite::proc_co_stateEvolution_xoOgQHOe(const real_T X[143],
   std::memset(&c[0], 0, 130U * sizeof(real_T));
   for (proc_control_lite_B.i28 = 0; proc_control_lite_B.i28 < 13;
        proc_control_lite_B.i28++) {
-    proc_control_lite_B.ic_d[proc_control_lite_B.i28] = static_cast<real_T>
+    proc_control_lite_B.ic_f[proc_control_lite_B.i28] = static_cast<real_T>
       (proc_control_lite_B.i28) + 1.0;
   }
 
@@ -45101,7 +45119,7 @@ void proc_control_lite::proc_co_stateEvolution_xoOgQHOe(const real_T X[143],
     proc_control_lite_B.i_b = 0;
     for (proc_control_lite_B.i30 = 0; proc_control_lite_B.i30 < 11;
          proc_control_lite_B.i30++) {
-      proc_control_lite_B.b_U_m[proc_control_lite_B.i_b +
+      proc_control_lite_B.b_U_h[proc_control_lite_B.i_b +
         proc_control_lite_B.i29] = U[proc_control_lite_B.i30 +
         proc_control_lite_B.i28];
       proc_control_lite_B.i_b += 8;
@@ -45130,17 +45148,17 @@ void proc_control_lite::proc_co_stateEvolution_xoOgQHOe(const real_T X[143],
     proc_control_lite_B.i28 = proc_control_lite_B.i_b << 3;
     proc_co_AUV8QuatSimFcn_NbyAPIEY(&proc_control_lite_B.b_X_af[13 *
       proc_control_lite_B.i_b],
-      &proc_control_lite_B.b_U_m[proc_control_lite_B.i28],
+      &proc_control_lite_B.b_U_h[proc_control_lite_B.i28],
       proc_control_lite_B.dv18);
     proc_control_lite_B.i29 = (proc_control_lite_B.i_b + 1) * 13;
     proc_co_AUV8QuatSimFcn_NbyAPIEY
       (&proc_control_lite_B.b_X_af[proc_control_lite_B.i29],
-       &proc_control_lite_B.b_U_m[proc_control_lite_B.i28],
+       &proc_control_lite_B.b_U_h[proc_control_lite_B.i28],
        proc_control_lite_B.dv19);
     for (proc_control_lite_B.i28 = 0; proc_control_lite_B.i28 < 13;
          proc_control_lite_B.i28++) {
       proc_control_lite_B.ic_ol =
-        proc_control_lite_B.ic_d[proc_control_lite_B.i28];
+        proc_control_lite_B.ic_f[proc_control_lite_B.i28];
       c[static_cast<int32_T>(proc_control_lite_B.ic_ol) - 1] =
         (proc_control_lite_B.b_X_af[13 * proc_control_lite_B.i_b +
          proc_control_lite_B.i28] +
@@ -45148,7 +45166,7 @@ void proc_control_lite::proc_co_stateEvolution_xoOgQHOe(const real_T X[143],
           proc_control_lite_B.dv19[proc_control_lite_B.i28]) * 0.05) -
         proc_control_lite_B.b_X_af[proc_control_lite_B.i29 +
         proc_control_lite_B.i28];
-      proc_control_lite_B.ic_d[proc_control_lite_B.i28] =
+      proc_control_lite_B.ic_f[proc_control_lite_B.i28] =
         proc_control_lite_B.ic_ol + 13.0;
     }
   }
@@ -45163,7 +45181,7 @@ void proc_control_lite::proc_contr_c4_mpclib_anonFcn2_n(const real_T
   int16_T input_sizes_idx_0;
   boolean_T sizes_idx_1_tmp;
   proc_control_li_getXUe_B5bFgDId(z, runtimedata_x, proc_control_lite_B.X_h,
-    proc_control_lite_B.U_o, &proc_control_lite_B.e_h);
+    proc_control_lite_B.U_i, &proc_control_lite_B.e_h);
   proc_control_lit_outputBounds_k(runtimedata_OutputMin, runtimedata_OutputMax,
     proc_control_lite_B.X_h, proc_control_lite_B.e_h,
     proc_control_lite_B.varargin_1_data_i, proc_control_lite_B.varargin_1_size);
@@ -45190,7 +45208,7 @@ void proc_control_lite::proc_contr_c4_mpclib_anonFcn2_n(const real_T
   }
 
   proc_co_stateEvolution_xoOgQHOe(proc_control_lite_B.X_h,
-    proc_control_lite_B.U_o, varargout_2);
+    proc_control_lite_B.U_i, varargout_2);
 }
 
 /* Function for MATLAB Function: '<S127>/NLMPC' */
@@ -45204,7 +45222,7 @@ void proc_control_lite::proc_control_l_evalObjAndConstr(int32_T
   boolean_T tmp;
   proc_control_li_getXUe_B5bFgDId(x,
     obj_next_next_next_next_next__0->runtimedata.x, proc_control_lite_B.X_f,
-    proc_control_lite_B.U_i, &proc_control_lite_B.e_o);
+    proc_control_lite_B.U_k, &proc_control_lite_B.e_o);
   proc_control_lite_B.fs = 0.0;
   proc_control_lite_B.i_d = 0;
   for (proc_control_lite_B.i_o = 0; proc_control_lite_B.i_o < 11;
@@ -45230,7 +45248,7 @@ void proc_control_lite::proc_control_l_evalObjAndConstr(int32_T
          proc_control_lite_B.i_o++) {
       proc_control_lite_B.b_U[proc_control_lite_B.ineqRange_size_idx_1 +
         proc_control_lite_B.yk] =
-        proc_control_lite_B.U_i[proc_control_lite_B.i_o +
+        proc_control_lite_B.U_k[proc_control_lite_B.i_o +
         proc_control_lite_B.i_d];
       proc_control_lite_B.ineqRange_size_idx_1 += 8;
     }
@@ -46369,21 +46387,21 @@ void proc_control_lite::proc_control_lite_driver(const real_T bineq_data[],
   while (!proc_control_lite_B.Flags.done) {
     if ((!proc_control_lite_B.Flags.stepAccepted) &&
         (!proc_control_lite_B.Flags.failedLineSearch)) {
-      proc_control_lite_B.expl_temp_o.IterDisplayQP = false;
-      proc_control_lite_B.expl_temp_o.RemainFeasible = false;
-      proc_control_lite_B.expl_temp_o.ProbRelTolFactor = 1.0;
-      proc_control_lite_B.expl_temp_o.ConstrRelTolFactor = 1.0;
-      proc_control_lite_B.expl_temp_o.PricingTolerance = 0.0;
-      proc_control_lite_B.expl_temp_o.ObjectiveLimit = (rtMinusInf);
-      proc_control_lite_B.expl_temp_o.ConstraintTolerance = 0.02;
-      proc_control_lite_B.expl_temp_o.OptimalityTolerance =
+      proc_control_lite_B.expl_temp_a.IterDisplayQP = false;
+      proc_control_lite_B.expl_temp_a.RemainFeasible = false;
+      proc_control_lite_B.expl_temp_a.ProbRelTolFactor = 1.0;
+      proc_control_lite_B.expl_temp_a.ConstrRelTolFactor = 1.0;
+      proc_control_lite_B.expl_temp_a.PricingTolerance = 0.0;
+      proc_control_lite_B.expl_temp_a.ObjectiveLimit = (rtMinusInf);
+      proc_control_lite_B.expl_temp_a.ConstraintTolerance = 0.02;
+      proc_control_lite_B.expl_temp_a.OptimalityTolerance =
         2.2204460492503131E-14;
-      proc_control_lite_B.expl_temp_o.StepTolerance = 1.0E-6;
-      proc_control_lite_B.expl_temp_o.MaxIterations =
+      proc_control_lite_B.expl_temp_a.StepTolerance = 1.0E-6;
+      proc_control_lite_B.expl_temp_a.MaxIterations =
         proc_control_lite_B.qpoptions_MaxIterations;
       for (proc_control_lite_B.u1 = 0; proc_control_lite_B.u1 < 7;
            proc_control_lite_B.u1++) {
-        proc_control_lite_B.expl_temp_o.SolverName[proc_control_lite_B.u1] =
+        proc_control_lite_B.expl_temp_a.SolverName[proc_control_lite_B.u1] =
           r[proc_control_lite_B.u1];
       }
     }
@@ -46397,10 +46415,10 @@ void proc_control_lite::proc_control_lite_driver(const real_T bineq_data[],
           proc_control_lite_B.mUB, proc_control_lite_B.mFixed);
       }
 
-      proc_control_lite_B.expl_temp_j = proc_control_lite_B.expl_temp_o;
+      proc_control_lite_B.expl_temp_o = proc_control_lite_B.expl_temp_a;
       proc_control_lite_step_k(&proc_control_lite_B.Flags, Hessian, lb,
         TrialState, MeritFunction, memspace, WorkingSet, QRManager, CholManager,
-        QPObjective, &proc_control_lite_B.expl_temp_j);
+        QPObjective, &proc_control_lite_B.expl_temp_o);
       if (proc_control_lite_B.Flags.stepAccepted) {
         proc_control_lite_B.n_p = static_cast<uint16_T>
           (proc_control_lite_B.nVar_tmp_tmp);
@@ -51003,7 +51021,7 @@ void proc_control_lite::step()
     /* MATLABSystem: '<S38>/SourceBlock' */
     proc_control_lite_B.SourceBlock_o1_a3 =
       Sub_proc_control_lite_40.getLatestMessage
-      (&proc_control_lite_B.rtb_SourceBlock_o2_m_f);
+      (&proc_control_lite_B.rtb_SourceBlock_o2_m_c);
 
     /* Outputs for Enabled SubSystem: '<S38>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S44>/Enable'
@@ -51012,7 +51030,7 @@ void proc_control_lite::step()
       /* SignalConversion generated from: '<S44>/In1' incorporates:
        *  MATLABSystem: '<S38>/SourceBlock'
        */
-      proc_control_lite_B.In1_g = proc_control_lite_B.rtb_SourceBlock_o2_m_f;
+      proc_control_lite_B.In1_g = proc_control_lite_B.rtb_SourceBlock_o2_m_c;
     }
 
     /* End of Outputs for SubSystem: '<S38>/Enabled Subsystem' */
@@ -51747,7 +51765,7 @@ void proc_control_lite::step()
         proc_control_lite_B.base_index = proc_control_lite_B.Ns_i * 6;
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 6;
              proc_control_lite_B.Ns++) {
-          proc_control_lite_B.array_d[proc_control_lite_B.Ns_i +
+          proc_control_lite_B.array_n[proc_control_lite_B.Ns_i +
             (proc_control_lite_B.Ns << 3)] =
             proc_control_lite_B.dv1[proc_control_lite_B.Ns +
             proc_control_lite_B.base_index];
@@ -51822,7 +51840,7 @@ void proc_control_lite::step()
       proc_control_lite_B.BusCreator.dvl_rotation[2] =
         proc_control_lite_DW.obj_e.lastValues[2];
       std::memcpy(&proc_control_lite_B.BusCreator.thrusters[0],
-                  &proc_control_lite_B.array_d[0], 48U * sizeof(real_T));
+                  &proc_control_lite_B.array_n[0], 48U * sizeof(real_T));
       proc_control_lite_B.BusCreator.dvl_lost_override =
         proc_control_lite_B.b_value_n;
 
@@ -51910,11 +51928,11 @@ void proc_control_lite::step()
       proc_control_lite_B.EnabledSubsystem_j.In1.angular_velocity.y;
     proc_control_lite_B.residue =
       proc_control_lite_B.EnabledSubsystem_j.In1.angular_velocity.z;
-    proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d =
       proc_control_lite_B.EnabledSubsystem_j.In1.linear_acceleration.x;
-    proc_control_lite_B.Sum_j =
+    proc_control_lite_B.w_o =
       proc_control_lite_B.EnabledSubsystem_j.In1.linear_acceleration.y;
-    proc_control_lite_B.Product3_ly =
+    proc_control_lite_B.z_c0e =
       proc_control_lite_B.EnabledSubsystem_j.In1.linear_acceleration.z;
 
     /* MATLABSystem: '<S301>/SourceBlock' */
@@ -52023,11 +52041,11 @@ void proc_control_lite::step()
       proc_control_lite_B.EnabledSubsystem_gu.In1.angular_velocity.y;
     proc_control_lite_B.residue =
       proc_control_lite_B.EnabledSubsystem_gu.In1.angular_velocity.z;
-    proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d =
       proc_control_lite_B.EnabledSubsystem_gu.In1.linear_acceleration.x;
-    proc_control_lite_B.Sum_j =
+    proc_control_lite_B.w_o =
       proc_control_lite_B.EnabledSubsystem_gu.In1.linear_acceleration.y;
-    proc_control_lite_B.Product3_ly =
+    proc_control_lite_B.z_c0e =
       proc_control_lite_B.EnabledSubsystem_gu.In1.linear_acceleration.z;
 
     /* MATLABSystem: '<S282>/SourceBlock' */
@@ -52093,12 +52111,13 @@ void proc_control_lite::step()
   /* SignalConversion generated from: '<S163>/ SFunction ' incorporates:
    *  MATLAB Function: '<S155>/MATLAB Function'
    *  Merge: '<S7>/Merge'
+   *  SignalConversion generated from: '<S7>/Bus Selector3'
    */
   proc_control_lite_B.n[0] = proc_control_lite_B.Divide3;
 
   /* MATLAB Function: '<S155>/MATLAB Function' incorporates:
    *  Merge: '<S7>/Merge'
-   *  SignalConversion generated from: '<S163>/ SFunction '
+   *  SignalConversion generated from: '<S7>/Bus Selector3'
    */
   proc_control_lite_B.scale_j = 3.3121686421112381E-170;
   proc_control_lite_B.absxk = std::abs(proc_control_lite_B.Divide3);
@@ -52234,6 +52253,7 @@ void proc_control_lite::step()
 
   /* MATLABSystem: '<S169>/Highpass Filter' incorporates:
    *  Merge: '<S7>/Merge'
+   *  SignalConversion generated from: '<S7>/Bus Selector1'
    */
   if (proc_control_lite_DW.obj_by.FilterObj->isInitialized != 1) {
     proc_control_lite_DW.obj_by.FilterObj->isSetupComplete = false;
@@ -52241,14 +52261,14 @@ void proc_control_lite::step()
     proc_control_lite_DW.obj_by.FilterObj->isSetupComplete = true;
 
     /* System object Initialization function: dsp.SOSFilter */
-    for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 10;
+    for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 12;
          proc_control_lite_B.Ns++) {
       proc_control_lite_DW.obj_by.FilterObj->
         cSFunObject.W0_ZERO_STATES[proc_control_lite_B.Ns] =
         proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P0_ICRTP;
     }
 
-    for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 10;
+    for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 12;
          proc_control_lite_B.Ns++) {
       proc_control_lite_DW.obj_by.FilterObj->
         cSFunObject.W1_POLE_STATES[proc_control_lite_B.Ns] =
@@ -52259,22 +52279,22 @@ void proc_control_lite::step()
   /* System object Outputs function: dsp.SOSFilter */
   proc_control_lite_B.d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[0U] *
-    proc_control_lite_B.Sum_ks;
-  proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[0] *
     proc_control_lite_B.d;
-  proc_control_lite_B.Sum_ks +=
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[0] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[5];
-  proc_control_lite_B.Sum_ks +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[6];
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[1] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[10];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[12];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[0] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[5];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[6];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[1] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[10];
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[12];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[1] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[0];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[0] =
@@ -52282,25 +52302,25 @@ void proc_control_lite::step()
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[1] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[0];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[0] =
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.Product4_d;
   proc_control_lite_B.d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[1U] *
-    proc_control_lite_B.Sum_ks;
-  proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[1] *
     proc_control_lite_B.d;
-  proc_control_lite_B.Sum_ks +=
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[2] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[6];
-  proc_control_lite_B.Sum_ks +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[7];
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[3] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[11];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[13];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[2] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[6];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[7];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[3] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[11];
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[13];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[3] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[2];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[2] =
@@ -52308,25 +52328,25 @@ void proc_control_lite::step()
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[3] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[2];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[2] =
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.Product4_d;
   proc_control_lite_B.d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[2U] *
-    proc_control_lite_B.Sum_ks;
-  proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[2] *
     proc_control_lite_B.d;
-  proc_control_lite_B.Sum_ks +=
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[4] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[7];
-  proc_control_lite_B.Sum_ks +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[8];
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[5] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[12];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[14];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[4] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[7];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[8];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[5] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[12];
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[14];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[5] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[4];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[4] =
@@ -52334,25 +52354,25 @@ void proc_control_lite::step()
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[5] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[4];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[4] =
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.Product4_d;
   proc_control_lite_B.d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[3U] *
-    proc_control_lite_B.Sum_ks;
-  proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[3] *
     proc_control_lite_B.d;
-  proc_control_lite_B.Sum_ks +=
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[6] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[8];
-  proc_control_lite_B.Sum_ks +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[9];
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[7] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[13];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[15];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[6] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[8];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[9];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[7] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[13];
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[15];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[7] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[6];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[6] =
@@ -52360,25 +52380,25 @@ void proc_control_lite::step()
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[7] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[6];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[6] =
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.Product4_d;
   proc_control_lite_B.d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[4U] *
-    proc_control_lite_B.Sum_ks;
-  proc_control_lite_B.Sum_ks =
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[4] *
     proc_control_lite_B.d;
-  proc_control_lite_B.Sum_ks +=
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[8] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[9];
-  proc_control_lite_B.Sum_ks +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[10];
+  proc_control_lite_B.Product4_d +=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[9] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[14];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[16];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[8] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[9];
-  proc_control_lite_B.Sum_ks -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[10];
+  proc_control_lite_B.Product4_d -=
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[9] *
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[14];
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[16];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[9] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[8];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[8] =
@@ -52386,23 +52406,53 @@ void proc_control_lite::step()
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[9] =
     proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[8];
   proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[8] =
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.d =
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[5U] *
+    proc_control_lite_B.Product4_d;
+  proc_control_lite_B.Product4_d =
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[5] *
+    proc_control_lite_B.d;
+  proc_control_lite_B.Product4_d +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[10] *
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[11];
+  proc_control_lite_B.Product4_d +=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[11] *
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P1_RTP1COEFF[17];
+  proc_control_lite_B.Product4_d -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[10] *
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[11];
+  proc_control_lite_B.Product4_d -=
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[11] *
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P2_RTP2COEFF[17];
+  proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[11] =
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[10];
+  proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[10] =
+    proc_control_lite_B.d;
+  proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[11] =
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[10];
+  proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[10] =
+    proc_control_lite_B.Product4_d;
 
   /* MATLABSystem: '<S169>/Highpass Filter' */
   proc_control_lite_B.x =
-    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[5U] *
-    proc_control_lite_B.Sum_ks;
+    proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P3_RTP3COEFF[6U] *
+    proc_control_lite_B.Product4_d;
   proc_control_lit_MovingAverage1(proc_control_lite_B.x,
     &proc_control_lite_B.MovingAverage3, &proc_control_lite_DW.MovingAverage3);
 
-  /* Merge: '<S7>/Merge' */
-  proc_control_li_HighpassFilter1(proc_control_lite_B.Sum_j,
+  /* SignalConversion generated from: '<S7>/Bus Selector1' incorporates:
+   *  Merge: '<S7>/Merge'
+   */
+  proc_control_li_HighpassFilter1(proc_control_lite_B.w_o,
     &proc_control_lite_B.HighpassFilter1, &proc_control_lite_DW.HighpassFilter1);
   proc_control_lit_MovingAverage1(proc_control_lite_B.HighpassFilter1.y,
     &proc_control_lite_B.MovingAverage1, &proc_control_lite_DW.MovingAverage1);
 
-  /* Merge: '<S7>/Merge' */
-  proc_control_li_HighpassFilter1(proc_control_lite_B.Product3_ly,
+  /* SignalConversion generated from: '<S7>/Bus Selector1' incorporates:
+   *  Merge: '<S7>/Merge'
+   */
+  proc_control_li_HighpassFilter1(proc_control_lite_B.z_c0e,
     &proc_control_lite_B.HighpassFilter2, &proc_control_lite_DW.HighpassFilter2);
   proc_control_lit_MovingAverage1(proc_control_lite_B.HighpassFilter2.y,
     &proc_control_lite_B.MovingAverage2, &proc_control_lite_DW.MovingAverage2);
@@ -52531,7 +52581,7 @@ void proc_control_lite::step()
      *  Product: '<S203>/Product2'
      *  Product: '<S203>/Product3'
      */
-    proc_control_lite_B.Sum_j = ((proc_control_lite_B.scale_j *
+    proc_control_lite_B.w_o = ((proc_control_lite_B.scale_j *
       proc_control_lite_B.scale_j + proc_control_lite_B.absxk *
       proc_control_lite_B.absxk) + proc_control_lite_B.t * proc_control_lite_B.t)
       + proc_control_lite_B.Divide3 * proc_control_lite_B.Divide3;
@@ -52539,24 +52589,22 @@ void proc_control_lite::step()
     /* Product: '<S200>/Divide1' incorporates:
      *  UnaryMinus: '<S202>/Unary Minus'
      */
-    proc_control_lite_B.d = -proc_control_lite_B.absxk /
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.d = -proc_control_lite_B.absxk / proc_control_lite_B.w_o;
 
     /* Product: '<S200>/Divide' */
-    proc_control_lite_B.Product2_nyy = proc_control_lite_B.scale_j /
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.y_pkc = proc_control_lite_B.scale_j /
+      proc_control_lite_B.w_o;
 
     /* Product: '<S200>/Divide2' incorporates:
      *  UnaryMinus: '<S202>/Unary Minus1'
      */
-    proc_control_lite_B.Product3_ly = -proc_control_lite_B.t /
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.z_c0e = -proc_control_lite_B.t / proc_control_lite_B.w_o;
 
     /* Product: '<S200>/Divide3' incorporates:
      *  UnaryMinus: '<S202>/Unary Minus2'
      */
-    proc_control_lite_B.Sum_j = -proc_control_lite_B.Divide3 /
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.w_o = -proc_control_lite_B.Divide3 /
+      proc_control_lite_B.w_o;
 
     /* Sqrt: '<S208>/sqrt' incorporates:
      *  Product: '<S209>/Product'
@@ -52565,34 +52613,33 @@ void proc_control_lite::step()
      *  Product: '<S209>/Product3'
      *  Sum: '<S209>/Sum'
      */
-    proc_control_lite_B.Sum_ks = std::sqrt(((proc_control_lite_B.Product2_nyy *
-      proc_control_lite_B.Product2_nyy + proc_control_lite_B.d *
-      proc_control_lite_B.d) + proc_control_lite_B.Product3_ly *
-      proc_control_lite_B.Product3_ly) + proc_control_lite_B.Sum_j *
-      proc_control_lite_B.Sum_j);
+    proc_control_lite_B.Product4_d = std::sqrt(((proc_control_lite_B.y_pkc *
+      proc_control_lite_B.y_pkc + proc_control_lite_B.d * proc_control_lite_B.d)
+      + proc_control_lite_B.z_c0e * proc_control_lite_B.z_c0e) +
+      proc_control_lite_B.w_o * proc_control_lite_B.w_o);
 
     /* Product: '<S204>/Product1' */
-    proc_control_lite_B.d /= proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.d /= proc_control_lite_B.Product4_d;
 
     /* Product: '<S204>/Product2' */
-    proc_control_lite_B.Product3_ly /= proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.z_c0e /= proc_control_lite_B.Product4_d;
 
     /* Product: '<S204>/Product' */
-    proc_control_lite_B.Product2_nyy /= proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.y_pkc /= proc_control_lite_B.Product4_d;
 
     /* Product: '<S204>/Product3' */
-    proc_control_lite_B.Sum_j /= proc_control_lite_B.Sum_ks;
+    proc_control_lite_B.w_o /= proc_control_lite_B.Product4_d;
 
     /* Product: '<S206>/Product3' incorporates:
      *  Product: '<S207>/Product3'
      */
-    proc_control_lite_B.rtb_TSamp_idx_0 = proc_control_lite_B.Product3_ly *
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.rtb_TSamp_idx_0 = proc_control_lite_B.z_c0e *
+      proc_control_lite_B.w_o;
 
     /* Product: '<S206>/Product2' incorporates:
      *  Product: '<S207>/Product2'
      */
-    proc_control_lite_B.rtb_TSamp_idx_1 = proc_control_lite_B.Product2_nyy *
+    proc_control_lite_B.rtb_TSamp_idx_1 = proc_control_lite_B.y_pkc *
       proc_control_lite_B.d;
 
     /* Product: '<S206>/Product6' incorporates:
@@ -52604,20 +52651,20 @@ void proc_control_lite::step()
     /* Product: '<S206>/Product7' incorporates:
      *  Product: '<S205>/Product7'
      */
-    proc_control_lite_B.Product1_g = proc_control_lite_B.Sum_j *
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.Product1_g = proc_control_lite_B.w_o *
+      proc_control_lite_B.w_o;
 
     /* Product: '<S206>/Product' incorporates:
      *  Product: '<S205>/Product'
      */
     proc_control_lite_B.Sum_p_tmp = proc_control_lite_B.d *
-      proc_control_lite_B.Product3_ly;
+      proc_control_lite_B.z_c0e;
 
     /* Product: '<S206>/Product1' incorporates:
      *  Product: '<S205>/Product1'
      */
-    proc_control_lite_B.Product2_cn = proc_control_lite_B.Product2_nyy *
-      proc_control_lite_B.Sum_j;
+    proc_control_lite_B.Product2_cn = proc_control_lite_B.y_pkc *
+      proc_control_lite_B.w_o;
 
     /* Sum: '<S206>/Sum' incorporates:
      *  Constant: '<S206>/Constant'
@@ -52651,19 +52698,19 @@ void proc_control_lite::step()
     /* Product: '<S207>/Product7' incorporates:
      *  Product: '<S205>/Product6'
      */
-    proc_control_lite_B.Product8_bq = proc_control_lite_B.Product3_ly *
-      proc_control_lite_B.Product3_ly;
+    proc_control_lite_B.Product8_bq = proc_control_lite_B.z_c0e *
+      proc_control_lite_B.z_c0e;
 
     /* Product: '<S207>/Product' incorporates:
      *  Product: '<S205>/Product3'
      */
     proc_control_lite_B.Sum_pn_tmp = proc_control_lite_B.d *
-      proc_control_lite_B.Sum_j;
+      proc_control_lite_B.w_o;
 
     /* Product: '<S207>/Product1' incorporates:
      *  Product: '<S205>/Product2'
      */
-    proc_control_lite_B.Product2_nyy *= proc_control_lite_B.Product3_ly;
+    proc_control_lite_B.y_pkc *= proc_control_lite_B.z_c0e;
 
     /* Sum: '<S207>/Sum' incorporates:
      *  Constant: '<S207>/Constant'
@@ -52681,7 +52728,7 @@ void proc_control_lite::step()
      *  Sum: '<S207>/Sum3'
      */
     proc_control_lite_B.Sum_pn = ((proc_control_lite_B.Sum_pn_tmp +
-      proc_control_lite_B.Product2_nyy) * proc_control_lite_P.Gain_Gain_m *
+      proc_control_lite_B.y_pkc) * proc_control_lite_P.Gain_Gain_m *
       proc_control_lite_B.MovingAverage3.y +
       (proc_control_lite_B.rtb_TSamp_idx_0 - proc_control_lite_B.rtb_TSamp_idx_1)
       * proc_control_lite_P.Gain1_Gain_i * proc_control_lite_B.MovingAverage1.y)
@@ -52709,7 +52756,7 @@ void proc_control_lite::step()
       proc_control_lite_P.Gain2_Gain_m * proc_control_lite_B.MovingAverage3.y +
       (proc_control_lite_B.Sum_p_tmp + proc_control_lite_B.Product2_cn) *
       proc_control_lite_P.Gain_Gain_c * proc_control_lite_B.MovingAverage1.y) +
-      (proc_control_lite_B.Sum_pn_tmp - proc_control_lite_B.Product2_nyy) *
+      (proc_control_lite_B.Sum_pn_tmp - proc_control_lite_B.y_pkc) *
       proc_control_lite_P.Gain1_Gain_e * proc_control_lite_B.MovingAverage2.y;
     proc_control_li_MovingAverage_p(proc_control_lite_B.Sum_nk,
       &proc_control_lite_B.MovingAverage2_p,
@@ -52732,7 +52779,7 @@ void proc_control_lite::step()
    *  Sqrt: '<S231>/sqrt'
    *  Sum: '<S187>/Sum'
    */
-  proc_control_lite_B.Sum_j = std::sqrt(((proc_control_lite_B.scale_j *
+  proc_control_lite_B.w_o = std::sqrt(((proc_control_lite_B.scale_j *
     proc_control_lite_B.scale_j + proc_control_lite_B.absxk *
     proc_control_lite_B.absxk) + proc_control_lite_B.t * proc_control_lite_B.t)
     + proc_control_lite_B.Divide3 * proc_control_lite_B.Divide3);
@@ -52744,7 +52791,7 @@ void proc_control_lite::step()
    *  Sqrt: '<S186>/sqrt'
    */
   proc_control_lite_B.rtb_TSamp_idx_1 = proc_control_lite_B.t /
-    proc_control_lite_B.Sum_j;
+    proc_control_lite_B.w_o;
 
   /* Product: '<S182>/Product3' incorporates:
    *  Product: '<S188>/Product3'
@@ -52753,7 +52800,7 @@ void proc_control_lite::step()
    *  Sqrt: '<S186>/sqrt'
    */
   proc_control_lite_B.rtb_Sum_m_idx_0 = proc_control_lite_B.Divide3 /
-    proc_control_lite_B.Sum_j;
+    proc_control_lite_B.w_o;
 
   /* Product: '<S182>/Product1' incorporates:
    *  Product: '<S188>/Product1'
@@ -52762,7 +52809,7 @@ void proc_control_lite::step()
    *  Sqrt: '<S186>/sqrt'
    */
   proc_control_lite_B.rtb_TSamp_idx_0 = proc_control_lite_B.absxk /
-    proc_control_lite_B.Sum_j;
+    proc_control_lite_B.w_o;
 
   /* Product: '<S182>/Product' incorporates:
    *  Product: '<S188>/Product'
@@ -52771,7 +52818,7 @@ void proc_control_lite::step()
    *  Sqrt: '<S186>/sqrt'
    */
   proc_control_lite_B.d_tmp = proc_control_lite_B.scale_j /
-    proc_control_lite_B.Sum_j;
+    proc_control_lite_B.w_o;
 
   /* End of Outputs for SubSystem: '<S5>/Depth Measurements' */
 
@@ -52919,11 +52966,21 @@ void proc_control_lite::step()
 
   /* End of Outputs for SubSystem: '<S5>/Depth Measurements' */
 
-  /* Merge: '<S7>/Merge' */
+  /* SignalConversion generated from: '<S7>/Bus Selector2' incorporates:
+   *  Merge: '<S7>/Merge'
+   */
   proc_control_lite_LowpassFilter(proc_control_lite_B.sina,
     &proc_control_lite_B.LowpassFilter, &proc_control_lite_DW.LowpassFilter);
+
+  /* SignalConversion generated from: '<S7>/Bus Selector2' incorporates:
+   *  Merge: '<S7>/Merge'
+   */
   proc_control_lite_LowpassFilter(proc_control_lite_B.sinb,
     &proc_control_lite_B.LowpassFilter1, &proc_control_lite_DW.LowpassFilter1);
+
+  /* SignalConversion generated from: '<S7>/Bus Selector2' incorporates:
+   *  Merge: '<S7>/Merge'
+   */
   proc_control_lite_LowpassFilter(proc_control_lite_B.residue,
     &proc_control_lite_B.LowpassFilter2, &proc_control_lite_DW.LowpassFilter2);
 
@@ -52977,7 +53034,7 @@ void proc_control_lite::step()
    *  Gain: '<S189>/Gain2'
    *  Sum: '<S189>/Sum3'
    */
-  proc_control_lite_B.Product2_nyy = ((proc_control_lite_P.Constant_Value_i1 -
+  proc_control_lite_B.y_pkc = ((proc_control_lite_P.Constant_Value_i1 -
     proc_control_lite_B.Product8_bq) - proc_control_lite_B.rtb_Sum2_i_tmp) *
     proc_control_lite_P.Gain2_Gain_a * proc_control_lite_B.rtb_Sum_m_idx_0;
 
@@ -52990,13 +53047,13 @@ void proc_control_lite::step()
   /* Product: '<S189>/Product5' incorporates:
    *  Gain: '<S189>/Gain1'
    */
-  proc_control_lite_B.Sum_ks = proc_control_lite_B.t43 *
+  proc_control_lite_B.Product4_d = proc_control_lite_B.t43 *
     proc_control_lite_P.Gain1_Gain_pe * proc_control_lite_B.rtb_Sum_m_idx_2;
 
   /* Product: '<S190>/Product4' incorporates:
    *  Gain: '<S190>/Gain'
    */
-  proc_control_lite_B.Sum_ks_e = proc_control_lite_B.t40 *
+  proc_control_lite_B.Product4_d_e = proc_control_lite_B.t40 *
     proc_control_lite_P.Gain_Gain_j * proc_control_lite_B.rtb_Sum_m_idx_0;
 
   /* Product: '<S190>/Product8' incorporates:
@@ -53011,13 +53068,13 @@ void proc_control_lite::step()
   /* Product: '<S190>/Product5' incorporates:
    *  Gain: '<S190>/Gain1'
    */
-  proc_control_lite_B.Product3_ly = proc_control_lite_B.t41 *
+  proc_control_lite_B.z_c0e = proc_control_lite_B.t41 *
     proc_control_lite_P.Gain1_Gain_b * proc_control_lite_B.rtb_Sum_m_idx_2;
 
   /* Product: '<S191>/Product4' incorporates:
    *  Gain: '<S191>/Gain'
    */
-  proc_control_lite_B.Product3_ly_j = proc_control_lite_B.Sum_p_tmp *
+  proc_control_lite_B.z_c0e_j = proc_control_lite_B.Sum_p_tmp *
     proc_control_lite_P.Gain_Gain_a * proc_control_lite_B.rtb_Sum_m_idx_0;
 
   /* Product: '<S191>/Product5' incorporates:
@@ -53109,23 +53166,23 @@ void proc_control_lite::step()
     proc_control_lite_B.t42 * proc_control_lite_P.Gain_Gain_p *
     proc_control_lite_B.rtb_Sum_m_idx_1) + proc_control_lite_B.t43 *
     proc_control_lite_P.Gain1_Gain_h * proc_control_lite_B.rtb_Sum_m_idx_2) +
-    ((proc_control_lite_B.Product2_nyy + proc_control_lite_B.Product1_g) +
-     proc_control_lite_B.Sum_ks);
+    ((proc_control_lite_B.y_pkc + proc_control_lite_B.Product1_g) +
+     proc_control_lite_B.Product4_d);
   proc_control_lite_B.rotation[1] = ((((proc_control_lite_P.Constant_Value_lc -
     proc_control_lite_B.Sum_pn_tmp) - proc_control_lite_B.rtb_Sum2_i_tmp) *
     proc_control_lite_P.Gain2_Gain_d * proc_control_lite_B.rtb_Sum_m_idx_1 +
     proc_control_lite_B.t40 * proc_control_lite_P.Gain_Gain_f *
     proc_control_lite_B.rtb_Sum_m_idx_0) + proc_control_lite_B.t41 *
     proc_control_lite_P.Gain1_Gain_l * proc_control_lite_B.rtb_Sum_m_idx_2) +
-    ((proc_control_lite_B.Sum_ks_e + proc_control_lite_B.Product1_g_j) +
-     proc_control_lite_B.Product3_ly);
+    ((proc_control_lite_B.Product4_d_e + proc_control_lite_B.Product1_g_j) +
+     proc_control_lite_B.z_c0e);
   proc_control_lite_B.rotation[2] = (((proc_control_lite_P.Constant_Value_fo -
     proc_control_lite_B.Sum_pn_tmp) - proc_control_lite_B.Product8_bq) *
     proc_control_lite_P.Gain2_Gain_o * proc_control_lite_B.rtb_Sum_m_idx_2 +
     (proc_control_lite_B.Sum_p_tmp * proc_control_lite_P.Gain_Gain_gv *
      proc_control_lite_B.rtb_Sum_m_idx_0 + proc_control_lite_B.Product2_cn *
      proc_control_lite_P.Gain1_Gain_oz * proc_control_lite_B.rtb_Sum_m_idx_1)) +
-    ((proc_control_lite_B.Product3_ly_j + proc_control_lite_B.Product8_bq_g) +
+    ((proc_control_lite_B.z_c0e_j + proc_control_lite_B.Product8_bq_g) +
      proc_control_lite_B.Sum_k);
   proc_control_lit_MovingAverage1(proc_control_lite_B.rotation[0],
     &proc_control_lite_B.MovingAverage6, &proc_control_lite_DW.MovingAverage6);
@@ -53202,15 +53259,21 @@ void proc_control_lite::step()
     proc_control_lite_B.MovingAverage7.y;
 
   /* MATLAB Function: '<S169>/MATLAB Function3' */
-  proc_control_li_MATLABFunction3(proc_control_lite_B.Sum4[0],
-    &proc_control_lite_B.sf_MATLABFunction3);
+  if ((proc_control_lite_B.Sum4[0] > -0.2) && (proc_control_lite_B.Sum4[0] < 0.2))
+  {
+    proc_control_lite_B.d = 0.0;
+  } else {
+    proc_control_lite_B.d = proc_control_lite_B.Sum4[0];
+  }
+
+  /* End of MATLAB Function: '<S169>/MATLAB Function3' */
 
   /* MATLAB Function: '<S169>/MATLAB Function4' */
-  proc_control_li_MATLABFunction3(proc_control_lite_B.Sum4[1],
+  proc_control_li_MATLABFunction4(proc_control_lite_B.Sum4[1],
     &proc_control_lite_B.sf_MATLABFunction4);
 
   /* MATLAB Function: '<S169>/MATLAB Function6' */
-  proc_control_li_MATLABFunction3(proc_control_lite_B.Sum4[2],
+  proc_control_li_MATLABFunction4(proc_control_lite_B.Sum4[2],
     &proc_control_lite_B.sf_MATLABFunction6);
 
   /* Outputs for Enabled SubSystem: '<S169>/Subsystem' incorporates:
@@ -53219,8 +53282,7 @@ void proc_control_lite::step()
   if (proc_control_lite_B.y > 0.0) {
     /* DiscreteIntegrator: '<S180>/Discrete-Time Integrator' */
     proc_control_lite_B.Product3_h =
-      proc_control_lite_P.DiscreteTimeIntegrator_gainval *
-      proc_control_lite_B.sf_MATLABFunction3.y;
+      proc_control_lite_P.DiscreteTimeIntegrator_gainval * proc_control_lite_B.d;
 
     /* DiscreteIntegrator: '<S180>/Discrete-Time Integrator' */
     proc_control_lite_B.DiscreteTimeIntegrator_o[0] =
@@ -53276,13 +53338,14 @@ void proc_control_lite::step()
     /* SignalConversion generated from: '<S215>/ SFunction ' incorporates:
      *  MATLAB Function: '<S156>/MATLAB Function'
      *  Merge: '<S7>/Merge1'
+     *  SignalConversion generated from: '<S7>/Bus Selector4'
      */
     proc_control_lite_B.TmpSignalConversionAtSFunct[0] = proc_control_lite_B.t9;
 
     /* MATLAB Function: '<S156>/MATLAB Function' incorporates:
      *  Constant: '<S156>/Constant'
      *  Merge: '<S7>/Merge1'
-     *  SignalConversion generated from: '<S215>/ SFunction '
+     *  SignalConversion generated from: '<S7>/Bus Selector4'
      */
     proc_control_lite_B.Sum2_i[0] = std::abs(proc_control_lite_B.t9);
     proc_control_lite_B.Sum2_i[1] = std::abs(proc_control_lite_B.t10);
@@ -53311,10 +53374,10 @@ void proc_control_lite::step()
         proc_control_lite_B.Sum2_i[proc_control_lite_B.base_index - 1];
       for (proc_control_lite_B.ibmat = proc_control_lite_B.base_index + 1;
            proc_control_lite_B.ibmat < 4; proc_control_lite_B.ibmat++) {
-        proc_control_lite_B.Product2_nyy =
+        proc_control_lite_B.y_pkc =
           proc_control_lite_B.Sum2_i[proc_control_lite_B.ibmat - 1];
-        if (proc_control_lite_B.t9 < proc_control_lite_B.Product2_nyy) {
-          proc_control_lite_B.t9 = proc_control_lite_B.Product2_nyy;
+        if (proc_control_lite_B.t9 < proc_control_lite_B.y_pkc) {
+          proc_control_lite_B.t9 = proc_control_lite_B.y_pkc;
         }
       }
     }
@@ -53361,11 +53424,11 @@ void proc_control_lite::step()
           - 1];
         for (proc_control_lite_B.ibmat = proc_control_lite_B.base_index + 1;
              proc_control_lite_B.ibmat < 5; proc_control_lite_B.ibmat++) {
-          proc_control_lite_B.Product2_nyy =
+          proc_control_lite_B.y_pkc =
             proc_control_lite_B.TmpSignalConversionAtSFunct[proc_control_lite_B.ibmat
             - 1];
-          if (proc_control_lite_B.t9 < proc_control_lite_B.Product2_nyy) {
-            proc_control_lite_B.t9 = proc_control_lite_B.Product2_nyy;
+          if (proc_control_lite_B.t9 < proc_control_lite_B.y_pkc) {
+            proc_control_lite_B.t9 = proc_control_lite_B.y_pkc;
           }
         }
       }
@@ -53431,14 +53494,14 @@ void proc_control_lite::step()
          */
         proc_control_lite_B.Product1_hg = proc_control_lite_B.sincos_o2[0] *
           proc_control_lite_B.sincos_o2[1];
-        proc_control_lite_B.Product2_nyy = proc_control_lite_B.t10 *
+        proc_control_lite_B.y_pkc = proc_control_lite_B.t10 *
           proc_control_lite_B.Product2_jt;
 
         /* Fcn: '<S218>/q0' incorporates:
          *  Trigonometry: '<S218>/sincos'
          */
         proc_control_lite_B.q0 = proc_control_lite_B.Product1_hg *
-          proc_control_lite_B.sincos_o2[2] - proc_control_lite_B.Product2_nyy *
+          proc_control_lite_B.sincos_o2[2] - proc_control_lite_B.y_pkc *
           proc_control_lite_B.Product3_h;
 
         /* Fcn: '<S218>/q1' incorporates:
@@ -53466,7 +53529,7 @@ void proc_control_lite::step()
          *  Trigonometry: '<S218>/sincos'
          */
         proc_control_lite_B.q3 = proc_control_lite_B.Product1_hg *
-          proc_control_lite_B.Product3_h + proc_control_lite_B.Product2_nyy *
+          proc_control_lite_B.Product3_h + proc_control_lite_B.y_pkc *
           proc_control_lite_B.sincos_o2[2];
       }
 
@@ -53657,6 +53720,7 @@ void proc_control_lite::step()
      *  Product: '<S230>/Product4'
      *  Product: '<S230>/Product5'
      *  Product: '<S230>/Product8'
+     *  SignalConversion generated from: '<S7>/Bus Selector6'
      *  Sum: '<S230>/Sum'
      *  Sum: '<S230>/Sum3'
      */
@@ -53796,7 +53860,7 @@ void proc_control_lite::step()
         /*    Detailed explanation goes here */
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 10;
              proc_control_lite_B.Ns++) {
-          proc_control_lite_B.y_n[proc_control_lite_B.Ns + 10 *
+          proc_control_lite_B.y_j[proc_control_lite_B.Ns + 10 *
             proc_control_lite_B.b_j] =
             (proc_control_lite_B.imvec[proc_control_lite_B.Ns + 3] -
              proc_control_lite_DW.x[proc_control_lite_B.Ns + 3]) /
@@ -53820,7 +53884,7 @@ void proc_control_lite::step()
                proc_control_lite_B.Ns_i++) {
             proc_control_lite_B.Product_o += proc_control_lite_DW.P
               [(proc_control_lite_B.base_index + proc_control_lite_B.Ns_i) + 1] *
-              proc_control_lite_B.y_n[proc_control_lite_B.Ns_i * 10 +
+              proc_control_lite_B.y_j[proc_control_lite_B.Ns_i * 10 +
               proc_control_lite_B.b_j];
           }
 
@@ -53894,7 +53958,7 @@ void proc_control_lite::step()
             proc_control_lite_B.Product3_h +=
               proc_control_lite_B.A_h[proc_control_lite_B.i +
               proc_control_lite_B.coffset] *
-              proc_control_lite_B.y_n[proc_control_lite_B.base_index +
+              proc_control_lite_B.y_j[proc_control_lite_B.base_index +
               proc_control_lite_B.Ns];
             proc_control_lite_B.i += 13;
             proc_control_lite_B.base_index += 10;
@@ -53970,7 +54034,7 @@ void proc_control_lite::step()
             proc_control_lite_B.Product3_h +=
               proc_control_lite_B.C_o[proc_control_lite_B.base_index +
               proc_control_lite_B.i] *
-              proc_control_lite_B.y_n[proc_control_lite_B.Ns_i +
+              proc_control_lite_B.y_j[proc_control_lite_B.Ns_i +
               proc_control_lite_B.ibmat];
             proc_control_lite_B.base_index += 13;
           }
@@ -54060,6 +54124,7 @@ void proc_control_lite::step()
        *  RandomNumber: '<S169>/Random Number'
        *  RandomNumber: '<S169>/Random Number1'
        *  RandomNumber: '<S169>/Random Number2'
+       *  SignalConversion generated from: '<S7>/Bus Selector2'
        *  Sum: '<S169>/Sum3'
        * */
       proc_control_lite_B.scale[0] = proc_control_lite_B.scale_j -
@@ -54199,11 +54264,11 @@ void proc_control_lite::step()
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 13;
            proc_control_lite_B.Ns++) {
         /* Start for MATLABSystem: '<S236>/MATLAB System' */
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns];
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns + 16] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns + 16] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns + 13];
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns + 32] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns + 32] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns + 26];
       }
 
@@ -54213,18 +54278,18 @@ void proc_control_lite::step()
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 3;
            proc_control_lite_B.ibmat++) {
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns + 13] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns + 13] =
           proc_control_lite_P.R2_Value[proc_control_lite_B.ibmat];
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns + 14] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns + 14] =
           proc_control_lite_P.R2_Value[proc_control_lite_B.ibmat + 3];
-        proc_control_lite_B.K_n[proc_control_lite_B.Ns + 15] =
+        proc_control_lite_B.K_d[proc_control_lite_B.Ns + 15] =
           proc_control_lite_P.R2_Value[proc_control_lite_B.ibmat + 6];
         proc_control_lite_B.Ns += 16;
       }
 
       /* MATLABSystem: '<S236>/MATLAB System' */
-      proc_control_lite_qr_hp(proc_control_lite_B.K_n,
-        proc_control_lite_B.array_d,
+      proc_control_lite_qr_hp(proc_control_lite_B.K_d,
+        proc_control_lite_B.array_n,
         proc_control_lite_B.TmpSignalConversionAtMATL_d);
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 3;
@@ -54297,29 +54362,29 @@ void proc_control_lite::step()
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.b_j = 0; proc_control_lite_B.b_j < 13;
            proc_control_lite_B.b_j++) {
-        proc_control_lite_B.C_n[proc_control_lite_B.Ns] =
+        proc_control_lite_B.C_p[proc_control_lite_B.Ns] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns];
-        proc_control_lite_B.C_n[proc_control_lite_B.Ns + 1] =
+        proc_control_lite_B.C_p[proc_control_lite_B.Ns + 1] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns + 1];
-        proc_control_lite_B.C_n[proc_control_lite_B.Ns + 2] =
+        proc_control_lite_B.C_p[proc_control_lite_B.Ns + 2] =
           proc_control_lite_B.K_p[proc_control_lite_B.Ns + 2];
         proc_control_lite_B.Ns += 3;
       }
 
       /* Start for MATLABSystem: '<S236>/MATLAB System' */
       proc_control_lite_trisolve_hpq(proc_control_lite_B.twpt,
-        proc_control_lite_B.C_n);
+        proc_control_lite_B.C_p);
 
       /* MATLABSystem: '<S236>/MATLAB System' */
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.b_j = 0; proc_control_lite_B.b_j < 13;
            proc_control_lite_B.b_j++) {
-        proc_control_lite_B.C_k[proc_control_lite_B.Ns] =
-          proc_control_lite_B.C_n[proc_control_lite_B.Ns];
-        proc_control_lite_B.C_k[proc_control_lite_B.Ns + 1] =
-          proc_control_lite_B.C_n[proc_control_lite_B.Ns + 1];
-        proc_control_lite_B.C_k[proc_control_lite_B.Ns + 2] =
-          proc_control_lite_B.C_n[proc_control_lite_B.Ns + 2];
+        proc_control_lite_B.C_n[proc_control_lite_B.Ns] =
+          proc_control_lite_B.C_p[proc_control_lite_B.Ns];
+        proc_control_lite_B.C_n[proc_control_lite_B.Ns + 1] =
+          proc_control_lite_B.C_p[proc_control_lite_B.Ns + 1];
+        proc_control_lite_B.C_n[proc_control_lite_B.Ns + 2] =
+          proc_control_lite_B.C_p[proc_control_lite_B.Ns + 2];
         proc_control_lite_B.Ns += 3;
       }
 
@@ -54327,35 +54392,35 @@ void proc_control_lite::step()
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 3;
            proc_control_lite_B.ibmat++) {
-        proc_control_lite_B.twpt_c[proc_control_lite_B.Ns] =
+        proc_control_lite_B.twpt_j[proc_control_lite_B.Ns] =
           proc_control_lite_B.twpt[proc_control_lite_B.ibmat];
-        proc_control_lite_B.twpt_c[proc_control_lite_B.Ns + 1] =
+        proc_control_lite_B.twpt_j[proc_control_lite_B.Ns + 1] =
           proc_control_lite_B.twpt[proc_control_lite_B.ibmat + 3];
-        proc_control_lite_B.twpt_c[proc_control_lite_B.Ns + 2] =
+        proc_control_lite_B.twpt_j[proc_control_lite_B.Ns + 2] =
           proc_control_lite_B.twpt[proc_control_lite_B.ibmat + 6];
         proc_control_lite_B.Ns += 3;
       }
 
-      proc_control_lite_trisolve_hpq2(proc_control_lite_B.twpt_c,
-        proc_control_lite_B.C_k);
+      proc_control_lite_trisolve_hpq2(proc_control_lite_B.twpt_j,
+        proc_control_lite_B.C_n);
 
       /* MATLABSystem: '<S236>/MATLAB System' */
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 13;
            proc_control_lite_B.ibmat++) {
         proc_control_lite_B.K_p[proc_control_lite_B.ibmat] =
-          proc_control_lite_B.C_k[proc_control_lite_B.Ns];
+          proc_control_lite_B.C_n[proc_control_lite_B.Ns];
         proc_control_lite_B.K_p[proc_control_lite_B.ibmat + 13] =
-          proc_control_lite_B.C_k[proc_control_lite_B.Ns + 1];
+          proc_control_lite_B.C_n[proc_control_lite_B.Ns + 1];
         proc_control_lite_B.K_p[proc_control_lite_B.ibmat + 26] =
-          proc_control_lite_B.C_k[proc_control_lite_B.Ns + 2];
+          proc_control_lite_B.C_n[proc_control_lite_B.Ns + 2];
         proc_control_lite_B.Ns += 3;
       }
 
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 39;
            proc_control_lite_B.Ns++) {
         /* Start for MATLABSystem: '<S236>/MATLAB System' */
-        proc_control_lite_B.C_n[proc_control_lite_B.Ns] =
+        proc_control_lite_B.C_p[proc_control_lite_B.Ns] =
           -proc_control_lite_B.K_p[proc_control_lite_B.Ns];
       }
 
@@ -54374,10 +54439,10 @@ void proc_control_lite::step()
              proc_control_lite_B.i++) {
           proc_control_lite_B.A_h[proc_control_lite_B.i +
             proc_control_lite_B.ibmat] =
-            (proc_control_lite_B.C_n[proc_control_lite_B.i + 13] *
+            (proc_control_lite_B.C_p[proc_control_lite_B.i + 13] *
              proc_control_lite_B.residue + proc_control_lite_B.sinb *
-             proc_control_lite_B.C_n[proc_control_lite_B.i]) +
-            proc_control_lite_B.C_n[proc_control_lite_B.i + 26] *
+             proc_control_lite_B.C_p[proc_control_lite_B.i]) +
+            proc_control_lite_B.C_p[proc_control_lite_B.i + 26] *
             proc_control_lite_B.sina;
         }
 
@@ -54428,7 +54493,7 @@ void proc_control_lite::step()
         proc_control_lite_B.ibmat = 0;
         for (proc_control_lite_B.coffset = 0; proc_control_lite_B.coffset < 3;
              proc_control_lite_B.coffset++) {
-          proc_control_lite_B.C_n[proc_control_lite_B.coffset +
+          proc_control_lite_B.C_p[proc_control_lite_B.coffset +
             proc_control_lite_B.Ns] =
             (proc_control_lite_P.R2_Value[proc_control_lite_B.ibmat + 1] *
              proc_control_lite_B.Product3_h +
@@ -54452,11 +54517,11 @@ void proc_control_lite::step()
                     &proc_control_lite_B.P[proc_control_lite_B.coffset], 13U *
                     sizeof(real_T));
         proc_control_lite_B.rtb_P_p[proc_control_lite_B.Ns + 13] =
-          proc_control_lite_B.C_n[proc_control_lite_B.ibmat];
+          proc_control_lite_B.C_p[proc_control_lite_B.ibmat];
         proc_control_lite_B.rtb_P_p[proc_control_lite_B.Ns + 14] =
-          proc_control_lite_B.C_n[proc_control_lite_B.ibmat + 1];
+          proc_control_lite_B.C_p[proc_control_lite_B.ibmat + 1];
         proc_control_lite_B.rtb_P_p[proc_control_lite_B.Ns + 15] =
-          proc_control_lite_B.C_n[proc_control_lite_B.ibmat + 2];
+          proc_control_lite_B.C_p[proc_control_lite_B.ibmat + 2];
         proc_control_lite_B.Ns += 16;
         proc_control_lite_B.ibmat += 3;
         proc_control_lite_B.coffset += 13;
@@ -54571,7 +54636,7 @@ void proc_control_lite::step()
       EKFCorrectorAdditive_getMeasure(proc_control_lite_P.R3_Value,
         proc_control_lite_DW.x, proc_control_lite_DW.P,
         &proc_control_lite_B.residue, proc_control_lite_B.imvec,
-        &proc_control_lite_B.sinb, proc_control_lite_B.z_c,
+        &proc_control_lite_B.sinb, proc_control_lite_B.z_g,
         &proc_control_lite_B.sina);
       proc_control_lite_B.residue = proc_control_lite_B.zposition -
         proc_control_lite_B.residue;
@@ -54606,7 +54671,7 @@ void proc_control_lite::step()
           proc_control_lite_B.A_h[proc_control_lite_B.coffset +
             proc_control_lite_B.Ns] =
             proc_control_lite_B.X_e_c[proc_control_lite_B.coffset] *
-            proc_control_lite_B.z_c[proc_control_lite_B.ibmat];
+            proc_control_lite_B.z_g[proc_control_lite_B.ibmat];
         }
 
         proc_control_lite_B.Ns += 13;
@@ -54760,13 +54825,13 @@ void proc_control_lite::step()
      *  DataStoreRead: '<S239>/Data Store ReadX'
      *  DataTypeConversion: '<S233>/DataTypeConversion_uState'
      */
-    std::memcpy(&proc_control_lite_B.z_c[0], &proc_control_lite_DW.x[0], 13U *
+    std::memcpy(&proc_control_lite_B.z_g[0], &proc_control_lite_DW.x[0], 13U *
                 sizeof(real_T));
-    proc_control_lit_EkfNavStatesEq(proc_control_lite_B.z_c,
+    proc_control_lit_EkfNavStatesEq(proc_control_lite_B.z_g,
       proc_control_lite_B.DataTypeConversion_uState);
-    std::memcpy(&proc_control_lite_B.z_c[0], &proc_control_lite_DW.x[0], 13U *
+    std::memcpy(&proc_control_lite_B.z_g[0], &proc_control_lite_DW.x[0], 13U *
                 sizeof(real_T));
-    proc_control_lit_EkfNavStatesEq(proc_control_lite_B.z_c,
+    proc_control_lit_EkfNavStatesEq(proc_control_lite_B.z_g,
       proc_control_lite_B.DataTypeConversion_uState);
 
     /* MATLABSystem: '<S239>/MATLAB System' incorporates:
@@ -54794,7 +54859,7 @@ void proc_control_lite::step()
         proc_control_lite_B.A_h[proc_control_lite_B.Ns + 13 *
           proc_control_lite_B.b_j] =
           (proc_control_lite_B.imvec[proc_control_lite_B.Ns] -
-           proc_control_lite_B.z_c[proc_control_lite_B.Ns]) /
+           proc_control_lite_B.z_g[proc_control_lite_B.Ns]) /
           proc_control_lite_B.Product_o;
       }
     }
@@ -54889,7 +54954,7 @@ void proc_control_lite::step()
    *  Product: '<S243>/Product2'
    *  Product: '<S243>/Product3'
    */
-  proc_control_lite_B.Sum_j = ((proc_control_lite_B.DataStoreRead[3] *
+  proc_control_lite_B.w_o = ((proc_control_lite_B.DataStoreRead[3] *
     proc_control_lite_B.DataStoreRead[3] + proc_control_lite_B.DataStoreRead[4] *
     proc_control_lite_B.DataStoreRead[4]) + proc_control_lite_B.DataStoreRead[5]
     * proc_control_lite_B.DataStoreRead[5]) + proc_control_lite_B.DataStoreRead
@@ -55020,13 +55085,13 @@ void proc_control_lite::step()
      *  UnaryMinus: '<S242>/Unary Minus2'
      */
     proc_control_lite_B.qW2S[0] = proc_control_lite_B.DataStoreRead[3] /
-      proc_control_lite_B.Sum_j;
+      proc_control_lite_B.w_o;
     proc_control_lite_B.qW2S[1] = -proc_control_lite_B.DataStoreRead[4] /
-      proc_control_lite_B.Sum_j;
+      proc_control_lite_B.w_o;
     proc_control_lite_B.qW2S[2] = -proc_control_lite_B.DataStoreRead[5] /
-      proc_control_lite_B.Sum_j;
+      proc_control_lite_B.w_o;
     proc_control_lite_B.qW2S[3] = -proc_control_lite_B.DataStoreRead[6] /
-      proc_control_lite_B.Sum_j;
+      proc_control_lite_B.w_o;
 
     /* SignalConversion generated from: '<S1>/Output' */
     proc_control_lite_B.BodyVelocity[0] = proc_control_lite_B.DataStoreRead[7];
@@ -55073,7 +55138,7 @@ void proc_control_lite::step()
   if (proc_control_lite_B.Merge6) {
     /* MATLABSystem: '<S257>/SourceBlock' */
     proc_control_lite_B.b_value_n = Sub_proc_control_lite_532.getLatestMessage
-      (&proc_control_lite_B.rtb_SourceBlock_o2_g_a);
+      (&proc_control_lite_B.rtb_SourceBlock_o2_g_f);
 
     /* Outputs for Enabled SubSystem: '<S257>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S258>/Enable'
@@ -55081,7 +55146,7 @@ void proc_control_lite::step()
     /* Start for MATLABSystem: '<S257>/SourceBlock' */
     if (proc_control_lite_B.b_value_n) {
       /* SignalConversion generated from: '<S258>/In1' */
-      proc_control_lite_B.In1_l = proc_control_lite_B.rtb_SourceBlock_o2_g_a;
+      proc_control_lite_B.In1_l = proc_control_lite_B.rtb_SourceBlock_o2_g_f;
     }
 
     /* End of Start for MATLABSystem: '<S257>/SourceBlock' */
@@ -55184,7 +55249,7 @@ void proc_control_lite::step()
       proc_control_lite_B.ibmat = proc_control_lite_B.base_index * 10;
       for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 10;
            proc_control_lite_B.Ns_i++) {
-        proc_control_lite_B.y_n[proc_control_lite_B.ibmat +
+        proc_control_lite_B.y_j[proc_control_lite_B.ibmat +
           proc_control_lite_B.Ns_i] =
           proc_control_lite_B.imvec[proc_control_lite_B.base_index];
       }
@@ -55195,7 +55260,7 @@ void proc_control_lite::step()
     /* Merge generated from: '<S6>/Merge' incorporates:
      *  SignalConversion generated from: '<S247>/Out1'
      */
-    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_n[0],
+    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_j[0],
                 130U * sizeof(real_T));
 
     /* Merge generated from: '<S6>/Merge' incorporates:
@@ -55263,7 +55328,7 @@ void proc_control_lite::step()
       proc_control_lite_B.In1.velocities, proc_control_lite_DW.obj_i.m_trajClear,
       proc_control_lite_B.dv12, proc_control_lite_B.linearTol,
       proc_control_lite_B.angularTol, proc_control_lite_B.timeInTol,
-      proc_control_lite_B.y_n, &proc_control_lite_B.NewDvlMsg,
+      proc_control_lite_B.y_j, &proc_control_lite_B.NewDvlMsg,
       &proc_control_lite_B.isTrajDone,
       proc_control_lite_B.TmpSignalConversionAtMATLAB);
 
@@ -55287,7 +55352,7 @@ void proc_control_lite::step()
      *  MATLABSystem: '<S245>/MATLAB System'
      *  SignalConversion generated from: '<S245>/MATLAB System'
      */
-    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_n[0],
+    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_j[0],
                 130U * sizeof(real_T));
 
     /* Update for UnitDelay: '<S252>/Delay Input1' */
@@ -55356,7 +55421,7 @@ void proc_control_lite::step()
      */
     /* MATLABSystem: '<S264>/SourceBlock' */
     proc_control_lite_B.b_value_n = Sub_proc_control_lite_589.getLatestMessage
-      (&proc_control_lite_B.rtb_SourceBlock_o2_n_c);
+      (&proc_control_lite_B.rtb_SourceBlock_o2_n_f);
 
     /* Outputs for Enabled SubSystem: '<S250>/Enabled Subsystem' incorporates:
      *  EnablePort: '<S261>/Enable'
@@ -55367,27 +55432,27 @@ void proc_control_lite::step()
     if (proc_control_lite_B.b_value_n) {
       /* DataTypeConversion: '<S261>/Data Type Conversion' */
       proc_control_lite_B.DataTypeConversion[0] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.position.x;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.position.x;
       proc_control_lite_B.DataTypeConversion[1] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.position.y;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.position.y;
       proc_control_lite_B.DataTypeConversion[2] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.position.z;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.position.z;
       proc_control_lite_B.DataTypeConversion[3] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.orientation.z;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.orientation.z;
       proc_control_lite_B.DataTypeConversion[4] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.orientation.y;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.orientation.y;
       proc_control_lite_B.DataTypeConversion[5] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.orientation.x;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.orientation.x;
 
       /* DataTypeConversion: '<S261>/Data Type Conversion1' */
       proc_control_lite_B.DataTypeConversion1[0] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.frame;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.frame;
       proc_control_lite_B.DataTypeConversion1[1] =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.speed;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.speed;
 
       /* DataTypeConversion: '<S261>/Data Type Conversion2' */
       proc_control_lite_B.DataTypeConversion2 =
-        proc_control_lite_B.rtb_SourceBlock_o2_n_c.fine;
+        proc_control_lite_B.rtb_SourceBlock_o2_n_f.fine;
     }
 
     /* End of Outputs for SubSystem: '<S264>/Enabled Subsystem' */
@@ -56300,7 +56365,7 @@ void proc_control_lite::step()
     proc_TrajectoryManager_stepImpl(&proc_control_lite_DW.obj,
       proc_control_lite_DW.obj_i.m_trajClear, proc_control_lite_B.imvec,
       proc_control_lite_B.Selector4, proc_control_lite_DW.obj_f.initcond,
-      proc_control_lite_B.dv12, proc_control_lite_B.y_n,
+      proc_control_lite_B.dv12, proc_control_lite_B.y_j,
       &proc_control_lite_B.NewDvlMsg);
 
     /* MATLABSystem: '<S250>/MATLAB System1' */
@@ -56318,7 +56383,7 @@ void proc_control_lite::step()
      *  MATLABSystem: '<S250>/MATLAB System1'
      *  SignalConversion generated from: '<S250>/Reference'
      */
-    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_n[0],
+    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_j[0],
                 130U * sizeof(real_T));
 
     /* Merge generated from: '<S6>/Merge' incorporates:
@@ -56361,7 +56426,7 @@ void proc_control_lite::step()
       proc_control_lite_B.ibmat = proc_control_lite_B.base_index * 10;
       for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 10;
            proc_control_lite_B.Ns_i++) {
-        proc_control_lite_B.y_n[proc_control_lite_B.ibmat +
+        proc_control_lite_B.y_j[proc_control_lite_B.ibmat +
           proc_control_lite_B.Ns_i] =
           proc_control_lite_B.imvec[proc_control_lite_B.base_index];
       }
@@ -56372,7 +56437,7 @@ void proc_control_lite::step()
     /* Merge generated from: '<S6>/Merge' incorporates:
      *  SignalConversion generated from: '<S244>/y'
      */
-    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_n[0],
+    std::memcpy(&proc_control_lite_B.Reference[0], &proc_control_lite_B.y_j[0],
                 130U * sizeof(real_T));
 
     /* Merge generated from: '<S6>/Merge' incorporates:
@@ -56596,7 +56661,7 @@ void proc_control_lite::step()
         while ((!exitg2) && (proc_control_lite_B.ibmat - 1 < 20)) {
           if (proc_control_lite_B.corr[proc_control_lite_B.ibmat - 1]) {
             proc_control_lite_B.base_index++;
-            proc_control_lite_B.ii_data_p[proc_control_lite_B.base_index - 1] =
+            proc_control_lite_B.ii_data_n[proc_control_lite_B.base_index - 1] =
               proc_control_lite_B.ibmat;
             if (proc_control_lite_B.base_index >= 20) {
               exitg2 = true;
@@ -56616,7 +56681,7 @@ void proc_control_lite::step()
 
         if (proc_control_lite_B.ibmat - 1 >= 0) {
           std::memcpy(&proc_control_lite_B.i_data[0],
-                      &proc_control_lite_B.ii_data_p[0], static_cast<uint32_T>
+                      &proc_control_lite_B.ii_data_n[0], static_cast<uint32_T>
                       (proc_control_lite_B.ibmat) * sizeof(int32_T));
         }
 
@@ -56771,14 +56836,12 @@ void proc_control_lite::step()
       /* MATLABSystem: '<S48>/MATLAB System' */
       proc_control_lite_B.mvmax[proc_control_lite_B.Ns] =
         proc_control_lite_B.tmax * static_cast<real_T>(proc_control_lite_B.Ns_i);
+      proc_control_lite_DW.rosMVR[proc_control_lite_B.Ns] =
+        proc_control_lite_DW.obj_k.rosMVR[proc_control_lite_B.Ns];
+      proc_control_lite_DW.rosMV[proc_control_lite_B.Ns] =
+        proc_control_lite_DW.obj_k.rosMV[proc_control_lite_B.Ns];
     }
 
-    std::memcpy(&proc_control_lite_DW.gainsList[0],
-                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
-    std::memcpy(&proc_control_lite_DW.rosMVR[0],
-                &proc_control_lite_DW.obj_k.rosMVR[0], sizeof(real_T) << 3U);
-    std::memcpy(&proc_control_lite_DW.rosMV[0],
-                &proc_control_lite_DW.obj_k.rosMV[0], sizeof(real_T) << 3U);
     std::memcpy(&proc_control_lite_DW.rosOV[0],
                 &proc_control_lite_DW.obj_k.rosOV[0], 13U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.currentFaultCount[0],
@@ -56790,7 +56853,9 @@ void proc_control_lite::step()
         proc_control_lite_DW.obj_k.isThrusterFault[proc_control_lite_B.Ns];
     }
 
-    proc_control_lite_DW.init_b = proc_control_lite_DW.obj_k.init;
+    proc_control_lite_DW.init_o = proc_control_lite_DW.obj_k.init;
+    std::memcpy(&proc_control_lite_DW.gainsList[0],
+                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
     std::memcpy(&proc_control_lite_B.ywt[0], &proc_control_lite_B.imvec[0], 13U *
                 sizeof(real_T));
     for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
@@ -56939,7 +57004,7 @@ void proc_control_lite::step()
       /* Start for MATLABSystem: '<S50>/MATLAB System' incorporates:
        *  Merge generated from: '<S6>/Merge'
        */
-      std::memcpy(&proc_control_lite_B.y_n[0], &proc_control_lite_B.Reference[0],
+      std::memcpy(&proc_control_lite_B.y_j[0], &proc_control_lite_B.Reference[0],
                   130U * sizeof(real_T));
 
       /* SignalConversion generated from: '<S50>/MATLAB System' */
@@ -56963,7 +57028,7 @@ void proc_control_lite::step()
        */
       proc_control_TrimPlant_stepImpl(&proc_control_lite_DW.obj_b,
         proc_control_lite_DW.Delay_DSTATE_a, proc_control_lite_B.dv12,
-        proc_control_lite_B.y_n, proc_control_lite_B.BusCreator.rho,
+        proc_control_lite_B.y_j, proc_control_lite_B.BusCreator.rho,
         proc_control_lite_B.BusCreator.g, proc_control_lite_B.BusCreator.mass,
         proc_control_lite_B.BusCreator.volume,
         proc_control_lite_B.BusCreator.sub_height,
@@ -56972,32 +57037,32 @@ void proc_control_lite::step()
         proc_control_lite_B.BusCreator.added_mass,
         proc_control_lite_B.BusCreator.I,
         proc_control_lite_B.BusCreator.thrusters, proc_control_lite_B.P,
-        proc_control_lite_B.rtb_B_f, proc_control_lite_B.A_h,
-        proc_control_lite_B.dv6, proc_control_lite_B.mv, proc_control_lite_B.z_c,
+        proc_control_lite_B.rtb_B_p, proc_control_lite_B.A_h,
+        proc_control_lite_B.dv6, proc_control_lite_B.mv, proc_control_lite_B.z_g,
         proc_control_lite_B.X_e_c, proc_control_lite_B.imvec,
-        proc_control_lite_B.rtb_MATLABSystem_o10_g);
+        proc_control_lite_B.rtb_MATLABSystem_o10_d);
 
       /* MATLABSystem: '<S50>/MATLAB System' */
-      proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
-      proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
-      proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
-      proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
-      std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
-                  13U * sizeof(real_T));
       proc_control_lite_DW.qkm[0] = proc_control_lite_DW.obj_b.qkm[0];
+      proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
       proc_control_lite_DW.qkm[1] = proc_control_lite_DW.obj_b.qkm[1];
+      proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
       proc_control_lite_DW.qkm[2] = proc_control_lite_DW.obj_b.qkm[2];
+      proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
       proc_control_lite_DW.qkm[3] = proc_control_lite_DW.obj_b.qkm[3];
+      proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
+      proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
+      std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
+                  169U * sizeof(real_T));
       std::memcpy(&proc_control_lite_DW.D[0], &proc_control_lite_DW.obj_b.D[0],
                   104U * sizeof(real_T));
       std::memcpy(&proc_control_lite_DW.Bc[0], &proc_control_lite_DW.obj_b.Bc[0],
                   104U * sizeof(real_T));
-      proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
-      std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
-                  169U * sizeof(real_T));
       std::memcpy(&proc_control_lite_DW.constValues[0],
                   &proc_control_lite_DW.obj_b.constValues[0], 38U * sizeof
                   (real_T));
+      std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
+                  13U * sizeof(real_T));
 
       /* Outputs for Atomic SubSystem: '<S57>/Header Assignment' */
       /* BusAssignment: '<S57>/Bus Assignment' incorporates:
@@ -57025,31 +57090,31 @@ void proc_control_lite::step()
 
       /* End of Outputs for SubSystem: '<S57>/Header Assignment' */
       proc_control_lite_B.BusAssignment_k.pose.pose.position.x =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[0];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[0];
       proc_control_lite_B.BusAssignment_k.pose.pose.position.y =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[1];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[1];
       proc_control_lite_B.BusAssignment_k.pose.pose.position.z =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[2];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[2];
       proc_control_lite_B.BusAssignment_k.pose.pose.orientation.w =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[4];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[4];
       proc_control_lite_B.BusAssignment_k.pose.pose.orientation.x =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[3];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[3];
       proc_control_lite_B.BusAssignment_k.pose.pose.orientation.y =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[5];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[5];
       proc_control_lite_B.BusAssignment_k.pose.pose.orientation.z =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[6];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[6];
       proc_control_lite_B.BusAssignment_k.twist.twist.linear.x =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[7];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[7];
       proc_control_lite_B.BusAssignment_k.twist.twist.linear.y =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[8];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[8];
       proc_control_lite_B.BusAssignment_k.twist.twist.linear.z =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[9];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[9];
       proc_control_lite_B.BusAssignment_k.twist.twist.angular.x =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[10];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[10];
       proc_control_lite_B.BusAssignment_k.twist.twist.angular.y =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[11];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[11];
       proc_control_lite_B.BusAssignment_k.twist.twist.angular.z =
-        proc_control_lite_B.rtb_MATLABSystem_o10_g[12];
+        proc_control_lite_B.rtb_MATLABSystem_o10_d[12];
 
       /* MATLABSystem: '<S90>/SinkBlock' */
       Pub_proc_control_lite_913.publish(&proc_control_lite_B.BusAssignment_k);
@@ -57117,7 +57182,7 @@ void proc_control_lite::step()
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
            proc_control_lite_B.Ns++) {
         std::memcpy(&proc_control_lite_B.b_B[proc_control_lite_B.Ns * 21],
-                    &proc_control_lite_B.rtb_B_f[proc_control_lite_B.Ns * 13],
+                    &proc_control_lite_B.rtb_B_p[proc_control_lite_B.Ns * 13],
                     13U * sizeof(real_T));
         for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 21;
              proc_control_lite_B.ibmat++) {
@@ -57149,13 +57214,13 @@ void proc_control_lite::step()
             (proc_control_lite_B.b_Mrows_b - 1) / 13 * 13) - 1;
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] +=
             old_yoff[proc_control_lite_B.Ns] -
-            proc_control_lite_B.z_c[proc_control_lite_B.Ns];
+            proc_control_lite_B.z_g[proc_control_lite_B.Ns];
         } else if (proc_control_lite_B.b_Mrows_b <= 260) {
           proc_control_lite_B.Ns = (proc_control_lite_B.b_Mrows_b -
             (proc_control_lite_B.b_Mrows_b - 131) / 13 * 13) - 131;
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] -=
             old_yoff[proc_control_lite_B.Ns] -
-            proc_control_lite_B.z_c[proc_control_lite_B.Ns];
+            proc_control_lite_B.z_g[proc_control_lite_B.Ns];
         } else if (proc_control_lite_B.b_Mrows_b <= 340) {
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] += 0.0 -
             proc_control_lite_B.mv[(proc_control_lite_B.b_Mrows_b -
@@ -57214,32 +57279,32 @@ void proc_control_lite::step()
           for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 10;
                proc_control_lite_B.Ns_i++) {
             proc_control_lite_B.rseq[proc_control_lite_B.b_j +
-              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_n[10 *
+              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_j[10 *
               proc_control_lite_B.b_j + proc_control_lite_B.Ns_i] -
-              proc_control_lite_B.z_c[proc_control_lite_B.b_j];
+              proc_control_lite_B.z_g[proc_control_lite_B.b_j];
           }
 
           for (proc_control_lite_B.Ns_i = 10; proc_control_lite_B.Ns_i <
                proc_control_lite_B.base_index; proc_control_lite_B.Ns_i++) {
             proc_control_lite_B.rseq[proc_control_lite_B.b_j +
-              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_n[10 *
+              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_j[10 *
               proc_control_lite_B.b_j + 9] -
-              proc_control_lite_B.z_c[proc_control_lite_B.b_j];
+              proc_control_lite_B.z_g[proc_control_lite_B.b_j];
           }
         } else {
           for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i <
                proc_control_lite_B.base_index; proc_control_lite_B.Ns_i++) {
             proc_control_lite_B.rseq[proc_control_lite_B.b_j +
-              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_n[10 *
+              proc_control_lite_B.Ns_i * 13] = proc_control_lite_B.y_j[10 *
               proc_control_lite_B.b_j + proc_control_lite_B.Ns_i] -
-              proc_control_lite_B.z_c[proc_control_lite_B.b_j];
+              proc_control_lite_B.z_g[proc_control_lite_B.b_j];
           }
         }
 
         /* SignalConversion generated from: '<S87>/ SFunction ' incorporates:
          *  MATLABSystem: '<S50>/MATLAB System'
          */
-        proc_control_lite_B.rtb_X_e_p[proc_control_lite_B.b_j] =
+        proc_control_lite_B.rtb_X_e_m[proc_control_lite_B.b_j] =
           proc_control_lite_B.X_e_c[proc_control_lite_B.b_j] -
           proc_control_lite_B.b_xoff[proc_control_lite_B.b_j];
       }
@@ -57250,7 +57315,7 @@ void proc_control_lite::step()
          *  Constant: '<S50>/Constant'
          *  MATLAB Function: '<S86>/VariableHorizonOptimizer'
          */
-        proc_control_lite_B.rtb_X_e_p[proc_control_lite_B.Ns + 13] =
+        proc_control_lite_B.rtb_X_e_m[proc_control_lite_B.Ns + 13] =
           proc_control_lite_P.Constant_Value_o1[proc_control_lite_B.Ns] -
           proc_control_lite_B.b_xoff[proc_control_lite_B.Ns + 13];
       }
@@ -57260,9 +57325,9 @@ void proc_control_lite::step()
        *  Constant: '<S50>/Constant1'
        *  MATLAB Function: '<S86>/VariableHorizonOptimizer'
        */
-      proc_control_lite_B.rtb_X_e_p[19] = proc_control_lite_P.Constant1_Value_g
+      proc_control_lite_B.rtb_X_e_m[19] = proc_control_lite_P.Constant1_Value_g
         [0] - proc_control_lite_B.b_xoff[19];
-      proc_control_lite_B.rtb_X_e_p[20] = proc_control_lite_P.Constant1_Value_g
+      proc_control_lite_B.rtb_X_e_m[20] = proc_control_lite_P.Constant1_Value_g
         [1] - proc_control_lite_B.b_xoff[20];
 
       /* MATLAB Function: '<S86>/VariableHorizonOptimizer' incorporates:
@@ -57286,7 +57351,7 @@ void proc_control_lite::step()
        * */
       proc_contr_mpcblock_optimizerPM(proc_control_lite_B.rseq,
         proc_control_lite_B.vseq, proc_control_lite_B.mvmin,
-        proc_control_lite_B.mvmax, proc_control_lite_B.rtb_X_e_p,
+        proc_control_lite_B.mvmax, proc_control_lite_B.rtb_X_e_m,
         proc_control_lite_B.dv21, proc_control_lite_B.b_Mlim_l,
         proc_control_lite_B.b_utarget, proc_control_lite_B.base_index,
         static_cast<int32_T>(std::floor(proc_control_lite_B.m)),
@@ -57575,26 +57640,26 @@ void proc_control_lite::step()
           proc_control_lite_B.constValues[14];
         proc_control_lite_B.t16 = proc_control_lite_B.imvec[12] *
           proc_control_lite_B.constValues[35];
-        proc_control_lite_B.Product3_ly_j = proc_control_lite_B.imvec[10] *
+        proc_control_lite_B.z_c0e_j = proc_control_lite_B.imvec[10] *
           proc_control_lite_B.constValues[12];
-        proc_control_lite_B.Sum_ks_e = proc_control_lite_B.imvec[11] *
+        proc_control_lite_B.Product4_d_e = proc_control_lite_B.imvec[11] *
           proc_control_lite_B.constValues[13];
         proc_control_lite_B.Product1_g_j = proc_control_lite_B.imvec[12] *
           proc_control_lite_B.constValues[14];
-        proc_control_lite_B.Sum_j = proc_control_lite_B.imvec[7] *
+        proc_control_lite_B.w_o = proc_control_lite_B.imvec[7] *
           proc_control_lite_B.constValues[30];
         proc_control_lite_B.d = proc_control_lite_B.imvec[8] *
           proc_control_lite_B.constValues[31];
-        proc_control_lite_B.Product3_ly = proc_control_lite_B.imvec[9] *
+        proc_control_lite_B.z_c0e = proc_control_lite_B.imvec[9] *
           proc_control_lite_B.constValues[32];
-        proc_control_lite_B.Sum_ks = proc_control_lite_B.constValues[1] *
+        proc_control_lite_B.Product4_d = proc_control_lite_B.constValues[1] *
           proc_control_lite_B.constValues[36];
         proc_control_lite_B.rtb_Sum_m_idx_0 = proc_control_lite_B.imvec[5] *
           proc_control_lite_B.imvec[6];
         proc_control_lite_B.t19 = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[4];
-        proc_control_lite_B.Product2_nyy = proc_control_lite_B.rtb_Sum_m_idx_0 *
-          2.0 + proc_control_lite_B.t19 * 2.0;
+        proc_control_lite_B.y_pkc = proc_control_lite_B.rtb_Sum_m_idx_0 * 2.0 +
+          proc_control_lite_B.t19 * 2.0;
         proc_control_lite_B.Product3_mp = (proc_control_lite_B.imvec[11] *
           proc_control_lite_B.constValues[14] + proc_control_lite_B.imvec[7]) *
           proc_control_lite_B.constValues[0];
@@ -57604,11 +57669,11 @@ void proc_control_lite::step()
         proc_control_lite_B.Product8_bq = (proc_control_lite_B.constValues[12] *
           proc_control_lite_B.imvec[12] + proc_control_lite_B.imvec[8]) *
           proc_control_lite_B.constValues[0];
-        proc_control_lite_B.Product1_g = (proc_control_lite_B.Product3_ly_j +
-          proc_control_lite_B.Sum_ks_e) * proc_control_lite_B.constValues[0];
-        proc_control_lite_B.Product3_ly_j = (proc_control_lite_B.Product3_ly_j +
+        proc_control_lite_B.Product1_g = (proc_control_lite_B.z_c0e_j +
+          proc_control_lite_B.Product4_d_e) * proc_control_lite_B.constValues[0];
+        proc_control_lite_B.z_c0e_j = (proc_control_lite_B.z_c0e_j +
           proc_control_lite_B.Product1_g_j) * proc_control_lite_B.constValues[0];
-        proc_control_lite_B.Sum_ks_e = (proc_control_lite_B.Sum_ks_e +
+        proc_control_lite_B.Product4_d_e = (proc_control_lite_B.Product4_d_e +
           proc_control_lite_B.Product1_g_j) * proc_control_lite_B.constValues[0];
         proc_control_lite_B.rtb_Product1_g_tmp = proc_control_lite_B.imvec[4] *
           proc_control_lite_B.imvec[6];
@@ -57676,7 +57741,7 @@ void proc_control_lite::step()
          *   */
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 6;
              proc_control_lite_B.Ns++) {
-          proc_control_lite_B.rtb_ElementProduct_d[proc_control_lite_B.Ns] =
+          proc_control_lite_B.rtb_ElementProduct_a[proc_control_lite_B.Ns] =
             proc_control_lite_B.ElementProduct[proc_control_lite_B.Ns] -
             proc_control_lite_DW.UD_DSTATE_n[proc_control_lite_B.Ns];
         }
@@ -57685,23 +57750,23 @@ void proc_control_lite::step()
         proc_control_lite_B.dv10[0] = 0.0;
         proc_control_lite_B.dv10[1] = 0.0;
         proc_control_lite_B.dv10[2] = 0.0;
-        proc_control_lite_B.dv10[3] = -proc_control_lite_B.Sum_ks_e;
+        proc_control_lite_B.dv10[3] = -proc_control_lite_B.Product4_d_e;
         proc_control_lite_B.Sum_p_tmp = proc_control_lite_B.imvec[11] *
           proc_control_lite_B.constValues[12] - proc_control_lite_B.imvec[9];
         proc_control_lite_B.dv10[4] = proc_control_lite_B.Sum_p_tmp *
-          proc_control_lite_B.constValues[0] + proc_control_lite_B.Product3_ly;
+          proc_control_lite_B.constValues[0] + proc_control_lite_B.z_c0e;
         proc_control_lite_B.dv10[5] = -proc_control_lite_B.d +
           proc_control_lite_B.Product8_bq;
         proc_control_lite_B.dv10[6] = 0.0;
         proc_control_lite_B.dv10[7] = 0.0;
         proc_control_lite_B.dv10[8] = 0.0;
-        proc_control_lite_B.dv10[9] = -proc_control_lite_B.Product3_ly +
+        proc_control_lite_B.dv10[9] = -proc_control_lite_B.z_c0e +
           proc_control_lite_B.Product2_cn;
-        proc_control_lite_B.dv10[10] = -proc_control_lite_B.Product3_ly_j;
+        proc_control_lite_B.dv10[10] = -proc_control_lite_B.z_c0e_j;
         proc_control_lite_B.Sum_pn_tmp = proc_control_lite_B.imvec[12] *
           proc_control_lite_B.constValues[13] - proc_control_lite_B.imvec[7];
         proc_control_lite_B.dv10[11] = proc_control_lite_B.Sum_pn_tmp *
-          proc_control_lite_B.constValues[0] + proc_control_lite_B.Sum_j;
+          proc_control_lite_B.constValues[0] + proc_control_lite_B.w_o;
         proc_control_lite_B.dv10[12] = 0.0;
         proc_control_lite_B.dv10[13] = 0.0;
         proc_control_lite_B.dv10[14] = 0.0;
@@ -57709,11 +57774,11 @@ void proc_control_lite::step()
           proc_control_lite_B.constValues[14] - proc_control_lite_B.imvec[8];
         proc_control_lite_B.dv10[15] = proc_control_lite_B.rtb_Sum2_i_tmp *
           proc_control_lite_B.constValues[0] + proc_control_lite_B.d;
-        proc_control_lite_B.dv10[16] = -proc_control_lite_B.Sum_j +
+        proc_control_lite_B.dv10[16] = -proc_control_lite_B.w_o +
           proc_control_lite_B.Product3_mp;
         proc_control_lite_B.dv10[17] = -proc_control_lite_B.Product1_g;
-        proc_control_lite_B.dv10[18] = proc_control_lite_B.Sum_ks_e;
-        proc_control_lite_B.dv10[19] = proc_control_lite_B.Product3_ly -
+        proc_control_lite_B.dv10[18] = proc_control_lite_B.Product4_d_e;
+        proc_control_lite_B.dv10[19] = proc_control_lite_B.z_c0e -
           proc_control_lite_B.Product2_cn;
         proc_control_lite_B.dv10[20] = proc_control_lite_B.rtb_Sum2_i_tmp *
           -proc_control_lite_B.constValues[0] - proc_control_lite_B.d;
@@ -57725,9 +57790,9 @@ void proc_control_lite::step()
           proc_control_lite_B.Product2_jt) + proc_control_lite_B.t9) -
           proc_control_lite_B.t12;
         proc_control_lite_B.dv10[24] = proc_control_lite_B.Sum_p_tmp *
-          -proc_control_lite_B.constValues[0] - proc_control_lite_B.Product3_ly;
-        proc_control_lite_B.dv10[25] = proc_control_lite_B.Product3_ly_j;
-        proc_control_lite_B.dv10[26] = proc_control_lite_B.Sum_j -
+          -proc_control_lite_B.constValues[0] - proc_control_lite_B.z_c0e;
+        proc_control_lite_B.dv10[25] = proc_control_lite_B.z_c0e_j;
+        proc_control_lite_B.dv10[26] = proc_control_lite_B.w_o -
           proc_control_lite_B.Product3_mp;
         proc_control_lite_B.dv10[27] = ((proc_control_lite_B.residue +
           proc_control_lite_B.Product3_h) + proc_control_lite_B.t10) -
@@ -57739,7 +57804,7 @@ void proc_control_lite::step()
         proc_control_lite_B.dv10[30] = proc_control_lite_B.d -
           proc_control_lite_B.Product8_bq;
         proc_control_lite_B.dv10[31] = proc_control_lite_B.Sum_pn_tmp *
-          -proc_control_lite_B.constValues[0] - proc_control_lite_B.Sum_j;
+          -proc_control_lite_B.constValues[0] - proc_control_lite_B.w_o;
         proc_control_lite_B.dv10[32] = proc_control_lite_B.Product1_g;
         proc_control_lite_B.dv10[33] = ((-proc_control_lite_B.sinb -
           proc_control_lite_B.Product2_jt) - proc_control_lite_B.t9) +
@@ -57748,97 +57813,97 @@ void proc_control_lite::step()
           proc_control_lite_B.Product_o) + proc_control_lite_B.Product1_hg) -
           proc_control_lite_B.t11;
         proc_control_lite_B.dv10[35] = 0.0;
-        proc_control_lite_B.constValues_n[0] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[0] = proc_control_lite_B.constValues
           [24] * std::abs(proc_control_lite_B.imvec[7]) +
           proc_control_lite_B.constValues[18];
-        proc_control_lite_B.constValues_n[1] = 0.0;
-        proc_control_lite_B.constValues_n[2] = 0.0;
-        proc_control_lite_B.constValues_n[3] = 0.0;
-        proc_control_lite_B.constValues_n[4] = 0.0;
-        proc_control_lite_B.constValues_n[5] = 0.0;
-        proc_control_lite_B.constValues_n[6] = 0.0;
-        proc_control_lite_B.constValues_n[7] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[1] = 0.0;
+        proc_control_lite_B.constValues_k[2] = 0.0;
+        proc_control_lite_B.constValues_k[3] = 0.0;
+        proc_control_lite_B.constValues_k[4] = 0.0;
+        proc_control_lite_B.constValues_k[5] = 0.0;
+        proc_control_lite_B.constValues_k[6] = 0.0;
+        proc_control_lite_B.constValues_k[7] = proc_control_lite_B.constValues
           [25] * std::abs(proc_control_lite_B.imvec[8]) +
           proc_control_lite_B.constValues[19];
-        proc_control_lite_B.constValues_n[8] = 0.0;
-        proc_control_lite_B.constValues_n[9] = 0.0;
-        proc_control_lite_B.constValues_n[10] = 0.0;
-        proc_control_lite_B.constValues_n[11] = 0.0;
-        proc_control_lite_B.constValues_n[12] = 0.0;
-        proc_control_lite_B.constValues_n[13] = 0.0;
-        proc_control_lite_B.constValues_n[14] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[8] = 0.0;
+        proc_control_lite_B.constValues_k[9] = 0.0;
+        proc_control_lite_B.constValues_k[10] = 0.0;
+        proc_control_lite_B.constValues_k[11] = 0.0;
+        proc_control_lite_B.constValues_k[12] = 0.0;
+        proc_control_lite_B.constValues_k[13] = 0.0;
+        proc_control_lite_B.constValues_k[14] = proc_control_lite_B.constValues
           [26] * std::abs(proc_control_lite_B.imvec[9]) +
           proc_control_lite_B.constValues[20];
-        proc_control_lite_B.constValues_n[15] = 0.0;
-        proc_control_lite_B.constValues_n[16] = 0.0;
-        proc_control_lite_B.constValues_n[17] = 0.0;
-        proc_control_lite_B.constValues_n[18] = 0.0;
-        proc_control_lite_B.constValues_n[19] = 0.0;
-        proc_control_lite_B.constValues_n[20] = 0.0;
-        proc_control_lite_B.constValues_n[21] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[15] = 0.0;
+        proc_control_lite_B.constValues_k[16] = 0.0;
+        proc_control_lite_B.constValues_k[17] = 0.0;
+        proc_control_lite_B.constValues_k[18] = 0.0;
+        proc_control_lite_B.constValues_k[19] = 0.0;
+        proc_control_lite_B.constValues_k[20] = 0.0;
+        proc_control_lite_B.constValues_k[21] = proc_control_lite_B.constValues
           [27] * std::abs(proc_control_lite_B.imvec[10]) +
           proc_control_lite_B.constValues[21];
-        proc_control_lite_B.constValues_n[22] = 0.0;
-        proc_control_lite_B.constValues_n[23] = 0.0;
-        proc_control_lite_B.constValues_n[24] = 0.0;
-        proc_control_lite_B.constValues_n[25] = 0.0;
-        proc_control_lite_B.constValues_n[26] = 0.0;
-        proc_control_lite_B.constValues_n[27] = 0.0;
-        proc_control_lite_B.constValues_n[28] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[22] = 0.0;
+        proc_control_lite_B.constValues_k[23] = 0.0;
+        proc_control_lite_B.constValues_k[24] = 0.0;
+        proc_control_lite_B.constValues_k[25] = 0.0;
+        proc_control_lite_B.constValues_k[26] = 0.0;
+        proc_control_lite_B.constValues_k[27] = 0.0;
+        proc_control_lite_B.constValues_k[28] = proc_control_lite_B.constValues
           [28] * std::abs(proc_control_lite_B.imvec[11]) +
           proc_control_lite_B.constValues[22];
-        proc_control_lite_B.constValues_n[29] = 0.0;
-        proc_control_lite_B.constValues_n[30] = 0.0;
-        proc_control_lite_B.constValues_n[31] = 0.0;
-        proc_control_lite_B.constValues_n[32] = 0.0;
-        proc_control_lite_B.constValues_n[33] = 0.0;
-        proc_control_lite_B.constValues_n[34] = 0.0;
-        proc_control_lite_B.constValues_n[35] = proc_control_lite_B.constValues
+        proc_control_lite_B.constValues_k[29] = 0.0;
+        proc_control_lite_B.constValues_k[30] = 0.0;
+        proc_control_lite_B.constValues_k[31] = 0.0;
+        proc_control_lite_B.constValues_k[32] = 0.0;
+        proc_control_lite_B.constValues_k[33] = 0.0;
+        proc_control_lite_B.constValues_k[34] = 0.0;
+        proc_control_lite_B.constValues_k[35] = proc_control_lite_B.constValues
           [29] * std::abs(proc_control_lite_B.imvec[12]) +
           proc_control_lite_B.constValues[23];
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 36;
              proc_control_lite_B.Ns++) {
           proc_control_lite_B.dv11[proc_control_lite_B.Ns] =
             proc_control_lite_B.dv10[proc_control_lite_B.Ns] +
-            proc_control_lite_B.constValues_n[proc_control_lite_B.Ns];
+            proc_control_lite_B.constValues_k[proc_control_lite_B.Ns];
         }
 
         proc_control_lite_B.residue = (proc_control_lite_B.constValues[0] -
-          proc_control_lite_B.Sum_ks) * proc_control_lite_B.constValues[37];
-        proc_control_lite_B.constValues_e[0] =
+          proc_control_lite_B.Product4_d) * proc_control_lite_B.constValues[37];
+        proc_control_lite_B.constValues_d[0] =
           (proc_control_lite_B.rtb_Product1_g_tmp - proc_control_lite_B.t20) *
           proc_control_lite_B.residue * -2.0;
-        proc_control_lite_B.constValues_e[1] =
+        proc_control_lite_B.constValues_d[1] =
           (proc_control_lite_B.rtb_Sum_m_idx_0 + proc_control_lite_B.t19) *
           proc_control_lite_B.residue * -2.0;
-        proc_control_lite_B.constValues_e[2] = proc_control_lite_B.residue *
+        proc_control_lite_B.constValues_d[2] = proc_control_lite_B.residue *
           proc_control_lite_B.t70;
         proc_control_lite_B.residue = proc_control_lite_B.constValues[17] *
           proc_control_lite_B.constValues[37];
         proc_control_lite_B.sinb = proc_control_lite_B.constValues[37] *
           proc_control_lite_B.Product8_bq_g;
         proc_control_lite_B.sina = proc_control_lite_B.constValues[16] *
-          proc_control_lite_B.constValues[37] * -proc_control_lite_B.Sum_ks;
-        proc_control_lite_B.constValues_e[3] =
+          proc_control_lite_B.constValues[37] * -proc_control_lite_B.Product4_d;
+        proc_control_lite_B.constValues_d[3] =
           ((proc_control_lite_B.constValues[37] * proc_control_lite_B.Sum_k *
-            proc_control_lite_B.Product2_nyy + proc_control_lite_B.sinb *
+            proc_control_lite_B.y_pkc + proc_control_lite_B.sinb *
             proc_control_lite_B.t70) + proc_control_lite_B.residue *
-           -proc_control_lite_B.Sum_ks * proc_control_lite_B.Product2_nyy) +
+           -proc_control_lite_B.Product4_d * proc_control_lite_B.y_pkc) +
           proc_control_lite_B.sina * proc_control_lite_B.t70;
         proc_control_lite_B.Product3_h = proc_control_lite_B.constValues[37] *
           -proc_control_lite_B.t13;
         proc_control_lite_B.Product1_hg = proc_control_lite_B.constValues[15] *
-          proc_control_lite_B.constValues[37] * proc_control_lite_B.Sum_ks;
-        proc_control_lite_B.constValues_e[4] =
+          proc_control_lite_B.constValues[37] * proc_control_lite_B.Product4_d;
+        proc_control_lite_B.constValues_d[4] =
           ((proc_control_lite_B.constValues[37] * -proc_control_lite_B.Sum_k *
             proc_control_lite_B.Product1_g_j + proc_control_lite_B.Product3_h *
             proc_control_lite_B.t70) + proc_control_lite_B.Product1_hg *
            proc_control_lite_B.t70) + proc_control_lite_B.residue *
-          proc_control_lite_B.Sum_ks * proc_control_lite_B.Product1_g_j;
-        proc_control_lite_B.constValues_e[5] = ((proc_control_lite_B.sinb *
+          proc_control_lite_B.Product4_d * proc_control_lite_B.Product1_g_j;
+        proc_control_lite_B.constValues_d[5] = ((proc_control_lite_B.sinb *
           proc_control_lite_B.Product1_g_j + proc_control_lite_B.Product3_h *
-          proc_control_lite_B.Product2_nyy) + proc_control_lite_B.Product1_hg *
-          proc_control_lite_B.Product2_nyy) + proc_control_lite_B.sina *
+          proc_control_lite_B.y_pkc) + proc_control_lite_B.Product1_hg *
+          proc_control_lite_B.y_pkc) + proc_control_lite_B.sina *
           proc_control_lite_B.Product1_g_j;
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 6;
              proc_control_lite_B.Ns++) {
@@ -57852,7 +57917,7 @@ void proc_control_lite::step()
               proc_control_lite_B.Ns;
             proc_control_lite_B.residue +=
               proc_control_lite_B.modCoeffs[proc_control_lite_B.Ns_i] *
-              proc_control_lite_B.rtb_ElementProduct_d[proc_control_lite_B.i];
+              proc_control_lite_B.rtb_ElementProduct_a[proc_control_lite_B.i];
             proc_control_lite_B.Sum_p_tmp +=
               proc_control_lite_B.Reference[proc_control_lite_B.coffset + 70] *
               proc_control_lite_B.dv11[proc_control_lite_B.Ns_i];
@@ -57860,9 +57925,9 @@ void proc_control_lite::step()
             proc_control_lite_B.coffset += 10;
           }
 
-          proc_control_lite_B.constValues_eh[proc_control_lite_B.Ns] =
+          proc_control_lite_B.constValues_e[proc_control_lite_B.Ns] =
             (proc_control_lite_B.residue + proc_control_lite_B.Sum_p_tmp) +
-            proc_control_lite_B.constValues_e[proc_control_lite_B.Ns];
+            proc_control_lite_B.constValues_d[proc_control_lite_B.Ns];
         }
 
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
@@ -57874,7 +57939,7 @@ void proc_control_lite::step()
             proc_control_lite_B.residue +=
               proc_control_lite_DW.obj_p.binv[proc_control_lite_B.ibmat +
               proc_control_lite_B.Ns] *
-              proc_control_lite_B.constValues_eh[proc_control_lite_B.coffset];
+              proc_control_lite_B.constValues_e[proc_control_lite_B.coffset];
             proc_control_lite_B.ibmat += 8;
           }
 
@@ -58049,7 +58114,7 @@ void proc_control_lite::step()
         (proc_control_lite_P.Constant1_Value_gt);
       for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 11;
            proc_control_lite_B.Ns_i++) {
-        std::memcpy(&proc_control_lite_B.z_c[0], &proc_control_lite_B.imvec[0],
+        std::memcpy(&proc_control_lite_B.z_g[0], &proc_control_lite_B.imvec[0],
                     13U * sizeof(real_T));
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
              proc_control_lite_B.Ns++) {
@@ -58112,7 +58177,7 @@ void proc_control_lite::step()
           proc_control_lite_B.t13 = (proc_control_lite_B.imvec[9] > 0.0);
         }
 
-        proc_control_lite_B.Product3_ly_j = proc_control_lite_B.imvec[4] *
+        proc_control_lite_B.z_c0e_j = proc_control_lite_B.imvec[4] *
           proc_control_lite_B.imvec[5] * 2.0;
         proc_control_lite_B.Product8_bq_g = proc_control_lite_B.imvec[4] *
           proc_control_lite_B.imvec[6] * 2.0;
@@ -58120,7 +58185,7 @@ void proc_control_lite::step()
           proc_control_lite_B.imvec[6] * 2.0;
         proc_control_lite_B.t20 = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[4] * 2.0;
-        proc_control_lite_B.Sum_ks_e = proc_control_lite_B.imvec[3] *
+        proc_control_lite_B.Product4_d_e = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[5] * 2.0;
         proc_control_lite_B.Sum_k = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[6] * 2.0;
@@ -58133,16 +58198,17 @@ void proc_control_lite::step()
           proc_control_lite_B.imvec[7];
         proc_control_lite_B.Product1_g_j =
           proc_control_lite_B.rtb_Product1_g_tmp * 2.0;
-        proc_control_lite_B.Sum_j = proc_control_lite_B.imvec[3] *
+        proc_control_lite_B.w_o = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[7] * 2.0;
         proc_control_lite_B.d_tmp = proc_control_lite_B.imvec[4] *
           proc_control_lite_B.imvec[8];
         proc_control_lite_B.d = proc_control_lite_B.d_tmp * 2.0;
-        proc_control_lite_B.Product3_ly = proc_control_lite_B.imvec[5] *
+        proc_control_lite_B.z_c0e = proc_control_lite_B.imvec[5] *
           proc_control_lite_B.imvec[8] * 2.0;
-        proc_control_lite_B.rtb_Sum_ks_tmp = proc_control_lite_B.imvec[6] *
+        proc_control_lite_B.rtb_Product4_d_tmp = proc_control_lite_B.imvec[6] *
           proc_control_lite_B.imvec[8];
-        proc_control_lite_B.Sum_ks = proc_control_lite_B.rtb_Sum_ks_tmp * 2.0;
+        proc_control_lite_B.Product4_d = proc_control_lite_B.rtb_Product4_d_tmp *
+          2.0;
         proc_control_lite_B.t52 = proc_control_lite_B.imvec[3] *
           proc_control_lite_B.imvec[8] * 2.0;
         proc_control_lite_B.t70_tmp = proc_control_lite_B.imvec[4] *
@@ -58178,7 +58244,7 @@ void proc_control_lite::step()
           0.143523560675718;
         proc_control_lite_B.Product1_g = proc_control_lite_B.imvec[7] *
           0.00568699616459184;
-        proc_control_lite_B.Product2_nyy = proc_control_lite_B.imvec[9] *
+        proc_control_lite_B.y_pkc = proc_control_lite_B.imvec[9] *
           0.069014505171846527;
         proc_control_lite_B.t68 = proc_control_lite_B.imvec[8] *
           0.0071670223909459834;
@@ -58190,7 +58256,7 @@ void proc_control_lite::step()
           proc_control_lite_B.imvec[6] * 2.0;
         proc_control_lite_B.t60 = -(proc_control_lite_B.imvec[10] *
           9.1703771260780813E-5);
-        proc_control_lite_B.Sum_p_tmp = -proc_control_lite_B.Sum_ks +
+        proc_control_lite_B.Sum_p_tmp = -proc_control_lite_B.Product4_d +
           proc_control_lite_B.t32;
         proc_control_lite_B.A_h[39] = proc_control_lite_B.Sum_p_tmp;
         proc_control_lite_B.Sum_pn_tmp = proc_control_lite_B.Product1_g_j -
@@ -58225,7 +58291,7 @@ void proc_control_lite::step()
           0.38451002147839958 + proc_control_lite_B.imvec[5] *
           0.65361132374006825;
         proc_control_lite_B.A_h[51] = proc_control_lite_B.d5;
-        proc_control_lite_B.d6 = proc_control_lite_B.Product3_ly +
+        proc_control_lite_B.d6 = proc_control_lite_B.z_c0e +
           proc_control_lite_B.t33;
         proc_control_lite_B.A_h[52] = proc_control_lite_B.d6;
         proc_control_lite_B.t24 = (proc_control_lite_B.t24 -
@@ -58272,9 +58338,9 @@ void proc_control_lite::step()
         proc_control_lite_B.A_h[65] = proc_control_lite_B.d;
         proc_control_lite_B.t33 += proc_control_lite_B.t16;
         proc_control_lite_B.A_h[66] = proc_control_lite_B.t33;
-        proc_control_lite_B.Sum_ks = (-proc_control_lite_B.Sum_j +
-          proc_control_lite_B.Sum_ks) - proc_control_lite_B.t32_tmp * 4.0;
-        proc_control_lite_B.A_h[67] = proc_control_lite_B.Sum_ks;
+        proc_control_lite_B.Product4_d = (-proc_control_lite_B.w_o +
+          proc_control_lite_B.Product4_d) - proc_control_lite_B.t32_tmp * 4.0;
+        proc_control_lite_B.A_h[67] = proc_control_lite_B.Product4_d;
         proc_control_lite_B.A_h[68] = -proc_control_lite_B.rtb_Sum_m_idx_1;
         proc_control_lite_B.A_h[69] = proc_control_lite_B.rtb_Sum_m_idx_2;
         proc_control_lite_B.A_h[71] = -proc_control_lite_B.t43;
@@ -58312,11 +58378,12 @@ void proc_control_lite::step()
           proc_control_lite_B.t70) - proc_control_lite_B.rtb_Product1_g_tmp *
           4.0;
         proc_control_lite_B.A_h[78] = proc_control_lite_B.t70;
-        proc_control_lite_B.Sum_j = (proc_control_lite_B.Sum_j +
-          proc_control_lite_B.t32) - proc_control_lite_B.rtb_Sum_ks_tmp * 4.0;
-        proc_control_lite_B.A_h[79] = proc_control_lite_B.Sum_j;
-        proc_control_lite_B.Product3_ly += proc_control_lite_B.t16;
-        proc_control_lite_B.A_h[80] = proc_control_lite_B.Product3_ly;
+        proc_control_lite_B.w_o = (proc_control_lite_B.w_o +
+          proc_control_lite_B.t32) - proc_control_lite_B.rtb_Product4_d_tmp *
+          4.0;
+        proc_control_lite_B.A_h[79] = proc_control_lite_B.w_o;
+        proc_control_lite_B.z_c0e += proc_control_lite_B.t16;
+        proc_control_lite_B.A_h[80] = proc_control_lite_B.z_c0e;
         proc_control_lite_B.A_h[81] = -proc_control_lite_B.rtb_Sum_m_idx_2;
         proc_control_lite_B.A_h[82] = -proc_control_lite_B.rtb_Sum_m_idx_1;
         proc_control_lite_B.A_h[83] = proc_control_lite_B.t43;
@@ -58328,10 +58395,10 @@ void proc_control_lite::step()
           -0.00099202109956931486 - proc_control_lite_B.imvec[5] *
           0.51979016069898065;
         proc_control_lite_B.A_h[86] = proc_control_lite_B.rtb_Product1_g_tmp;
-        proc_control_lite_B.rtb_Sum_ks_tmp = proc_control_lite_B.imvec[4] *
+        proc_control_lite_B.rtb_Product4_d_tmp = proc_control_lite_B.imvec[4] *
           0.0058758415205803329 + proc_control_lite_B.imvec[5] *
           0.033540735888224739;
-        proc_control_lite_B.A_h[87] = proc_control_lite_B.rtb_Sum_ks_tmp;
+        proc_control_lite_B.A_h[87] = proc_control_lite_B.rtb_Product4_d_tmp;
         proc_control_lite_B.t32 = proc_control_lite_B.imvec[4] *
           -0.1138522338822895 - proc_control_lite_B.imvec[5] *
           25.242114556122988;
@@ -58346,11 +58413,11 @@ void proc_control_lite::step()
         proc_control_lite_B.A_tmp = (-proc_control_lite_B.t36_tmp -
           proc_control_lite_B.t37_tmp) + 1.0;
         proc_control_lite_B.A_h[91] = proc_control_lite_B.A_tmp;
-        proc_control_lite_B.d15 = proc_control_lite_B.Product3_ly_j +
+        proc_control_lite_B.d15 = proc_control_lite_B.z_c0e_j +
           proc_control_lite_B.Sum_k;
         proc_control_lite_B.A_h[92] = proc_control_lite_B.d15;
         proc_control_lite_B.d16 = proc_control_lite_B.Product8_bq_g -
-          proc_control_lite_B.Sum_ks_e;
+          proc_control_lite_B.Product4_d_e;
         proc_control_lite_B.A_h[93] = proc_control_lite_B.d16;
         proc_control_lite_B.t11 *= proc_control_lite_B.imvec[7];
         proc_control_lite_B.d17 = (((((proc_control_lite_B.Product_o *
@@ -58399,7 +58466,7 @@ void proc_control_lite::step()
           2.2977499514997389E-5) - proc_control_lite_B.t11 *
           0.0011846302503005471)) - 0.015187567311545479;
         proc_control_lite_B.A_h[103] = proc_control_lite_B.t11;
-        proc_control_lite_B.Product_o = proc_control_lite_B.Product3_ly_j -
+        proc_control_lite_B.Product_o = proc_control_lite_B.z_c0e_j -
           proc_control_lite_B.Sum_k;
         proc_control_lite_B.A_h[104] = proc_control_lite_B.Product_o;
         proc_control_lite_B.t37_tmp = (-proc_control_lite_B.t35_tmp -
@@ -58408,27 +58475,27 @@ void proc_control_lite::step()
         proc_control_lite_B.Sum_k = proc_control_lite_B.t19 +
           proc_control_lite_B.t20;
         proc_control_lite_B.A_h[106] = proc_control_lite_B.Sum_k;
-        proc_control_lite_B.Product3_ly_j = proc_control_lite_B.t12 *
+        proc_control_lite_B.z_c0e_j = proc_control_lite_B.t12 *
           proc_control_lite_B.imvec[8];
         proc_control_lite_B.t12 = (((proc_control_lite_B.imvec[10] *
           -2.1519484922730651E-5 + proc_control_lite_B.imvec[12] *
           1.3454180758607359) - proc_control_lite_B.Product2_jt *
           7.7738505218783331E-7) - proc_control_lite_B.imvec[7] *
           0.01129023503850542) + ((proc_control_lite_B.imvec[9] *
-          -0.00041111798914172931 - proc_control_lite_B.Product3_ly_j *
+          -0.00041111798914172931 - proc_control_lite_B.z_c0e_j *
           7.7738505218783331E-7) - 1.8960611028971542E-5);
         proc_control_lite_B.A_h[111] = proc_control_lite_B.t12;
         proc_control_lite_B.t55 = (proc_control_lite_B.Product2_jt *
           -0.01903042325061665 + proc_control_lite_B.t55) +
           proc_control_lite_B.Product8_bq;
-        proc_control_lite_B.d22 = proc_control_lite_B.Product3_ly_j *
+        proc_control_lite_B.d22 = proc_control_lite_B.z_c0e_j *
           0.01903042325061665;
         proc_control_lite_B.A_h[112] = (((proc_control_lite_B.t55 -
-          proc_control_lite_B.t59) - proc_control_lite_B.Product2_nyy) -
+          proc_control_lite_B.t59) - proc_control_lite_B.y_pkc) -
           proc_control_lite_B.d22) - 0.46415666464918648;
         proc_control_lite_B.d23 = (((proc_control_lite_B.imvec[7] *
           -5.890830655932608E-5 + proc_control_lite_B.imvec[9] *
-          0.0071670223909459834) + proc_control_lite_B.Product3_ly_j *
+          0.0071670223909459834) + proc_control_lite_B.z_c0e_j *
           2.3842573459475649E-5) + 0.00058152618193843065) +
           ((proc_control_lite_B.imvec[10] * -0.93255469429176219 -
             proc_control_lite_B.imvec[12] * 7.6083411800115719E-5) +
@@ -58439,27 +58506,27 @@ void proc_control_lite::step()
           0.00145353196782447) - proc_control_lite_B.Product2_jt *
           0.017943464992838758) + ((proc_control_lite_B.imvec[7] *
           0.044446246736648841 - proc_control_lite_B.imvec[9] *
-          5.3937622658585171) - proc_control_lite_B.Product3_ly_j *
+          5.3937622658585171) - proc_control_lite_B.z_c0e_j *
           0.017943464992838758)) - 0.4376454876302136;
         proc_control_lite_B.A_h[114] = proc_control_lite_B.d24;
         proc_control_lite_B.d25 = (((proc_control_lite_B.imvec[10] *
           0.0012538688125934979 - proc_control_lite_B.imvec[12] *
           0.1118794885864644) + proc_control_lite_B.Product2_jt *
           8.4206769578830268E-5) + proc_control_lite_B.imvec[7] *
-          1.7911420833141059E-5) + ((proc_control_lite_B.Product3_ly_j *
+          1.7911420833141059E-5) + ((proc_control_lite_B.z_c0e_j *
           8.4206769578830268E-5 + proc_control_lite_B.imvec[9] *
           0.025315910649035739) + 0.0020538236482641531);
         proc_control_lite_B.A_h[115] = proc_control_lite_B.d25;
-        proc_control_lite_B.Product3_ly_j = (((proc_control_lite_B.imvec[10] *
+        proc_control_lite_B.z_c0e_j = (((proc_control_lite_B.imvec[10] *
           1.6661666253314429E-5 + proc_control_lite_B.imvec[12] *
           0.01129023503850542) + proc_control_lite_B.Product2_jt *
           0.00035080205133418912) + ((proc_control_lite_B.imvec[7] *
           -5.91169722427816 + proc_control_lite_B.imvec[9] * 0.01257120723021817)
-          + proc_control_lite_B.Product3_ly_j * 0.00035080205133418912)) +
+          + proc_control_lite_B.z_c0e_j * 0.00035080205133418912)) +
           0.0085561475935168052;
-        proc_control_lite_B.A_h[116] = proc_control_lite_B.Product3_ly_j;
+        proc_control_lite_B.A_h[116] = proc_control_lite_B.z_c0e_j;
         proc_control_lite_B.Product2_jt = proc_control_lite_B.Product8_bq_g +
-          proc_control_lite_B.Sum_ks_e;
+          proc_control_lite_B.Product4_d_e;
         proc_control_lite_B.A_h[117] = proc_control_lite_B.Product2_jt;
         proc_control_lite_B.t19 -= proc_control_lite_B.t20;
         proc_control_lite_B.A_h[118] = proc_control_lite_B.t19;
@@ -58483,11 +58550,11 @@ void proc_control_lite::step()
           0.069014505171846527) + proc_control_lite_B.t13 *
           2.1981689677272681E-5)) + 0.00067844721226150231;
         proc_control_lite_B.A_h[125] = proc_control_lite_B.Product8_bq_g;
-        proc_control_lite_B.Sum_ks_e = proc_control_lite_B.Product3_h *
+        proc_control_lite_B.Product4_d_e = proc_control_lite_B.Product3_h *
           -0.01616685726098728 + proc_control_lite_B.Product3_mp;
         proc_control_lite_B.Product3_mp = proc_control_lite_B.t13 *
           0.01616685726098728;
-        proc_control_lite_B.A_h[126] = ((((proc_control_lite_B.Sum_ks_e -
+        proc_control_lite_B.A_h[126] = ((((proc_control_lite_B.Product4_d_e -
           proc_control_lite_B.t59) + proc_control_lite_B.Product1_g) +
           proc_control_lite_B.t68) - proc_control_lite_B.Product3_mp) -
           0.49897707595639768;
@@ -58549,7 +58616,7 @@ void proc_control_lite::step()
           0.0003794960966701478 + 0.007574772388625705);
         proc_control_lite_B.A_h[139] = proc_control_lite_B.d27;
         proc_control_lite_B.d28 = ((((proc_control_lite_B.sina *
-          -0.28560141361437341 + proc_control_lite_B.Product2_nyy) -
+          -0.28560141361437341 + proc_control_lite_B.y_pkc) -
           proc_control_lite_B.t68) - proc_control_lite_B.Product3_h *
           0.28560141361437341) - 5.7006270182509668) +
           ((proc_control_lite_B.imvec[10] * 0.00017692814721597281 -
@@ -58756,7 +58823,7 @@ void proc_control_lite::step()
         proc_control_lite_B.P[64] = proc_control_lite_B.d10;
         proc_control_lite_B.P[65] = proc_control_lite_B.d;
         proc_control_lite_B.P[66] = proc_control_lite_B.t33;
-        proc_control_lite_B.P[67] = proc_control_lite_B.Sum_ks;
+        proc_control_lite_B.P[67] = proc_control_lite_B.Product4_d;
         proc_control_lite_B.P[68] = -proc_control_lite_B.rtb_Sum_m_idx_1;
         proc_control_lite_B.P[69] = proc_control_lite_B.rtb_Sum_m_idx_2;
         proc_control_lite_B.P[71] = -proc_control_lite_B.t43;
@@ -58767,14 +58834,14 @@ void proc_control_lite::step()
         proc_control_lite_B.P[76] = proc_control_lite_B.d12;
         proc_control_lite_B.P[77] = proc_control_lite_B.d13;
         proc_control_lite_B.P[78] = proc_control_lite_B.t70;
-        proc_control_lite_B.P[79] = proc_control_lite_B.Sum_j;
-        proc_control_lite_B.P[80] = proc_control_lite_B.Product3_ly;
+        proc_control_lite_B.P[79] = proc_control_lite_B.w_o;
+        proc_control_lite_B.P[80] = proc_control_lite_B.z_c0e;
         proc_control_lite_B.P[81] = -proc_control_lite_B.rtb_Sum_m_idx_2;
         proc_control_lite_B.P[82] = -proc_control_lite_B.rtb_Sum_m_idx_1;
         proc_control_lite_B.P[83] = proc_control_lite_B.t43;
         proc_control_lite_B.P[85] = proc_control_lite_B.t16;
         proc_control_lite_B.P[86] = proc_control_lite_B.rtb_Product1_g_tmp;
-        proc_control_lite_B.P[87] = proc_control_lite_B.rtb_Sum_ks_tmp;
+        proc_control_lite_B.P[87] = proc_control_lite_B.rtb_Product4_d_tmp;
         proc_control_lite_B.P[88] = proc_control_lite_B.t32;
         proc_control_lite_B.P[89] = proc_control_lite_B.t52;
         proc_control_lite_B.P[90] = proc_control_lite_B.d14;
@@ -58792,18 +58859,18 @@ void proc_control_lite::step()
         proc_control_lite_B.P[106] = proc_control_lite_B.Sum_k;
         proc_control_lite_B.P[111] = proc_control_lite_B.t12;
         proc_control_lite_B.P[112] = (((proc_control_lite_B.t55 +
-          proc_control_lite_B.t60) - proc_control_lite_B.Product2_nyy) -
+          proc_control_lite_B.t60) - proc_control_lite_B.y_pkc) -
           proc_control_lite_B.d22) - 0.46415666464918648;
         proc_control_lite_B.P[113] = proc_control_lite_B.d23;
         proc_control_lite_B.P[114] = proc_control_lite_B.d24;
         proc_control_lite_B.P[115] = proc_control_lite_B.d25;
-        proc_control_lite_B.P[116] = proc_control_lite_B.Product3_ly_j;
+        proc_control_lite_B.P[116] = proc_control_lite_B.z_c0e_j;
         proc_control_lite_B.P[117] = proc_control_lite_B.Product2_jt;
         proc_control_lite_B.P[118] = proc_control_lite_B.t19;
         proc_control_lite_B.P[119] = proc_control_lite_B.t35_tmp;
         proc_control_lite_B.P[124] = proc_control_lite_B.t20;
         proc_control_lite_B.P[125] = proc_control_lite_B.Product8_bq_g;
-        proc_control_lite_B.P[126] = ((((proc_control_lite_B.Sum_ks_e +
+        proc_control_lite_B.P[126] = ((((proc_control_lite_B.Product4_d_e +
           proc_control_lite_B.t60) + proc_control_lite_B.Product1_g) +
           proc_control_lite_B.t68) - proc_control_lite_B.Product3_mp) -
           0.49897707595639768;
@@ -58880,7 +58947,7 @@ void proc_control_lite::step()
               proc_control_lite_B.i += 6;
             }
 
-            proc_control_lite_B.array_d[proc_control_lite_B.ibmat +
+            proc_control_lite_B.array_n[proc_control_lite_B.ibmat +
               proc_control_lite_B.Ns] = proc_control_lite_B.residue;
             proc_control_lite_B.ibmat += 6;
           }
@@ -58898,7 +58965,7 @@ void proc_control_lite::step()
                proc_control_lite_B.ibmat++) {
             proc_control_lite_B.B[((proc_control_lite_B.ibmat + 13 *
               proc_control_lite_B.Ns) + 104 * proc_control_lite_B.Ns_i) + 7] =
-              proc_control_lite_B.array_d[6 * proc_control_lite_B.Ns +
+              proc_control_lite_B.array_n[6 * proc_control_lite_B.Ns +
               proc_control_lite_B.ibmat];
           }
         }
@@ -58935,7 +59002,7 @@ void proc_control_lite::step()
         for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 13;
              proc_control_lite_B.Ns++) {
           proc_control_lite_B.residue =
-            proc_control_lite_B.z_c[proc_control_lite_B.Ns];
+            proc_control_lite_B.z_g[proc_control_lite_B.Ns];
           proc_control_lite_B.ibmat = 13 * proc_control_lite_B.Ns_i +
             proc_control_lite_B.Ns;
           proc_control_lite_B.Y[proc_control_lite_B.ibmat] =
@@ -58996,7 +59063,7 @@ void proc_control_lite::step()
         proc_control_lite_B.dv12[proc_control_lite_B.Ns] = 1.0;
       }
 
-      std::memcpy(&proc_control_lite_B.rtb_B_f[0], &(*(real_T (*)[104])&
+      std::memcpy(&proc_control_lite_B.rtb_B_p[0], &(*(real_T (*)[104])&
         proc_control_lite_B.B[0])[0], 104U * sizeof(real_T));
       std::memcpy(&proc_control_lite_B.b_B[0], &c[0], 630U * sizeof(real_T));
 
@@ -59008,13 +59075,13 @@ void proc_control_lite::step()
        *  SwitchCase: '<S6>/Switch Case'
        * */
       proc_c_mpc_plantupdate_ug8bcwhf(&proc_control_lite_B.A[0],
-        proc_control_lite_B.rtb_B_f, &proc_control_lite_B.C[0],
+        proc_control_lite_B.rtb_B_p, &proc_control_lite_B.C[0],
         &proc_control_lite_B.b_A[0], proc_control_lite_B.b_B,
         &proc_control_lite_B.b_C[0], h_0, proc_control_lite_B.iv1,
         proc_control_lite_B.iv, proc_control_lite_B.dv21,
         proc_control_lite_B.dv12, &proc_control_lite_B.Bu_b[0],
         &proc_control_lite_B.Bv_c[0], proc_control_lite_B.b_C_o,
-        &proc_control_lite_B.Dv_e[0], proc_control_lite_B.z_c,
+        &proc_control_lite_B.Dv_e[0], proc_control_lite_B.z_g,
         proc_control_lite_B.b_A_h, proc_control_lite_B.P, proc_control_lite_B.Nk);
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
            proc_control_lite_B.Ns++) {
@@ -59055,14 +59122,14 @@ void proc_control_lite::step()
             [(proc_control_lite_B.Ns + proc_control_lite_B.i_g) + 390];
         }
 
-        std::memcpy(&proc_control_lite_B.rtb_B_f[0], &(*(real_T (*)[104])&
+        std::memcpy(&proc_control_lite_B.rtb_B_p[0], &(*(real_T (*)[104])&
           proc_control_lite_B.B[proc_control_lite_B.b_j + 104])[0], 104U *
                     sizeof(real_T));
         std::memcpy(&proc_control_lite_B.b_B[0], &(*(real_T (*)[630])&
           b_B[proc_control_lite_B.coffset + 630])[0], 630U * sizeof(real_T));
         proc_c_mpc_plantupdate_ug8bcwhf
           (&proc_control_lite_B.A[proc_control_lite_B.ibmat + 169],
-           proc_control_lite_B.rtb_B_f,
+           proc_control_lite_B.rtb_B_p,
            &proc_control_lite_B.C[proc_control_lite_B.ibmat + 169],
            &proc_control_lite_B.b_A[proc_control_lite_B.base_index + 441],
            proc_control_lite_B.b_B,
@@ -59092,7 +59159,7 @@ void proc_control_lite::step()
       std::memcpy(&proc_control_lite_B.b_xoff[0], &f_0[0], 21U * sizeof(real_T));
       std::memcpy(&proc_control_lite_B.mv[0], &proc_control_lite_B.U[0], sizeof
                   (real_T) << 3U);
-      std::memcpy(&proc_control_lite_B.z_c[0], &proc_control_lite_B.Y[0], 13U *
+      std::memcpy(&proc_control_lite_B.z_g[0], &proc_control_lite_B.Y[0], 13U *
                   sizeof(real_T));
       for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 226;
            proc_control_lite_B.Ns_i++) {
@@ -59102,13 +59169,13 @@ void proc_control_lite::step()
             (proc_control_lite_B.Ns - 1) / 13 * 13) - 1;
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] +=
             old_yoff[proc_control_lite_B.Ns] -
-            proc_control_lite_B.z_c[proc_control_lite_B.Ns];
+            proc_control_lite_B.z_g[proc_control_lite_B.Ns];
         } else if (proc_control_lite_B.Ns <= 260) {
           proc_control_lite_B.Ns = (proc_control_lite_B.Ns - div_nde_s32_floor
             (proc_control_lite_B.Ns - 131, 13) * 13) - 131;
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] -=
             old_yoff[proc_control_lite_B.Ns] -
-            proc_control_lite_B.z_c[proc_control_lite_B.Ns];
+            proc_control_lite_B.z_g[proc_control_lite_B.Ns];
         } else if (proc_control_lite_B.Ns <= 340) {
           proc_control_lite_B.b_Mlim_l[proc_control_lite_B.Ns_i] += 0.0 -
             proc_control_lite_B.mv[(proc_control_lite_B.Ns -
@@ -59195,14 +59262,14 @@ void proc_control_lite::step()
 
           proc_control_lite_B.Dv_e[proc_control_lite_B.Ns_i] =
             (proc_control_lite_B.Y[proc_control_lite_B.Ns_i] -
-             proc_control_lite_B.z_c[proc_control_lite_B.Ns]) +
+             proc_control_lite_B.z_g[proc_control_lite_B.Ns]) +
             proc_control_lite_B.Sum_p_tmp;
         }
       }
 
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 11;
            proc_control_lite_B.ibmat++) {
-        proc_control_lite_B.vseq_n[proc_control_lite_B.ibmat] = 1.0;
+        proc_control_lite_B.vseq_c[proc_control_lite_B.ibmat] = 1.0;
       }
 
       proc_control_lite_B.base_index = 0;
@@ -59219,11 +59286,11 @@ void proc_control_lite::step()
           /* Outputs for IfAction SubSystem: '<S6>/singleWpts Trajectory Control DEBUG only' incorporates:
            *  ActionPort: '<S250>/Action Port'
            */
-          proc_control_lite_B.y_n[proc_control_lite_B.ibmat +
+          proc_control_lite_B.y_j[proc_control_lite_B.ibmat +
             proc_control_lite_B.base_index] =
             proc_control_lite_B.Reference[proc_control_lite_B.Ns +
             proc_control_lite_B.Ns_i] -
-            proc_control_lite_B.z_c[proc_control_lite_B.ibmat];
+            proc_control_lite_B.z_g[proc_control_lite_B.ibmat];
           proc_control_lite_B.Ns += 10;
 
           /* End of Outputs for SubSystem: '<S6>/singleWpts Trajectory Control DEBUG only' */
@@ -59237,35 +59304,35 @@ void proc_control_lite::step()
        *  MATLAB Function: '<S122>/FixedHorizonOptimizer'
        *  UnitDelay: '<S94>/last_mv'
        */
-      proc_control_lite_B.rtb_X_e_p[0] = proc_control_lite_B.WorldPosition[0] -
+      proc_control_lite_B.rtb_X_e_m[0] = proc_control_lite_B.WorldPosition[0] -
         proc_control_lite_B.b_xoff[0];
-      proc_control_lite_B.rtb_X_e_p[1] = proc_control_lite_B.WorldPosition[1] -
+      proc_control_lite_B.rtb_X_e_m[1] = proc_control_lite_B.WorldPosition[1] -
         proc_control_lite_B.b_xoff[1];
-      proc_control_lite_B.rtb_X_e_p[2] = proc_control_lite_B.WorldPosition[2] -
+      proc_control_lite_B.rtb_X_e_m[2] = proc_control_lite_B.WorldPosition[2] -
         proc_control_lite_B.b_xoff[2];
-      proc_control_lite_B.rtb_X_e_p[3] = proc_control_lite_B.qS2W[0] -
+      proc_control_lite_B.rtb_X_e_m[3] = proc_control_lite_B.qS2W[0] -
         proc_control_lite_B.b_xoff[3];
-      proc_control_lite_B.rtb_X_e_p[4] = proc_control_lite_B.qS2W[1] -
+      proc_control_lite_B.rtb_X_e_m[4] = proc_control_lite_B.qS2W[1] -
         proc_control_lite_B.b_xoff[4];
-      proc_control_lite_B.rtb_X_e_p[5] = proc_control_lite_B.qS2W[2] -
+      proc_control_lite_B.rtb_X_e_m[5] = proc_control_lite_B.qS2W[2] -
         proc_control_lite_B.b_xoff[5];
-      proc_control_lite_B.rtb_X_e_p[6] = proc_control_lite_B.qS2W[3] -
+      proc_control_lite_B.rtb_X_e_m[6] = proc_control_lite_B.qS2W[3] -
         proc_control_lite_B.b_xoff[6];
-      proc_control_lite_B.rtb_X_e_p[7] = proc_control_lite_B.BodyVelocity[0] -
+      proc_control_lite_B.rtb_X_e_m[7] = proc_control_lite_B.BodyVelocity[0] -
         proc_control_lite_B.b_xoff[7];
-      proc_control_lite_B.rtb_X_e_p[10] = proc_control_lite_B.AngularRate[0] -
+      proc_control_lite_B.rtb_X_e_m[10] = proc_control_lite_B.AngularRate[0] -
         proc_control_lite_B.b_xoff[10];
-      proc_control_lite_B.rtb_X_e_p[8] = proc_control_lite_B.BodyVelocity[1] -
+      proc_control_lite_B.rtb_X_e_m[8] = proc_control_lite_B.BodyVelocity[1] -
         proc_control_lite_B.b_xoff[8];
-      proc_control_lite_B.rtb_X_e_p[11] = proc_control_lite_B.AngularRate[1] -
+      proc_control_lite_B.rtb_X_e_m[11] = proc_control_lite_B.AngularRate[1] -
         proc_control_lite_B.b_xoff[11];
-      proc_control_lite_B.rtb_X_e_p[9] = proc_control_lite_B.BodyVelocity[2] -
+      proc_control_lite_B.rtb_X_e_m[9] = proc_control_lite_B.BodyVelocity[2] -
         proc_control_lite_B.b_xoff[9];
-      proc_control_lite_B.rtb_X_e_p[12] = proc_control_lite_B.AngularRate[2] -
+      proc_control_lite_B.rtb_X_e_m[12] = proc_control_lite_B.AngularRate[2] -
         proc_control_lite_B.b_xoff[12];
       for (proc_control_lite_B.Ns = 0; proc_control_lite_B.Ns < 8;
            proc_control_lite_B.Ns++) {
-        proc_control_lite_B.rtb_X_e_p[proc_control_lite_B.Ns + 13] =
+        proc_control_lite_B.rtb_X_e_m[proc_control_lite_B.Ns + 13] =
           proc_control_lite_P.Constant2_Value[proc_control_lite_B.Ns] -
           proc_control_lite_B.b_xoff[proc_control_lite_B.Ns + 13];
         proc_control_lite_B.dv21[proc_control_lite_B.Ns] =
@@ -59299,9 +59366,9 @@ void proc_control_lite::step()
        *  Math: '<S94>/Math Function2'
        *  SignalConversion generated from: '<S48>/MATLAB System'
        * */
-      proc_control_mpcblock_optimizer(proc_control_lite_B.y_n,
-        proc_control_lite_B.vseq_n, proc_control_lite_B.mvmin,
-        proc_control_lite_B.mvmax, proc_control_lite_B.rtb_X_e_p,
+      proc_control_mpcblock_optimizer(proc_control_lite_B.y_j,
+        proc_control_lite_B.vseq_c, proc_control_lite_B.mvmin,
+        proc_control_lite_B.mvmax, proc_control_lite_B.rtb_X_e_m,
         proc_control_lite_B.dv21, proc_control_lite_B.bv,
         proc_control_lite_B.b_Mlim_l, proc_control_lite_B.o,
         proc_control_lite_B.q, proc_control_lite_B.dv,
@@ -59697,7 +59764,7 @@ void proc_control_lite::step()
         proc_control_lite_B.coffset = 0;
         for (proc_control_lite_B.i = 0; proc_control_lite_B.i < 13;
              proc_control_lite_B.i++) {
-          proc_control_lite_B.y_n[proc_control_lite_B.i + proc_control_lite_B.Ns]
+          proc_control_lite_B.y_j[proc_control_lite_B.i + proc_control_lite_B.Ns]
             = proc_control_lite_B.Selector_m[proc_control_lite_B.coffset +
             proc_control_lite_B.ibmat];
           proc_control_lite_B.coffset += 9;
@@ -59709,7 +59776,7 @@ void proc_control_lite::step()
       proc_control_lite_B.Ns = 0;
       for (proc_control_lite_B.ibmat = 0; proc_control_lite_B.ibmat < 13;
            proc_control_lite_B.ibmat++) {
-        proc_control_lite_B.y_n[proc_control_lite_B.ibmat + 117] =
+        proc_control_lite_B.y_j[proc_control_lite_B.ibmat + 117] =
           proc_control_lite_B.Selector_m[proc_control_lite_B.Ns + 8];
         proc_control_lite_B.Ns += 9;
       }
@@ -59755,7 +59822,7 @@ void proc_control_lite::step()
       }
 
       std::memcpy(&proc_control_lite_B.rtb_Selector_m_p[0],
-                  &proc_control_lite_B.y_n[0], 130U * sizeof(real_T));
+                  &proc_control_lite_B.y_j[0], 130U * sizeof(real_T));
       std::memcpy(&proc_control_lite_B.rtb_Selector_m_p[130],
                   &proc_control_lite_B.mv[0], sizeof(real_T) << 3U);
       proc_control_lite_B.rtb_Selector_m_p[138] =
@@ -60101,21 +60168,29 @@ void proc_control_lite::step()
        */
       for (proc_control_lite_B.Ns_i = 0; proc_control_lite_B.Ns_i < 8;
            proc_control_lite_B.Ns_i++) {
-        proc_control_lite_B.current[proc_control_lite_B.Ns_i] =
-          static_cast<uint16_T>(proc_control_lite_B.mv[proc_control_lite_B.Ns_i]);
+        proc_control_lite_B.DataTypeConversion_f[proc_control_lite_B.Ns_i] =
+          static_cast<real32_T>(proc_control_lite_B.mv[proc_control_lite_B.Ns_i]);
       }
 
       /* End of DataTypeConversion: '<S2>/Data Type Conversion' */
 
       /* BusAssignment: '<S2>/Bus Assignment1' */
-      proc_control_lite_B.BusAssignment1.motor1 = proc_control_lite_B.current[0];
-      proc_control_lite_B.BusAssignment1.motor2 = proc_control_lite_B.current[1];
-      proc_control_lite_B.BusAssignment1.motor3 = proc_control_lite_B.current[2];
-      proc_control_lite_B.BusAssignment1.motor4 = proc_control_lite_B.current[3];
-      proc_control_lite_B.BusAssignment1.motor5 = proc_control_lite_B.current[4];
-      proc_control_lite_B.BusAssignment1.motor6 = proc_control_lite_B.current[5];
-      proc_control_lite_B.BusAssignment1.motor7 = proc_control_lite_B.current[6];
-      proc_control_lite_B.BusAssignment1.motor8 = proc_control_lite_B.current[7];
+      proc_control_lite_B.BusAssignment1.motor1 =
+        proc_control_lite_B.DataTypeConversion_f[0];
+      proc_control_lite_B.BusAssignment1.motor2 =
+        proc_control_lite_B.DataTypeConversion_f[1];
+      proc_control_lite_B.BusAssignment1.motor3 =
+        proc_control_lite_B.DataTypeConversion_f[2];
+      proc_control_lite_B.BusAssignment1.motor4 =
+        proc_control_lite_B.DataTypeConversion_f[3];
+      proc_control_lite_B.BusAssignment1.motor5 =
+        proc_control_lite_B.DataTypeConversion_f[4];
+      proc_control_lite_B.BusAssignment1.motor6 =
+        proc_control_lite_B.DataTypeConversion_f[5];
+      proc_control_lite_B.BusAssignment1.motor7 =
+        proc_control_lite_B.DataTypeConversion_f[6];
+      proc_control_lite_B.BusAssignment1.motor8 =
+        proc_control_lite_B.DataTypeConversion_f[7];
 
       /* MATLABSystem: '<S20>/SinkBlock' */
       Pub_proc_control_lite_1386.publish(&proc_control_lite_B.BusAssignment1);
@@ -60361,16 +60436,17 @@ void proc_control_lite::initialize()
     static const char_T prmName_f[22]{ "proc_control.mpc.tmin" };
 
     int32_T i;
-    static const real_T tmp[15]{ 0.58586812757408446, 1.6495232645817952,
-      0.55880639454941083, 1.0000120838783226, 1.7457508187212138,
-      -1.1716904899481075, -1.6495232645817952, -1.1175251331099725, -2.0,
-      -3.4912767559754614, 0.58586812757408435, 0.0, 0.55880639454941072,
-      1.0000120838783229, 1.7457508187212134 };
+    static const real_T tmp[18]{ 0.40488902872542309, 1.0000414993022186,
+      1.0003249193222616, 1.0001357129431745, 2.0, 1.1061663191551905,
+      -0.80959222150870747, -2.0, -2.0, -2.0, -2.0, -2.2116822696820537,
+      0.40488902872542326, 1.0000414993022184, 1.0003249193222616,
+      1.0001357129431745, 0.0, 1.1061663191551907 };
 
-    static const real_T tmp_0[15]{ 1.0, 1.0, 1.0, 1.0, 1.0, -1.9860275825678364,
-      -0.94607195008008671, -1.9983515808334218, -1.9567571873096803,
-      -1.9946628531473654, 0.98662814034245039, 0.0, 0.99869289800422,
-      0.95807331262064865, 0.995064860532953 };
+    static const real_T tmp_0[18]{ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+      -1.9888998806277591, -1.9203638773428295, -1.9979115238410547,
+      -1.973363829816396, -0.90370569984692373, -1.9948966231564338,
+      0.99019062921266243, 0.92465853473395032, 0.99887824992075491,
+      0.97532747446034174, 0.0, 0.99594734611251146 };
 
     static const char_T b_zeroDelimTopic[21]{ "/proc_nav/auv_states" };
 
@@ -60880,10 +60956,10 @@ void proc_control_lite::initialize()
     proc_control_lite_DW.obj_hn.matlabCodegenIsDeleted = false;
     proc_control_lite_DW.objisempty_nt = true;
     proc_control_lite_DW.obj_hn.isInitialized = 1;
-    std::memset(&proc_control_lite_B.varargin_1_a[0], 0, 9U * sizeof(real_T));
+    std::memset(&proc_control_lite_B.varargin_1_p[0], 0, 9U * sizeof(real_T));
     ParamGet_proc_control_lite_182.initParam(&prmName_t[0]);
     ParamGet_proc_control_lite_182.setInitialValue
-      (&proc_control_lite_B.varargin_1_a[0], 9U);
+      (&proc_control_lite_B.varargin_1_p[0], 9U);
     proc_control_lite_DW.obj_hn.isSetupComplete = true;
 
     /* Start for MATLABSystem: '<S26>/MATLAB System4' */
@@ -61092,10 +61168,10 @@ void proc_control_lite::initialize()
     proc_control_lite_DW.obj_by._pobj0.cSFunObject.P0_ICRTP = 0.0;
     proc_control_lite_DW.obj_by._pobj0.cSFunObject.P4_IC2RTP = 0.0;
     std::memcpy(&proc_control_lite_DW.obj_by._pobj0.cSFunObject.P1_RTP1COEFF[0],
-                &tmp[0], 15U * sizeof(real_T));
+                &tmp[0], 18U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.obj_by._pobj0.cSFunObject.P2_RTP2COEFF[0],
-                &tmp_0[0], 15U * sizeof(real_T));
-    for (i = 0; i < 6; i++) {
+                &tmp_0[0], 18U * sizeof(real_T));
+    for (i = 0; i < 7; i++) {
       proc_control_lite_DW.obj_by._pobj0.cSFunObject.P3_RTP3COEFF[i] = 1.0;
     }
 
@@ -61373,8 +61449,6 @@ void proc_control_lite::initialize()
 
     /*         %% Fonction execute a chaque iteration */
     /*  Perform one-time calculations, such as computing constants */
-    std::memcpy(&proc_control_lite_DW.gainsList[0],
-                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.rosMVR[0],
                 &proc_control_lite_DW.obj_k.rosMVR[0], sizeof(real_T) << 3U);
     std::memcpy(&proc_control_lite_DW.rosMV[0],
@@ -61389,7 +61463,9 @@ void proc_control_lite::initialize()
         proc_control_lite_DW.obj_k.isThrusterFault[i];
     }
 
-    proc_control_lite_DW.init_b = proc_control_lite_DW.obj_k.init;
+    proc_control_lite_DW.init_o = proc_control_lite_DW.obj_k.init;
+    std::memcpy(&proc_control_lite_DW.gainsList[0],
+                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
 
     /* End of Start for MATLABSystem: '<S48>/MATLAB System' */
     /* End of Start for SubSystem: '<S4>/If Action Subsystem' */
@@ -61412,25 +61488,25 @@ void proc_control_lite::initialize()
     proc_control_lite_DW.obj_b.isInitialized = 1;
 
     /*  Perform one-time calculations, such as computing constants */
-    proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
-    proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
-    proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
-    proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
-    std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
-                13U * sizeof(real_T));
     proc_control_lite_DW.qkm[0] = proc_control_lite_DW.obj_b.qkm[0];
+    proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
     proc_control_lite_DW.qkm[1] = proc_control_lite_DW.obj_b.qkm[1];
+    proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
     proc_control_lite_DW.qkm[2] = proc_control_lite_DW.obj_b.qkm[2];
+    proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
     proc_control_lite_DW.qkm[3] = proc_control_lite_DW.obj_b.qkm[3];
+    proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
+    proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
+    std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
+                169U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.D[0], &proc_control_lite_DW.obj_b.D[0],
                 104U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.Bc[0], &proc_control_lite_DW.obj_b.Bc[0],
                 104U * sizeof(real_T));
-    proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
-    std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
-                169U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.constValues[0],
                 &proc_control_lite_DW.obj_b.constValues[0], 38U * sizeof(real_T));
+    std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
+                13U * sizeof(real_T));
 
     /* Start for MATLABSystem: '<S90>/SinkBlock' */
     proc_control_lite_DW.obj_ni.QOSAvoidROSNamespaceConventions = false;
@@ -61441,11 +61517,11 @@ void proc_control_lite::initialize()
     pr_ROS2PubSubBase_setQOSProfile(proc_control_lite_B.qos_profile, 1.0, (rtInf),
       (rtInf), (rtInf), false);
     for (i = 0; i < 34; i++) {
-      proc_control_lite_B.b_zeroDelimTopic_b[i] = b_zeroDelimTopic_0[i];
+      proc_control_lite_B.b_zeroDelimTopic_e[i] = b_zeroDelimTopic_0[i];
     }
 
     Pub_proc_control_lite_913.createPublisher
-      (&proc_control_lite_B.b_zeroDelimTopic_b[0],
+      (&proc_control_lite_B.b_zeroDelimTopic_e[0],
        proc_control_lite_B.qos_profile);
     proc_control_lite_DW.obj_ni.isSetupComplete = true;
 
@@ -62502,18 +62578,25 @@ void proc_control_lite::initialize()
 
     /* InitializeConditions for MATLABSystem: '<S48>/MATLAB System' */
     proc_contr_mpcManager_resetImpl(&proc_control_lite_DW.obj_k);
-    std::memcpy(&proc_control_lite_DW.gainsList[0],
-                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.rosMVR[0],
                 &proc_control_lite_DW.obj_k.rosMVR[0], sizeof(real_T) << 3U);
     std::memcpy(&proc_control_lite_DW.rosMV[0],
                 &proc_control_lite_DW.obj_k.rosMV[0], sizeof(real_T) << 3U);
     std::memcpy(&proc_control_lite_DW.rosOV[0],
                 &proc_control_lite_DW.obj_k.rosOV[0], 13U * sizeof(real_T));
-    proc_control_lite_DW.init_b = proc_control_lite_DW.obj_k.init;
     std::memcpy(&proc_control_lite_DW.currentFaultCount[0],
                 &proc_control_lite_DW.obj_k.currentFaultCount[0], sizeof(real_T)
                 << 3U);
+    for (i = 0; i < 8; i++) {
+      proc_control_lite_DW.isThrusterFault[i] =
+        proc_control_lite_DW.obj_k.isThrusterFault[i];
+    }
+
+    proc_control_lite_DW.init_o = proc_control_lite_DW.obj_k.init;
+    std::memcpy(&proc_control_lite_DW.gainsList[0],
+                &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
+
+    /* End of InitializeConditions for MATLABSystem: '<S48>/MATLAB System' */
 
     /* SystemInitialize for MATLABSystem: '<S48>/MATLAB System' incorporates:
      *  Outport: '<S48>/MPC param'
@@ -62526,11 +62609,6 @@ void proc_control_lite::initialize()
      */
     std::memcpy(&proc_control_lite_B.mvmax[0],
                 &proc_control_lite_P.MPCparam_Y0.mvmax[0], sizeof(real_T) << 3U);
-    for (i = 0; i < 8; i++) {
-      /* InitializeConditions for MATLABSystem: '<S48>/MATLAB System' */
-      proc_control_lite_DW.isThrusterFault[i] =
-        proc_control_lite_DW.obj_k.isThrusterFault[i];
-    }
 
     /* SystemInitialize for SignalConversion generated from: '<S48>/MATLAB System' incorporates:
      *  Outport: '<S48>/MPC param'
@@ -62590,25 +62668,25 @@ void proc_control_lite::initialize()
 
     /* InitializeConditions for MATLABSystem: '<S50>/MATLAB System' */
     proc_contro_TrimPlant_resetImpl(&proc_control_lite_DW.obj_b);
-    proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
-    proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
-    proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
-    proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
-    std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
-                13U * sizeof(real_T));
     proc_control_lite_DW.qkm[0] = proc_control_lite_DW.obj_b.qkm[0];
+    proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
     proc_control_lite_DW.qkm[1] = proc_control_lite_DW.obj_b.qkm[1];
+    proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
     proc_control_lite_DW.qkm[2] = proc_control_lite_DW.obj_b.qkm[2];
+    proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
     proc_control_lite_DW.qkm[3] = proc_control_lite_DW.obj_b.qkm[3];
+    proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
+    proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
+    std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
+                169U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.D[0], &proc_control_lite_DW.obj_b.D[0],
                 104U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.Bc[0], &proc_control_lite_DW.obj_b.Bc[0],
                 104U * sizeof(real_T));
-    proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
-    std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0],
-                169U * sizeof(real_T));
     std::memcpy(&proc_control_lite_DW.constValues[0],
                 &proc_control_lite_DW.obj_b.constValues[0], 38U * sizeof(real_T));
+    std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
+                13U * sizeof(real_T));
 
     /* End of SystemInitialize for SubSystem: '<S47>/If Action Subsystem' */
 
@@ -62698,12 +62776,12 @@ void proc_control_lite::initialize()
     /* InitializeConditions for MATLABSystem: '<S169>/Highpass Filter' */
     if (proc_control_lite_DW.obj_by.FilterObj->isInitialized == 1) {
       /* System object Initialization function: dsp.SOSFilter */
-      for (i = 0; i < 10; i++) {
+      for (i = 0; i < 12; i++) {
         proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W0_ZERO_STATES[i] =
           proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P0_ICRTP;
       }
 
-      for (i = 0; i < 10; i++) {
+      for (i = 0; i < 12; i++) {
         proc_control_lite_DW.obj_by.FilterObj->cSFunObject.W1_POLE_STATES[i] =
           proc_control_lite_DW.obj_by.FilterObj->cSFunObject.P4_IC2RTP;
       }
@@ -63465,8 +63543,6 @@ void proc_control_lite::terminate()
   /* End of Terminate for MATLABSystem: '<S151>/SourceBlock' */
 
   /* Terminate for MATLABSystem: '<S48>/MATLAB System' */
-  std::memcpy(&proc_control_lite_DW.gainsList[0],
-              &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
   std::memcpy(&proc_control_lite_DW.rosMVR[0],
               &proc_control_lite_DW.obj_k.rosMVR[0], sizeof(real_T) << 3U);
   std::memcpy(&proc_control_lite_DW.rosMV[0], &proc_control_lite_DW.obj_k.rosMV
@@ -63481,7 +63557,9 @@ void proc_control_lite::terminate()
       proc_control_lite_DW.obj_k.isThrusterFault[i];
   }
 
-  proc_control_lite_DW.init_b = proc_control_lite_DW.obj_k.init;
+  proc_control_lite_DW.init_o = proc_control_lite_DW.obj_k.init;
+  std::memcpy(&proc_control_lite_DW.gainsList[0],
+              &proc_control_lite_DW.obj_k.gainsList[0], 600U * sizeof(real_T));
 
   /* End of Terminate for MATLABSystem: '<S48>/MATLAB System' */
   /* End of Terminate for SubSystem: '<S4>/If Action Subsystem' */
@@ -63497,25 +63575,25 @@ void proc_control_lite::terminate()
   /* End of Terminate for SubSystem: '<S57>/Header Assignment' */
 
   /* Terminate for MATLABSystem: '<S50>/MATLAB System' */
-  proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
-  proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
-  proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
-  proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
-  std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
-              13U * sizeof(real_T));
   proc_control_lite_DW.qkm[0] = proc_control_lite_DW.obj_b.qkm[0];
+  proc_control_lite_DW.qkt[0] = proc_control_lite_DW.obj_b.qkt[0];
   proc_control_lite_DW.qkm[1] = proc_control_lite_DW.obj_b.qkm[1];
+  proc_control_lite_DW.qkt[1] = proc_control_lite_DW.obj_b.qkt[1];
   proc_control_lite_DW.qkm[2] = proc_control_lite_DW.obj_b.qkm[2];
+  proc_control_lite_DW.qkt[2] = proc_control_lite_DW.obj_b.qkt[2];
   proc_control_lite_DW.qkm[3] = proc_control_lite_DW.obj_b.qkm[3];
+  proc_control_lite_DW.qkt[3] = proc_control_lite_DW.obj_b.qkt[3];
+  proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
+  std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0], 169U
+              * sizeof(real_T));
   std::memcpy(&proc_control_lite_DW.D[0], &proc_control_lite_DW.obj_b.D[0], 104U
               * sizeof(real_T));
   std::memcpy(&proc_control_lite_DW.Bc[0], &proc_control_lite_DW.obj_b.Bc[0],
               104U * sizeof(real_T));
-  proc_control_lite_DW.init_j = proc_control_lite_DW.obj_b.init;
-  std::memcpy(&proc_control_lite_DW.C[0], &proc_control_lite_DW.obj_b.C[0], 169U
-              * sizeof(real_T));
   std::memcpy(&proc_control_lite_DW.constValues[0],
               &proc_control_lite_DW.obj_b.constValues[0], 38U * sizeof(real_T));
+  std::memcpy(&proc_control_lite_DW.xl[0], &proc_control_lite_DW.obj_b.xl[0],
+              13U * sizeof(real_T));
 
   /* Terminate for MATLABSystem: '<S90>/SinkBlock' */
   if (!proc_control_lite_DW.obj_ni.matlabCodegenIsDeleted) {

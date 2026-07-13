@@ -4,9 +4,9 @@
 //
 // Code generated for Simulink model 'proc_control_lite'.
 //
-// Model version                  : 1.15
+// Model version                  : 1.22
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Sun Jul 12 01:23:45 2026
+// C/C++ source code generated on : Mon Jul 13 16:05:05 2026
 //
 #ifndef _ROS2_MATLAB_NODEINTERFACE_
 #define _ROS2_MATLAB_NODEINTERFACE_
@@ -36,6 +36,7 @@ class proc_control_lite;
 #include "sensor_msgs/msg/imu.hpp"
 #include "sonia_common_ros2/msg/body_velocity_dvl.hpp"
 #include "sonia_common_ros2/msg/kill_status.hpp"
+#include "sonia_common_ros2/msg/motor_newton.hpp"
 #include "sonia_common_ros2/msg/motor_pwm.hpp"
 #include "sonia_common_ros2/msg/mpc_gains.hpp"
 #include "sonia_common_ros2/msg/mpc_info.hpp"

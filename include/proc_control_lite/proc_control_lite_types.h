@@ -7,9 +7,9 @@
  *
  * Code generation for model "proc_control_lite".
  *
- * Model version              : 1.15
+ * Model version              : 1.22
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sun Jul 12 01:23:28 2026
+ * C++ source code generated on : Mon Jul 13 16:04:52 2026
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -299,6 +299,23 @@ struct SL_Bus_sonia_common_ros2_MotorPwm
   uint16_T motor6;
   uint16_T motor7;
   uint16_T motor8;
+};
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorNewton_
+#define DEFINED_TYPEDEF_FOR_SL_Bus_sonia_common_ros2_MotorNewton_
+
+struct SL_Bus_sonia_common_ros2_MotorNewton
+{
+  real32_T motor1;
+  real32_T motor2;
+  real32_T motor3;
+  real32_T motor4;
+  real32_T motor5;
+  real32_T motor6;
+  real32_T motor7;
+  real32_T motor8;
 };
 
 #endif
@@ -629,13 +646,13 @@ struct struct_TOFpsJJYcOBczOpEd57stD
 struct b_dsp_SOSFilter_0_proc_contro_T
 {
   int32_T S0_isInitialized;
-  real_T W0_ZERO_STATES[10];
-  real_T W1_POLE_STATES[10];
+  real_T W0_ZERO_STATES[12];
+  real_T W1_POLE_STATES[12];
   int32_T W2_PreviousNumChannels;
   real_T P0_ICRTP;
-  real_T P1_RTP1COEFF[15];
-  real_T P2_RTP2COEFF[15];
-  real_T P3_RTP3COEFF[6];
+  real_T P1_RTP1COEFF[18];
+  real_T P2_RTP2COEFF[18];
+  real_T P3_RTP3COEFF[7];
   real_T P4_IC2RTP;
 };
 

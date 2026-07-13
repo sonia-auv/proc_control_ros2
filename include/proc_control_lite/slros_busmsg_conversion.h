@@ -16,6 +16,7 @@
 #include <sensor_msgs/msg/imu.hpp>
 #include <sonia_common_ros2/msg/body_velocity_dvl.hpp>
 #include <sonia_common_ros2/msg/kill_status.hpp>
+#include <sonia_common_ros2/msg/motor_newton.hpp>
 #include <sonia_common_ros2/msg/motor_pwm.hpp>
 #include <sonia_common_ros2/msg/mpc_gains.hpp>
 #include <sonia_common_ros2/msg/mpc_info.hpp>
@@ -73,6 +74,9 @@ void convertToBus(SL_Bus_sonia_common_ros2_BodyVelocityDVL* busPtr, const sonia_
 
 void convertFromBus(sonia_common_ros2::msg::KillStatus& msgPtr, SL_Bus_sonia_common_ros2_KillStatus const* busPtr);
 void convertToBus(SL_Bus_sonia_common_ros2_KillStatus* busPtr, const sonia_common_ros2::msg::KillStatus& msgPtr);
+
+void convertFromBus(sonia_common_ros2::msg::MotorNewton& msgPtr, SL_Bus_sonia_common_ros2_MotorNewton const* busPtr);
+void convertToBus(SL_Bus_sonia_common_ros2_MotorNewton* busPtr, const sonia_common_ros2::msg::MotorNewton& msgPtr);
 
 void convertFromBus(sonia_common_ros2::msg::MotorPwm& msgPtr, SL_Bus_sonia_common_ros2_MotorPwm const* busPtr);
 void convertToBus(SL_Bus_sonia_common_ros2_MotorPwm* busPtr, const sonia_common_ros2::msg::MotorPwm& msgPtr);

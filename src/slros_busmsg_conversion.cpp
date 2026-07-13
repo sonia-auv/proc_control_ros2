@@ -301,6 +301,37 @@ void convertToBus(SL_Bus_sonia_common_ros2_KillStatus* busPtr, const sonia_commo
 }
 
 
+// Conversions between SL_Bus_sonia_common_ros2_MotorNewton and sonia_common_ros2::msg::MotorNewton
+
+void convertFromBus(sonia_common_ros2::msg::MotorNewton& msgPtr, SL_Bus_sonia_common_ros2_MotorNewton const* busPtr)
+{
+  const std::string rosMessageType("sonia_common_ros2/MotorNewton");
+
+  msgPtr.motor1 =  busPtr->motor1;
+  msgPtr.motor2 =  busPtr->motor2;
+  msgPtr.motor3 =  busPtr->motor3;
+  msgPtr.motor4 =  busPtr->motor4;
+  msgPtr.motor5 =  busPtr->motor5;
+  msgPtr.motor6 =  busPtr->motor6;
+  msgPtr.motor7 =  busPtr->motor7;
+  msgPtr.motor8 =  busPtr->motor8;
+}
+
+void convertToBus(SL_Bus_sonia_common_ros2_MotorNewton* busPtr, const sonia_common_ros2::msg::MotorNewton& msgPtr)
+{
+  const std::string rosMessageType("sonia_common_ros2/MotorNewton");
+
+  busPtr->motor1 =  msgPtr.motor1;
+  busPtr->motor2 =  msgPtr.motor2;
+  busPtr->motor3 =  msgPtr.motor3;
+  busPtr->motor4 =  msgPtr.motor4;
+  busPtr->motor5 =  msgPtr.motor5;
+  busPtr->motor6 =  msgPtr.motor6;
+  busPtr->motor7 =  msgPtr.motor7;
+  busPtr->motor8 =  msgPtr.motor8;
+}
+
+
 // Conversions between SL_Bus_sonia_common_ros2_MotorPwm and sonia_common_ros2::msg::MotorPwm
 
 void convertFromBus(sonia_common_ros2::msg::MotorPwm& msgPtr, SL_Bus_sonia_common_ros2_MotorPwm const* busPtr)
