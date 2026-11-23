@@ -1,17 +1,16 @@
-/*
- * rt_nonfinite.cpp
- *
- * Academic License - for use in teaching, academic research, and meeting
- * course requirements at degree granting institutions only.  Not for
- * government, commercial, or other organizational use.
- *
- * Code generation for model "proc_control_lite".
- *
- * Model version              : 1.15
- * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Sun Jul 12 01:23:28 2026
- */
-
+//
+// Academic License - for use in teaching, academic research, and meeting
+// course requirements at degree granting institutions only.  Not for
+// government, commercial, or other organizational use.
+//
+// File: rt_nonfinite.cpp
+//
+// Code generated for Simulink model 'proc_control'.
+//
+// Model version                  : 4.301
+// Simulink Coder version         : 26.1 (R2026a) 20-Nov-2025
+// C/C++ source code generated on : Mon Nov 23 14:58:37 2026
+//
 #include "rtwtypes.h"
 
 extern "C"
@@ -21,8 +20,8 @@ extern "C"
 
 }
 
-#include "limits"
-#include "cmath"
+#include <limits>
+#include <cmath>
 
 extern "C"
 {
@@ -41,27 +40,33 @@ extern "C"
 
 extern "C"
 {
-  /* Test if value is infinite */
+  // Test if value is infinite
   boolean_T rtIsInf(real_T value)
   {
     return std::isinf(value);
   }
 
-  /* Test if single-precision value is infinite */
+  // Test if single-precision value is infinite
   boolean_T rtIsInfF(real32_T value)
   {
     return std::isinf(value);
   }
 
-  /* Test if value is not a number */
+  // Test if value is not a number
   boolean_T rtIsNaN(real_T value)
   {
     return std::isnan(value);
   }
 
-  /* Test if single-precision value is not a number */
+  // Test if single-precision value is not a number
   boolean_T rtIsNaNF(real32_T value)
   {
     return std::isnan(value);
   }
 }
+
+//
+// File trailer for generated code.
+//
+// [EOF]
+//

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>proc_control_lite</name>
+  <name>proc_control</name>
   <version>1.0.0</version>
   <description>TODO</description>
-  <maintainer email="nimai.jariwala.1@ens.etsmtl.ca">Nimai Jariwala</maintainer>
+  <maintainer email="erwan.manach.1@ens.etsmtl.ca">Erwan Manach</maintainer>
   <license>BSD</license>
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
   <depend>builtin_interfaces</depend>

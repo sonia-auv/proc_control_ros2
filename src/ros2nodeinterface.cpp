@@ -2,11 +2,11 @@
 //
 // File ros2nodeinterface.cpp
 //
-// Code generated for Simulink model 'proc_control_lite'.
+// Code generated for Simulink model 'proc_control'.
 //
-// Model version                  : 1.22
-// Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Mon Jul 13 16:05:05 2026
+// Model version                  : 4.301
+// Simulink Coder version         : 26.1 (R2026a) 20-Nov-2025
+// C/C++ source code generated on : Mon Nov 23 15:32:19 2026
 //
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -26,7 +26,7 @@
 #pragma GCC diagnostic ignored "-Wshadow"
 #endif //_MSC_VER
 #include "rclcpp/rclcpp.hpp"
-#include "proc_control_lite.h"
+#include "proc_control.h"
 #include "ros2nodeinterface.h"
 #include <thread>
 #include <chrono>
@@ -34,11 +34,74 @@
 #undef ROS_SET_RTM_ERROR_STATUS
 #undef ROS_GET_RTM_ERROR_STATUS
 #undef ROS_RTM_STEP_TASK
-#define ROS_SET_RTM_ERROR_STATUS(status)  rtmSetErrorStatus(mModel->getRTM(),status);
-#define ROS_GET_RTM_ERROR_STATUS()        rtmGetErrorStatus(mModel->getRTM())
-#define ROS_RTM_STEP_TASK(id)             rtmStepTask(mModel->getRTM(),id)
-const std::string SLROSNodeName("proc_control_lite");
-extern rclcpp::Node::SharedPtr SLROSNodePtr;
+#define ROS_SET_RTM_ERROR_STATUS(status) mModel->getRTM()->setErrorStatus(status)
+#define ROS_GET_RTM_ERROR_STATUS()       mModel->getRTM()->getErrorStatus()
+#define ROS_RTM_STEP_TASK(id)            mModel->getRTM()->StepTask(id)
+#include "slros2_multi_threaded_executor.h"
+std::vector<rclcpp::SubscriptionBase*> SLROSSubscribers;
+std::map<std::string, std::function<void()>> SLROSCallbackMap;
+#include "rclcpp_components/register_node_macro.hpp"
+rclcpp::Node::SharedPtr SLROSNodePtr;
+namespace ros2 {
+namespace matlab {
+  std::shared_ptr<ros2::matlab::NodeInterface> gMatlabNodeIntr;
+  std::shared_ptr<ros2::matlab::NodeInterface> getNodeInterface() {
+    return gMatlabNodeIntr;
+  }
+} //namespace matlab
+} //namespace ros2
+namespace proc_control
+{
+	class proc_control : public rclcpp::Node
+	{
+	public:
+		explicit proc_control(const rclcpp::NodeOptions & options)
+		: Node("_proc_control", options)
+		{
+			startModelNode();
+		}
+        ~proc_control()
+        {
+            stopModelNode();
+        }
+    private:
+        void startModelNode()
+        {
+            // Create ROS 2 node and assign to global node pointer
+			SLROSNodePtr = std::make_shared<rclcpp::Node>("proc_control", rclcpp::NodeOptions().use_intra_process_comms(true));
+			// Initialize globally accessible node interface pointer in constructor
+			ros2::matlab::gMatlabNodeIntr = std::make_shared<ros2::matlab::NodeInterface>();
+    	    ros2::matlab::gMatlabNodeIntr->initialize();
+            // Create custom executor and thread to spawn node
+            _mExec = std::make_shared<rclcpp::executors::SLMultiThreadedExecutor>();
+            _mExec->add_node(SLROSNodePtr);
+            for(size_t ctr = 0; ctr<SLROSSubscribers.size();ctr++){
+                _mExec->stopSubscriberCallback(SLROSSubscribers[ctr]);
+            }
+            _spinnerThread = std::thread([this](){ _mExec->spin();});
+        }
+        void stopModelNode()
+        {
+            // Terminates and reset node interface
+			ros2::matlab::gMatlabNodeIntr->terminate();
+    	    ros2::matlab::gMatlabNodeIntr.reset();
+            if (_mExec.get()) {
+                _mExec->cancel();
+            }
+            SLROSNodePtr = nullptr;
+            if (_spinnerThread.joinable()){
+                _spinnerThread.join();
+            }
+        }
+        std::shared_ptr<rclcpp::executors::SLMultiThreadedExecutor> _mExec;
+        std::thread _spinnerThread;
+	}; // class proc_control
+} // namespace proc_control
+RCLCPP_COMPONENTS_REGISTER_NODE(proc_control::proc_control)
+#ifndef RT_MEMORY_ALLOCATION_ERROR_DEF
+#define RT_MEMORY_ALLOCATION_ERROR_DEF
+const char *RT_MEMORY_ALLOCATION_ERROR = "memory allocation error";
+#endif
 namespace ros2 {
 namespace matlab {
 NodeInterface::NodeInterface()
@@ -53,21 +116,14 @@ NodeInterface::NodeInterface()
 NodeInterface::~NodeInterface() {
     terminate();
   }
-void NodeInterface::initialize(int argc, char * const argv[]) {
+void NodeInterface::initialize() {
     try {
-        //initialize ros2
-        std::vector<char *> args(argv, argv + argc);
-        rclcpp::init(static_cast<int>(args.size()), args.data());
-        //create the Node specified in Model
-        std::string NodeName("proc_control_lite");
-        SLROSNodePtr = std::make_shared<rclcpp::Node>(NodeName);
-        RCLCPP_INFO(SLROSNodePtr->get_logger(),"** Starting the model \"proc_control_lite\" **\n");
-        mExec = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
-        mExec->add_node(SLROSNodePtr);
+        RCLCPP_INFO(SLROSNodePtr->get_logger(),"** Starting the model \"proc_control\" **\n");
         //initialize the model which will initialize the publishers and subscribers
-        mModel = std::make_shared<proc_control_lite>(
+        mModel = std::make_shared<proc_control>(
         );
-		ROS_SET_RTM_ERROR_STATUS(NULL);
+        ROS_SET_RTM_ERROR_STATUS(NULL);
+        //Initialize the callback map and then initialize the model
         mModel->initialize();
         //create the threads for the rates in the Model
         mBaseRateThread = std::make_shared<std::thread>(&NodeInterface::baseRateTask, this);
@@ -85,13 +141,6 @@ void NodeInterface::initialize(int argc, char * const argv[]) {
         throw;
     }
 }
-int NodeInterface::run() {
-  if (mExec) {
-    mExec->spin();
-  }
-  mRunModel = false;
-  return 0;
-}
 boolean_T NodeInterface::getStopRequestedFlag(void) {
     #ifndef rtmGetStopRequested
     return (!(ROS_GET_RTM_ERROR_STATUS()
@@ -102,13 +151,6 @@ boolean_T NodeInterface::getStopRequestedFlag(void) {
     #endif
 }
 void NodeInterface::stop(void) {
-  if (mExec.get()) {
-    mExec->cancel();
-    if (SLROSNodePtr) {
-      mExec->remove_node(SLROSNodePtr);
-    }
-    while (mExec.use_count() > 1);
-  }
 }
 void NodeInterface::terminate(void) {
     if (mBaseRateThread.get()) {
@@ -124,9 +166,6 @@ void NodeInterface::terminate(void) {
             mModel->terminate();
         }
         mModel.reset();
-        mExec.reset();
-        SLROSNodePtr.reset();
-        rclcpp::shutdown();
     }
 }
 //

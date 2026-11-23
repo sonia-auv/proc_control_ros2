@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(proc_control_lite)
+project(proc_control)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 # Set CMAKE_BUILD_TYPE
 set(CMAKE_BUILD_TYPE Release)
@@ -27,16 +27,16 @@ find_package( sensor_msgs REQUIRED)
 find_package( sonia_common_ros2 REQUIRED)
 find_package( std_msgs REQUIRED)
 find_package( trajectory_msgs REQUIRED)
-include_directories("include/proc_control_lite")
+include_directories("include/proc_control")
 set (CMAKE_SKIP_BUILD_RPATH false)
 set (CMAKE_BUILD_WITH_INSTALL_RPATH true)
 set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # Node
-add_executable(proc_control_lite 
+add_executable(proc_control 
 src/main.cpp
-src/proc_control_lite.cpp
-src/proc_control_lite_data.cpp
+src/proc_control.cpp
+src/proc_control_data.cpp
 src/ros2nodeinterface.cpp
 src/slros2_initialize.cpp
 src/slros_busmsg_conversion.cpp
@@ -50,14 +50,14 @@ src/rt_urand_Upu32_Yd_f_pw_snf.cpp
 src/slros2_generic_param.cpp
 )
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-target_compile_options(proc_control_lite PUBLIC 
+target_compile_options(proc_control PUBLIC 
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
   -Wall -Wextra -Wpedantic
   >)
 endif()
-target_compile_options(proc_control_lite PRIVATE
+target_compile_options(proc_control PRIVATE
   $<$<OR:$<COMPILE_LANGUAGE:CXX>,$<COMPILE_LANGUAGE:C>>:
-  -DMODEL=proc_control_lite
+  -DMODEL=proc_control
   -DNUMST=6
   -DNCSTATES=0
   -DHAVESTDIO
@@ -78,7 +78,7 @@ target_compile_options(proc_control_lite PRIVATE
   -fpermissive  >
   )
 ament_target_dependencies(
-  proc_control_lite
+  proc_control
   "builtin_interfaces"
   "geometry_msgs"
   "nav_msgs"
@@ -88,14 +88,14 @@ ament_target_dependencies(
   "std_msgs"
   "trajectory_msgs"
 )
-target_include_directories(proc_control_lite PUBLIC
+target_include_directories(proc_control PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 # target_link_libraries(proc_control 
 #     "/usr/local/MATLAB/R2024b/sys/os/glnxa64/orig/libstdc++.so.6"
 # 	${CMAKE_DL_LIBS}
 #     )
-install(TARGETS proc_control_lite
+install(TARGETS proc_control
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
 
@@ -110,7 +110,7 @@ install(
 )
 
 install(TARGETS
-  proc_control_lite
+  proc_control
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_export_include_directories(
@@ -118,13 +118,13 @@ ament_export_include_directories(
 )
 foreach(file_i ${CUDA_BINS})
 add_custom_command(
-                   TARGET proc_control_lite
+                   TARGET proc_control
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND}
                    ARGS -E copy ${PROJECT_SOURCE_DIR}/src/${file_i} ${CMAKE_INSTALL_PREFIX}/proc_control_ert_rtw/${file_i}
 				   )
 add_custom_command(
-                   TARGET proc_control_lite
+                   TARGET proc_control
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND}
                    ARGS -E copy ${PROJECT_SOURCE_DIR}/src/${file_i} ${CMAKE_INSTALL_PREFIX}/codegen/exe/proc_control/${file_i}
